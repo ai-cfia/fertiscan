@@ -8,6 +8,7 @@ from app.config import Settings
 from app.controllers.users import sign_in
 from app.exceptions import UserNotFoundError
 from app.models.users import User
+from app.services.file_storage import StorageManager
 
 auth = HTTPBasic()
 
@@ -21,6 +22,9 @@ def get_pipeline_settings(request: Request) -> Settings:
 
 def get_connection_pool(request: Request) -> ConnectionPool:
     return request.app.pool
+
+def get_storage(request: Request) -> StorageManager:
+    return request.app.storage
 
 def authenticate_user(credentials: HTTPBasicCredentials = Depends(auth)):
     if not credentials.username:
