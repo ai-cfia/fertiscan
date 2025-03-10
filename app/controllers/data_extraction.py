@@ -5,20 +5,16 @@ from pipeline import analyze, Settings
 from app.models.label_data import LabelData
 
 def extract_data(files: list[bytes], settings: Settings):
-    """
-    Extracts data from provided image files using OCR and GPT.
-
+    """ Extract and analyze data from image files.
     Args:
-        files (dict[str, BinaryIO]): A dictionary with filenames as keys
-            and file-like binary objects as values.
-        ocr: OCR processing tool or function used for text extraction.
-        gpt: GPT-based model or function used for data analysis.
-
-    Raises:
-        ValueError: If no files are provided for analysis.
+        files: List of bytes representing image file data.
+        settings: Settings object containing parameters required by the pipeline.
 
     Returns:
-        LabelData: A `LabelData` object populated with extracted and validated data.
+        LabelData object containing analyzed data.
+
+    Raises:
+        ValueError: If no files are provided.
     """
     if not files:
         raise ValueError("No files to analyze")
