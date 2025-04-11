@@ -24,6 +24,7 @@ from psycopg.conninfo import make_conninfo
 from psycopg_pool import ConnectionPool
 from pydantic import Field, computed_field
 from pydantic_settings import BaseSettings
+from sqlmodel import StaticPool, create_engine
 
 from app.exceptions import log_error
 from app.models.bucket_name import MinioBucketName
@@ -60,6 +61,7 @@ class Settings(BaseSettings):
     minio_secret_key: str
     minio_secure: bool = True
     minio_app_bucket: MinioBucketName = "fertiscan"
+    testing: bool = False
 
     @computed_field
     @property
@@ -73,7 +75,7 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
-    def db_conn_info(self) -> str:
+    def pg_conn_info(self) -> str:
         return make_conninfo(
             user=self.db_user,
             password=self.db_password,
@@ -81,6 +83,22 @@ class Settings(BaseSettings):
             port=self.db_port,
             dbname=self.db_name,
         )
+
+    @computed_field
+    @property
+    def db_conn_info(self) -> dict:
+        if self.testing:
+            return {
+                "url": "sqlite://",
+                "connect_args": {"check_same_thread": False},
+                "poolclass": StaticPool,
+            }
+        return {
+            "url": f"postgresql+psycopg://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}",
+            "connect_args": {
+                "options": f"-c search_path={self.fertiscan_schema},public"
+            },
+        }
 
 
 @asynccontextmanager
@@ -137,10 +155,12 @@ def create_app(settings: Settings, router: APIRouter, lifespan=None):
 
     pool = ConnectionPool(
         open=False,
-        conninfo=settings.db_conn_info,
+        conninfo=settings.pg_conn_info,
         kwargs={"options": f"-c search_path={settings.fertiscan_schema},public"},
     )
     app.pool = pool
+
+    app.engine = create_engine(**settings.db_conn_info)
 
     ocr = OCR(api_endpoint=settings.api_endpoint, api_key=settings.api_key)
     app.ocr = ocr

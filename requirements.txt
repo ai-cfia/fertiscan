@@ -15,4 +15,5 @@ pydantic-extra-types==2.10.2
 filetype==1.2.0
 minio==7.2.15
 pillow==10.3.0
-#
+sqlmodel
+alembic
