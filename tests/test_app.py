@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 from pipeline import FertilizerInspection
 
+from app.config import Settings, create_app
 from app.dependencies import (
     authenticate_user,
     fetch_user,
@@ -27,7 +28,25 @@ from app.models.files import DeleteFolderResponse, Folder
 from app.models.inspections import DeletedInspection, InspectionData, InspectionResponse
 from app.models.label_data import LabelData
 from app.models.users import User
-from tests import app
+from app.routes import router
+
+test_settings = Settings(
+    azure_api_key="test_api_key",
+    db_user="test_user",
+    db_password="test_password",
+    db_host="test_host",
+    db_port=5432,
+    db_name="test_db",
+    azure_storage_account_name="test_account_name",
+    azure_storage_account_key="test_account_key",
+    azure_openai_key="test_openai_key",
+    minio_endpoint="test_minio:9000",
+    minio_access_key="test_minio_access_key",
+    minio_secret_key="test_minio_secret_key",
+    testing=True,
+)
+
+app = create_app(test_settings, router)
 
 
 class TestAPIMonitoring(unittest.TestCase):

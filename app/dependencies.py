@@ -1,28 +1,35 @@
 from http import HTTPStatus
+from typing import Annotated
 
 from fastapi import Depends, File, HTTPException, Request, UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pipeline import GPT, OCR
 from psycopg_pool import ConnectionPool
+from sqlmodel import Session
 
 from app.config import Settings
 from app.controllers.users import sign_in
 from app.exceptions import UserNotFoundError
 from app.models.users import User
-from app.services.file_storage import StorageManager
+from app.services.file_storage import FertiscanStorage
 
 auth = HTTPBasic()
 
 
-def get_settings(request: Request) -> Settings:
+def get_settings(request: Request):
     return request.app.settings
 
 
-def get_connection_pool(request: Request) -> ConnectionPool:
+def get_connection_pool(request: Request):
     return request.app.pool
 
 
-def get_ocr(request: Request) -> OCR:
+def get_session(request: Request):
+    with Session(request.app.engine) as session:
+        yield session
+
+
+def get_ocr(request: Request):
     return request.app.ocr
 
 
@@ -30,7 +37,7 @@ def get_gpt(request: Request) -> GPT:
     return request.app.gpt
 
 
-def get_storage(request: Request) -> StorageManager:
+def get_storage(request: Request):
     return request.app.storage
 
 
@@ -63,3 +70,14 @@ def validate_files(files: list[UploadFile] = File(..., min_length=1)):
                 detail=f"File {f.filename} is empty",
             )
     return files
+
+
+SettingsDep = Annotated[Settings, Depends(get_settings)]
+ConnectionPoolDep = Annotated[ConnectionPool, Depends(get_connection_pool)]
+SessionDep = Annotated[Session, Depends(get_session)]
+OCRDep = Annotated[OCR, Depends(get_ocr)]
+GPTDep = Annotated[GPT, Depends(get_gpt)]
+StorageDep = Annotated[FertiscanStorage, Depends(get_storage)]
+AuthUserDep = Annotated[User, Depends(authenticate_user)]
+UserDep = Annotated[User, Depends(fetch_user)]
+FileValidationDep = Annotated[list[UploadFile], Depends(validate_files)]
