@@ -11,6 +11,9 @@ test_settings = Settings(
     azure_storage_account_name="test_account_name",
     azure_storage_account_key="test_account_key",
     azure_openai_key="test_openai_key",
+    minio_endpoint="test_minio:9000",
+    minio_access_key="test_minio_access_key",
+    minio_secret_key="test_minio_secret_key",
 )
 
 
