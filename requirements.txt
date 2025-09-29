@@ -13,7 +13,7 @@ fastapi[standard]==0.115.4
 pydantic-settings==2.7.1
 pydantic-extra-types==2.10.2
 filetype==1.2.0
-minio==7.2.15
+minio==7.2.18
 pillow==10.3.0
 sqlmodel
 alembic
