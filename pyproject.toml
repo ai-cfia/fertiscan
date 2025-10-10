@@ -1,0 +1,82 @@
+[project]
+name = "fertiscan-backend"
+version = "0.1.0"
+description = "FertiScan Backend API with FastAPI and SQLAlchemy"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dotenv",
+    "asyncpg",
+    "greenlet",
+    "fastapi[standard]",
+    "pydantic-settings",
+    "sqlmodel",
+    "alembic",
+    "passlib[bcrypt]",
+    "bcrypt==4.0.1",
+    "pyjwt",
+    "jinja2",
+    "aiosmtplib",
+    "tenacity",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.24.0",
+    "mypy>=1.8.0",
+    "ruff>=0.2.0",
+    "coverage>=7.4.0",
+    "pre-commit>=3.6.0",
+    "types-passlib>=1.7.7",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+target-version = "py312"
+exclude = ["alembic"]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG001", # unused arguments in functions
+    "T201",   # print statements are not allowed
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "W191",  # indentation contains tabs
+    "B904",  # Allow raising exceptions without from e, for HTTPException
+]
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+[tool.mypy]
+strict = true
+exclude = ["venv", ".venv", "alembic"]
+
+[tool.coverage.run]
+source = ["app"]
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+show_missing = true
+sort = "-Cover"
+
+[tool.coverage.html]
+show_contexts = true
+

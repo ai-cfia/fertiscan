@@ -1,8 +1,9 @@
-.PHONY: help env start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates clean
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates clean
 
 help:
 	@echo "Available targets:"
 	@echo "  env              - Create .env file from .env.example"
+	@echo "  sync             - Install/update dependencies with uv"
 	@echo "  start            - Run pre-start checks and start development server"
 	@echo "  dev              - Run development server (assumes DB initialized)"
 	@echo "  prestart         - Run pre-start checks and initialization only"
@@ -26,20 +27,23 @@ env:
 		echo ".env already exists, skipping..."; \
 	fi
 
+sync:
+	uv sync
+
 start:
 	@echo "Starting application..."
 	$(MAKE) prestart
 	@echo "Launching development server..."
-	fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 5000
 
 dev:
-	fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 5000
 
 prestart:
 	@echo "Running pre-start checks..."
-	python -m app.backend_pre_start
+	uv run python -m app.backend_pre_start
 	@echo "Creating/updating database tables..."
-	python -m app.initial_data
+	uv run python -m app.initial_data
 	@echo "Pre-start complete"
 
 db-reset:
@@ -48,29 +52,29 @@ db-reset:
 	@echo "Database reset complete. Run 'make prestart' to recreate tables."
 
 test:
-	coverage run -m pytest tests/
-	coverage report
+	uv run coverage run -m pytest tests/
+	uv run coverage report
 
 test-start:
-	python -m app.tests_pre_start
+	uv run python -m app.tests_pre_start
 	$(MAKE) test
 
 test-cov: test
-	coverage html
+	uv run coverage html
 	@echo "Coverage report generated in htmlcov/index.html"
 
 format:
-	ruff check app tests --fix
-	ruff format app tests
+	uv run ruff check app tests --fix
+	uv run ruff format app tests
 
 format-check:
-	ruff format app tests --check
+	uv run ruff format app tests --check
 
 lint:
-	ruff check app tests
+	uv run ruff check app tests
 
 mypy:
-	mypy app
+	uv run mypy app
 
 email-templates:
 	@mkdir -p app/email-templates/build
