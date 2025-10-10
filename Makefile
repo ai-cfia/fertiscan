@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates docker-build docker-prestart docker-run docker-test clean
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean
 
 help:
 	@echo "Available targets:"
@@ -20,6 +20,13 @@ help:
 	@echo "  docker-prestart  - Test Docker prestart script"
 	@echo "  docker-run       - Run Docker container with FastAPI"
 	@echo "  docker-test      - Run tests inside Docker container"
+	@echo "  docker-compose-build - Build Docker Compose services"
+	@echo "  docker-up        - Start all services with Docker Compose"
+	@echo "  docker-up-d      - Start all services detached (background)"
+	@echo "  docker-down      - Stop all services"
+	@echo "  docker-down-v    - Stop all services and remove volumes"
+	@echo "  docker-logs      - Follow backend logs"
+	@echo "  docker-ps        - Show service status"
 	@echo "  clean            - Remove generated files"
 
 env:
@@ -103,6 +110,35 @@ docker-test:
 	docker run --rm --env-file .env \
 		-e POSTGRES_SERVER=host.docker.internal \
 		fertiscan-backend:latest bash scripts/tests-start.sh
+
+docker-compose-build:
+	@echo "Building Docker Compose services..."
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose build
+
+docker-up:
+	@echo "Starting all services with Docker Compose..."
+	@echo "Access the API at http://localhost:8000"
+	@echo "Access pgAdmin at http://localhost:5050"
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build
+
+docker-up-d:
+	@echo "Starting all services in background..."
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
+	@echo "Services started. Use 'make docker-logs' to view logs."
+
+docker-down:
+	@echo "Stopping all services..."
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down
+
+docker-down-v:
+	@echo "Stopping all services and removing volumes..."
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down -v
+
+docker-logs:
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose logs -f backend
+
+docker-ps:
+	DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose ps
 
 clean:
 	rm -rf app/email-templates/build/*.html
