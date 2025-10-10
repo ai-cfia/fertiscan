@@ -1,1 +1,14 @@
 .env.secrets
+.cursor/
+.vscode/
+tasks/
+backend/
+.git/
+.gitignore
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+docs/
+*.md
+.DS_Store

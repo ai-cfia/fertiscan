@@ -1,83 +1,59 @@
-from http import HTTPStatus
+"""FastAPI dependency injection."""
+
 from typing import Annotated
 
-from fastapi import Depends, File, HTTPException, Request, UploadFile
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from pipeline import GPT, OCR
-from psycopg_pool import ConnectionPool
-from sqlmodel import Session
+import jwt
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jwt.exceptions import InvalidTokenError
+from pydantic import ValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config import Settings
-from app.controllers.users import sign_in
-from app.exceptions import UserNotFoundError
-from app.models.users import User
-from app.services.file_storage import FertiscanStorage
+from app.config import settings
+from app.core import security
+from app.db.models.user import User
+from app.db.session import get_session
+from app.schemas.auth import TokenPayload
 
-auth = HTTPBasic()
+SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
+reusable_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
+)
 
-def get_settings(request: Request):
-    return request.app.settings
-
-
-def get_connection_pool(request: Request):
-    return request.app.pool
-
-
-def get_session(request: Request):
-    with Session(request.app.engine) as session:
-        yield session
+TokenDep = Annotated[str, Depends(reusable_oauth2)]
 
 
-def get_ocr(request: Request):
-    return request.app.ocr
-
-
-def get_gpt(request: Request) -> GPT:
-    return request.app.gpt
-
-
-def get_storage(request: Request):
-    return request.app.storage
-
-
-def authenticate_user(credentials: HTTPBasicCredentials = Depends(auth)):
-    if not credentials.username:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST, detail="Missing email address!"
-        )
-
-    return User(username=credentials.username)
-
-
-async def fetch_user(
-    auth_user: User = Depends(authenticate_user),
-    cp: ConnectionPool = Depends(get_connection_pool),
-) -> User:
+async def get_current_user(session: SessionDep, token: TokenDep) -> User:
+    """Get current authenticated user from JWT token."""
     try:
-        return await sign_in(cp, auth_user)
-    except UserNotFoundError:
-        raise HTTPException(
-            status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid username or password"
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
         )
+        token_data = TokenPayload(**payload)
+    except (InvalidTokenError, ValidationError):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+        )
+    user = await session.get(User, token_data.sub)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return user
 
 
-def validate_files(files: list[UploadFile] = File(..., min_length=1)):
-    for f in files:
-        if f.size == 0:
-            raise HTTPException(
-                status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-                detail=f"File {f.filename} is empty",
-            )
-    return files
+CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
-SettingsDep = Annotated[Settings, Depends(get_settings)]
-ConnectionPoolDep = Annotated[ConnectionPool, Depends(get_connection_pool)]
-SessionDep = Annotated[Session, Depends(get_session)]
-OCRDep = Annotated[OCR, Depends(get_ocr)]
-GPTDep = Annotated[GPT, Depends(get_gpt)]
-StorageDep = Annotated[FertiscanStorage, Depends(get_storage)]
-AuthUserDep = Annotated[User, Depends(authenticate_user)]
-UserDep = Annotated[User, Depends(fetch_user)]
-FileValidationDep = Annotated[list[UploadFile], Depends(validate_files)]
+def get_current_active_superuser(current_user: CurrentUser) -> User:
+    """Verify current user is a superuser."""
+    if not current_user.is_superuser:
+        raise HTTPException(
+            status_code=403, detail="The user doesn't have enough privileges"
+        )
+    return current_user
+
+
+CurrentSuperuser = Annotated[User, Depends(get_current_active_superuser)]

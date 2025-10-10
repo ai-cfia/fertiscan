@@ -10,6 +10,13 @@ logs/
 # VS Code
 .vscode
 
+# Cursor IDE
+.cursor/
+
+# Tasks folder
+tasks/
+
+
 # Upload folder
 uploads/
 
@@ -19,6 +26,7 @@ uploads/
 # Distribution / packaging
 .Python
 build/
+!app/email-templates/build/
 develop-eggs/
 dist/
 downloads/
@@ -176,3 +184,5 @@ cython_debug/
 end_to_end_pipeline_artifacts
 
 .DS_Store
+
+backend/

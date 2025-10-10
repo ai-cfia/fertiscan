@@ -1,197 +1,123 @@
-from contextlib import asynccontextmanager
-from http import HTTPStatus
+"""Application configuration and settings."""
+
+import secrets
+import warnings
+from typing import Annotated, Any, Literal
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, FastAPI, Request
+from jinja2 import Environment, FileSystemLoader
+from pydantic import BeforeValidator, EmailStr, computed_field, model_validator
+from pydantic.networks import AnyUrl
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing_extensions import Self
 
-# from fastapi.logger import logger
-# from fastapi.logger import logger
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+load_dotenv()
 
-# from opentelemetry import trace
-# from opentelemetry._logs import set_logger_provider
-# from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
-# from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-# from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
-# from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
-# from opentelemetry.sdk.resources import Resource
-# from opentelemetry.sdk.trace import TracerProvider
-# from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from minio import Minio
-from pipeline import GPT, OCR
-from psycopg.conninfo import make_conninfo
-from psycopg_pool import ConnectionPool
-from pydantic import Field, computed_field
-from pydantic_settings import BaseSettings
-from sqlmodel import StaticPool, create_engine
 
-from app.exceptions import log_error
-from app.models.bucket_name import MinioBucketName
-from app.services.file_storage import FertiscanStorage, MinIOStorageManager
+def parse_list(v: Any) -> list[str] | str:
+    if isinstance(v, str) and not v.startswith("["):
+        return [i.strip() for i in v.split(",") if i.strip()]
+    elif isinstance(v, list | str):
+        return v
+    raise ValueError(v)
 
-load_dotenv(".env.secrets")
-load_dotenv(".env.config")
+
+class AsyncPgDsn(AnyUrl):
+    allowed_schemes = {"postgresql+asyncpg"}
+    user_required = True
+    host_required = True
 
 
 class Settings(BaseSettings):
-    api_endpoint: str = Field(alias="azure_api_endpoint")
-    api_key: str = Field(alias="azure_api_key")
-    base_path: str = Field("", alias="api_base_path")
-    db_user: str
-    db_password: str
-    db_host: str
-    db_port: int
-    db_name: str
-    fertiscan_schema: str
-    azure_storage_account_name: str | None = None
-    azure_storage_account_key: str | None = None
-    azure_storage_default_endpoint_protocol: str | None = None
-    azure_storage_endpoint_suffix: str | None = None
-    openai_api_deployment: str = Field(alias="azure_openai_deployment")
-    openai_api_endpoint: str = Field(alias="azure_openai_endpoint")
-    openai_api_key: str = Field(alias="azure_openai_key")
-    phoenix_endpoint: str | None = None
-    swagger_path: str = "/docs"
-    # upload_folder: str = "uploads"
-    allowed_origins: list[str]
-    otel_exporter_otlp_endpoint: str = Field(alias="otel_exporter_otlp_endpoint")
-    minio_endpoint: str
-    minio_access_key: str
-    minio_secret_key: str
-    minio_secure: bool = True
-    minio_app_bucket: MinioBucketName = "fertiscan"
-    testing: bool = False
+    model_config = SettingsConfigDict(env_ignore_empty=True, extra="ignore")
+    PROJECT_NAME: str = "FertiScan"
+    API_V1_STR: str = "/api/v1"
+    SECRET_KEY: str = secrets.token_urlsafe(32)
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    EMAIL_RESET_TOKEN_EXPIRE_MINUTES: int = 30
+    EMAIL_TEMPLATES_DIR: str = "app/email-templates/build"
+    ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+    FRONTEND_HOST: str = "http://localhost:3000"
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyUrl] | str, BeforeValidator(parse_list)
+    ] = []
+    SMTP_TLS: bool = True
+    SMTP_SSL: bool = False
+    SMTP_PORT: int = 587
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    EMAILS_FROM_EMAIL: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
+    POSTGRES_SERVER: str
+    POSTGRES_PORT: int = 5432
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str = ""
+    POSTGRES_DB: str = ""
+    FIRST_SUPERUSER: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
 
     @computed_field
     @property
-    def azure_storage_connection_string(self) -> str:
-        return (
-            f"DefaultEndpointsProtocol={self.azure_storage_default_endpoint_protocol};"
-            f"AccountName={self.azure_storage_account_name};"
-            f"AccountKey={self.azure_storage_account_key};"
-            f"EndpointSuffix={self.azure_storage_endpoint_suffix}"
+    def SQLALCHEMY_DATABASE_URI(self) -> AsyncPgDsn:
+        return AsyncPgDsn.build(
+            scheme="postgresql+asyncpg",
+            username=self.POSTGRES_USER,
+            password=self.POSTGRES_PASSWORD or None,
+            host=self.POSTGRES_SERVER,
+            port=self.POSTGRES_PORT,
+            path=self.POSTGRES_DB,
         )
 
     @computed_field
     @property
-    def pg_conn_info(self) -> str:
-        return make_conninfo(
-            user=self.db_user,
-            password=self.db_password,
-            host=self.db_host,
-            port=self.db_port,
-            dbname=self.db_name,
+    def LOG_SQL(self) -> bool:
+        return self.ENVIRONMENT == "local"
+
+    @computed_field
+    @property
+    def emails_enabled(self) -> bool:
+        return bool(self.SMTP_HOST and self.EMAILS_FROM_EMAIL)
+
+    @computed_field
+    @property
+    def email_template_env(self) -> Environment:
+        return Environment(
+            loader=FileSystemLoader(self.EMAIL_TEMPLATES_DIR), autoescape=True
         )
 
     @computed_field
     @property
-    def db_conn_info(self) -> dict:
-        if self.testing:
-            return {
-                "url": "sqlite://",
-                "connect_args": {"check_same_thread": False},
-                "poolclass": StaticPool,
-            }
-        return {
-            "url": f"postgresql+psycopg://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}",
-            "connect_args": {
-                "options": f"-c search_path={self.fertiscan_schema},public"
-            },
-        }
+    def all_cors_origins(self) -> list[str]:
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
+            self.FRONTEND_HOST
+        ]
 
+    @model_validator(mode="after")
+    def _set_default_emails_from(self) -> Self:
+        if not self.EMAILS_FROM_NAME:
+            self.EMAILS_FROM_NAME = self.PROJECT_NAME
+        return self
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # settings: Settings = app.settings
-    app.pool.open()
-    # resource = Resource.create(
-    #     {
-    #         "service.name": "fertiscan-backend",
-    #     }
-    # )
+    def _check_default_secret(self, var_name: str, value: str | None) -> None:
+        if value == "changethis":
+            message = (
+                f'The value of {var_name} is "changethis", '
+                "for security, please change it, at least for deployments."
+            )
+            if self.ENVIRONMENT == "local":
+                warnings.warn(message, stacklevel=1)
+            else:
+                raise ValueError(message)
 
-    # # Tracing setup
-    # tracer_provider = TracerProvider(resource=resource)
-    # trace.set_tracer_provider(tracer_provider)
-    # tracer_provider.add_span_processor(
-    #     BatchSpanProcessor(
-    #         OTLPSpanExporter(
-    #             endpoint=settings.otel_exporter_otlp_endpoint, insecure=True
-    #         )
-    #     )
-    # )
-    # # Logging setup
-    # logger_provider = LoggerProvider(resource=resource)
-    # set_logger_provider(logger_provider)
-    # logger_provider.add_log_record_processor(
-    #     BatchLogRecordProcessor(
-    #         OTLPLogExporter(
-    #             endpoint=settings.otel_exporter_otlp_endpoint, insecure=True
-    #         )
-    #     )
-    # )
-    # handler = LoggingHandler(logger_provider=logger_provider)
-    # logger.addHandler(handler)
-    yield
-    app.pool.close()
-    # logger_provider.shutdown()
-    # tracer_provider.shutdown()
-
-
-def create_app(settings: Settings, router: APIRouter, lifespan=None):
-    app = FastAPI(
-        lifespan=lifespan, docs_url=settings.swagger_path, root_path=settings.base_path
-    )
-    app.settings = settings
-
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.allowed_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    pool = ConnectionPool(
-        open=False,
-        conninfo=settings.pg_conn_info,
-        kwargs={"options": f"-c search_path={settings.fertiscan_schema},public"},
-    )
-    app.pool = pool
-
-    app.engine = create_engine(**settings.db_conn_info)
-
-    ocr = OCR(api_endpoint=settings.api_endpoint, api_key=settings.api_key)
-    app.ocr = ocr
-
-    gpt = GPT(
-        api_endpoint=settings.openai_api_endpoint,
-        api_key=settings.openai_api_key,
-        deployment_id=settings.openai_api_deployment,
-        # phoenix_endpoint=settings.phoenix_endpoint,
-    )
-    app.gpt = gpt
-
-    app.include_router(router)
-
-    minio_client = Minio(
-        settings.minio_endpoint,
-        access_key=settings.minio_access_key,
-        secret_key=settings.minio_secret_key,
-        secure=settings.minio_secure,
-    )
-
-    sm = MinIOStorageManager(minio_client)
-    storage = FertiscanStorage(sm, settings.minio_app_bucket)
-
-    app.storage = storage
-
-    @app.exception_handler(Exception)
-    async def global_exception_handler(_: Request, e: Exception):
-        log_error(e)
-        return JSONResponse(
-            status_code=HTTPStatus.INTERNAL_SERVER_ERROR, content={"detail": str(e)}
+    @model_validator(mode="after")
+    def _enforce_non_default_secrets(self) -> Self:
+        self._check_default_secret("SECRET_KEY", self.SECRET_KEY)
+        self._check_default_secret("POSTGRES_PASSWORD", self.POSTGRES_PASSWORD)
+        self._check_default_secret(
+            "FIRST_SUPERUSER_PASSWORD", self.FIRST_SUPERUSER_PASSWORD
         )
+        return self
 
-    return app
+
+settings = Settings()
