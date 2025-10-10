@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates clean
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates docker-build docker-prestart docker-run docker-test clean
 
 help:
 	@echo "Available targets:"
@@ -16,6 +16,10 @@ help:
 	@echo "  lint             - Run ruff linter"
 	@echo "  mypy             - Run type checker"
 	@echo "  email-templates  - Build email templates from MJML"
+	@echo "  docker-build     - Build Docker image"
+	@echo "  docker-prestart  - Test Docker prestart script"
+	@echo "  docker-run       - Run Docker container with FastAPI"
+	@echo "  docker-test      - Run tests inside Docker container"
 	@echo "  clean            - Remove generated files"
 
 env:
@@ -40,11 +44,7 @@ dev:
 	uv run fastapi dev app/main.py --port 5000
 
 prestart:
-	@echo "Running pre-start checks..."
-	uv run python -m app.backend_pre_start
-	@echo "Creating/updating database tables..."
-	uv run python -m app.initial_data
-	@echo "Pre-start complete"
+	uv run bash scripts/prestart.sh
 
 db-reset:
 	@echo "Resetting database..."
@@ -52,26 +52,23 @@ db-reset:
 	@echo "Database reset complete. Run 'make prestart' to recreate tables."
 
 test:
-	uv run coverage run -m pytest tests/
-	uv run coverage report
+	uv run bash scripts/test.sh
 
 test-start:
-	uv run python -m app.tests_pre_start
-	$(MAKE) test
+	uv run bash scripts/tests-start.sh
 
 test-cov: test
 	uv run coverage html
 	@echo "Coverage report generated in htmlcov/index.html"
 
 format:
-	uv run ruff check app tests --fix
-	uv run ruff format app tests
+	uv run bash scripts/format.sh
 
 format-check:
-	uv run ruff format app tests --check
+	uv run ruff format app tests scripts --check
 
 lint:
-	uv run ruff check app tests
+	uv run bash scripts/lint.sh
 
 mypy:
 	uv run mypy app
@@ -82,6 +79,30 @@ email-templates:
 		mjml $$file -o app/email-templates/build/$$(basename $$file .mjml).html; \
 	done
 	@echo "Email templates built"
+
+docker-build:
+	@echo "Building Docker image..."
+	docker build -t fertiscan-backend:latest .
+	@echo "Docker image built successfully"
+
+docker-prestart:
+	@echo "Testing Docker prestart script..."
+	docker run --rm --env-file .env \
+		-e POSTGRES_SERVER=host.docker.internal \
+		fertiscan-backend:latest bash scripts/prestart.sh
+
+docker-run:
+	@echo "Running Docker container..."
+	@echo "Access the API at http://localhost:8000"
+	docker run --rm --env-file .env -p 8000:8000 \
+		-e POSTGRES_SERVER=host.docker.internal \
+		fertiscan-backend:latest
+
+docker-test:
+	@echo "Running tests in Docker container..."
+	docker run --rm --env-file .env \
+		-e POSTGRES_SERVER=host.docker.internal \
+		fertiscan-backend:latest bash scripts/tests-start.sh
 
 clean:
 	rm -rf app/email-templates/build/*.html

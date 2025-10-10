@@ -1,14 +1,25 @@
-.env.secrets
+# Environment files (loaded via --env-file, not copied into image)
+.env
+.env.*
+
+# Development and documentation
 .cursor/
 .vscode/
 tasks/
 backend/
+docs/
+*.md
+
+# Git
 .git/
 .gitignore
+
+# Python cache
 __pycache__/
 *.pyc
 .pytest_cache/
-tests/
-docs/
-*.md
+htmlcov/
+.coverage
+
+# OS files
 .DS_Store
