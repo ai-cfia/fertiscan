@@ -12,4 +12,3 @@ echo "Checking code formatting..."
 ruff format app tests scripts --check
 
 echo "All checks passed"
-

@@ -20,6 +20,8 @@ __pycache__/
 .pytest_cache/
 htmlcov/
 .coverage
+mypy_cache/
+.venv
 
 # OS files
 .DS_Store

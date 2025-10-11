@@ -1,5 +1,6 @@
 """User routes."""
 
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
@@ -24,7 +25,10 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("", response_model=UsersPublic)
 async def read_users(
-    session: SessionDep, _: CurrentSuperuser, skip: int = 0, limit: int = 100
+    session: SessionDep,
+    _: CurrentSuperuser,
+    skip: int = 0,
+    limit: int = 100,
 ) -> UsersPublic:
     """List all users (superuser only)."""
     users, count = await u.get_users(session, skip=skip, limit=limit)
@@ -33,8 +37,11 @@ async def read_users(
 
 @router.post("", response_model=UserPublic, status_code=201)
 async def create_user(
-    *, session: SessionDep, _: CurrentSuperuser, user_in: UserCreate
-) -> UserPublic:
+    *,
+    session: SessionDep,
+    _: CurrentSuperuser,
+    user_in: UserCreate,
+) -> Any:
     """Create new user (superuser only)."""
     if await u.get_user_by_email(session, user_in.email):
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -49,30 +56,39 @@ async def create_user(
 
 
 @router.get("/me", response_model=UserPublic)
-async def read_user_me(current_user: CurrentUser) -> UserPublic:
+async def read_user_me(current_user: CurrentUser) -> Any:
     """Get current user."""
     return current_user
 
 
 @router.patch("/me", response_model=UserPublic)
 async def update_user_me(
-    *, session: SessionDep, current_user: CurrentUser, user_in: UserUpdateMe
-) -> UserPublic:
+    *,
+    session: SessionDep,
+    current_user: CurrentUser,
+    user_in: UserUpdateMe,
+) -> Any:
     """Update current user."""
     if user_in.email:
         if existing := await u.get_user_by_email(session, user_in.email):
             if existing.id != current_user.id:
                 raise HTTPException(status_code=400, detail="Email already registered")
-    if not (user := await u.update_user(session, current_user.id, user_in)):
+    _user_in = UserUpdate.model_validate(user_in.model_dump())
+    if not (user := await u.update_user(session, current_user.id, _user_in)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
 @router.patch("/me/password", response_model=Message)
 async def update_password_me(
-    *, session: SessionDep, current_user: CurrentUser, body: UpdatePassword
-) -> Message:
+    *,
+    session: SessionDep,
+    current_user: CurrentUser,
+    body: UpdatePassword,
+) -> Any:
     """Update current user password."""
+    if not current_user.hashed_password:
+        raise HTTPException(status_code=400, detail="User has no password")
     if not verify_password(body.current_password, current_user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect password")
     if not await u.update_user(
@@ -83,7 +99,10 @@ async def update_password_me(
 
 
 @router.delete("/me", response_model=Message)
-async def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Message:
+async def delete_user_me(
+    session: SessionDep,
+    current_user: CurrentUser,
+) -> Any:
     """Delete current user."""
     if not await u.delete_user(session, current_user.id):
         raise HTTPException(status_code=404, detail="User not found")
@@ -92,8 +111,10 @@ async def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Mess
 
 @router.get("/{user_id}", response_model=UserPublic)
 async def read_user_by_id(
-    session: SessionDep, current_user: CurrentSuperuser, user_id: UUID
-) -> UserPublic:
+    session: SessionDep,
+    _: CurrentSuperuser,
+    user_id: UUID,
+) -> Any:
     """Get user by ID (superuser only)."""
     if not (user := await u.get_user_by_id(session, user_id)):
         raise HTTPException(status_code=404, detail="User not found")
@@ -104,10 +125,10 @@ async def read_user_by_id(
 async def update_user(
     *,
     session: SessionDep,
-    current_user: CurrentSuperuser,
+    _: CurrentSuperuser,
     user_id: UUID,
     user_in: UserUpdate,
-) -> UserPublic:
+) -> Any:
     """Update user (superuser only)."""
     if user_in.email:
         if existing := await u.get_user_by_email(session, user_in.email):
@@ -120,7 +141,9 @@ async def update_user(
 
 @router.delete("/{user_id}", response_model=Message)
 async def delete_user(
-    session: SessionDep, current_user: CurrentSuperuser, user_id: UUID
+    session: SessionDep,
+    _: CurrentSuperuser,
+    user_id: UUID,
 ) -> Message:
     """Delete user (superuser only)."""
     if not await u.delete_user(session, user_id):

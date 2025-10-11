@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean
 
 help:
 	@echo "Available targets:"
@@ -15,6 +15,8 @@ help:
 	@echo "  format-check     - Check code formatting without changes"
 	@echo "  lint             - Run ruff linter"
 	@echo "  mypy             - Run type checker"
+	@echo "  pre-commit-install - Install pre-commit Git hooks"
+	@echo "  pre-commit       - Run pre-commit checks on all files"
 	@echo "  email-templates  - Build email templates from MJML"
 	@echo "  docker-build     - Build Docker image"
 	@echo "  docker-prestart  - Test Docker prestart script"
@@ -79,6 +81,13 @@ lint:
 
 mypy:
 	uv run mypy app
+
+pre-commit-install:
+	uv run pre-commit install
+	@echo "Pre-commit hooks installed. They will run automatically on git commit."
+
+pre-commit:
+	uv run pre-commit run --all-files
 
 email-templates:
 	@mkdir -p app/email-templates/build
@@ -145,4 +154,3 @@ clean:
 	rm -rf htmlcov/ .coverage
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
-

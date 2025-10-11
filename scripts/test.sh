@@ -10,4 +10,3 @@ coverage report
 coverage html --title "${@-coverage}"
 
 echo "Tests complete. HTML report: htmlcov/index.html"
-

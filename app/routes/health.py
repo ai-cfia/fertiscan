@@ -16,7 +16,9 @@ async def liveness() -> Health:
 
 
 @router.get("/readyz", response_model=Readiness)
-async def readiness(session: SessionDep) -> Readiness:
+async def readiness(
+    session: SessionDep,
+) -> Readiness:
     """Readiness probe - can the application handle requests?"""
     await session.execute(text("SELECT 1"))
     return Readiness(status="ok", database="connected")

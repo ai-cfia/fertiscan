@@ -6,4 +6,3 @@ echo "Initializing test database..."
 python -m app.tests_pre_start
 
 bash scripts/test.sh "$@"
-

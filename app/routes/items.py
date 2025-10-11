@@ -1,5 +1,6 @@
 """Item routes."""
 
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
@@ -18,7 +19,7 @@ async def read_items(
     current_user: CurrentUser,
     skip: int = 0,
     limit: int = 100,
-) -> ItemsPublic:
+) -> Any:
     item_list, count = await i.get_items(
         session, current_user.id, skip=skip, limit=limit
     )
@@ -30,7 +31,7 @@ async def read_item(
     session: SessionDep,
     current_user: CurrentUser,
     item_id: UUID,
-) -> ItemPublic:
+) -> Any:
     if not (item := await i.get_item_by_id(session, item_id, current_user.id)):
         raise HTTPException(status_code=404, detail="Item not found")
     return item
@@ -42,7 +43,7 @@ async def create_item(
     session: SessionDep,
     current_user: CurrentUser,
     item_in: ItemCreate,
-) -> ItemPublic:
+) -> Any:
     item = await i.create_item(session, item_in, current_user.id)
     return item
 
@@ -54,7 +55,7 @@ async def update_item(
     current_user: CurrentUser,
     item_id: UUID,
     item_in: ItemUpdate,
-) -> ItemPublic:
+) -> Any:
     if not (item := await i.update_item(session, item_id, current_user.id, item_in)):
         raise HTTPException(status_code=404, detail="Item not found")
     return item

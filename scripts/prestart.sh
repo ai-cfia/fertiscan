@@ -9,4 +9,3 @@ echo "Creating/updating database tables..."
 python -m app.initial_data
 
 echo "Pre-start complete"
-

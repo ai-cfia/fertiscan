@@ -8,4 +8,3 @@ echo "Formatting code..."
 ruff format app tests scripts
 
 echo "Code formatting complete"
-

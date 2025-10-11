@@ -43,7 +43,9 @@ class TestExtractData(unittest.TestCase):
         mock_analyze.assert_not_called()
 
     @patch("app.controllers.data_extraction.LabelStorage")
-    @patch("app.controllers.data_extraction.analyze", side_effect=Exception("OCR error"))
+    @patch(
+        "app.controllers.data_extraction.analyze", side_effect=Exception("OCR error")
+    )
     def test_extract_data_analyze_failure(self, mock_analyze, mock_label_storage):
         ocr = MagicMock()
         gpt = MagicMock()

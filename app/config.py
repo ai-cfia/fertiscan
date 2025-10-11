@@ -2,14 +2,13 @@
 
 import secrets
 import warnings
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Self
 
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 from pydantic import BeforeValidator, EmailStr, computed_field, model_validator
 from pydantic.networks import AnyUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing_extensions import Self
 
 load_dotenv()
 
@@ -36,7 +35,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     EMAIL_RESET_TOKEN_EXPIRE_MINUTES: int = 30
     EMAIL_TEMPLATES_DIR: str = "app/email-templates/build"
-    ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+    ENVIRONMENT: Literal["local", "staging", "production", "testing"] = "local"
     FRONTEND_HOST: str = "http://localhost:3000"
     BACKEND_CORS_ORIGINS: Annotated[
         list[AnyUrl] | str, BeforeValidator(parse_list)
@@ -57,7 +56,7 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> AsyncPgDsn:
         return AsyncPgDsn.build(
@@ -69,24 +68,24 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def LOG_SQL(self) -> bool:
-        return self.ENVIRONMENT == "local"
+        return self.ENVIRONMENT in ("local", "testing")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def emails_enabled(self) -> bool:
         return bool(self.SMTP_HOST and self.EMAILS_FROM_EMAIL)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def email_template_env(self) -> Environment:
         return Environment(
             loader=FileSystemLoader(self.EMAIL_TEMPLATES_DIR), autoescape=True
         )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def all_cors_origins(self) -> list[str]:
         return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
@@ -105,7 +104,7 @@ class Settings(BaseSettings):
                 f'The value of {var_name} is "changethis", '
                 "for security, please change it, at least for deployments."
             )
-            if self.ENVIRONMENT == "local":
+            if self.ENVIRONMENT in ("local", "testing"):
                 warnings.warn(message, stacklevel=1)
             else:
                 raise ValueError(message)
@@ -120,4 +119,4 @@ class Settings(BaseSettings):
         return self
 
 
-settings = Settings()
+settings = Settings()  # type: ignore

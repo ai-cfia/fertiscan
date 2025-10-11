@@ -24,11 +24,13 @@ dev = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
     "httpx>=0.24.0",
-    "mypy>=1.8.0",
+    "mypy>=1.18.0",
     "ruff>=0.2.0",
     "coverage>=7.4.0",
     "pre-commit>=3.6.0",
     "types-passlib>=1.7.7",
+    "types-jinja2>=2.11.0",
+    "types-PyJWT>=1.7.1",
 ]
 
 [build-system]
@@ -79,4 +81,3 @@ sort = "-Cover"
 
 [tool.coverage.html]
 show_contexts = true
-
