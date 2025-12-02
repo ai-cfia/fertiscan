@@ -25,3 +25,5 @@ mypy_cache/
 
 # OS files
 .DS_Store
+
+scripts/debug/

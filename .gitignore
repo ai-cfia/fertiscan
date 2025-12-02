@@ -186,3 +186,6 @@ end_to_end_pipeline_artifacts
 .DS_Store
 
 template/
+
+# Debug scripts
+scripts/debug/

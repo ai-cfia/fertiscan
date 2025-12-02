@@ -11,6 +11,12 @@ from fastapi.routing import APIRoute
 from app.config import settings
 from app.routes import api_router, health
 
+logging.basicConfig(
+    level=settings.LOG_LEVEL,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    force=True,
+)
+
 logger = logging.getLogger(__name__)
 
 

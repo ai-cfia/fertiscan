@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean secret-key
 
 help:
 	@echo "Available targets:"
@@ -30,6 +30,7 @@ help:
 	@echo "  docker-logs      - Follow backend logs"
 	@echo "  docker-ps        - Show service status"
 	@echo "  clean            - Remove generated files"
+	@echo "  secret-key       - Generate a secure secret key"
 
 env:
 	@if [ ! -f .env ]; then \
@@ -39,6 +40,9 @@ env:
 	else \
 		echo ".env already exists, skipping..."; \
 	fi
+
+secret-key:
+	@uv run python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 sync:
 	uv sync

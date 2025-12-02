@@ -1,12 +1,19 @@
 """Application configuration and settings."""
 
+import logging
 import secrets
 import warnings
 from typing import Annotated, Any, Literal, Self
 
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
-from pydantic import BeforeValidator, EmailStr, computed_field, model_validator
+from pydantic import (
+    BeforeValidator,
+    EmailStr,
+    computed_field,
+    field_validator,
+    model_validator,
+)
 from pydantic.networks import AnyUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -36,6 +43,7 @@ class Settings(BaseSettings):
     EMAIL_RESET_TOKEN_EXPIRE_MINUTES: int = 30
     EMAIL_TEMPLATES_DIR: str = "app/email-templates/build"
     ENVIRONMENT: Literal["local", "staging", "production", "testing"] = "local"
+    LOG_LEVEL: int = logging.INFO
     FRONTEND_HOST: str = "http://localhost:3000"
     BACKEND_CORS_ORIGINS: Annotated[
         list[AnyUrl] | str, BeforeValidator(parse_list)
@@ -55,6 +63,20 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = ""
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
+
+    @field_validator("LOG_LEVEL", mode="before")
+    @classmethod
+    def parse_log_level(cls, v: str | int) -> int:
+        if isinstance(v, int):
+            return v
+        level_map = {
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
+            "CRITICAL": logging.CRITICAL,
+        }
+        return level_map.get(str(v).upper(), logging.INFO)
 
     @computed_field  # type: ignore[prop-decorator]
     @property

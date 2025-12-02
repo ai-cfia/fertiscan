@@ -31,7 +31,7 @@ async def send_email(email_to: EmailStr, email_data: EmailData) -> None:
         port=settings.SMTP_PORT,
         username=settings.SMTP_USER,
         password=settings.SMTP_PASSWORD,
-        use_tls=settings.SMTP_TLS,
+        use_tls=settings.SMTP_SSL,
         start_tls=settings.SMTP_TLS and not settings.SMTP_SSL,
     )
     logger.info(f"Email sent to {email_to}: {email_data.subject}")
