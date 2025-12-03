@@ -11,7 +11,7 @@ from pydantic import SecretStr
 from app.config import settings
 from app.controllers import users as u
 from app.core import security
-from app.dependencies import CurrentSuperuser, CurrentUser, SessionDep
+from app.dependencies import AsyncSessionDep, CurrentSuperuser, CurrentUser
 from app.emails import generate_reset_password_email, send_email
 from app.schemas.auth import NewPassword, Token
 from app.schemas.message import Message
@@ -22,7 +22,7 @@ router = APIRouter(tags=["login"])
 
 @router.post("/login/access-token")
 async def login_access_token(
-    session: SessionDep,
+    session: AsyncSessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     """OAuth2 compatible token login, get an access token for future requests."""
@@ -53,7 +53,7 @@ async def test_token(
 @router.post("/password-recovery/{email}")
 async def recover_password(
     email: str,
-    session: SessionDep,
+    session: AsyncSessionDep,
 ) -> Message:
     """Password Recovery."""
     if not (user := await u.get_user_by_email(session, email)):
@@ -72,7 +72,7 @@ async def recover_password(
 
 @router.post("/reset-password/")
 async def reset_password(
-    session: SessionDep,
+    session: AsyncSessionDep,
     body: NewPassword,
 ) -> Message:
     """Reset password."""
@@ -95,7 +95,7 @@ async def reset_password(
 @router.post("/password-recovery-html-content/{email}", response_class=HTMLResponse)
 async def recover_password_html_content(
     email: str,
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
 ) -> Any:
     """HTML Content for Password Recovery (dev/testing only)."""

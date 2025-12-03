@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from sqlalchemy import text
 
-from app.dependencies import SessionDep
+from app.dependencies import AsyncSessionDep
 from app.schemas.health import Health, Readiness
 
 router = APIRouter(tags=["health"])
@@ -17,7 +17,7 @@ async def liveness() -> Health:
 
 @router.get("/readyz", response_model=Readiness)
 async def readiness(
-    session: SessionDep,
+    session: AsyncSessionDep,
 ) -> Readiness:
     """Readiness probe - can the application handle requests?"""
     await session.execute(text("SELECT 1"))

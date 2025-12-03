@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 from app.config import settings
 from app.controllers import users as u
 from app.core.security import generate_password_reset_token, verify_password
-from app.dependencies import CurrentSuperuser, CurrentUser, SessionDep
+from app.dependencies import AsyncSessionDep, CurrentSuperuser, CurrentUser
 from app.emails import generate_new_account_email, send_email
 from app.schemas.message import Message
 from app.schemas.user import (
@@ -25,7 +25,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("", response_model=UsersPublic)
 async def read_users(
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
     skip: int = 0,
     limit: int = 100,
@@ -38,7 +38,7 @@ async def read_users(
 @router.post("", response_model=UserPublic, status_code=201)
 async def create_user(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
     user_in: UserCreate,
 ) -> Any:
@@ -64,7 +64,7 @@ async def read_user_me(current_user: CurrentUser) -> Any:
 @router.patch("/me", response_model=UserPublic)
 async def update_user_me(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     user_in: UserUpdateMe,
 ) -> Any:
@@ -73,7 +73,7 @@ async def update_user_me(
         if existing := await u.get_user_by_email(session, user_in.email):
             if existing.id != current_user.id:
                 raise HTTPException(status_code=400, detail="Email already registered")
-    _user_in = UserUpdate.model_validate(user_in.model_dump())
+    _user_in = UserUpdate.model_validate(user_in.model_dump(exclude_unset=True))
     if not (user := await u.update_user(session, current_user.id, _user_in)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
@@ -82,7 +82,7 @@ async def update_user_me(
 @router.patch("/me/password", response_model=Message)
 async def update_password_me(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     body: UpdatePassword,
 ) -> Any:
@@ -100,7 +100,7 @@ async def update_password_me(
 
 @router.delete("/me", response_model=Message)
 async def delete_user_me(
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
 ) -> Any:
     """Delete current user."""
@@ -111,7 +111,7 @@ async def delete_user_me(
 
 @router.get("/{user_id}", response_model=UserPublic)
 async def read_user_by_id(
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
     user_id: UUID,
 ) -> Any:
@@ -124,7 +124,7 @@ async def read_user_by_id(
 @router.patch("/{user_id}", response_model=UserPublic)
 async def update_user(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
     user_id: UUID,
     user_in: UserUpdate,
@@ -141,7 +141,7 @@ async def update_user(
 
 @router.delete("/{user_id}", response_model=Message)
 async def delete_user(
-    session: SessionDep,
+    session: AsyncSessionDep,
     _: CurrentSuperuser,
     user_id: UUID,
 ) -> Message:

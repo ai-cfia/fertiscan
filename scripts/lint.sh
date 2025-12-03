@@ -3,12 +3,12 @@ set -e
 set -x
 
 echo "Running type checks..."
-mypy app
+uv run mypy app
 
 echo "Running linter..."
-ruff check app tests scripts
+uv run ruff check app tests scripts
 
 echo "Checking code formatting..."
-ruff format app tests scripts --check
+uv run ruff format app tests scripts --check
 
 echo "All checks passed"

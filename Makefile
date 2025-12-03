@@ -8,9 +8,9 @@ help:
 	@echo "  dev              - Run development server (assumes DB initialized)"
 	@echo "  prestart         - Run pre-start checks and initialization only"
 	@echo "  db-reset         - Drop all database tables"
-	@echo "  test             - Run tests with coverage"
-	@echo "  test-start       - Initialize test DB and run tests with coverage"
-	@echo "  test-cov         - Run tests and open coverage report"
+	@echo "  test             - Run tests without coverage"
+	@echo "  test-start       - Initialize test DB and run tests"
+	@echo "  test-cov         - Run tests with coverage and generate HTML report"
 	@echo "  format           - Format code with ruff (with --fix)"
 	@echo "  format-check     - Check code formatting without changes"
 	@echo "  lint             - Run ruff linter"
@@ -65,14 +65,13 @@ db-reset:
 	@echo "Database reset complete. Run 'make prestart' to recreate tables."
 
 test:
-	uv run bash scripts/test.sh
+	uv run pytest tests/
 
 test-start:
 	uv run bash scripts/tests-start.sh
 
-test-cov: test
-	uv run coverage html
-	@echo "Coverage report generated in htmlcov/index.html"
+test-cov:
+	uv run bash scripts/test-cov.sh
 
 format:
 	uv run bash scripts/format.sh

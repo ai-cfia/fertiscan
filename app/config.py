@@ -80,7 +80,7 @@ class Settings(BaseSettings):
 
     @computed_field  # type: ignore[prop-decorator]
     @property
-    def SQLALCHEMY_DATABASE_URI(self) -> AsyncPgDsn:
+    def SQLALCHEMY_DATABASE_URI_ASYNC(self) -> AsyncPgDsn:
         return AsyncPgDsn.build(
             scheme="postgresql+asyncpg",
             username=self.POSTGRES_USER,

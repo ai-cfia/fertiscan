@@ -27,42 +27,23 @@ jobs:
           version: "0.8.21"
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --all-groups
 
-      - name: Run ruff
-        run: uv run ruff check .
-
-      - name: Run mypy
-        run: uv run mypy app
+      - name: Run linting
+        run: bash scripts/lint.sh
 
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: changethis
-          POSTGRES_DB: app
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     env:
       ENVIRONMENT: testing
-      POSTGRES_SERVER: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: changethis
-      POSTGRES_DB: app
       SECRET_KEY: test-secret-key-min-32-chars-long-for-testing
       FIRST_SUPERUSER: admin@example.com
       FIRST_SUPERUSER_PASSWORD: changethis
+      POSTGRES_SERVER: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changethis
+      POSTGRES_DB: app
 
     steps:
       - uses: actions/checkout@v4
@@ -78,10 +59,10 @@ jobs:
           version: "0.8.21"
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --all-groups
 
-      - name: Run pytest with coverage
-        run: uv run pytest tests/ -v --cov=app --cov-report=term-missing
+      - name: Run tests with coverage
+        run: bash scripts/test-cov.sh
 
   markdown-check:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-markdown-check.yml@main

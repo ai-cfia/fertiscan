@@ -6,7 +6,7 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException
 
 from app.controllers import items as i
-from app.dependencies import CurrentUser, SessionDep
+from app.dependencies import AsyncSessionDep, CurrentUser
 from app.schemas.item import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
 from app.schemas.message import Message
 
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 @router.get("", response_model=ItemsPublic)
 async def read_items(
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     skip: int = 0,
     limit: int = 100,
@@ -28,7 +28,7 @@ async def read_items(
 
 @router.get("/{item_id}", response_model=ItemPublic)
 async def read_item(
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     item_id: UUID,
 ) -> Any:
@@ -40,7 +40,7 @@ async def read_item(
 @router.post("", response_model=ItemPublic, status_code=201)
 async def create_item(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     item_in: ItemCreate,
 ) -> Any:
@@ -51,7 +51,7 @@ async def create_item(
 @router.put("/{item_id}", response_model=ItemPublic)
 async def update_item(
     *,
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     item_id: UUID,
     item_in: ItemUpdate,
@@ -63,7 +63,7 @@ async def update_item(
 
 @router.delete("/{item_id}", response_model=Message)
 async def delete_item(
-    session: SessionDep,
+    session: AsyncSessionDep,
     current_user: CurrentUser,
     item_id: UUID,
 ) -> Message:

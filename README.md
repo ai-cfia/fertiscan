@@ -127,9 +127,9 @@ make sync              # uv sync
 make dev               # uv run fastapi dev app/main.py --port 5000
 make start             # uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 5000
 make prestart          # uv run bash scripts/prestart.sh
-make test              # uv run bash scripts/test.sh
+make test              # uv run pytest tests/
 make test-start        # uv run bash scripts/tests-start.sh
-make test-cov          # uv run bash scripts/test.sh && uv run coverage html
+make test-cov          # uv run bash scripts/test-cov.sh
 make format            # uv run bash scripts/format.sh
 make lint              # uv run bash scripts/lint.sh
 make mypy              # uv run mypy app
@@ -176,16 +176,17 @@ app/
 ## Testing
 
 ```bash
-# Run tests (requires test database)
-make test-start
-# Or: uv run bash scripts/tests-start.sh
+# Run tests without coverage (faster)
+make test
+# Or: uv run pytest tests/
 
 # Run tests with coverage report
 make test-cov
-# Or: uv run bash scripts/test.sh && uv run coverage html
+# Or: uv run bash scripts/test-cov.sh
 ```
 
-Tests use a separate PostgreSQL database configured via environment variables.
+Tests use SQLite in-memory database via dependency overrides - no external
+database required.
 
 ## Environment Variables
 
