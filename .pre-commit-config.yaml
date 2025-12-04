@@ -21,7 +21,7 @@ repos:
     rev: v1.18.2
     hooks:
       - id: mypy
-        exclude: ^(legacy|template)/
+        exclude: ^(legacy|template|alembic)/
         additional_dependencies:
           - types-passlib
           - types-jinja2

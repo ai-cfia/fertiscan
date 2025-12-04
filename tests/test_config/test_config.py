@@ -52,8 +52,8 @@ def test_parse_log_level_string() -> None:
     assert result == 10
 
 
-def test_sqlalchemy_database_uri_async() -> None:
-    """Test SQLALCHEMY_DATABASE_URI_ASYNC computed property."""
+def test_sqlalchemy_database_uri() -> None:
+    """Test SQLALCHEMY_DATABASE_URI computed property."""
     with patch.dict(
         os.environ,
         {
@@ -66,8 +66,8 @@ def test_sqlalchemy_database_uri_async() -> None:
         },
     ):
         settings = Settings()  # type: ignore[call-arg]
-        uri = settings.SQLALCHEMY_DATABASE_URI_ASYNC
-        assert str(uri).startswith("postgresql+asyncpg://")
+        uri = settings.SQLALCHEMY_DATABASE_URI
+        assert str(uri).startswith("postgresql+psycopg://")
         assert "testuser" in str(uri)
         assert "localhost" in str(uri)
         assert "testdb" in str(uri)

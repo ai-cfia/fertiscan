@@ -5,7 +5,7 @@ Backend API for FertiScan built with FastAPI and SQLAlchemy ORM.
 ## Technology Stack
 
 - ⚡ [FastAPI](https://fastapi.tiangolo.com) - Python web framework
-- 💾 [PostgreSQL](https://www.postgresql.org) - Database (async with asyncpg)
+- 💾 [PostgreSQL](https://www.postgresql.org) - Database (async with psycopg)
 - 🧰 [SQLAlchemy](https://www.sqlalchemy.org) - ORM (async)
 - 🔍 [Pydantic](https://docs.pydantic.dev) - Data validation and settings
 - 📦 [uv](https://github.com/astral-sh/uv) - Python package manager
