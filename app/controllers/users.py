@@ -7,8 +7,8 @@ Supports external_id field for future external auth provider migration.
 from uuid import UUID
 
 from pydantic import EmailStr, SecretStr, validate_call
-from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import func, select
 
 from app.core.security import get_password_hash, verify_password
 from app.db.models.user import User
@@ -88,6 +88,8 @@ async def authenticate(
 ) -> User | None:
     """Authenticate user by email and password."""
     if not (user := await get_user_by_email(session, email)):
+        return None
+    if not user.hashed_password:
         return None
     if not verify_password(password, user.hashed_password):
         return None

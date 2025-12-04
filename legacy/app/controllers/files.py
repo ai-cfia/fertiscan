@@ -32,15 +32,17 @@ async def read_inspection_folders(
         user_id = UUID(user_id)
 
     with cp.connection() as conn, conn.cursor(row_factory=dict_row) as cursor:
-        query = SQL("""
-            SELECT 
+        query = SQL(
+            """
+            SELECT
                 ps.*,
                 COALESCE(json_agg(p.id), '[]') AS file_ids
             FROM picture_set ps
             JOIN picture p ON ps.id = p.picture_set_id
             WHERE ps.owner_id = %s
             GROUP BY ps.id;
-        """)
+        """
+        )
         cursor.execute(query, (user_id,))
         folders = cursor.fetchall()
         folders = [Folder.model_validate(f) for f in folders]
@@ -68,8 +70,8 @@ async def read_inspection_folder(
     with cp.connection() as conn, conn.cursor(row_factory=dict_row) as cursor:
         query = SQL(
             """
-            SELECT 
-                ps.*, 
+            SELECT
+                ps.*,
                 COALESCE(json_agg(p.id), '[]') AS file_ids
             FROM picture_set ps
             JOIN picture p ON ps.id = p.picture_set_id

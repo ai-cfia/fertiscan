@@ -30,6 +30,6 @@ note left FE
   {
       "inspection_id": "<inspection_id>"
       ...
-  }  
+  }
 end note
 @enduml

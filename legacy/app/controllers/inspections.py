@@ -146,11 +146,13 @@ async def delete_inspection(
         id = UUID(id)
 
     with cp.connection() as conn, conn.cursor(row_factory=dict_row) as cursor:
-        query = SQL("""
+        query = SQL(
+            """
             DELETE FROM inspection
             WHERE id = %s AND inspector_id = %s
             RETURNING *;
-        """)
+        """
+        )
         cursor.execute(query, (id, user.id))
         if (inspection := cursor.fetchone()) is None:
             raise InspectionNotFoundError(f"Inspection with ID '{id}' not found.")

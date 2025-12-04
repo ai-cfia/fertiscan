@@ -62,7 +62,7 @@ class TestReadFolders(unittest.IsolatedAsyncioTestCase):
         folders = await read_inspection_folders(mock_cp, mock_fs, user_id)
 
         self.assertEqual(len(folders), len(sample_folders))
-        for folder, sample in zip(folders, sample_folders):
+        for folder, sample in zip(folders, sample_folders, strict=False):
             self.assertIsInstance(folder, Folder)
             self.assertEqual(folder.id, sample["id"])
             self.assertEqual(folder.owner_id, sample["owner_id"])
@@ -102,7 +102,7 @@ class TestReadFolders(unittest.IsolatedAsyncioTestCase):
         folders = await read_inspection_folders(mock_cp, mock_fs, str(user_id))
 
         self.assertEqual(len(folders), len(sample_folders))
-        for folder, sample in zip(folders, sample_folders):
+        for folder, sample in zip(folders, sample_folders, strict=False):
             self.assertIsInstance(folder, Folder)
             self.assertEqual(folder.id, sample["id"])
             self.assertEqual(folder.owner_id, sample["owner_id"])
