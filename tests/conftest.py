@@ -8,6 +8,7 @@ from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.config import settings
+from app.db.base import Base
 from app.db.init_db import init_db
 from app.db.models.item import Item
 from app.db.models.user import User
@@ -52,6 +53,8 @@ def override_dependencies() -> Generator[None, None, None]:
 
 @pytest.fixture(scope="session", autouse=True)  # type: ignore[misc]
 async def db() -> AsyncGenerator[AsyncSession, None]:
+    async with test_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     async with test_sessionmaker() as session:
         await init_db(session)
         await session.commit()

@@ -35,3 +35,11 @@ repos:
           - jinja2
           - tenacity
           - aiosmtplib
+  - repo: local
+    hooks:
+      - id: alembic-check
+        name: Alembic check
+        entry: uv run alembic check
+        language: system
+        files: ^(alembic\.ini|alembic/.*|app/db/models/.*|app/db/base\.py)
+        pass_filenames: false
