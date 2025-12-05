@@ -3,8 +3,8 @@
 from uuid import UUID
 
 from pydantic import validate_call
-from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import func, select
 
 from app.db.models.item import Item
 from app.schemas.item import ItemCreate, ItemUpdate

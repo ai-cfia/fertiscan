@@ -10,7 +10,7 @@ api_router.include_router(login.router)
 api_router.include_router(users.router)
 api_router.include_router(items.router)
 
-if settings.ENVIRONMENT == "local":
+if settings.ENVIRONMENT in ("local", "testing"):
     from app.routes import private
 
     api_router.include_router(private.router)

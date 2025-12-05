@@ -1,19 +1,48 @@
-FROM python:3.12-bullseye
+FROM python:3.12-slim
 
-WORKDIR /app
+# Force Python to write logs immediately instead of buffering
+ENV PYTHONUNBUFFERED=1
 
-COPY . .
+WORKDIR /app/
 
-RUN pip install --no-cache-dir -r requirements.txt
-RUN opentelemetry-bootstrap --action=install
+# Install curl for healthchecks
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 5000
+# Install uv version 0.8.21
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
+COPY --from=ghcr.io/astral-sh/uv:0.8.21 /uv /uvx /bin/
 
-RUN chown -R 1000:1000 /app
-RUN mkdir -p /cachedir_joblib && chown -R 1000:1000 /cachedir_joblib
-RUN mkdir -p /.dspy_cache && chown -R 1000:1000 /.dspy_cache
+# Place executables in the environment at the front of the path
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#using-the-environment
+ENV PATH="/app/.venv/bin:$PATH"
 
-USER 1000
+# Compile bytecode
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
+ENV UV_COMPILE_BYTECODE=1
 
-# CMD ["opentelemetry-instrument", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
+# uv Cache
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#caching
+ENV UV_LINK_MODE=copy
+
+# Install dependencies
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
+
+ENV PYTHONPATH=/app
+
+# Copy application files
+COPY ./scripts /app/scripts
+COPY ./pyproject.toml ./uv.lock /app/
+COPY ./app /app/app
+COPY ./tests /app/tests
+
+# Sync the project
+# Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-dev
+
+CMD ["fastapi", "run", "--workers", "4", "app/main.py"]

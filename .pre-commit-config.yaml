@@ -1,0 +1,45 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: app/email-templates/build/.*
+      - id: trailing-whitespace
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.2.2
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+        exclude: ^(legacy|template|alembic)/
+        additional_dependencies:
+          - types-passlib
+          - types-jinja2
+          - types-PyJWT
+          - sqlmodel
+          - pydantic
+          - pydantic-settings
+          - fastapi
+          - asyncpg
+          - python-dotenv
+          - jinja2
+          - tenacity
+          - aiosmtplib
+  - repo: local
+    hooks:
+      - id: alembic-check
+        name: Alembic check
+        entry: uv run alembic check
+        language: system
+        files: ^(alembic\.ini|alembic/.*|app/db/models/.*|app/db/base\.py)
+        pass_filenames: false
