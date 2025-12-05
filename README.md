@@ -1,273 +1,205 @@
 # FertiScan Backend
 
-([_Le français est disponible au bas de la page_](#fertiscan-backend-fr))
+Backend API for FertiScan built with FastAPI and SQLAlchemy ORM.
 
-FertiScan helps inspectors analyze and process fertilizer labels by extracting
-text and generating structured forms.
+## Technology Stack
 
-## Overview
+- ⚡ [FastAPI](https://fastapi.tiangolo.com) - Python web framework
+- 💾 [PostgreSQL](https://www.postgresql.org) - Database (async with psycopg)
+- 🧰 [SQLAlchemy](https://www.sqlalchemy.org) - ORM (async)
+- 🔍 [Pydantic](https://docs.pydantic.dev) - Data validation and settings
+- 📦 [uv](https://github.com/astral-sh/uv) - Python package manager
+- 🐋 [Docker Compose](https://www.docker.com) - Development environment
+- ✅ [pytest](https://pytest.org) - Testing framework
 
-This repository contains the backend for FertiScan, a FastAPI-based server
-designed to work with the
-[frontend](https://github.com/ai-cfia/fertiscan-frontend/). It handles image
-uploads, document analysis using
-[OCR](https://en.wikipedia.org/wiki/Optical_character_recognition), and form
-generation using an [LLM](https://en.wikipedia.org/wiki/Large_language_model).
+## Requirements
 
-![workflow](./out/workflow_dss/FertiScan%20Sequence%20Diagram.png)
+- Python 3.12+
+- [uv](https://github.com/astral-sh/uv) package manager
+- Docker and Docker Compose (for database)
 
-## Setup for Development
+> **Note**: `make` commands are available as shortcuts (see Available Commands
+> below). If `make` is not installed, use the underlying commands shown in
+> Quick Start.
 
-### Prerequisites
+## Quick Start
 
-- Python 3.11+
-- [pip](https://pip.pypa.io/en/stable/installation/)
-- [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
-- Azure Document Intelligence and OpenAI API keys
+### 1. Install Dependencies
+
+```bash
+# Using make (if available)
+make sync
+
+# Or directly
+uv sync
+```
+
+### 2. Configure Environment
+
+Create a `.env` file with the following required variables:
+
+```bash
+# Database
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=your_user
+POSTGRES_PASSWORD=changethis
+POSTGRES_DB=mydb
+
+# Security
+SECRET_KEY=changethis
+FIRST_SUPERUSER=admin@example.com
+FIRST_SUPERUSER_PASSWORD=changethis
+
+# Application
+ENVIRONMENT=local
+FRONTEND_HOST=http://localhost:3000
+BACKEND_CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Email (optional)
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+EMAILS_FROM_EMAIL=
+```
+
+**Important**: Generate secure values for `SECRET_KEY` and `POSTGRES_PASSWORD`:
+
+```bash
+# Using make (if available)
+make secret-key
+
+# Or directly
+uv run python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+### 3. Start Database
+
+```bash
+# Using make (if available)
+make docker-up-d
+
+# Or directly
+DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
+```
+
+This starts PostgreSQL and pgAdmin (accessible at <http://localhost:5050>).
+
+### 4. Initialize and Run
+
+```bash
+# Using make (if available)
+make start
+
+# Or directly
+uv run bash scripts/prestart.sh
+uv run fastapi dev app/main.py --port 5000
+```
+
+This runs pre-start checks (database health, table creation, initial data) and
+starts the development server at <http://localhost:5000>.
+
+## Development
 
 ### Running Locally
 
-1. Clone the repository:
+```bash
+# Start database (first time or after docker-down)
+make docker-up-d
+# Or: DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
 
-   ```sh
-   git clone https://github.com/ai-cfia/fertiscan-backend.git
-   cd fertiscan-backend
-   ```
+# Run development server (assumes DB is running)
+make dev
+# Or: uv run fastapi dev app/main.py --port 5000
 
-2. Install dependencies:
-
-   ```sh
-   pip install -r requirements.txt
-   ```
-
-3. Start the server in development mode:
-
-   ```sh
-   fastapi dev app/main.py --port 5000
-   ```
-
-### Running with Docker
-
-1. Build the Docker image:
-
-   ```sh
-   docker build -t fertiscan-backend .
-   ```
-
-2. Run the Docker container:
-
-   ```sh
-   docker run -p 5000:5000 --env-file .env.secrets fertiscan-backend
-   ```
-
-#### Docker Compose
-
-1. Create a `.env.secrets` file from
-   [.env.secrets.template](./.env.secrets.template). Include the following
-   environment variables:
-
-   ```ini
-   DB_USER=postgres
-   DB_PASSWORD=postgres
-   DB_HOST=postgres
-   DB_PORT=5432
-   DB_NAME=fertiscan
-   BB_URL=bytebase_url
-   BB_SERVICE_ACCOUNT=your-bytebase-sa@service.bytebase.com
-   BB_SERVICE_KEY=your-bytebase-sa-key
-   BB_INSTANCE_ID=your-bytebase-instance-id
-   BB_DATABASE_ID=your-bytebase-database-id
-   ```
-
-   You can find their values in our vault under fertiscan-dev.
-
-2. Start the Docker container:
-
-   ```sh
-   docker-compose up --build
-   ```
-
-> **Side note:** If you are on an ARM-based machine, you will need to build the
-> image with the `docker-compose build --build-arg TARGETARCH=arm64` command.
-
-The application will be available at `http://localhost:80`. The database should
-be dynamically built based on the latest schema from Bytebase.
-
-To use pgAdmin, navigate to `http://localhost:5050` and log in with
-`admin@example.com` and `admin`. You can then register a new server with the
-following details:
-
-- Host: `postgres`
-- Port: `5432`
-- Username: `postgres`
-- Password: `postgres`
-- Database: `fertiscan`
-
-### Environment Variables
-
-Create a `.env.secrets` file from [.env.secrets.template](./.env.secrets.template).
-
-```ini
-AZURE_API_ENDPOINT=your_azure_form_recognizer_endpoint
-AZURE_API_KEY=your_azure_form_recognizer_key
-AZURE_OPENAI_API_ENDPOINT=your_azure_openai_endpoint
-AZURE_OPENAI_API_KEY=your_azure_openai_key
-AZURE_OPENAI_DEPLOYMENT=your_azure_openai_deployment
-
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_HOST=your_db_host
-DB_PORT=your_db_port
-DB_NAME=your_db_name
-FERTISCAN_SCHEMA=your_fertiscan_schema
-
-UPLOAD_PATH=path/to/file
-ALLOWED_ORIGINS=["http://url.to_frontend/"]
+# Or run with pre-start checks
+make start
+# Or: uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 5000
 ```
 
-## API Endpoints
+### Available Commands
 
-The [Swagger UI](https://swagger.io/tools/swagger-ui/) for the API of FertiScan
-is available at `/docs`.
+> Run `make help` to see all available commands.
 
-More details in the developer [documentation](./docs/README.md).
-
----
-
-## FertiScan Backend (FR)
-
-FertiScan aide les inspecteurs à analyser et traiter les étiquettes d'engrais en
-extrayant du texte et en générant des formulaires structurés.
-
-## Aperçu
-
-Ce dépôt contient le backend de FertiScan, un serveur basé sur FastAPI conçu
-pour fonctionner avec le
-[frontend](https://github.com/ai-cfia/fertiscan-frontend/). Il gère les
-téléversements d'images, l'analyse de documents à l'aide de
-l'[OCR](https://fr.wikipedia.org/wiki/Reconnaissance_optique_de_caract%C3%A8res)
-et la génération de formulaires à l'aide d'un
-[LLM](https://fr.wikipedia.org/wiki/Mod%C3%A8le_de_langage).
-
-![workflow](./out/workflow_dss/FertiScan%20Sequence%20Diagram.png)
-
-## Configuration pour le développement
-
-### Prérequis
-
-- Python 3.11+
-- [pip](https://pip.pypa.io/en/stable/installation/)
-- [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
-- Clés API Azure Document Intelligence et OpenAI
-
-### Exécution locale
-
-1. Clonez le dépôt :
-
-   ```sh
-   git clone https://github.com/ai-cfia/fertiscan-backend.git
-   cd fertiscan-backend
-   ```
-
-2. Installez les dépendances :
-
-   ```sh
-   pip install -r requirements.txt
-   ```
-
-3. Démarrez le serveur en mode développement :
-
-   ```sh
-   fastapi dev app/main.py --port 5000
-   ```
-
-### Exécution avec Docker
-
-1. Construisez l'image Docker :
-
-   ```sh
-   docker build -t fertiscan-backend \
-   --build-arg ARG_AZURE_API_ENDPOINT=your_azure_form_recognizer_endpoint \
-   --build-arg ARG_AZURE_API_KEY=your_azure_form_recognizer_key \
-   --build-arg ARG_AZURE_OPENAI_DEPLOYMENT=your_azure_openai_deployment \
-   --build-arg ARG_AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint \
-   --build-arg ARG_AZURE_OPENAI_KEY=your_azure_openai_key \
-   --build-arg ARG_FERTISCAN_STORAGE_URL=your_fertiscan_storage_url \
-   --build-arg ARG_FERTISCAN_DB_URL=your_fertiscan_db_url \
-   --build-arg ARG_FERTISCAN_SCHEMA=your_fertiscan_schema \
-   --build-arg ARG_ALLOWED_ORIGINS=["http://url.to_frontend/"] \
-   --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=your_phoenix_endpoint \
-   --build-arg ARG_PROMPT_PATH=path/to/file \
-   --build-arg ARG_UPLOAD_PATH=path/to/file \
-   .
-   ```
-
-2. Lancez le conteneur Docker :
-
-   ```sh
-   docker run -p 5000:5000 fertiscan-backend
-   ```
-
-#### Docker-Compose
-
-1. Créez un fichier `.env` à partir du fichier [.env.secrets.template](./.env.secrets.template).
-   Incluez les variables d'environnement suivantes :
-
-   ```ini
-   FERTISCAN_DB_URL=postgresql://postgres:postgres@postgres:5432/fertiscan
-   BB_URL=bytebase_url
-   BB_SERVICE_ACCOUNT=your-bytebase-sa@service.bytebase.com
-   BB_SERVICE_KEY=your-bytebase-sa-key
-   BB_INSTANCE_ID=your-bytebase-instance-id
-   BB_DATABASE_ID=your-bytebase-database-id
-   ```
-
-   Vous pouvez trouver leurs valeurs dans notre coffre-fort sous fertiscan-dev.
-
-2. Lancez le conteneur Docker :
-
-   ```sh
-   docker-compose up --build
-   ```
-
-> **Note** : Si vous êtes sur une machine ARM, vous devrez construire l'image
-> avec la commande `docker-compose build --build-arg TARGETARCH=arm64`.
-
-L'application sera disponible sur `http://localhost:80`. La base de données sera
-construite dynamiquement en fonction du dernier schéma depuis Bytebase.
-
-Pour utiliser pgAdmin, accédez à `http://localhost:5050` et connectez-vous avec
-`admin@example.com` et `admin`. Vous pourrez alors enregistrer un nouveau
-serveur avec les détails suivants :
-
-- Hôte : `postgres`
-- Port : `5432`
-- Utilisateur : `postgres`
-- Mot de passe : `postgres`
-- Base de données : `fertiscan`
-
-### Variables d'environnement
-
-Créez un fichier `.env` à partir du fichier [.env.secrets.template](./.env.secrets.template).
-
-```ini
-AZURE_API_ENDPOINT=your_azure_form_recognizer_endpoint
-AZURE_API_KEY=your_azure_form_recognizer_key
-AZURE_OPENAI_API_ENDPOINT=your_azure_openai_endpoint
-AZURE_OPENAI_API_KEY=your_azure_openai_key
-AZURE_OPENAI_DEPLOYMENT=your_azure_openai_deployment
-
-FERTISCAN_DB_URL=your_fertiscan_db_url
-FERTISCAN_SCHEMA=your_fertiscan_schema
-
-UPLOAD_PATH=path/to/file
-ALLOWED_ORIGINS=["http://url.to_frontend/"]
+```bash
+make sync              # uv sync
+make dev               # uv run fastapi dev app/main.py --port 5000
+make start             # uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 5000
+make prestart          # uv run bash scripts/prestart.sh
+make test              # uv run pytest tests/
+make test-start        # uv run bash scripts/tests-start.sh
+make test-cov          # uv run bash scripts/test-cov.sh
+make format            # uv run bash scripts/format.sh
+make lint              # uv run bash scripts/lint.sh
+make mypy              # uv run mypy app
+make pre-commit-install # uv run pre-commit install
 ```
 
-## Points de terminaison de l'API
+### Docker Commands
 
-L'[interface Swagger UI](https://swagger.io/tools/swagger-ui/) pour l'API de
-FertiScan est disponible à l'adresse `/docs`.
+```bash
+make docker-up         # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build
+make docker-up-d       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
+make docker-down       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down
+make docker-down-v     # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down -v
+make docker-logs       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose logs -f backend
+make docker-ps         # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose ps
+```
 
-Pour plus de détails, consultez la [documentation pour les
-développeurs](./docs/README.md).
+## API Documentation
+
+Once the server is running:
+
+- **Interactive API docs**: <http://localhost:5000/docs>
+- **ReDoc**: <http://localhost:5000/redoc>
+- **Health check**: <http://localhost:5000/healthz>
+- **Readiness check**: <http://localhost:5000/readyz>
+
+## Project Structure
+
+```text
+app/
+├── config.py          # Application settings
+├── main.py            # FastAPI application entry point
+├── controllers/       # Request handlers
+├── routes/            # API route definitions
+├── schemas/           # Pydantic models for validation
+├── db/
+│   ├── base.py        # SQLAlchemy Base and MetaData
+│   ├── session.py     # Database session management
+│   └── models/        # SQLAlchemy ORM models
+├── core/              # Core utilities (security, etc.)
+└── email-templates/   # MJML email templates
+```
+
+## Testing
+
+```bash
+# Run tests without coverage (faster)
+make test
+# Or: uv run pytest tests/
+
+# Run tests with coverage report
+make test-cov
+# Or: uv run bash scripts/test-cov.sh
+```
+
+Tests use SQLite in-memory database via dependency overrides - no external
+database required.
+
+## Environment Variables
+
+Key environment variables:
+
+- `POSTGRES_SERVER` - Database host
+- `POSTGRES_USER` - Database user
+- `POSTGRES_PASSWORD` - Database password
+- `POSTGRES_DB` - Database name
+- `SECRET_KEY` - Secret key for JWT tokens
+- `FIRST_SUPERUSER` - Initial admin email
+- `FIRST_SUPERUSER_PASSWORD` - Initial admin password
+- `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD` - Email configuration (optional)
+- `ENVIRONMENT` - Environment: `local`, `staging`, `production`, or `testing`
+- `FRONTEND_HOST` - Frontend URL for CORS
+- `BACKEND_CORS_ORIGINS` - Additional CORS origins (comma-separated)

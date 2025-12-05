@@ -14,7 +14,7 @@ class ItemCreate(ItemBase):
     pass
 
 
-class ItemUpdate(ItemBase):
+class ItemUpdate(SQLModel):
     title: str | None = Field(default=None, min_length=1, max_length=255)
     description: str | None = Field(default=None, max_length=255)
 

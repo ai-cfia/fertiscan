@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 async def init_db(session: AsyncSession) -> None:
-    """Initialize database with first superuser."""
+    """Initialize database: create first superuser."""
+    # Initialize superuser
     if user := await get_user_by_email(session, settings.FIRST_SUPERUSER):
         logger.info(f"Superuser already exists: {user.email}")
         return

@@ -1,10 +1,12 @@
 """Authentication schemas."""
 
+from uuid import UUID
+
 from sqlmodel import SQLModel
 
 
 class TokenPayload(SQLModel):
-    sub: str | None = None
+    sub: UUID | None = None
 
 
 class Token(SQLModel):

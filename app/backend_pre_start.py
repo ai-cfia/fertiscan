@@ -11,7 +11,7 @@ from tenacity import (
     wait_fixed,
 )
 
-from app.db.session import engine
+from app.db.session import get_async_engine
 
 logger = logging.getLogger(__name__)
 MAX_TRIES = 60
@@ -27,7 +27,7 @@ WAIT_SECONDS = 1
     before_sleep=before_sleep_log(logger, logging.ERROR),
 )
 async def init() -> None:
-    async with engine.connect() as conn:
+    async with get_async_engine().connect() as conn:
         await conn.execute(text("SELECT 1"))
 
 

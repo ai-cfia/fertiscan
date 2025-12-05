@@ -15,16 +15,3 @@ metadata = MetaData(naming_convention=naming_convention)
 
 class Base(SQLModel):
     metadata = metadata
-
-
-async def create_db_and_tables() -> None:
-    """Create all tables from SQLModel metadata.
-
-    TEMPORARY: Development utility until Alembic is configured.
-    """
-    import app.db.models.item  # noqa: F401 - Import registers model with metadata
-    import app.db.models.user  # noqa: F401 - Import registers model with metadata
-    from app.db.session import engine
-
-    async with engine.begin() as conn:
-        await conn.run_sync(metadata.create_all)

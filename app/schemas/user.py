@@ -25,9 +25,13 @@ class UserRegister(SQLModel):
     last_name: str | None = Field(default=None, max_length=255)
 
 
-class UserUpdate(UserBase):
+class UserUpdate(SQLModel):
     email: EmailStr | None = Field(default=None, max_length=255)
     password: SecretStr | None = Field(default=None, min_length=8, max_length=40)
+    is_active: bool | None = None
+    is_superuser: bool | None = None
+    first_name: str | None = Field(default=None, max_length=255)
+    last_name: str | None = Field(default=None, max_length=255)
 
 
 class UserUpdateMe(SQLModel):
