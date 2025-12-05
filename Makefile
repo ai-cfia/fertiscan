@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean secret-key
+.PHONY: help env sync start dev prestart db-reset test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test docker-compose-build docker-up docker-up-d docker-down docker-down-v docker-logs docker-ps clean secret-key alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check
 
 help:
 	@echo "Available targets:"
@@ -31,6 +31,18 @@ help:
 	@echo "  docker-ps        - Show service status"
 	@echo "  clean            - Remove generated files"
 	@echo "  secret-key       - Generate a secure secret key"
+	@echo ""
+	@echo "Alembic Migration Commands:"
+	@echo "  alembic-current  - Show current database revision"
+	@echo "  alembic-history  - Show migration history"
+	@echo "  alembic-upgrade  - Apply all pending migrations (upgrade to head)"
+	@echo "  alembic-upgrade-one - Upgrade one migration"
+	@echo "  alembic-downgrade - Downgrade one migration"
+	@echo "  alembic-revision - Create new migration (autogenerate, use MSG=\"message\")"
+	@echo "  alembic-revision-empty - Create empty migration (use MSG=\"message\")"
+	@echo "  alembic-stamp    - Stamp database with current revision (no migration)"
+	@echo "  alembic-heads    - Show all head revisions"
+	@echo "  alembic-check     - Check if migrations are needed"
 
 env:
 	@if [ ! -f .env ]; then \
@@ -61,8 +73,46 @@ prestart:
 
 db-reset:
 	@echo "Resetting database..."
-	docker exec postgres psql -U k-allagbe -d mydb -c "DROP TABLE IF EXISTS item CASCADE; DROP TABLE IF EXISTS \"user\" CASCADE;"
-	@echo "Database reset complete. Run 'make prestart' to recreate tables."
+	@DOCKER_IMAGE_BACKEND=fertiscan-backend docker compose exec db sh -c 'psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+	@echo "Database reset complete. Run 'make alembic-upgrade' to recreate tables via migrations."
+
+alembic-current:
+	uv run alembic current
+
+alembic-history:
+	uv run alembic history
+
+alembic-upgrade:
+	uv run alembic upgrade head
+
+alembic-upgrade-one:
+	uv run alembic upgrade +1
+
+alembic-downgrade:
+	uv run alembic downgrade -1
+
+alembic-revision:
+	@if [ -z "$(MSG)" ]; then \
+		echo "Error: MSG is required. Usage: make alembic-revision MSG=\"your message\""; \
+		exit 1; \
+	fi
+	uv run alembic revision --autogenerate -m "$(MSG)"
+
+alembic-revision-empty:
+	@if [ -z "$(MSG)" ]; then \
+		echo "Error: MSG is required. Usage: make alembic-revision-empty MSG=\"your message\""; \
+		exit 1; \
+	fi
+	uv run alembic revision -m "$(MSG)"
+
+alembic-stamp:
+	uv run alembic stamp head
+
+alembic-heads:
+	uv run alembic heads
+
+alembic-check:
+	uv run alembic check
 
 test:
 	uv run pytest tests/

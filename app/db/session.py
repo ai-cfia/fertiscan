@@ -17,7 +17,7 @@ from app.config import settings
 def get_async_engine() -> AsyncEngine:
     """Get or create the async database engine (cached)."""
     return create_async_engine(
-        str(settings.SQLALCHEMY_DATABASE_URI_ASYNC),
+        str(settings.SQLALCHEMY_DATABASE_URI),
         echo=settings.LOG_SQL,
         pool_pre_ping=True,
         pool_recycle=3600,
