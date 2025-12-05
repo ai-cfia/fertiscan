@@ -14,7 +14,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from pydantic.networks import AnyUrl
+from pydantic.networks import AnyUrl, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
@@ -26,12 +26,6 @@ def parse_list(v: Any) -> list[str] | str:
     elif isinstance(v, list | str):
         return v
     raise ValueError(v)
-
-
-class AsyncPgDsn(AnyUrl):
-    allowed_schemes = {"postgresql+asyncpg"}
-    user_required = True
-    host_required = True
 
 
 class Settings(BaseSettings):
@@ -80,9 +74,9 @@ class Settings(BaseSettings):
 
     @computed_field  # type: ignore[prop-decorator]
     @property
-    def SQLALCHEMY_DATABASE_URI_ASYNC(self) -> AsyncPgDsn:
-        return AsyncPgDsn.build(
-            scheme="postgresql+asyncpg",
+    def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
+        return PostgresDsn.build(
+            scheme="postgresql+psycopg",
             username=self.POSTGRES_USER,
             password=self.POSTGRES_PASSWORD or None,
             host=self.POSTGRES_SERVER,
