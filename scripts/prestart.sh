@@ -5,6 +5,12 @@ set -x
 echo "Running pre-start checks..."
 python -m app.backend_pre_start
 
+echo "Checking migration state..."
+uv run alembic check
+
+echo "Applying migrations..."
+uv run alembic upgrade head
+
 echo "Creating/updating database tables..."
 python -m app.initial_data
 

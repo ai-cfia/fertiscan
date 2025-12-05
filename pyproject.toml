@@ -5,18 +5,18 @@ description = "FertiScan Backend API with FastAPI and SQLAlchemy"
 requires-python = ">=3.12"
 dependencies = [
     "python-dotenv",
-    "asyncpg",
     "greenlet",
     "fastapi[standard]",
     "pydantic-settings",
     "sqlmodel",
     "alembic",
     "passlib[bcrypt]",
-    "bcrypt==4.0.1",
+    "bcrypt==4.3.0",
     "pyjwt",
     "jinja2",
     "aiosmtplib",
     "tenacity",
+    "psycopg[binary]",
 ]
 
 [dependency-groups]
