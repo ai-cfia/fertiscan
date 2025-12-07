@@ -72,7 +72,7 @@ keep-runtime-typing = true
 
 [tool.mypy]
 strict = true
-exclude = ["venv", ".venv", "alembic"]
+exclude = ["venv", ".venv", "alembic", "legacy"]
 
 [tool.coverage.run]
 source = ["app"]
