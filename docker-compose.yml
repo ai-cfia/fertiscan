@@ -1,0 +1,95 @@
+# Docker Compose configuration for local development only
+services:
+  db:
+    image: postgres:18
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-mydb}",
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - backend/.env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+
+  prestart:
+    image: "fertiscan-backend:dev"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    command: bash scripts/prestart.sh
+    env_file:
+      - backend/.env
+    environment:
+      - POSTGRES_SERVER=db
+
+  backend:
+    image: "fertiscan-backend:dev"
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+      prestart:
+        condition: service_completed_successfully
+    env_file:
+      - backend/.env
+    environment:
+      - POSTGRES_SERVER=db
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: "fertiscan-frontend:dev"
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - backend/.env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@example.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin}
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+
+volumes:
+  postgres-data:
+  pgadmin-data:

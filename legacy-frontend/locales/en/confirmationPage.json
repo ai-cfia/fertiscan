@@ -1,0 +1,96 @@
+{
+  "pageTitle": "Review and Confirm The Label Data",
+  "baseInformation": {
+    "sectionTitle": "Fertilizer Base Information",
+    "tableHeaders": {
+      "name": "Name",
+      "registrationNumbers": "Registration Numbers",
+      "lotNumber": "Lot Number",
+      "npk": "NPK",
+      "weight": "Weight",
+      "density": "Density",
+      "volume": "Volume"
+    },
+    "regType": {
+      "fertilizer": "Fertilizer",
+      "ingredient": "Ingredient"
+    }
+  },
+  "organizations": {
+    "sectionTitle": "Organizations",
+    "tableHeaders": {
+      "name": "Name",
+      "address": "Address",
+      "website": "Website",
+      "phoneNumber": "Phone Number",
+      "mainContact": "Main Contact"
+    }
+  },
+  "cautions": {
+    "sectionTitle": "Cautions"
+  },
+  "instructions": {
+    "sectionTitle": "Instructions"
+  },
+  "guaranteedAnalysis": {
+    "sectionTitle": "Guaranteed Analysis",
+    "title": "Title",
+    "tableHeaders": {
+      "english": "English",
+      "french": "French",
+      "isMinimal": "Is Minimal"
+    },
+    "nutrients": "Nutrients"
+  },
+  "ingredients": {
+    "sectionTitle": "Ingredients",
+    "nutrients": "Nutrients",
+    "recordKeeping": "Record Keeping"
+  },
+  "notes": {
+    "sectionTitle": "Notes",
+    "placeholder": "Add a note"
+  },
+  "bilingualTable": {
+    "tableHeaders": {
+      "english": "English",
+      "french": "French",
+      "value": "Value",
+      "unit": "Unit"
+    }
+  },
+  "confirmationSection": {
+    "prompt": "Please confirm the data is accurate. If changes are needed, return to edit.",
+    "acknowledgment": "I acknowledge that the data is accurate.",
+    "confirmButton": "Confirm",
+    "confirmingButton": "Confirming",
+    "editButton": "Edit Details"
+  },
+  "expandRetractButton": {
+    "expandButton": "Hide image and show only label information.",
+    "retractButton": "Show image and label information."
+  },
+  "yes": "Yes",
+  "no": "No",
+  "error": {
+    "idMissing": "ID missing in initial label data saving response",
+    "noFileUploaded": "No file uploaded",
+    "labelAlreadyConfirmed": "Label data already confirmed.",
+    "labelDataNotFullySaved": "Label data not fully saved."
+  },
+  "alt": {
+    "editButton": "Edit button",
+    "confirmButton": "Confirm button",
+    "expendIcon": "Expend icon",
+    "retractIcon": "Retract icon"
+  },
+  "alert": {
+    "labelNotConfirmed": "Internal error: Label data not confirmed.",
+    "labelNotFound": "Label data not found.",
+    "initialSaveFailed": "Initial label data saving failed",
+    "saveFailed": "Label data saving failed",
+    "saveSuccess": "Label data saved successfully.",
+    "alreadyCompleted": "This inspection has already been completed.",
+    "notAllVerified": "Not all fields have been verified."
+  }
+}

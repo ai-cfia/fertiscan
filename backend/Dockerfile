@@ -36,7 +36,8 @@ ENV PYTHONPATH=/app
 
 # Copy application files
 COPY ./scripts /app/scripts
-COPY ./pyproject.toml ./uv.lock /app/
+COPY ./pyproject.toml ./uv.lock ./alembic.ini /app/
+COPY ./alembic /app/alembic
 COPY ./app /app/app
 COPY ./tests /app/tests
 

@@ -9,14 +9,12 @@ Backend API for FertiScan built with FastAPI and SQLAlchemy ORM.
 - 🧰 [SQLAlchemy](https://www.sqlalchemy.org) - ORM (async)
 - 🔍 [Pydantic](https://docs.pydantic.dev) - Data validation and settings
 - 📦 [uv](https://github.com/astral-sh/uv) - Python package manager
-- 🐋 [Docker Compose](https://www.docker.com) - Development environment
 - ✅ [pytest](https://pytest.org) - Testing framework
 
 ## Requirements
 
 - Python 3.12+
 - [uv](https://github.com/astral-sh/uv) package manager
-- Docker and Docker Compose (for database)
 
 > **Note**: `make` commands are available as shortcuts (see Available Commands
 > below). If `make` is not installed, use the underlying commands shown in
@@ -36,7 +34,14 @@ uv sync
 
 ### 2. Configure Environment
 
-Create a `.env` file with the following required variables:
+Create a `.env` file (or use `make env` to create from `.env.example`):
+
+```bash
+# Using make (if available)
+make env
+
+# Or manually create .env with the following required variables:
+```
 
 ```bash
 # Database
@@ -53,8 +58,8 @@ FIRST_SUPERUSER_PASSWORD=changethis
 
 # Application
 ENVIRONMENT=local
-FRONTEND_HOST=http://localhost:3000
-BACKEND_CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+FRONTEND_HOST=http://localhost:5173
+BACKEND_CORS_ORIGINS=http://localhost:5173
 
 # Email (optional)
 SMTP_HOST=
@@ -74,19 +79,7 @@ make secret-key
 uv run python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-### 3. Start Database
-
-```bash
-# Using make (if available)
-make docker-up-d
-
-# Or directly
-DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
-```
-
-This starts PostgreSQL and pgAdmin (accessible at <http://localhost:5050>).
-
-### 4. Initialize and Run
+### 3. Initialize and Run
 
 ```bash
 # Using make (if available)
@@ -105,10 +98,6 @@ starts the development server at <http://localhost:5000>.
 ### Running Locally
 
 ```bash
-# Start database (first time or after docker-down)
-make docker-up-d
-# Or: DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
-
 # Run development server (assumes DB is running)
 make dev
 # Or: uv run fastapi dev app/main.py --port 5000
@@ -120,32 +109,7 @@ make start
 
 ### Available Commands
 
-> Run `make help` to see all available commands.
-
-```bash
-make sync              # uv sync
-make dev               # uv run fastapi dev app/main.py --port 5000
-make start             # uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 5000
-make prestart          # uv run bash scripts/prestart.sh
-make test              # uv run pytest tests/
-make test-start        # uv run bash scripts/tests-start.sh
-make test-cov          # uv run bash scripts/test-cov.sh
-make format            # uv run bash scripts/format.sh
-make lint              # uv run bash scripts/lint.sh
-make mypy              # uv run mypy app
-make pre-commit-install # uv run pre-commit install
-```
-
-### Docker Commands
-
-```bash
-make docker-up         # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build
-make docker-up-d       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose up --build -d
-make docker-down       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down
-make docker-down-v     # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose down -v
-make docker-logs       # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose logs -f backend
-make docker-ps         # DOCKER_IMAGE_BACKEND=fertiscan-backend TAG=dev docker compose ps
-```
+Run `make help` to see all available commands.
 
 ## API Documentation
 
@@ -187,19 +151,3 @@ make test-cov
 
 Tests use SQLite in-memory database via dependency overrides - no external
 database required.
-
-## Environment Variables
-
-Key environment variables:
-
-- `POSTGRES_SERVER` - Database host
-- `POSTGRES_USER` - Database user
-- `POSTGRES_PASSWORD` - Database password
-- `POSTGRES_DB` - Database name
-- `SECRET_KEY` - Secret key for JWT tokens
-- `FIRST_SUPERUSER` - Initial admin email
-- `FIRST_SUPERUSER_PASSWORD` - Initial admin password
-- `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD` - Email configuration (optional)
-- `ENVIRONMENT` - Environment: `local`, `staging`, `production`, or `testing`
-- `FRONTEND_HOST` - Frontend URL for CORS
-- `BACKEND_CORS_ORIGINS` - Additional CORS origins (comma-separated)

@@ -1,0 +1,9 @@
+{
+    "controlBar": {
+        "previous": "Previous",
+        "next": "Next",
+        "zoomIn": "Zoom In",
+        "zoomOut": "Zoom Out",
+        "resetZoom": "Reset"
+    }
+}
