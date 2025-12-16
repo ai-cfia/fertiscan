@@ -46,3 +46,15 @@ repos:
         language: system
         files: ^backend/(alembic\.ini|alembic/.*|app/db/models/.*|app/db/base\.py)
         pass_filenames: false
+      - id: biome-check
+        name: Biome check
+        entry: bash -c 'cd frontend && npm run lint'
+        language: system
+        files: ^frontend/
+        pass_filenames: false
+      - id: typescript-check
+        name: TypeScript check
+        entry: bash -c 'cd frontend && npx tsc --noEmit'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false

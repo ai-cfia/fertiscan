@@ -6,6 +6,7 @@
 .cursor/
 .vscode/
 tasks/
+experiments/
 template/
 docs/
 *.md
