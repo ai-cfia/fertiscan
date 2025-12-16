@@ -16,12 +16,19 @@ from app.db.session import get_async_session
 from app.main import app
 from tests.utils.user import authentication_token_from_email
 
-# Create test engine and sessionmaker for SQLite in-memory
-test_engine = create_async_engine(
-    "sqlite+aiosqlite:///:memory:",
-    echo=False,
-    connect_args={"check_same_thread": False},
-)
+# Use app-configured DB in testing; otherwise in-memory SQLite
+if settings.ENVIRONMENT == "testing":
+    test_engine = create_async_engine(
+        str(settings.SQLALCHEMY_DATABASE_URI),
+        echo=False,
+        pool_pre_ping=True,
+    )
+else:
+    test_engine = create_async_engine(
+        "sqlite+aiosqlite:///:memory:",
+        echo=False,
+        connect_args={"check_same_thread": False},
+    )
 test_sessionmaker = async_sessionmaker[AsyncSession](
     test_engine,
     class_=AsyncSession,
@@ -32,7 +39,7 @@ test_sessionmaker = async_sessionmaker[AsyncSession](
 
 
 async def get_test_session() -> AsyncGenerator[AsyncSession, None]:
-    """Test session dependency using SQLite in-memory."""
+    """Test session dependency using configured database."""
     async with test_sessionmaker() as session:
         try:
             yield session
@@ -53,8 +60,10 @@ def override_dependencies() -> Generator[None, None, None]:
 
 @pytest.fixture(scope="session", autouse=True)  # type: ignore[misc]
 async def db() -> AsyncGenerator[AsyncSession, None]:
-    async with test_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    """Create test database schema using migrations in CI, create_all locally."""
+    if settings.ENVIRONMENT != "testing":
+        async with test_engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
     async with test_sessionmaker() as session:
         await init_db(session)
         await session.commit()
