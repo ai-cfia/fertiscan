@@ -6,6 +6,9 @@ on:
       - opened
       - closed
       - synchronize
+    paths:
+      - "backend/**"
+      - ".github/workflows/fertiscan-backend-workflows.yaml"
 
 jobs:
   # lint-test:
@@ -27,9 +30,11 @@ jobs:
           version: "0.9.15"
 
       - name: Install dependencies
+        working-directory: backend
         run: uv sync --all-groups
 
       - name: Run linting
+        working-directory: backend
         run: bash scripts/lint.sh
 
   test:
@@ -59,9 +64,23 @@ jobs:
           version: "0.9.15"
 
       - name: Install dependencies
+        working-directory: backend
         run: uv sync --all-groups
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
+      - name: Install MJML
+        run: npm install -g mjml
+
+      - name: Build email templates
+        working-directory: backend
+        run: make email-templates
+
       - name: Run tests with coverage
+        working-directory: backend
         run: bash scripts/test-cov.sh
 
   markdown-check:
@@ -78,6 +97,7 @@ jobs:
       container-name: ${{ github.event.repository.name }}
       tag: ${{ github.sha }}
       registry: ghcr.io/ai-cfia
+      dockerfile-folder-path: backend
     secrets: inherit
 
   pr-labelling:

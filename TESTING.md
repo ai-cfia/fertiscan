@@ -1,17 +1,5 @@
 # Testing
 
-Run tests with:
+This monorepo contains multiple components. See component-specific testing documentation:
 
-```bash
-make test
-# Or: uv run pytest tests/
-```
-
-Run tests with coverage:
-
-```bash
-make test-cov
-# Or: uv run bash scripts/test-cov.sh
-```
-
-Tests use SQLite in-memory database - no external database required.
+- [Backend Testing](./backend/TESTING.md)
