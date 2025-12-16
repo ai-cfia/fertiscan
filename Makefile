@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check frontend-help frontend-dev frontend-build frontend-lint frontend-preview pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -60,6 +60,33 @@ generate-openapi-client:
 
 backend-%:
 	@$(MAKE) -C backend $(patsubst backend-%,%,$@)
+
+backend-help:
+	@$(MAKE) -C backend help
+backend-dev:
+	@$(MAKE) -C backend dev
+backend-sync:
+	@$(MAKE) -C backend sync
+backend-test:
+	@$(MAKE) -C backend test
+backend-test-cov:
+	@$(MAKE) -C backend test-cov
+backend-lint:
+	@$(MAKE) -C backend lint
+backend-mypy:
+	@$(MAKE) -C backend mypy
+backend-format:
+	@$(MAKE) -C backend format
+backend-format-check:
+	@$(MAKE) -C backend format-check
+backend-prestart:
+	@$(MAKE) -C backend prestart
+backend-email-templates:
+	@$(MAKE) -C backend email-templates
+backend-alembic-upgrade:
+	@$(MAKE) -C backend alembic-upgrade
+backend-alembic-check:
+	@$(MAKE) -C backend alembic-check
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
