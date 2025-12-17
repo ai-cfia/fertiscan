@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = ""
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
+    LOG_SQL: bool = False
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
@@ -83,11 +84,6 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
         )
-
-    @computed_field  # type: ignore[prop-decorator]
-    @property
-    def LOG_SQL(self) -> bool:
-        return self.ENVIRONMENT in ("local", "testing")
 
     @computed_field  # type: ignore[prop-decorator]
     @property

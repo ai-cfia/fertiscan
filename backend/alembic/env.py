@@ -1,9 +1,6 @@
-import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import pool
-from sqlalchemy.engine import Connection
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy import engine_from_config, pool
 
 import app.db.models.item  # noqa: F401
 import app.db.models.user  # noqa: F401
@@ -22,8 +19,7 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-# Override sqlalchemy.url from config with our async URL
-# For async_engine_from_config, we keep the async URL
+# Override sqlalchemy.url from config with our URL
 database_url = str(settings.SQLALCHEMY_DATABASE_URI)
 config.set_main_option("sqlalchemy.url", database_url)
 
@@ -40,7 +36,6 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    # URL already uses psycopg, no conversion needed
     url = str(settings.SQLALCHEMY_DATABASE_URI)
     context.configure(
         url=url,
@@ -54,24 +49,19 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode with async support."""
-    connectable = async_engine_from_config(
+    """Run migrations in 'online' mode."""
+    connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
-    async def run_async_migrations():
-        async with connectable.connect() as connection:
-            await connection.run_sync(do_run_migrations)
-        await connectable.dispose()
-
-    def do_run_migrations(connection: Connection) -> None:
+    with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()
 
-    asyncio.run(run_async_migrations())
+    connectable.dispose()
 
 
 if context.is_offline_mode():

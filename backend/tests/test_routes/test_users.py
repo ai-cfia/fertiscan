@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.controllers.users import create_user, update_user
@@ -22,7 +22,7 @@ from tests.utils.utils import random_email, random_lower_string
 class TestUserMe:
     """Tests for current user endpoints (/users/me)."""
 
-    async def test_read_user_me(
+    def test_read_user_me(
         self, client: TestClient, normal_user_token_headers: dict[str, str]
     ) -> None:
         """Test getting current user."""
@@ -35,10 +35,10 @@ class TestUserMe:
         assert "id" in content
         assert "email" in content
 
-    async def test_update_user_me(self, client: TestClient, db: AsyncSession) -> None:
+    def test_update_user_me(self, client: TestClient, db: Session) -> None:
         """Test updating current user."""
-        user = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         data = {"first_name": "Updated", "last_name": "Name"}
@@ -52,13 +52,13 @@ class TestUserMe:
         assert content["first_name"] == "Updated"
         assert content["last_name"] == "Name"
 
-    async def test_update_user_me_email_conflict(
-        self, client: TestClient, db: AsyncSession
+    def test_update_user_me_email_conflict(
+        self, client: TestClient, db: Session
     ) -> None:
         """Test updating current user email to existing email."""
-        user1 = await create_random_user(db)
-        user2 = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user1 = create_random_user(db)
+        user2 = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user1.email, db=db
         )
         data = {"email": user2.email}
@@ -70,12 +70,10 @@ class TestUserMe:
         assert response.status_code == 400
         assert response.json()["detail"] == "Email already registered"
 
-    async def test_update_user_me_email_same(
-        self, client: TestClient, db: AsyncSession
-    ) -> None:
+    def test_update_user_me_email_same(self, client: TestClient, db: Session) -> None:
         """Test updating current user email to same email (should succeed)."""
-        user = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         data = {"email": user.email, "first_name": "Updated"}
@@ -89,10 +87,10 @@ class TestUserMe:
         assert content["email"] == user.email
         assert content["first_name"] == "Updated"
 
-    async def test_delete_user_me(self, client: TestClient, db: AsyncSession) -> None:
+    def test_delete_user_me(self, client: TestClient, db: Session) -> None:
         """Test deleting current user."""
-        user = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         response = client.delete(
@@ -107,13 +105,11 @@ class TestUserMe:
 class TestUserPassword:
     """Tests for password update endpoints."""
 
-    async def test_update_password_me(
-        self, client: TestClient, db: AsyncSession
-    ) -> None:
+    def test_update_password_me(self, client: TestClient, db: Session) -> None:
         """Test updating current user password."""
-        user = await create_random_user(db)
+        user = create_random_user(db)
         old_password = random_lower_string()
-        await update_user(db, user.id, UserUpdate(password=old_password))
+        update_user(db, user.id, UserUpdate(password=old_password))
         headers = user_authentication_headers(
             client=client, email=user.email, password=old_password
         )
@@ -127,12 +123,12 @@ class TestUserPassword:
         assert response.status_code == 200
         assert response.json()["message"] == "Password updated successfully"
 
-    async def test_update_password_me_incorrect(
-        self, client: TestClient, db: AsyncSession
+    def test_update_password_me_incorrect(
+        self, client: TestClient, db: Session
     ) -> None:
         """Test updating password with incorrect current password."""
-        user = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         data = {
@@ -147,16 +143,16 @@ class TestUserPassword:
         assert response.status_code == 400
         assert response.json()["detail"] == "Incorrect password"
 
-    async def test_update_password_me_no_password(
-        self, client: TestClient, db: AsyncSession
+    def test_update_password_me_no_password(
+        self, client: TestClient, db: Session
     ) -> None:
         """Test updating password when user has no password."""
-        user = await create_random_user(db)
-        headers = await authentication_token_from_email(
+        user = create_random_user(db)
+        headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         user.hashed_password = None
-        await db.flush()
+        db.flush()
         data = {
             "current_password": random_lower_string(),
             "new_password": random_lower_string(),
@@ -174,15 +170,15 @@ class TestUserPassword:
 class TestUsersSuperuser:
     """Tests for superuser user management endpoints."""
 
-    async def test_read_users(
+    def test_read_users(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test listing all users as superuser."""
-        user1 = await create_random_user(db)
-        user2 = await create_random_user(db)
+        user1 = create_random_user(db)
+        user2 = create_random_user(db)
         response = client.get(
             f"{settings.API_V1_STR}/users",
             headers=superuser_token_headers,
@@ -194,15 +190,15 @@ class TestUsersSuperuser:
         assert str(user1.id) in user_ids
         assert str(user2.id) in user_ids
 
-    async def test_read_users_pagination(
+    def test_read_users_pagination(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test listing users with pagination."""
-        await create_random_user(db)
-        await create_random_user(db)
+        create_random_user(db)
+        create_random_user(db)
         response = client.get(
             f"{settings.API_V1_STR}/users?skip=0&limit=1",
             headers=superuser_token_headers,
@@ -212,7 +208,7 @@ class TestUsersSuperuser:
         assert content["count"] >= 2
         assert len(content["data"]) == 1
 
-    async def test_create_user(
+    def test_create_user(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test creating a user as superuser."""
@@ -236,16 +232,16 @@ class TestUsersSuperuser:
         assert content["last_name"] == "User"
         assert "id" in content
 
-    async def test_create_user_duplicate_email(
+    def test_create_user_duplicate_email(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test creating a user with duplicate email."""
         email = random_email()
         password = random_lower_string()
-        await create_user(db, UserCreate(email=email, password=password))
+        create_user(db, UserCreate(email=email, password=password))
         data = {"email": email, "password": password}
         response = client.post(
             f"{settings.API_V1_STR}/users",
@@ -255,7 +251,7 @@ class TestUsersSuperuser:
         assert response.status_code == 400
         assert response.json()["detail"] == "Email already registered"
 
-    async def test_create_user_with_emails_enabled(
+    def test_create_user_with_emails_enabled(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test creating user with emails enabled."""
@@ -274,14 +270,14 @@ class TestUsersSuperuser:
             )
             assert response.status_code == 201
 
-    async def test_read_user_by_id(
+    def test_read_user_by_id(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test getting user by ID as superuser."""
-        user = await create_random_user(db)
+        user = create_random_user(db)
         response = client.get(
             f"{settings.API_V1_STR}/users/{user.id}",
             headers=superuser_token_headers,
@@ -291,7 +287,7 @@ class TestUsersSuperuser:
         assert content["id"] == str(user.id)
         assert content["email"] == user.email
 
-    async def test_read_user_by_id_not_found(
+    def test_read_user_by_id_not_found(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test getting non-existent user by ID."""
@@ -303,14 +299,14 @@ class TestUsersSuperuser:
         assert response.status_code == 404
         assert response.json()["detail"] == "User not found"
 
-    async def test_update_user(
+    def test_update_user(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test updating user as superuser."""
-        user = await create_random_user(db)
+        user = create_random_user(db)
         data = {"first_name": "Updated", "is_active": False}
         response = client.patch(
             f"{settings.API_V1_STR}/users/{user.id}",
@@ -322,15 +318,15 @@ class TestUsersSuperuser:
         assert content["first_name"] == "Updated"
         assert content["is_active"] is False
 
-    async def test_update_user_email_conflict(
+    def test_update_user_email_conflict(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test updating user email to existing email."""
-        user1 = await create_random_user(db)
-        user2 = await create_random_user(db)
+        user1 = create_random_user(db)
+        user2 = create_random_user(db)
         data = {"email": user2.email}
         response = client.patch(
             f"{settings.API_V1_STR}/users/{user1.id}",
@@ -340,7 +336,7 @@ class TestUsersSuperuser:
         assert response.status_code == 400
         assert response.json()["detail"] == "Email already registered"
 
-    async def test_update_user_not_found(
+    def test_update_user_not_found(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test updating non-existent user."""
@@ -354,14 +350,14 @@ class TestUsersSuperuser:
         assert response.status_code == 404
         assert response.json()["detail"] == "User not found"
 
-    async def test_delete_user(
+    def test_delete_user(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test deleting user as superuser."""
-        user = await create_random_user(db)
+        user = create_random_user(db)
         response = client.delete(
             f"{settings.API_V1_STR}/users/{user.id}",
             headers=superuser_token_headers,
@@ -369,7 +365,7 @@ class TestUsersSuperuser:
         assert response.status_code == 200
         assert response.json()["message"] == "User deleted successfully"
 
-    async def test_delete_user_not_found(
+    def test_delete_user_not_found(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test deleting non-existent user."""

@@ -63,51 +63,6 @@ class TestSqlAlchemyDatabaseUri:
             assert "testdb" in str(uri)
 
 
-class TestLogSql:
-    def test_local_environment(self) -> None:
-        with patch.dict(
-            os.environ,
-            {
-                "ENVIRONMENT": "local",
-                "POSTGRES_SERVER": "localhost",
-                "POSTGRES_USER": "testuser",
-                "FIRST_SUPERUSER": "admin@test.com",
-                "FIRST_SUPERUSER_PASSWORD": "adminpass",
-            },
-        ):
-            settings = Settings()  # type: ignore[call-arg]
-            assert settings.LOG_SQL is True
-
-    def test_testing_environment(self) -> None:
-        with patch.dict(
-            os.environ,
-            {
-                "ENVIRONMENT": "testing",
-                "POSTGRES_SERVER": "localhost",
-                "POSTGRES_USER": "testuser",
-                "FIRST_SUPERUSER": "admin@test.com",
-                "FIRST_SUPERUSER_PASSWORD": "adminpass",
-            },
-        ):
-            settings = Settings()  # type: ignore[call-arg]
-            assert settings.LOG_SQL is True
-
-    def test_production_environment(self) -> None:
-        with patch.dict(
-            os.environ,
-            {
-                "ENVIRONMENT": "production",
-                "POSTGRES_SERVER": "localhost",
-                "POSTGRES_USER": "testuser",
-                "POSTGRES_PASSWORD": "testpassword",
-                "FIRST_SUPERUSER": "admin@test.com",
-                "FIRST_SUPERUSER_PASSWORD": "adminpass",
-            },
-        ):
-            settings = Settings()  # type: ignore[call-arg]
-            assert settings.LOG_SQL is False
-
-
 class TestEmailsFromName:
     def test_sets_default_when_none(self) -> None:
         with patch.dict(

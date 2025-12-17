@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from pydantic import SecretStr
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.controllers.users import create_user
@@ -67,15 +67,11 @@ class TestAccessToken:
         assert "email" in result
         assert result["email"] == settings.FIRST_SUPERUSER
 
-    async def test_login_inactive_user(
-        self, client: TestClient, db: AsyncSession
-    ) -> None:
+    def test_login_inactive_user(self, client: TestClient, db: Session) -> None:
         """Test login with inactive user."""
         email = random_email()
         password = random_lower_string()
-        await create_user(
-            db, UserCreate(email=email, password=password, is_active=False)
-        )
+        create_user(db, UserCreate(email=email, password=password, is_active=False))
         login_data = {"username": email, "password": password}
         response = client.post(
             f"{settings.API_V1_STR}/login/access-token", data=login_data
@@ -88,13 +84,11 @@ class TestAccessToken:
 class TestPasswordRecovery:
     """Tests for password recovery flow."""
 
-    async def test_recovery_password(
-        self, client: TestClient, db: AsyncSession
-    ) -> None:
+    def test_recovery_password(self, client: TestClient, db: Session) -> None:
         """Test password recovery for existing user."""
         email = random_email()
         password = random_lower_string()
-        await create_user(db, UserCreate(email=email, password=password))
+        create_user(db, UserCreate(email=email, password=password))
         response = client.post(f"{settings.API_V1_STR}/password-recovery/{email}")
         assert response.status_code == 200
         assert response.json() == {"message": "Password recovery email sent"}
@@ -109,16 +103,16 @@ class TestPasswordRecovery:
             == "The user with this email does not exist in the system."
         )
 
-    async def test_recovery_password_html_content(
+    def test_recovery_password_html_content(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
-        db: AsyncSession,
+        db: Session,
     ) -> None:
         """Test password recovery HTML content endpoint (superuser only)."""
         email = random_email()
         password = random_lower_string()
-        await create_user(db, UserCreate(email=email, password=password))
+        create_user(db, UserCreate(email=email, password=password))
         response = client.post(
             f"{settings.API_V1_STR}/password-recovery-html-content/{email}",
             headers=superuser_token_headers,
@@ -139,7 +133,7 @@ class TestPasswordRecovery:
         assert response.status_code == 404
         assert (
             response.json()["detail"]
-            == "The user with this username does not exist in the system."
+            == "The user with this email does not exist in the system."
         )
 
 
@@ -147,12 +141,12 @@ class TestPasswordRecovery:
 class TestPasswordReset:
     """Tests for password reset flow."""
 
-    async def test_reset_password(self, client: TestClient, db: AsyncSession) -> None:
+    def test_reset_password(self, client: TestClient, db: Session) -> None:
         """Test password reset with valid token."""
         email = random_email()
         password = random_lower_string()
         new_password = random_lower_string()
-        user = await create_user(db, UserCreate(email=email, password=password))
+        user = create_user(db, UserCreate(email=email, password=password))
         token = generate_password_reset_token(email)
         data = {"new_password": new_password, "token": token}
         response = client.post(
@@ -161,7 +155,7 @@ class TestPasswordReset:
         )
         assert response.status_code == 200
         assert response.json() == {"message": "Password updated successfully"}
-        await db.refresh(user)
+        db.refresh(user)
         assert user.hashed_password
         assert verify_password(SecretStr(new_password), user.hashed_password)
 
@@ -190,16 +184,14 @@ class TestPasswordReset:
             == "The user with this email does not exist in the system."
         )
 
-    async def test_reset_password_inactive_user(
-        self, client: TestClient, db: AsyncSession
+    def test_reset_password_inactive_user(
+        self, client: TestClient, db: Session
     ) -> None:
         """Test password reset for inactive user."""
         email = random_email()
         password = random_lower_string()
         new_password = random_lower_string()
-        await create_user(
-            db, UserCreate(email=email, password=password, is_active=False)
-        )
+        create_user(db, UserCreate(email=email, password=password, is_active=False))
         token = generate_password_reset_token(email)
         data = {"new_password": new_password, "token": token}
         response = client.post(
