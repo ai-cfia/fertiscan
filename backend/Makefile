@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart test test-start test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check
+.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check
 
 help:
 	@echo "Available targets:"
@@ -8,7 +8,6 @@ help:
 	@echo "  dev              - Run development server (assumes DB initialized)"
 	@echo "  prestart         - Run pre-start checks and initialization only"
 	@echo "  test             - Run tests without coverage"
-	@echo "  test-start       - Initialize test DB and run tests"
 	@echo "  test-cov         - Run tests with coverage and generate HTML report"
 	@echo "  format           - Format code with ruff (with --fix)"
 	@echo "  format-check     - Check code formatting without changes"
@@ -104,10 +103,7 @@ alembic-check:
 	uv run alembic check
 
 test:
-	uv run pytest tests/
-
-test-start:
-	uv run bash scripts/tests-start.sh
+	uv run bash scripts/test.sh
 
 test-cov:
 	uv run bash scripts/test-cov.sh
@@ -132,11 +128,7 @@ pre-commit:
 	uv run pre-commit run --all-files
 
 email-templates:
-	@mkdir -p app/email-templates/build
-	@for file in app/email-templates/src/*.mjml; do \
-		mjml $$file -o app/email-templates/build/$$(basename $$file .mjml).html; \
-	done
-	@echo "Email templates built"
+	bash scripts/build-email-templates.sh
 
 docker-build:
 	@echo "Building Docker image..."
@@ -160,7 +152,7 @@ docker-test:
 	@echo "Running tests in Docker container..."
 	docker run --rm --env-file .env \
 		-e POSTGRES_SERVER=host.docker.internal \
-		fertiscan-backend:latest bash scripts/tests-start.sh
+		fertiscan-backend:latest bash scripts/test-cov.sh
 
 
 clean:

@@ -13,7 +13,7 @@ from tenacity import (
 from app.db.session import get_engine
 
 logger = logging.getLogger(__name__)
-MAX_TRIES = 60
+MAX_TRIES = 60 * 5  # 5 minutes
 WAIT_SECONDS = 1
 
 
@@ -31,9 +31,9 @@ def init() -> None:
 
 
 def main() -> None:
-    logger.info("Initializing service")
+    logger.info("Checking test database connection")
     init()
-    logger.info("Service finished initializing")
+    logger.info("Test database is ready")
 
 
 if __name__ == "__main__":

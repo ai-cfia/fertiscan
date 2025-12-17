@@ -12,6 +12,7 @@ logs/
 
 # Cursor IDE
 .cursor/
+# .cursorignore
 
 # Tasks folder
 tasks/
