@@ -6,10 +6,9 @@ from pydantic import SecretStr
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.controllers.users import create_user
 from app.core.security import generate_password_reset_token, verify_password
-from app.schemas.user import UserCreate
-from tests.utils.utils import random_email, random_lower_string
+from tests.factories.user import UserFactory
+from tests.utils import fake
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -69,10 +68,8 @@ class TestAccessToken:
 
     def test_login_inactive_user(self, client: TestClient, db: Session) -> None:
         """Test login with inactive user."""
-        email = random_email()
-        password = random_lower_string()
-        create_user(db, UserCreate(email=email, password=password, is_active=False))
-        login_data = {"username": email, "password": password}
+        user = UserFactory(inactive=True)
+        login_data = {"username": user.email, "password": "testpass123"}
         response = client.post(
             f"{settings.API_V1_STR}/login/access-token", data=login_data
         )
@@ -86,16 +83,14 @@ class TestPasswordRecovery:
 
     def test_recovery_password(self, client: TestClient, db: Session) -> None:
         """Test password recovery for existing user."""
-        email = random_email()
-        password = random_lower_string()
-        create_user(db, UserCreate(email=email, password=password))
-        response = client.post(f"{settings.API_V1_STR}/password-recovery/{email}")
+        user = UserFactory()
+        response = client.post(f"{settings.API_V1_STR}/password-recovery/{user.email}")
         assert response.status_code == 200
         assert response.json() == {"message": "Password recovery email sent"}
 
     def test_recovery_password_user_not_exists(self, client: TestClient) -> None:
         """Test password recovery for non-existent user."""
-        email = random_email()
+        email = fake.email()
         response = client.post(f"{settings.API_V1_STR}/password-recovery/{email}")
         assert response.status_code == 404
         assert (
@@ -110,11 +105,9 @@ class TestPasswordRecovery:
         db: Session,
     ) -> None:
         """Test password recovery HTML content endpoint (superuser only)."""
-        email = random_email()
-        password = random_lower_string()
-        create_user(db, UserCreate(email=email, password=password))
+        user = UserFactory()
         response = client.post(
-            f"{settings.API_V1_STR}/password-recovery-html-content/{email}",
+            f"{settings.API_V1_STR}/password-recovery-html-content/{user.email}",
             headers=superuser_token_headers,
         )
         assert response.status_code == 200
@@ -125,7 +118,7 @@ class TestPasswordRecovery:
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test password recovery HTML content for non-existent user."""
-        email = random_email()
+        email = fake.email()
         response = client.post(
             f"{settings.API_V1_STR}/password-recovery-html-content/{email}",
             headers=superuser_token_headers,
@@ -143,11 +136,9 @@ class TestPasswordReset:
 
     def test_reset_password(self, client: TestClient, db: Session) -> None:
         """Test password reset with valid token."""
-        email = random_email()
-        password = random_lower_string()
-        new_password = random_lower_string()
-        user = create_user(db, UserCreate(email=email, password=password))
-        token = generate_password_reset_token(email)
+        user = UserFactory()
+        new_password = fake.password()
+        token = generate_password_reset_token(user.email)
         data = {"new_password": new_password, "token": token}
         response = client.post(
             f"{settings.API_V1_STR}/reset-password/",
@@ -171,7 +162,7 @@ class TestPasswordReset:
 
     def test_reset_password_user_not_found(self, client: TestClient) -> None:
         """Test password reset with valid token but user doesn't exist."""
-        email = random_email()
+        email = fake.email()
         token = generate_password_reset_token(email)
         data = {"new_password": "changethis", "token": token}
         response = client.post(
@@ -188,11 +179,9 @@ class TestPasswordReset:
         self, client: TestClient, db: Session
     ) -> None:
         """Test password reset for inactive user."""
-        email = random_email()
-        password = random_lower_string()
-        new_password = random_lower_string()
-        create_user(db, UserCreate(email=email, password=password, is_active=False))
-        token = generate_password_reset_token(email)
+        user = UserFactory(inactive=True)
+        new_password = fake.password()
+        token = generate_password_reset_token(user.email)
         data = {"new_password": new_password, "token": token}
         response = client.post(
             f"{settings.API_V1_STR}/reset-password/",

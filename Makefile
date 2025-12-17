@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check frontend-help frontend-dev frontend-build frontend-lint frontend-preview pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -53,6 +53,8 @@ help:
 	@echo "  frontend-build           - Build frontend for production"
 	@echo "  frontend-lint            - Lint frontend code"
 	@echo "  frontend-preview         - Preview production build"
+	@echo "  frontend-test            - Run frontend tests"
+	@echo "  frontend-generate-openapi-client - Generate OpenAPI TypeScript client"
 	@echo "  (use 'make frontend-<target>' for any frontend target)"
 
 generate-openapi-client:
@@ -90,6 +92,21 @@ backend-alembic-check:
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
+
+frontend-help:
+	@$(MAKE) -C frontend help
+frontend-dev:
+	@$(MAKE) -C frontend dev
+frontend-build:
+	@$(MAKE) -C frontend build
+frontend-lint:
+	@$(MAKE) -C frontend lint
+frontend-preview:
+	@$(MAKE) -C frontend preview
+frontend-test:
+	@$(MAKE) -C frontend test
+frontend-generate-openapi-client:
+	@$(MAKE) -C frontend generate-openapi-client
 
 pre-commit-install:
 	@uv run --directory backend pre-commit install

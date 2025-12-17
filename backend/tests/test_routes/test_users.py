@@ -8,14 +8,12 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.controllers.users import create_user, update_user
-from app.schemas.user import UserCreate, UserUpdate
+from tests.factories.user import UserFactory
+from tests.utils import fake
 from tests.utils.user import (
     authentication_token_from_email,
-    create_random_user,
     user_authentication_headers,
 )
-from tests.utils.utils import random_email, random_lower_string
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -37,7 +35,7 @@ class TestUserMe:
 
     def test_update_user_me(self, client: TestClient, db: Session) -> None:
         """Test updating current user."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -56,8 +54,8 @@ class TestUserMe:
         self, client: TestClient, db: Session
     ) -> None:
         """Test updating current user email to existing email."""
-        user1 = create_random_user(db)
-        user2 = create_random_user(db)
+        user1 = UserFactory()
+        user2 = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user1.email, db=db
         )
@@ -72,7 +70,7 @@ class TestUserMe:
 
     def test_update_user_me_email_same(self, client: TestClient, db: Session) -> None:
         """Test updating current user email to same email (should succeed)."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -89,7 +87,7 @@ class TestUserMe:
 
     def test_delete_user_me(self, client: TestClient, db: Session) -> None:
         """Test deleting current user."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -107,14 +105,12 @@ class TestUserPassword:
 
     def test_update_password_me(self, client: TestClient, db: Session) -> None:
         """Test updating current user password."""
-        user = create_random_user(db)
-        old_password = random_lower_string()
-        update_user(db, user.id, UserUpdate(password=old_password))
+        user = UserFactory()
         headers = user_authentication_headers(
-            client=client, email=user.email, password=old_password
+            client=client, email=user.email, password="testpass123"
         )
-        new_password = random_lower_string()
-        data = {"current_password": old_password, "new_password": new_password}
+        new_password = fake.password()
+        data = {"current_password": "testpass123", "new_password": new_password}
         response = client.patch(
             f"{settings.API_V1_STR}/users/me/password",
             headers=headers,
@@ -127,13 +123,13 @@ class TestUserPassword:
         self, client: TestClient, db: Session
     ) -> None:
         """Test updating password with incorrect current password."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         data = {
             "current_password": "wrongpassword",
-            "new_password": random_lower_string(),
+            "new_password": fake.password(),
         }
         response = client.patch(
             f"{settings.API_V1_STR}/users/me/password",
@@ -147,15 +143,15 @@ class TestUserPassword:
         self, client: TestClient, db: Session
     ) -> None:
         """Test updating password when user has no password."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         user.hashed_password = None
         db.flush()
         data = {
-            "current_password": random_lower_string(),
-            "new_password": random_lower_string(),
+            "current_password": fake.password(),
+            "new_password": fake.password(),
         }
         response = client.patch(
             f"{settings.API_V1_STR}/users/me/password",
@@ -177,8 +173,8 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test listing all users as superuser."""
-        user1 = create_random_user(db)
-        user2 = create_random_user(db)
+        user1 = UserFactory()
+        user2 = UserFactory()
         response = client.get(
             f"{settings.API_V1_STR}/users",
             headers=superuser_token_headers,
@@ -197,8 +193,8 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test listing users with pagination."""
-        create_random_user(db)
-        create_random_user(db)
+        UserFactory()
+        UserFactory()
         response = client.get(
             f"{settings.API_V1_STR}/users?skip=0&limit=1",
             headers=superuser_token_headers,
@@ -212,8 +208,8 @@ class TestUsersSuperuser:
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test creating a user as superuser."""
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         data = {
             "email": email,
             "password": password,
@@ -239,10 +235,8 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test creating a user with duplicate email."""
-        email = random_email()
-        password = random_lower_string()
-        create_user(db, UserCreate(email=email, password=password))
-        data = {"email": email, "password": password}
+        user = UserFactory()
+        data = {"email": user.email, "password": fake.password()}
         response = client.post(
             f"{settings.API_V1_STR}/users",
             headers=superuser_token_headers,
@@ -255,8 +249,8 @@ class TestUsersSuperuser:
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test creating user with emails enabled."""
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         data = {"email": email, "password": password}
         with (
             patch("app.routes.users.send_email", return_value=None),
@@ -277,7 +271,7 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test getting user by ID as superuser."""
-        user = create_random_user(db)
+        user = UserFactory()
         response = client.get(
             f"{settings.API_V1_STR}/users/{user.id}",
             headers=superuser_token_headers,
@@ -306,7 +300,7 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test updating user as superuser."""
-        user = create_random_user(db)
+        user = UserFactory()
         data = {"first_name": "Updated", "is_active": False}
         response = client.patch(
             f"{settings.API_V1_STR}/users/{user.id}",
@@ -325,8 +319,8 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test updating user email to existing email."""
-        user1 = create_random_user(db)
-        user2 = create_random_user(db)
+        user1 = UserFactory()
+        user2 = UserFactory()
         data = {"email": user2.email}
         response = client.patch(
             f"{settings.API_V1_STR}/users/{user1.id}",
@@ -357,7 +351,7 @@ class TestUsersSuperuser:
         db: Session,
     ) -> None:
         """Test deleting user as superuser."""
-        user = create_random_user(db)
+        user = UserFactory()
         response = client.delete(
             f"{settings.API_V1_STR}/users/{user.id}",
             headers=superuser_token_headers,

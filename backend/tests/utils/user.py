@@ -5,18 +5,8 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.controllers.users import create_user, get_user_by_email, update_user
-from app.db.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
-from tests.utils.utils import random_email, random_lower_string
-
-
-def create_random_user(db: Session) -> User:
-    """Create a random user."""
-    user_in = UserCreate(
-        email=random_email(),
-        password=random_lower_string(),
-    )
-    return create_user(db, user_in)
+from tests.utils import fake
 
 
 def user_authentication_headers(
@@ -42,7 +32,7 @@ def authentication_token_from_email(
 
     If the user doesn't exist it is created first.
     """
-    password = random_lower_string()
+    password = fake.password()
     user = get_user_by_email(db, email)
     if not user:
         user_in_create = UserCreate(email=email, password=password)

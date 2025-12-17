@@ -7,8 +7,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from tests.utils.item import create_random_item
-from tests.utils.user import authentication_token_from_email, create_random_user
+from tests.factories.item import ItemFactory
+from tests.factories.user import UserFactory
+from tests.utils.user import authentication_token_from_email
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -17,7 +18,7 @@ class TestCreateItem:
 
     def test_create_item(self, client: TestClient, db: Session) -> None:
         """Test creating an item."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -41,8 +42,8 @@ class TestReadItem:
 
     def test_read_item(self, client: TestClient, db: Session) -> None:
         """Test reading an item."""
-        user = create_random_user(db)
-        item = create_random_item(db, owner=user)
+        user = UserFactory()
+        item = ItemFactory(owner=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -58,7 +59,7 @@ class TestReadItem:
 
     def test_read_item_not_found(self, client: TestClient, db: Session) -> None:
         """Test reading a non-existent item."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -72,9 +73,9 @@ class TestReadItem:
 
     def test_read_item_other_user(self, client: TestClient, db: Session) -> None:
         """Test reading another user's item (should fail)."""
-        owner = create_random_user(db)
-        other_user = create_random_user(db)
-        item = create_random_item(db, owner=owner)
+        owner = UserFactory()
+        other_user = UserFactory()
+        item = ItemFactory(owner=owner)
         headers = authentication_token_from_email(
             client=client, email=other_user.email, db=db
         )
@@ -92,9 +93,9 @@ class TestReadItems:
 
     def test_read_items(self, client: TestClient, db: Session) -> None:
         """Test listing items."""
-        user = create_random_user(db)
-        item1 = create_random_item(db, owner=user)
-        item2 = create_random_item(db, owner=user)
+        user = UserFactory()
+        item1 = ItemFactory(owner=user)
+        item2 = ItemFactory(owner=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -112,9 +113,9 @@ class TestReadItems:
 
     def test_read_items_pagination(self, client: TestClient, db: Session) -> None:
         """Test listing items with pagination."""
-        user = create_random_user(db)
-        create_random_item(db, owner=user)
-        create_random_item(db, owner=user)
+        user = UserFactory()
+        ItemFactory(owner=user)
+        ItemFactory(owner=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -129,10 +130,10 @@ class TestReadItems:
 
     def test_read_items_only_own(self, client: TestClient, db: Session) -> None:
         """Test that users only see their own items."""
-        user1 = create_random_user(db)
-        user2 = create_random_user(db)
-        item1 = create_random_item(db, owner=user1)
-        create_random_item(db, owner=user2)
+        user1 = UserFactory()
+        user2 = UserFactory()
+        item1 = ItemFactory(owner=user1)
+        ItemFactory(owner=user2)
         headers = authentication_token_from_email(
             client=client, email=user1.email, db=db
         )
@@ -153,8 +154,8 @@ class TestUpdateItem:
 
     def test_update_item(self, client: TestClient, db: Session) -> None:
         """Test updating an item."""
-        user = create_random_user(db)
-        item = create_random_item(db, owner=user)
+        user = UserFactory()
+        item = ItemFactory(owner=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -171,7 +172,7 @@ class TestUpdateItem:
 
     def test_update_item_not_found(self, client: TestClient, db: Session) -> None:
         """Test updating a non-existent item."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -187,9 +188,9 @@ class TestUpdateItem:
 
     def test_update_item_other_user(self, client: TestClient, db: Session) -> None:
         """Test updating another user's item (should fail)."""
-        owner = create_random_user(db)
-        other_user = create_random_user(db)
-        item = create_random_item(db, owner=owner)
+        owner = UserFactory()
+        other_user = UserFactory()
+        item = ItemFactory(owner=owner)
         headers = authentication_token_from_email(
             client=client, email=other_user.email, db=db
         )
@@ -209,8 +210,8 @@ class TestDeleteItem:
 
     def test_delete_item(self, client: TestClient, db: Session) -> None:
         """Test deleting an item."""
-        user = create_random_user(db)
-        item = create_random_item(db, owner=user)
+        user = UserFactory()
+        item = ItemFactory(owner=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -223,7 +224,7 @@ class TestDeleteItem:
 
     def test_delete_item_not_found(self, client: TestClient, db: Session) -> None:
         """Test deleting a non-existent item."""
-        user = create_random_user(db)
+        user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -237,9 +238,9 @@ class TestDeleteItem:
 
     def test_delete_item_other_user(self, client: TestClient, db: Session) -> None:
         """Test deleting another user's item (should fail)."""
-        owner = create_random_user(db)
-        other_user = create_random_user(db)
-        item = create_random_item(db, owner=owner)
+        owner = UserFactory()
+        other_user = UserFactory()
+        item = ItemFactory(owner=owner)
         headers = authentication_token_from_email(
             client=client, email=other_user.email, db=db
         )

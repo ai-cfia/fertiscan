@@ -15,14 +15,14 @@ from app.controllers.users import (
     update_user,
 )
 from app.schemas.user import UserCreate, UserUpdate
-from tests.utils.user import create_random_user
-from tests.utils.utils import random_email, random_lower_string
+from tests.factories.user import UserFactory
+from tests.utils import fake
 
 
 class TestGetUsers:
     def test_returns_users_and_count(self, db: Session) -> None:
-        user1 = create_random_user(db)
-        user2 = create_random_user(db)
+        user1 = UserFactory()
+        user2 = UserFactory()
         users, count = get_users(db, skip=0, limit=100)
         assert count >= 2
         assert len(users) >= 2
@@ -31,8 +31,8 @@ class TestGetUsers:
         assert user2.id in user_ids
 
     def test_pagination(self, db: Session) -> None:
-        create_random_user(db)
-        create_random_user(db)
+        UserFactory()
+        UserFactory()
         users, count = get_users(db, skip=0, limit=1)
         assert count >= 2
         assert len(users) == 1
@@ -40,7 +40,7 @@ class TestGetUsers:
 
 class TestGetUserById:
     def test_returns_user_when_found(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         result = get_user_by_id(db, user_id=user.id)
         assert result is not None
         assert result.id == user.id
@@ -53,21 +53,21 @@ class TestGetUserById:
 
 class TestGetUserByEmail:
     def test_returns_user_when_found(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         result = get_user_by_email(db, email=user.email)
         assert result is not None
         assert result.id == user.id
         assert result.email == user.email
 
     def test_returns_none_when_not_found(self, db: Session) -> None:
-        result = get_user_by_email(db, email=random_email())
+        result = get_user_by_email(db, email=fake.email())
         assert result is None
 
 
 class TestCreateUser:
     def test_creates_and_returns_user(self, db: Session) -> None:
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         user_in = UserCreate(email=email, password=password)
         user = create_user(db, user_in=user_in)
         assert user.id is not None
@@ -77,7 +77,7 @@ class TestCreateUser:
 
 class TestUpdateUser:
     def test_updates_and_returns_user(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         user_in = UserUpdate(first_name="Updated", last_name="Name")
         result = update_user(db, user_id=user.id, user_in=user_in)
         assert result is not None
@@ -86,9 +86,9 @@ class TestUpdateUser:
         assert result.last_name == "Name"
 
     def test_updates_password(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         original_hash = user.hashed_password
-        new_password = random_lower_string()
+        new_password = fake.password()
         user_in = UserUpdate(password=new_password)
         result = update_user(db, user_id=user.id, user_in=user_in)
         assert result is not None
@@ -103,7 +103,7 @@ class TestUpdateUser:
 
 class TestDeleteUser:
     def test_deletes_and_returns_true(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         result = delete_user(db, user_id=user.id)
         assert result is True
         deleted = get_user_by_id(db, user_id=user.id)
@@ -116,34 +116,26 @@ class TestDeleteUser:
 
 class TestAuthenticate:
     def test_returns_user_with_correct_password(self, db: Session) -> None:
-        password = random_lower_string()
-        user = create_random_user(db)
-        update_user(db, user.id, UserUpdate(password=password))
-        result = authenticate(db, email=user.email, password=SecretStr(password))
+        user = UserFactory()
+        result = authenticate(db, email=user.email, password=SecretStr("testpass123"))
         assert result is not None
         assert result.id == user.id
         assert result.email == user.email
 
     def test_returns_none_when_user_not_found(self, db: Session) -> None:
         result = authenticate(
-            db, email=random_email(), password=SecretStr(random_lower_string())
+            db, email=fake.email(), password=SecretStr(fake.password())
         )
         assert result is None
 
     def test_returns_none_when_no_password(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         user.hashed_password = None
         db.flush()
-        result = authenticate(
-            db, email=user.email, password=SecretStr(random_lower_string())
-        )
+        result = authenticate(db, email=user.email, password=SecretStr(fake.password()))
         assert result is None
 
     def test_returns_none_with_wrong_password(self, db: Session) -> None:
-        password = random_lower_string()
-        user = create_random_user(db)
-        update_user(db, user.id, UserUpdate(password=password))
-        result = authenticate(
-            db, email=user.email, password=SecretStr(random_lower_string())
-        )
+        user = UserFactory()
+        result = authenticate(db, email=user.email, password=SecretStr(fake.password()))
         assert result is None

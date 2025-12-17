@@ -12,12 +12,12 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.core import security
 from app.dependencies import get_current_active_superuser, get_current_user
-from tests.utils.user import create_random_user
+from tests.factories.user import UserFactory
 
 
 class TestGetCurrentUser:
     def test_valid_token(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         token = security.create_access_token(
             subject=str(user.id), expires_delta=timedelta(minutes=15)
         )
@@ -33,7 +33,7 @@ class TestGetCurrentUser:
         assert "Could not validate credentials" in exc_info.value.detail
 
     def test_expired_token(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         token = security.create_access_token(
             subject=str(user.id), expires_delta=timedelta(minutes=-15)
         )
@@ -43,7 +43,7 @@ class TestGetCurrentUser:
         assert "Could not validate credentials" in exc_info.value.detail
 
     def test_wrong_secret(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         expire = datetime.now(UTC) + timedelta(minutes=15)
         to_encode = {"exp": expire, "sub": str(user.id)}
         token = cast(
@@ -65,7 +65,7 @@ class TestGetCurrentUser:
         assert "User not found" in exc_info.value.detail
 
     def test_inactive_user(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         user.is_active = False
         db.flush()
         token = security.create_access_token(
@@ -91,17 +91,15 @@ class TestGetCurrentUser:
 
 class TestGetCurrentActiveSuperuser:
     def test_success(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         user.is_superuser = True
-        db.flush()
         result = get_current_active_superuser(current_user=user)
         assert result.id == user.id
         assert result.is_superuser is True
 
     def test_failure_non_superuser(self, db: Session) -> None:
-        user = create_random_user(db)
+        user = UserFactory()
         user.is_superuser = False
-        db.flush()
         with pytest.raises(HTTPException) as exc_info:
             get_current_active_superuser(current_user=user)
         assert exc_info.value.status_code == 403
