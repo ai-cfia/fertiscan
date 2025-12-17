@@ -5,6 +5,7 @@ set -x
 if [ "${ENVIRONMENT}" = "testing" ]; then
   uv run python app/tests_pre_start.py
   uv run alembic upgrade head
+  uv run python -m app.initial_data
 fi
 
 echo "Running tests with coverage (parallel execution)..."

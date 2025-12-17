@@ -4,14 +4,11 @@ from collections.abc import AsyncGenerator, Generator
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.config import settings
 from app.db.base import Base
 from app.db.init_db import init_db
-from app.db.models.item import Item
-from app.db.models.user import User
 from app.db.session import get_async_session
 from app.main import app
 from tests.utils.user import authentication_token_from_email
@@ -38,48 +35,45 @@ test_sessionmaker = async_sessionmaker[AsyncSession](
 )
 
 
-async def get_test_session() -> AsyncGenerator[AsyncSession, None]:
-    """Test session dependency using configured database."""
-    async with test_sessionmaker() as session:
-        try:
-            yield session
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            raise
-
-
-@pytest.fixture(scope="session", autouse=True)  # type: ignore[misc]
-def override_dependencies() -> Generator[None, None, None]:
+@pytest.fixture(scope="function")  # type: ignore[misc]
+async def override_dependencies(db: AsyncSession) -> AsyncGenerator[None, None]:
     """Override database session dependency for tests."""
 
-    app.dependency_overrides[get_async_session] = get_test_session
+    async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+        yield db
+
+    app.dependency_overrides[get_async_session] = get_db_session
     yield None
     app.dependency_overrides.clear()
 
 
-@pytest.fixture(scope="session", autouse=True)  # type: ignore[misc]
+@pytest.fixture(scope="function")  # type: ignore[misc]
 async def db() -> AsyncGenerator[AsyncSession, None]:
-    """Create test database schema using migrations in CI, create_all locally."""
-    if settings.ENVIRONMENT != "testing":
-        async with test_engine.begin() as conn:
+    """Provide database session for tests wrapped in a transaction that rolls back.
+
+    CI (PostgreSQL): Schema and superuser created by test-cov.sh before pytest.
+    Local (SQLite): Schema created here, superuser initialized per test.
+    All changes are rolled back after each test for isolation.
+    """
+    async with test_engine.connect() as conn:
+        trans = await conn.begin()
+        if settings.ENVIRONMENT != "testing":
             await conn.run_sync(Base.metadata.create_all)
-    async with test_sessionmaker() as session:
-        await init_db(session)
-        await session.commit()
-        yield session
-        await session.execute(delete(Item))
-        await session.execute(delete(User))
-        await session.commit()
+        async with AsyncSession(bind=conn, expire_on_commit=False) as session:
+            if settings.ENVIRONMENT != "testing":
+                await init_db(session)
+                await session.commit()
+            yield session
+        await trans.rollback()
 
 
-@pytest.fixture(scope="module")  # type: ignore[misc]
+@pytest.fixture(scope="function")  # type: ignore[misc]
 def client() -> Generator[TestClient, None, None]:
     with TestClient(app) as c:
         yield c
 
 
-@pytest.fixture(scope="module")  # type: ignore[misc]
+@pytest.fixture(scope="function")  # type: ignore[misc]
 def superuser_token_headers(client: TestClient) -> dict[str, str]:
     login_data = {
         "username": settings.FIRST_SUPERUSER,
@@ -91,7 +85,7 @@ def superuser_token_headers(client: TestClient) -> dict[str, str]:
     return {"Authorization": f"Bearer {a_token}"}
 
 
-@pytest.fixture(scope="module")  # type: ignore[misc]
+@pytest.fixture(scope="function")  # type: ignore[misc]
 async def normal_user_token_headers(
     client: TestClient, db: AsyncSession
 ) -> dict[str, str]:

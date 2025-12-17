@@ -103,7 +103,7 @@ alembic-check:
 	uv run alembic check
 
 test:
-	uv run pytest tests/
+	uv run bash scripts/test.sh
 
 test-cov:
 	uv run bash scripts/test-cov.sh

@@ -16,9 +16,7 @@ async def create_random_user(db: AsyncSession) -> User:
         email=random_email(),
         password=random_lower_string(),
     )
-    user = await create_user(db, user_in)
-    await db.commit()
-    return user
+    return await create_user(db, user_in)
 
 
 def user_authentication_headers(
@@ -42,10 +40,8 @@ async def authentication_token_from_email(
     user = await get_user_by_email(db, email)
     if not user:
         user_in_create = UserCreate(email=email, password=password)
-        user = await create_user(db, user_in_create)
-        await db.commit()
+        await create_user(db, user_in_create)
     else:
         user_in_update = UserUpdate(password=password)
         await update_user(db, user.id, user_in_update)
-        await db.commit()
     return user_authentication_headers(client=client, email=email, password=password)

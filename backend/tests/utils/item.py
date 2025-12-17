@@ -19,6 +19,4 @@ async def create_random_item(db: AsyncSession, owner: User | None = None) -> Ite
         title=random_lower_string(),
         description=random_lower_string(),
     )
-    item = await create_item(db, item_in, owner.id)
-    await db.commit()
-    return item
+    return await create_item(db, item_in, owner.id)
