@@ -5,11 +5,12 @@ from collections.abc import Generator
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
+from app import initial_data
 from app.config import settings
 from app.db.base import Base
-from app.db.init_db import init_db
 from app.db.session import get_session
 from app.main import app
 from tests.utils.user import authentication_token_from_email
@@ -26,6 +27,7 @@ else:
         "sqlite:///:memory:",
         echo=False,
         connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
     )
 test_sessionmaker = sessionmaker(
     test_engine,
@@ -34,6 +36,22 @@ test_sessionmaker = sessionmaker(
     autocommit=False,
     autoflush=False,
 )
+TestSession = scoped_session(test_sessionmaker)
+
+
+@pytest.fixture(scope="session")
+def setup_db() -> Generator[None, None, None]:
+    """Create schema and seed initial data once per test session.
+
+    SQLite (local dev): Schema created via metadata.create_all().
+    PostgreSQL (ENVIRONMENT=testing): Schema created by migrations before pytest.
+    Both: initial_data.run() seeds superuser (idempotent).
+    """
+    if settings.ENVIRONMENT != "testing":
+        Base.metadata.create_all(test_engine)
+    with TestSession() as session:
+        initial_data.run(session)
+    yield
 
 
 @pytest.fixture(scope="function")
@@ -49,23 +67,12 @@ def override_dependencies(db: Session) -> Generator[None, None, None]:
 
 
 @pytest.fixture(scope="function")
-def db() -> Generator[Session, None, None]:
-    """Provide database session for tests wrapped in a transaction that rolls back.
-
-    CI (PostgreSQL): Schema and superuser created by test-cov.sh before pytest.
-    Local (SQLite): Schema created here, superuser initialized per test.
-    All changes are rolled back after each test for isolation.
-    """
-    with test_engine.connect() as conn:
-        trans = conn.begin()
-        if settings.ENVIRONMENT != "testing":
-            Base.metadata.create_all(conn)
-        with Session(bind=conn, expire_on_commit=False) as session:
-            if settings.ENVIRONMENT != "testing":
-                init_db(session)
-                session.commit()
-            yield session
-        trans.rollback()
+def db(setup_db: None) -> Generator[Session, None, None]:  # noqa: ARG001
+    """Provide database session for tests. Rolls back and removes session after test."""
+    session = TestSession()
+    yield session
+    session.rollback()
+    TestSession.remove()
 
 
 @pytest.fixture(scope="function")

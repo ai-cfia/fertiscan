@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.controllers.users import get_user_by_email
-from tests.utils.utils import random_email, random_lower_string
+from tests.utils import fake
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -15,8 +15,8 @@ class TestCreateUserNoVerification:
 
     def test_create_user_full_data(self, client: TestClient, db: Session) -> None:
         """Test creating user with all fields."""
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         data = {
             "email": email,
             "password": password,
@@ -37,8 +37,8 @@ class TestCreateUserNoVerification:
 
     def test_create_user_minimal_data(self, client: TestClient) -> None:
         """Test creating user with only required fields."""
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         data = {"email": email, "password": password}
         response = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response.status_code == 200
@@ -49,8 +49,8 @@ class TestCreateUserNoVerification:
 
     def test_create_user_duplicate_email(self, client: TestClient) -> None:
         """Test creating user with duplicate email returns error."""
-        email = random_email()
-        password = random_lower_string()
+        email = fake.email()
+        password = fake.password()
         data = {"email": email, "password": password}
         response1 = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response1.status_code == 200
@@ -60,18 +60,18 @@ class TestCreateUserNoVerification:
 
     def test_create_user_invalid_email(self, client: TestClient) -> None:
         """Test creating user with invalid email format."""
-        data = {"email": "invalid-email", "password": random_lower_string()}
+        data = {"email": "invalid-email", "password": fake.password()}
         response = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response.status_code == 422
 
     def test_create_user_missing_password(self, client: TestClient) -> None:
         """Test creating user without password."""
-        data = {"email": random_email()}
+        data = {"email": fake.email()}
         response = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response.status_code == 422
 
     def test_create_user_missing_email(self, client: TestClient) -> None:
         """Test creating user without email."""
-        data = {"password": random_lower_string()}
+        data = {"password": fake.password()}
         response = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response.status_code == 422
