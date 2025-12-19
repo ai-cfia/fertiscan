@@ -1,0 +1,92 @@
+# Reusable workflow for backend SBOM check and scan.
+# Called by ci.yml after backend lint/test pass.
+name: Backend SBOM
+
+on:
+  workflow_call:
+
+jobs:
+  sbom-check:
+    name: SBOM Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync --group dev --group sbom
+      - name: Generate new SBOM
+        run: |
+          uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 \
+            --pyproject pyproject.toml -o sbom-new.json && echo "" >> sbom-new.json
+      - name: Check if SBOM needs update
+        id: sbom-check
+        run: |
+          if [ ! -f sbom.json ]; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "## SBOM Creation Required" >> $GITHUB_STEP_SUMMARY
+            echo "Run: make backend-generate-sbom" >> $GITHUB_STEP_SUMMARY
+          elif ! cmp -s sbom.json sbom-new.json; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "## SBOM Update Required" >> $GITHUB_STEP_SUMMARY
+            echo "Run: make backend-generate-sbom" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "## ✅ SBOM is up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: Show diff if needed
+        if: steps.sbom-check.outputs.needs_update == 'true'
+        run: diff sbom.json sbom-new.json || true
+      - name: Fail if SBOM needs update
+        if: steps.sbom-check.outputs.needs_update == 'true'
+        run: exit 1
+
+  sbom-scan:
+    name: SBOM Scan
+    needs: sbom-check
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check SBOM exists
+        run: |
+          if [ ! -f backend/sbom.json ]; then
+            echo "SBOM not found, skipping scan"
+            exit 0
+          fi
+      - name: SBOM security scan
+        id: scan
+        uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0
+        with:
+          sbom: backend/sbom.json
+          fail-build: false
+      - name: Fix SARIF locations
+        run: |
+          jq '
+            .runs[].results[] |= (
+              .locations = [{
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "backend/sbom.json",
+                    "uriBaseId": "%SRCROOT%"
+                  },
+                  "region": { "startLine": 1, "startColumn": 1, "endLine": 1, "endColumn": 1 }
+                }
+              }]
+            )
+          ' "${{ steps.scan.outputs.sarif }}" > sarif-fixed.json
+          mv sarif-fixed.json "${{ steps.scan.outputs.sarif }}"
+      - name: Upload scan results
+        uses: github/codeql-action/upload-sarif@v4
+        continue-on-error: true
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+          category: backend-sbom-security-scan

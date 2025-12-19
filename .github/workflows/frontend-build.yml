@@ -1,0 +1,33 @@
+# Reusable workflow for frontend container build/push.
+# Called by ci.yml after frontend lint/test pass.
+name: Frontend Build
+
+on:
+  workflow_call:
+
+jobs:
+  get-version:
+    name: Get Version
+    runs-on: ubuntu-latest
+    outputs:
+      app-version: ${{ steps.version.outputs.app-version }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Parse version from package.json
+        id: version
+        working-directory: frontend
+        run: |
+          version=$(jq -r '.version' package.json)
+          echo "app-version=$version" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    name: Build and Push
+    needs: get-version
+    uses: ./.github/workflows/build-push-container.yml
+    with:
+      working-directory: frontend
+      container-name: ${{ github.event.repository.name }}-frontend
+      tag: ${{ github.sha }}
+      release-version: ${{ needs.get-version.outputs.app-version }}
+      registry: ghcr.io/ai-cfia
+    secrets: inherit

@@ -1,9 +1,14 @@
+# Docker Compose configuration for local development only
 services:
   db:
     image: postgres:18
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-mydb}",
+        ]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -11,19 +16,16 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data/pgdata
     env_file:
-      - .env
+      - backend/.env
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
-      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
-      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
     ports:
       - "5432:5432"
 
   prestart:
-    image: "${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}"
+    image: "fertiscan-backend:dev"
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     depends_on:
       db:
@@ -31,30 +33,16 @@ services:
         restart: true
     command: bash scripts/prestart.sh
     env_file:
-      - .env
+      - backend/.env
     environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - FRONTEND_HOST=${FRONTEND_HOST?Variable not set}
-      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
-      - SECRET_KEY=${SECRET_KEY?Variable not set}
-      - FIRST_SUPERUSER=${FIRST_SUPERUSER?Variable not set}
-      - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD?Variable not set}
-      - SMTP_HOST=${SMTP_HOST}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - EMAILS_FROM_EMAIL=${EMAILS_FROM_EMAIL}
       - POSTGRES_SERVER=db
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
-      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - LOG_SQL=true
 
   backend:
-    image: "${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}"
+    image: "fertiscan-backend:dev"
     restart: always
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     depends_on:
       db:
@@ -63,24 +51,10 @@ services:
       prestart:
         condition: service_completed_successfully
     env_file:
-      - .env
+      - backend/.env
     environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - FRONTEND_HOST=${FRONTEND_HOST?Variable not set}
-      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
-      - SECRET_KEY=${SECRET_KEY?Variable not set}
-      - FIRST_SUPERUSER=${FIRST_SUPERUSER?Variable not set}
-      - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD?Variable not set}
-      - SMTP_HOST=${SMTP_HOST}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - EMAILS_FROM_EMAIL=${EMAILS_FROM_EMAIL}
       - POSTGRES_SERVER=db
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
-      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - LOG_SQL=true
     ports:
       - "8000:8000"
     healthcheck:
@@ -88,10 +62,49 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app
+          target: /app/app
+        - action: sync
+          path: ./backend/tests
+          target: /app/tests
+        - action: rebuild
+          path: ./backend/pyproject.toml
+        - action: rebuild
+          path: ./backend/uv.lock
+
+  frontend:
+    image: "fertiscan-frontend:dev"
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /app/src
+        - action: sync
+          path: ./frontend/public
+          target: /app/public
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: rebuild
+          path: ./frontend/package-lock.json
 
   pgadmin:
     image: dpage/pgadmin4
     restart: always
+    env_file:
+      - backend/.env
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@example.com}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin}
