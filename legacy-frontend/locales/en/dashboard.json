@@ -1,0 +1,27 @@
+{
+  "user-info": {
+    "title": "User information",
+    "username": "Username",
+    "mail": "Email",
+    "role": "Role",
+    "inspectionNumber": "Number of inspections"
+  },
+  "list": {
+    "my-inspections": "My inspections",
+    "search": "Search"
+  },
+  "inspection": {
+    "unverified": "Inspection unverified",
+    "alt":{
+      "errorIcon": "Error icon"
+    }
+  },
+  "error":{
+    "unauthorizedAccess": "Unauthorized access",
+    "noInspection": "No inspection found",
+    "errorOccured": "An error occured"
+  },
+  "alt":{
+    "searchIcon": "Search icon"
+  }
+}

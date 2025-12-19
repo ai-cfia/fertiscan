@@ -1,0 +1,9 @@
+{
+    "languageChanged": "The language has change to {{lng}}!",
+    "fileExists": "The file name already exist!",
+    "PdfNotSupported": "Pdf file is not supported yet!",
+    "maxFilesExceeded": "Maximum number of 10 files has been reached!",
+    "alt": {
+        "closeIcon": "Close icon"
+    }
+}

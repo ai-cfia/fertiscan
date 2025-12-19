@@ -12,10 +12,13 @@ logs/
 
 # Cursor IDE
 .cursor/
+# .cursorignore
 
 # Tasks folder
 tasks/
 
+# Experiments folder
+experiments/
 
 # Upload folder
 uploads/
