@@ -1,0 +1,25 @@
+# Validates repo standards and checks markdown.
+# Called by ci.yml for PRs, runs directly on push to main.
+name: Repo Standard
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-repo-standards-validation.yml@main
+    secrets: inherit
+
+  markdown-check:
+    name: Markdown Check
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DavidAnson/markdownlint-cli2-action@v18
+        with:
+          globs: "**/*.md !legacy-frontend/** !backend/legacy/**"
+      - uses: tcort/github-action-markdown-link-check@v1

@@ -41,14 +41,23 @@ jobs:
               - 'frontend/**'
             backend-workflow:
               - '.github/workflows/backend.yml'
+              - '.github/workflows/backend-build.yml'
+              - '.github/workflows/backend-sbom.yml'
             frontend-workflow:
               - '.github/workflows/frontend.yml'
+              - '.github/workflows/frontend-build.yml'
+              - '.github/workflows/frontend-sbom.yml'
             ci:
               - '.github/workflows/ci.yml'
               - '.github/workflows/e2e.yml'
+              - '.github/workflows/build-push-container.yml'
 
-  security:
-    uses: ./.github/workflows/security-and-standards.yml
+  secrets-scan:
+    uses: ./.github/workflows/secrets-scan.yml
+    secrets: inherit
+
+  repo-standard:
+    uses: ./.github/workflows/repo-standard.yml
     secrets: inherit
 
   auto-label:
@@ -80,4 +89,44 @@ jobs:
       (needs.backend.result == 'success' || needs.backend.result == 'skipped') &&
       (needs.frontend.result == 'success' || needs.frontend.result == 'skipped')
     uses: ./.github/workflows/e2e.yml
+    secrets: inherit
+
+  backend-build:
+    name: Backend Build
+    needs: [changes, backend]
+    if: |
+      always() &&
+      needs.backend.result == 'success' &&
+      (needs.changes.outputs.backend == 'true' || needs.changes.outputs.backend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/backend-build.yml
+    secrets: inherit
+
+  frontend-build:
+    name: Frontend Build
+    needs: [changes, frontend]
+    if: |
+      always() &&
+      needs.frontend.result == 'success' &&
+      (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.frontend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/frontend-build.yml
+    secrets: inherit
+
+  backend-sbom:
+    name: Backend SBOM
+    needs: [changes, backend]
+    if: |
+      always() &&
+      needs.backend.result == 'success' &&
+      (needs.changes.outputs.backend == 'true' || needs.changes.outputs.backend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/backend-sbom.yml
+    secrets: inherit
+
+  frontend-sbom:
+    name: Frontend SBOM
+    needs: [changes, frontend]
+    if: |
+      always() &&
+      needs.frontend.result == 'success' &&
+      (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.frontend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/frontend-sbom.yml
     secrets: inherit
