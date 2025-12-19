@@ -1,0 +1,27 @@
+{
+  "inspectionDetails": "Inspection Details",
+  "inspectionId": "ID",
+  "inspector": "Inspector",
+  "status": "Status",
+  "completed": "Completed",
+  "incomplete": "Incomplete",
+  "createdAt": "Created at",
+  "lastUpdatedAt": "Last Updated at",
+  "edit": "Edit",
+  "discard": "Discard",
+  "alert": {
+    "getInspectionFailed": "Failed to fetch inspection details",
+    "deleteSuccess": "Inspection deleted successfully",
+    "discardFailed": "Failed to discard inspection",
+    "internalErrorLabelNotFound": "Internal error: Label not found",
+    "getPictureSetFailed": "Failed to get picture set"
+  },
+  "alt": {
+    "edit": "Edit inspection",
+    "discard": "Discard inspection"
+  },
+  "confirmDiscardTitle": "Confirm Discard",
+  "confirmDiscardMessage": "Are you sure you want to discard this inspection? This action cannot be undone.",
+  "cancel": "Cancel",
+  "confirm": "Confirm"
+}
