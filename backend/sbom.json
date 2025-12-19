@@ -2089,32 +2089,6 @@
       "version": "25.0"
     },
     {
-      "bom-ref": "passlib==1.7.4",
-      "description": "comprehensive password hashing framework supporting over 30 schemes",
-      "externalReferences": [
-        {
-          "comment": "from packaging metadata: Download-URL",
-          "type": "distribution",
-          "url": "https://pypi.python.org/packages/source/p/passlib/passlib-1.7.4.tar.gz"
-        },
-        {
-          "comment": "from packaging metadata: Home-page",
-          "type": "website",
-          "url": "https://passlib.readthedocs.io"
-        }
-      ],
-      "name": "passlib",
-      "properties": [
-        {
-          "name": "cdx:python:package:required-extra",
-          "value": "bcrypt"
-        }
-      ],
-      "purl": "pkg:pypi/passlib@1.7.4",
-      "type": "library",
-      "version": "1.7.4"
-    },
-    {
       "bom-ref": "pathspec==0.12.1",
       "description": "Utility library for gitignore style pattern matching of file paths.",
       "externalReferences": [
@@ -3484,49 +3458,6 @@
       "version": "3.3.23.2"
     },
     {
-      "bom-ref": "types-passlib==1.7.7.20250602",
-      "description": "Typing stubs for passlib",
-      "externalReferences": [
-        {
-          "comment": "from packaging metadata Project-URL: Chat",
-          "type": "chat",
-          "url": "https://gitter.im/python/typing"
-        },
-        {
-          "comment": "from packaging metadata Project-URL: Issue tracker",
-          "type": "issue-tracker",
-          "url": "https://github.com/python/typeshed/issues"
-        },
-        {
-          "comment": "from packaging metadata Project-URL: Changes",
-          "type": "release-notes",
-          "url": "https://github.com/typeshed-internal/stub_uploader/blob/main/data/changelogs/passlib.md"
-        },
-        {
-          "comment": "from packaging metadata Project-URL: GitHub",
-          "type": "vcs",
-          "url": "https://github.com/python/typeshed"
-        },
-        {
-          "comment": "from packaging metadata Project-URL: Homepage",
-          "type": "website",
-          "url": "https://github.com/python/typeshed"
-        }
-      ],
-      "licenses": [
-        {
-          "license": {
-            "acknowledgement": "declared",
-            "id": "Apache-2.0"
-          }
-        }
-      ],
-      "name": "types-passlib",
-      "purl": "pkg:pypi/types-passlib@1.7.7.20250602",
-      "type": "library",
-      "version": "1.7.7.20250602"
-    },
-    {
       "bom-ref": "typing-inspection==0.4.2",
       "description": "Runtime typing introspection tools",
       "externalReferences": [
@@ -4320,12 +4251,6 @@
       "ref": "packaging==25.0"
     },
     {
-      "dependsOn": [
-        "bcrypt==4.3.0"
-      ],
-      "ref": "passlib==1.7.4"
-    },
-    {
       "ref": "pathspec==0.12.1"
     },
     {
@@ -4519,7 +4444,6 @@
         "alembic==1.17.2",
         "bcrypt==4.3.0",
         "fastapi==0.125.0",
-        "passlib==1.7.4",
         "psycopg==3.3.2",
         "pydantic-settings==2.12.0",
         "python-dotenv==1.2.1",
@@ -4606,9 +4530,6 @@
     },
     {
       "ref": "types-cryptography==3.3.23.2"
-    },
-    {
-      "ref": "types-passlib==1.7.7.20250602"
     },
     {
       "dependsOn": [

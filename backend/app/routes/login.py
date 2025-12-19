@@ -3,7 +3,7 @@
 from datetime import timedelta
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import SecretStr
@@ -13,34 +13,17 @@ from app.controllers import users
 from app.core import security
 from app.dependencies import CurrentSuperuser, CurrentUser, SessionDep
 from app.emails import generate_reset_password_email, send_email
+from app.exceptions import (
+    InactiveUser,
+    IncorrectEmailOrPassword,
+    InvalidToken,
+    UserWithEmailNotFound,
+)
 from app.schemas.auth import NewPassword, Token
 from app.schemas.message import Message
 from app.schemas.user import UserPublic, UserUpdate
 
 router = APIRouter(tags=["login"])
-
-
-class IncorrectEmailOrPassword(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "Incorrect email or password")
-
-
-class InactiveUser(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "Inactive user")
-
-
-class UserNotFound(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(
-            status.HTTP_404_NOT_FOUND,
-            "The user with this email does not exist in the system.",
-        )
-
-
-class InvalidToken(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "Invalid token")
 
 
 @router.post("/login/access-token")
@@ -83,7 +66,7 @@ async def recover_password(
 ) -> Message:
     """Password Recovery."""
     if not (user := users.get_user_by_email(session, email)):
-        raise UserNotFound()
+        raise UserWithEmailNotFound()
     password_reset_token = security.generate_password_reset_token(email)
     if settings.emails_enabled:
         email_data = generate_reset_password_email(
@@ -104,11 +87,11 @@ def reset_password(
     if not (email := security.verify_password_reset_token(body.token)):
         raise InvalidToken()
     if not (user := users.get_user_by_email(session, email)):
-        raise UserNotFound()
+        raise UserWithEmailNotFound()
     elif not user.is_active:
         raise InactiveUser()
     if not users.update_user(session, user.id, UserUpdate(password=body.new_password)):
-        raise UserNotFound()
+        raise UserWithEmailNotFound()
     return Message(message="Password updated successfully")
 
 
@@ -120,7 +103,7 @@ def recover_password_html_content(
 ) -> Any:
     """HTML Content for Password Recovery (dev/testing only)."""
     if not users.get_user_by_email(session, email):
-        raise UserNotFound()
+        raise UserWithEmailNotFound()
     password_reset_token = security.generate_password_reset_token(email)
     email_data = generate_reset_password_email(
         email_to=email,
