@@ -9,7 +9,7 @@ dependencies = [
     "pydantic-settings",
     "sqlmodel",
     "alembic",
-    "bcrypt>=4.3.0",
+    "bcrypt",
     "pyjwt",
     "jinja2",
     "aiosmtplib",
