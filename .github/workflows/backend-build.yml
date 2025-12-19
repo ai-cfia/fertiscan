@@ -1,0 +1,45 @@
+# Reusable workflow for backend version bump and container build/push.
+# Called by ci.yml after backend lint/test pass.
+name: Backend Build
+
+on:
+  workflow_call:
+
+jobs:
+  version-bump:
+    name: Version Bump
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-version-bump-python-mono.yml@main
+    secrets: inherit
+    with:
+      pyproject-path: "pyproject.toml"
+      package-name: "fertiscan-backend"
+      working-directory: backend
+
+  get-version:
+    name: Get Version
+    needs: version-bump
+    runs-on: ubuntu-latest
+    outputs:
+      app-version: ${{ steps.version.outputs.app-version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Parse version from pyproject.toml
+        id: version
+        working-directory: backend
+        run: |
+          version=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
+          echo "app-version=$version" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    name: Build and Push
+    needs: get-version
+    uses: ./.github/workflows/build-push-container.yml
+    with:
+      working-directory: backend
+      container-name: ${{ github.event.repository.name }}-backend
+      tag: ${{ github.sha }}
+      release-version: ${{ needs.get-version.outputs.app-version }}
+      registry: ghcr.io/ai-cfia
+    secrets: inherit

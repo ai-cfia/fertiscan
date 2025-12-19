@@ -3,13 +3,19 @@
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
 from app.config import settings
 from app.controllers import users
 from app.core.security import generate_password_reset_token, verify_password
 from app.dependencies import CurrentSuperuser, CurrentUser, SessionDep
 from app.emails import generate_new_account_email, send_email
+from app.exceptions import (
+    EmailAlreadyRegistered,
+    IncorrectPassword,
+    UserHasNoPassword,
+    UserNotFound,
+)
 from app.schemas.message import Message
 from app.schemas.user import (
     UpdatePassword,
@@ -21,26 +27,6 @@ from app.schemas.user import (
 )
 
 router = APIRouter(prefix="/users", tags=["users"])
-
-
-class EmailAlreadyRegistered(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "Email already registered")
-
-
-class UserNotFound(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_404_NOT_FOUND, "User not found")
-
-
-class UserHasNoPassword(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "User has no password")
-
-
-class IncorrectPassword(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "Incorrect password")
 
 
 @router.get("", response_model=UsersPublic)

@@ -3,7 +3,7 @@
 from typing import Annotated
 
 import jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
@@ -12,6 +12,12 @@ from app.config import settings
 from app.core import security
 from app.db.models.user import User
 from app.db.session import get_session
+from app.exceptions import (
+    InactiveUser,
+    InsufficientPrivileges,
+    InvalidCredentials,
+    UserNotFound,
+)
 from app.schemas.auth import TokenPayload
 
 # Database session dependency
@@ -39,21 +45,14 @@ def get_current_user(
         )
         token_data = TokenPayload.model_validate(payload)
     except (jwt.InvalidTokenError, ValidationError):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-        )
+        raise InvalidCredentials()
+    if token_data.sub is None:
+        raise InvalidCredentials()
     user = session.get(User, token_data.sub)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
+        raise UserNotFound()
     if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user",
-        )
+        raise InactiveUser()
     return user
 
 
@@ -66,10 +65,7 @@ def get_current_active_superuser(
 ) -> User:
     """Verify current user is a superuser."""
     if not current_user.is_superuser:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="The user doesn't have enough privileges",
-        )
+        raise InsufficientPrivileges()
     return current_user
 
 

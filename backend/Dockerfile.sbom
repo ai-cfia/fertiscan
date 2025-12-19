@@ -1,0 +1,16 @@
+# Dockerfile for generating Python/uv SBOM in CycloneDX format.
+# Used by scripts/generate-sbom.sh
+
+FROM python:3.12
+
+# Install uv to global location
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && mv /root/.local/bin/uv /usr/local/bin/
+
+# Allow non-root user to write cache
+ENV UV_CACHE_DIR=/tmp/uv-cache
+
+WORKDIR /app
+
+# Sync deps, generate SBOM from installed environment
+ENTRYPOINT ["sh", "-c", "uv sync --group dev --group sbom && uv lock && uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 --pyproject pyproject.toml -o sbom.json && echo '' >> sbom.json"]

@@ -1,4 +1,4 @@
-.PHONY: help dev build lint preview test generate-openapi-client
+.PHONY: help dev build lint preview test generate-openapi-client generate-sbom
 
 help:
 	@echo "Frontend Makefile"
@@ -10,6 +10,7 @@ help:
 	@echo "  preview                - Preview production build"
 	@echo "  test                   - Run tests (if configured)"
 	@echo "  generate-openapi-client - Generate OpenAPI TypeScript client"
+	@echo "  generate-sbom          - Generate SBOM (requires Docker)"
 
 dev:
 	@npm run dev
@@ -28,3 +29,6 @@ test:
 
 generate-openapi-client:
 	@npm run generate-openapi-client
+
+generate-sbom:
+	bash scripts/generate-sbom.sh

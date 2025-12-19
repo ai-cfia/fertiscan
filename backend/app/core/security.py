@@ -5,27 +5,31 @@ Note: Used for local/dev authentication. Will be replaced by external auth provi
 
 from datetime import UTC, datetime, timedelta
 
+import bcrypt
 import jwt
-from passlib.context import CryptContext
 from pydantic import EmailStr, SecretStr, validate_call
 
 from app.config import settings
 
 ALGORITHM = "HS256"
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 @validate_call
 def verify_password(plain_password: SecretStr, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password."""
-    return pwd_context.verify(plain_password.get_secret_value(), hashed_password)
+    return bcrypt.checkpw(
+        plain_password.get_secret_value().encode(),
+        hashed_password.encode(),
+    )
 
 
 @validate_call
 def get_password_hash(password: SecretStr) -> str:
     """Hash a password for storing."""
-    return pwd_context.hash(password.get_secret_value())
+    return bcrypt.hashpw(
+        password.get_secret_value().encode(),
+        bcrypt.gensalt(),
+    ).decode()
 
 
 @validate_call

@@ -3,19 +3,15 @@
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
 from app.controllers import items
 from app.dependencies import CurrentUser, SessionDep
+from app.exceptions import ItemNotFound
 from app.schemas.item import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
 from app.schemas.message import Message
 
 router = APIRouter(prefix="/items", tags=["items"])
-
-
-class ItemNotFound(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_404_NOT_FOUND, "Item not found")
 
 
 @router.get("", response_model=ItemsPublic)

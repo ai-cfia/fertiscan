@@ -85,8 +85,8 @@ class TestGetCurrentUser:
         )
         with pytest.raises(HTTPException) as exc_info:
             get_current_user(session=db, token=token)
-        assert exc_info.value.status_code == 404
-        assert "User not found" in exc_info.value.detail
+        assert exc_info.value.status_code == 403
+        assert "Could not validate credentials" in exc_info.value.detail
 
 
 class TestGetCurrentActiveSuperuser:
@@ -103,4 +103,4 @@ class TestGetCurrentActiveSuperuser:
         with pytest.raises(HTTPException) as exc_info:
             get_current_active_superuser(current_user=user)
         assert exc_info.value.status_code == 403
-        assert "doesn't have enough privileges" in exc_info.value.detail
+        assert "Insufficient privileges" in exc_info.value.detail

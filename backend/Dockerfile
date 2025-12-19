@@ -9,7 +9,7 @@ WORKDIR /app/
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv version 0.8.21
+# Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.9.15 /uv /uvx /bin/
 

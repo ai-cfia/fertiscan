@@ -2,11 +2,12 @@
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from pydantic import BaseModel, EmailStr
 
 from app.controllers import users
 from app.dependencies import SessionDep
+from app.exceptions import UserAlreadyExists
 from app.schemas.user import UserCreate, UserPublic
 
 router = APIRouter(tags=["private"], prefix="/private")
@@ -17,11 +18,6 @@ class PrivateUserCreate(BaseModel):
     password: str
     first_name: str | None = None
     last_name: str | None = None
-
-
-class UserAlreadyExists(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_400_BAD_REQUEST, "User already exists")
 
 
 @router.post("/users/", response_model=UserPublic)

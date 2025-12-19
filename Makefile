@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -39,6 +39,11 @@ help:
 	@echo "  generate-openapi-client  - Generate OpenAPI client from backend spec"
 	@echo "  pre-commit-install       - Install pre-commit hooks from root config"
 	@echo "  pre-commit               - Run pre-commit checks on all files"
+	@echo ""
+	@echo "Security scanning (requires grype: brew install grype):"
+	@echo "  sbom-scan-backend        - Scan backend SBOM for vulnerabilities"
+	@echo "  sbom-scan-frontend       - Scan frontend SBOM for vulnerabilities"
+	@echo "  sbom-scan-all            - Scan all SBOMs for vulnerabilities"
 	@echo ""
 	@echo "Backend commands (delegated to backend/Makefile):"
 	@echo "  backend-help             - Show backend-specific help"
@@ -89,6 +94,8 @@ backend-alembic-upgrade:
 	@$(MAKE) -C backend alembic-upgrade
 backend-alembic-check:
 	@$(MAKE) -C backend alembic-check
+backend-generate-sbom:
+	@$(MAKE) -C backend generate-sbom
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
@@ -107,6 +114,8 @@ frontend-test:
 	@$(MAKE) -C frontend test
 frontend-generate-openapi-client:
 	@$(MAKE) -C frontend generate-openapi-client
+frontend-generate-sbom:
+	@$(MAKE) -C frontend generate-sbom
 
 pre-commit-install:
 	@uv run --directory backend pre-commit install
@@ -223,3 +232,14 @@ docker-build-all: docker-build-backend docker-build-frontend
 
 prepare-deploy: lint-all format-check-all test-all build-all
 	@echo "Deployment preparation complete!"
+
+sbom-scan-backend:
+	@echo "Scanning backend SBOM for vulnerabilities..."
+	@grype sbom:backend/sbom.json
+
+sbom-scan-frontend:
+	@echo "Scanning frontend SBOM for vulnerabilities..."
+	@grype sbom:frontend/sbom.json
+
+sbom-scan-all: sbom-scan-backend sbom-scan-frontend
+	@echo "SBOM scanning complete."
