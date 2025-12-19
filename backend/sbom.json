@@ -587,7 +587,7 @@
       "version": "25.4.0"
     },
     {
-      "bom-ref": "bcrypt==4.3.0",
+      "bom-ref": "bcrypt==5.0.0",
       "description": "Modern password hashing for your software and your servers",
       "externalReferences": [
         {
@@ -611,9 +611,9 @@
         }
       ],
       "name": "bcrypt",
-      "purl": "pkg:pypi/bcrypt@4.3.0",
+      "purl": "pkg:pypi/bcrypt@5.0.0",
       "type": "library",
-      "version": "4.3.0"
+      "version": "5.0.0"
     },
     {
       "bom-ref": "boolean.py==5.0",
@@ -3303,7 +3303,7 @@
       "version": "9.1.2"
     },
     {
-      "bom-ref": "typer==0.20.0",
+      "bom-ref": "typer==0.20.1",
       "description": "Typer, build great CLIs. Easy to code. Based on Python type hints.",
       "externalReferences": [
         {
@@ -3341,9 +3341,9 @@
         }
       ],
       "name": "typer",
-      "purl": "pkg:pypi/typer@0.20.0",
+      "purl": "pkg:pypi/typer@0.20.1",
       "type": "library",
-      "version": "0.20.0"
+      "version": "0.20.1"
     },
     {
       "bom-ref": "types-Jinja2==2.11.9",
@@ -3980,7 +3980,7 @@
         "mypy==1.19.1",
         "pytest==9.0.2"
       ],
-      "ref": "bcrypt==4.3.0"
+      "ref": "bcrypt==5.0.0"
     },
     {
       "dependsOn": [
@@ -4072,7 +4072,7 @@
       "dependsOn": [
         "fastapi-cloud-cli==0.7.0",
         "rich-toolkit==0.17.1",
-        "typer==0.20.0",
+        "typer==0.20.1",
         "uvicorn==0.38.0"
       ],
       "ref": "fastapi-cli==0.0.16"
@@ -4085,7 +4085,7 @@
         "rich-toolkit==0.17.1",
         "rignore==0.7.6",
         "sentry-sdk==2.48.0",
-        "typer==0.20.0",
+        "typer==0.20.1",
         "uvicorn==0.38.0"
       ],
       "ref": "fastapi-cloud-cli==0.7.0"
@@ -4442,7 +4442,7 @@
         "PyJWT==2.10.1",
         "aiosmtplib==5.0.0",
         "alembic==1.17.2",
-        "bcrypt==4.3.0",
+        "bcrypt==5.0.0",
         "fastapi==0.125.0",
         "psycopg==3.3.2",
         "pydantic-settings==2.12.0",
@@ -4511,7 +4511,7 @@
         "shellingham==1.5.4",
         "typing_extensions==4.15.0"
       ],
-      "ref": "typer==0.20.0"
+      "ref": "typer==0.20.1"
     },
     {
       "dependsOn": [

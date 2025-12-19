@@ -19,7 +19,7 @@ pillow
 sqlmodel
 alembic
 passlib[bcrypt]
-bcrypt==4.3.0
+bcrypt==5.0.0
 pyjwt
 jinja2
 aiosmtplib
