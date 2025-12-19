@@ -1,0 +1,23 @@
+# Scans for secrets and validates repo standards.
+# Called by ci.yml for PRs, runs directly on push to main.
+name: Security and Standards
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+
+jobs:
+  trufflehog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: trufflesecurity/trufflehog@0fab92f434fcce5f8180716c5c6aeb0371929bf9
+        with:
+          base: ""
+          head: ${{ github.ref_name }}
+          extra_args: --results=verified,unknown
+
+  repo-standard:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-repo-standards-validation.yml@main
+    secrets: inherit

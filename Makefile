@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -89,6 +89,8 @@ backend-alembic-upgrade:
 	@$(MAKE) -C backend alembic-upgrade
 backend-alembic-check:
 	@$(MAKE) -C backend alembic-check
+backend-generate-sbom:
+	@$(MAKE) -C backend generate-sbom
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
@@ -107,6 +109,8 @@ frontend-test:
 	@$(MAKE) -C frontend test
 frontend-generate-openapi-client:
 	@$(MAKE) -C frontend generate-openapi-client
+frontend-generate-sbom:
+	@$(MAKE) -C frontend generate-sbom
 
 pre-commit-install:
 	@uv run --directory backend pre-commit install
