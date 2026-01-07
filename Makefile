@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-reset build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-seed db-shell build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -33,7 +33,15 @@ help:
 	@echo "  docker-down-v            - Stop all services and remove volumes"
 	@echo "  docker-logs              - View backend logs"
 	@echo "  docker-ps                - List running services"
-	@echo "  db-reset                 - Reset database schema"
+	@echo ""
+	@echo "Database commands:"
+	@echo "  db-start                 - Start database service (Docker Compose)"
+	@echo "  db-stop                  - Stop database service"
+	@echo "  db-status                - Check database connection status"
+	@echo "  db-migrate               - Run database migrations"
+	@echo "  db-reset                 - Reset database (drop schema and recreate)"
+	@echo "  db-seed                  - Seed database with initial data"
+	@echo "  db-shell                 - Open database shell (psql)"
 	@echo ""
 	@echo "Development tools:"
 	@echo "  generate-openapi-client  - Generate OpenAPI client from backend spec"
@@ -158,9 +166,36 @@ docker-logs:
 docker-ps:
 	@docker compose ps
 
+db-start:
+	@echo "Starting database service..."
+	@docker compose up -d db
+	@echo "Waiting for database to be ready..."
+	@timeout 30 bash -c 'until docker compose exec -T db pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} > /dev/null 2>&1; do sleep 1; done' || true
+	@echo "Database is ready"
+
+db-stop:
+	@echo "Stopping database service..."
+	@docker compose stop db
+
+db-status:
+	@echo "Checking database connection..."
+	@cd backend && uv run python -c "from app.db.session import get_engine; from sqlalchemy import text; engine = get_engine(); conn = engine.connect(); conn.execute(text('SELECT 1')); conn.close(); print('✓ Database connection successful')" || echo "✗ Database connection failed"
+
+db-migrate:
+	@echo "Running database migrations..."
+	@$(MAKE) -C backend alembic-upgrade
+
 db-reset:
 	@echo "Resetting database..."
 	@docker compose exec db sh -c 'psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+
+db-seed:
+	@echo "Seeding database with initial data..."
+	@cd backend && uv run python -m app.initial_data
+
+db-shell:
+	@echo "Opening database shell..."
+	@docker compose exec db psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb}
 
 build-all: build-backend build-frontend
 
