@@ -73,6 +73,7 @@ keep-runtime-typing = true
 [tool.mypy]
 strict = true
 exclude = ["venv", ".venv", "alembic", "legacy"]
+plugins = ["sqlalchemy.ext.mypy.plugin"]
 
 [tool.coverage.run]
 source = ["app"]
