@@ -17,7 +17,7 @@ erDiagram
         string brand_name_en "nullable"
         string brand_name_fr "nullable"
         string registration_number UK
-        string name_en
+        string name_en "nullable"
         string name_fr "nullable"
         timestamp created_at
         timestamp updated_at

@@ -1,3 +1,3 @@
-from app.controllers import items, users
+from app.controllers import users
 
-__all__ = ["items", "users"]
+__all__ = ["users"]

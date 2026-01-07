@@ -1,0 +1,65 @@
+"""Label ORM model."""
+
+from datetime import UTC, datetime
+from enum import Enum
+from typing import TYPE_CHECKING, Optional
+from uuid import UUID, uuid4
+
+from sqlalchemy import Column, DateTime
+from sqlmodel import Field, Relationship
+
+from app.db.base import Base
+from app.db.models.user import User
+
+if TYPE_CHECKING:
+    from app.db.models.fertilizer_label_data import FertilizerLabelData
+    from app.db.models.label_data import LabelData
+    from app.db.models.label_image import LabelImage
+    from app.db.models.product import Product
+
+
+class ExtractionStatus(str, Enum):
+    pending = "pending"
+    in_progress = "in_progress"
+    completed = "completed"
+    failed = "failed"
+
+
+class VerificationStatus(str, Enum):
+    not_started = "not_started"
+    in_progress = "in_progress"
+    completed = "completed"
+
+
+class Label(Base, table=True):
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    product_id: UUID | None = Field(
+        foreign_key="product.id", default=None, nullable=True, index=True
+    )
+    created_by_id: UUID = Field(foreign_key="user.id", nullable=False, index=True)
+    extraction_status: ExtractionStatus = Field(
+        default=ExtractionStatus.pending, index=True
+    )
+    verification_status: VerificationStatus = Field(
+        default=VerificationStatus.not_started, index=True
+    )
+    extraction_error_message: str | None = Field(default=None)
+    product: Optional["Product"] = Relationship(back_populates="labels")
+    created_by: User = Relationship(back_populates="labels")
+    images: list["LabelImage"] = Relationship(
+        back_populates="label", cascade_delete=True
+    )
+    label_data: Optional["LabelData"] = Relationship(
+        back_populates="label", cascade_delete=True
+    )
+    fertilizer_label_data: Optional["FertilizerLabelData"] = Relationship(
+        back_populates="label", cascade_delete=True
+    )
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(UTC),
+        sa_column=Column(DateTime(timezone=True)),
+    )
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(UTC),
+        sa_column=Column(DateTime(timezone=True)),
+    )

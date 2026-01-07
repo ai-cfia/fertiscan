@@ -8,3 +8,6 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
         abstract = True
         sqlalchemy_session = TestSession
         sqlalchemy_session_persistence = "flush"
+
+
+__all__ = ["BaseFactory"]

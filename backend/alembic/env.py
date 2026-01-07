@@ -2,7 +2,11 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 
-import app.db.models.item  # noqa: F401
+import app.db.models.fertilizer_label_data  # noqa: F401
+import app.db.models.label  # noqa: F401
+import app.db.models.label_data  # noqa: F401
+import app.db.models.label_image  # noqa: F401
+import app.db.models.product  # noqa: F401
 import app.db.models.user  # noqa: F401
 from alembic import context
 from app.config import settings
