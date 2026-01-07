@@ -59,8 +59,3 @@ class IncorrectEmailOrPassword(HTTPException):
 class InvalidToken(HTTPException):
     def __init__(self) -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, "Invalid token")
-
-
-class ItemNotFound(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_404_NOT_FOUND, "Item not found")

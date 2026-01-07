@@ -38,7 +38,7 @@ async def check_schema():
             ORDER BY table_name
         \"\"\"))
         tables = [row[0] for row in result]
-        expected_tables = ['alembic_version', 'item', 'user']
+        expected_tables = ['alembic_version', 'user']
         if set(tables) != set(expected_tables):
             print(f'ERROR: Tables mismatch. Expected: {expected_tables}, Got: {tables}')
             exit(1)

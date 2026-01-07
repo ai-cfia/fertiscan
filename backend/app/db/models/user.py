@@ -1,16 +1,12 @@
 """User ORM model."""
 
-from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pydantic import EmailStr
-from sqlmodel import Field, Relationship
+from sqlmodel import Field
 
 from app.db.base import Base
 from app.db.models.mixins import TimestampMixin
-
-if TYPE_CHECKING:
-    from app.db.models.item import Item
 
 
 class User(Base, TimestampMixin, table=True):
@@ -30,4 +26,3 @@ class User(Base, TimestampMixin, table=True):
         max_length=255,
         description="External identity provider subject identifier (OIDC sub claim)",
     )
-    items: list["Item"] = Relationship(back_populates="owner", cascade_delete=True)

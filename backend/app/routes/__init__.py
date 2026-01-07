@@ -3,12 +3,11 @@
 from fastapi import APIRouter
 
 from app.config import settings
-from app.routes import health, items, login, users
+from app.routes import health, login, users
 
 api_router = APIRouter()
 api_router.include_router(login.router)
 api_router.include_router(users.router)
-api_router.include_router(items.router)
 
 if settings.ENVIRONMENT in ("local", "testing"):
     from app.routes import private

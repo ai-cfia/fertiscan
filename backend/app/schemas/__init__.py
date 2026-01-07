@@ -1,4 +1,3 @@
-from app.schemas.item import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
 from app.schemas.message import Message
 from app.schemas.user import (
     UpdatePassword,
@@ -12,10 +11,6 @@ from app.schemas.user import (
 
 __all__ = [
     "Message",
-    "ItemCreate",
-    "ItemUpdate",
-    "ItemPublic",
-    "ItemsPublic",
     "UserCreate",
     "UserUpdate",
     "UserPublic",
