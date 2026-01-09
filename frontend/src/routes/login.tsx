@@ -15,7 +15,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import type { BodyLoginLoginAccessToken as AccessToken } from "@/client"
+import type { BodyLoginLoginAccessToken as AccessToken } from "@/api"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
 import { emailPattern, passwordRules } from "@/utils"

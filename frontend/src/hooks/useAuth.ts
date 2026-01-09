@@ -9,7 +9,7 @@ import {
   type PrivateUserCreate,
   type UserPublic,
   UsersService,
-} from "@/client"
+} from "@/api"
 import { handleError } from "@/utils"
 
 export const isLoggedIn = () => {

@@ -15,7 +15,7 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { z } from "zod"
-import { type UserPublic, UsersService } from "@/client"
+import { type UserPublic, UsersService } from "@/api"
 
 const usersSearchSchema = z.object({
   page: z.number().catch(1),

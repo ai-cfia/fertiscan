@@ -15,7 +15,7 @@ import {
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import type { UserPublic } from "@/client"
+import type { UserPublic } from "@/api"
 import SidebarItems from "@/components/Common/SidebarItems"
 import useAuth from "@/hooks/useAuth"
 

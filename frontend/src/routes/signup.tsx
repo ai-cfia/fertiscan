@@ -15,7 +15,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import type { PrivateUserCreate } from "@/client"
+import type { PrivateUserCreate } from "@/api"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
 import { confirmPasswordRules, emailPattern, passwordRules } from "@/utils"

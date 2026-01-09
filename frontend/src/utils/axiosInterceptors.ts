@@ -1,6 +1,6 @@
 import type { AxiosError, AxiosResponse } from "axios"
 import { StatusCodes } from "http-status-codes"
-import { client } from "@/client/client.gen"
+import { client } from "@/api/client.gen"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 
 // Status codes indicating backend unavailability (not application errors like

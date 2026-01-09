@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
-import { HealthService } from "@/client"
+import { HealthService } from "@/api"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 import { useConfig } from "@/stores/useConfig"
 
