@@ -12,6 +12,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router"
 import type { AxiosError } from "axios"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { LoginService } from "@/client"
+import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
 import { emailPattern, handleError } from "@/utils"
@@ -58,53 +59,56 @@ function RecoverPassword() {
     mutation.mutate(data)
   }
   return (
-    <Container
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      maxWidth="sm"
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <Box sx={{ textAlign: "center", mb: 2 }}>
-        <Typography variant="h4" component="h1">
-          Password Recovery
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          A password recovery email will be sent to the registered account.
-        </Typography>
-      </Box>
-      <TextField
-        {...register("email", {
-          required: "Email is required",
-          pattern: emailPattern,
-        })}
-        label="Email"
-        type="email"
-        fullWidth
-        error={!!errors.email}
-        helperText={errors.email?.message}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <EmailIcon />
-            </InputAdornment>
-          ),
+    <>
+      <BackendStatusBanner />
+      <Container
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        maxWidth="sm"
+        sx={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: 2,
         }}
-      />
-      <Button
-        variant="contained"
-        type="submit"
-        disabled={isSubmitting}
-        fullWidth
-        size="large"
       >
-        {isSubmitting ? "Sending..." : "Continue"}
-      </Button>
-    </Container>
+        <Box sx={{ textAlign: "center", mb: 2 }}>
+          <Typography variant="h4" component="h1">
+            Password Recovery
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            A password recovery email will be sent to the registered account.
+          </Typography>
+        </Box>
+        <TextField
+          {...register("email", {
+            required: "Email is required",
+            pattern: emailPattern,
+          })}
+          label="Email"
+          type="email"
+          fullWidth
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={isSubmitting}
+          fullWidth
+          size="large"
+        >
+          {isSubmitting ? "Sending..." : "Continue"}
+        </Button>
+      </Container>
+    </>
   )
 }

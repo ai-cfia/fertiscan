@@ -18400,9 +18400,7 @@
     },
     {
       "ref": "frontend@0.0.0|@babel/helper-annotate-as-pure@7.27.3",
-      "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@babel/types@7.28.5"]
     },
     {
       "ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
@@ -18455,9 +18453,7 @@
     },
     {
       "ref": "frontend@0.0.0|@babel/helper-optimise-call-expression@7.27.1",
-      "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@babel/types@7.28.5"]
     },
     {
       "ref": "frontend@0.0.0|@babel/helper-plugin-utils@7.27.1"
@@ -18496,9 +18492,7 @@
     },
     {
       "ref": "frontend@0.0.0|@babel/parser@7.28.5",
-      "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@babel/types@7.28.5"]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-syntax-jsx@7.27.1",
@@ -18634,15 +18628,11 @@
     },
     {
       "ref": "frontend@0.0.0|@emnapi/runtime@1.7.1",
-      "dependsOn": [
-        "frontend@0.0.0|tslib@2.8.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|tslib@2.8.1"]
     },
     {
       "ref": "frontend@0.0.0|@emnapi/wasi-threads@1.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|tslib@2.8.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|tslib@2.8.1"]
     },
     {
       "ref": "frontend@0.0.0|@emotion/babel-plugin@11.13.5",
@@ -18678,9 +18668,7 @@
     },
     {
       "ref": "frontend@0.0.0|@emotion/is-prop-valid@1.4.0",
-      "dependsOn": [
-        "frontend@0.0.0|@emotion/memoize@0.9.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|@emotion/memoize@0.9.0"]
     },
     {
       "ref": "frontend@0.0.0|@emotion/memoize@0.9.0"
@@ -18730,9 +18718,7 @@
     },
     {
       "ref": "frontend@0.0.0|@emotion/use-insertion-effect-with-fallbacks@1.2.0",
-      "dependsOn": [
-        "frontend@0.0.0|react@19.2.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|react@19.2.1"]
     },
     {
       "ref": "frontend@0.0.0|@emotion/utils@1.4.2"
@@ -18763,15 +18749,11 @@
     },
     {
       "ref": "frontend@0.0.0|@eslint/config-helpers@0.4.2",
-      "dependsOn": [
-        "frontend@0.0.0|@eslint/core@0.17.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|@eslint/core@0.17.0"]
     },
     {
       "ref": "frontend@0.0.0|@eslint/core@0.17.0",
-      "dependsOn": [
-        "frontend@0.0.0|@types/json-schema@7.0.15"
-      ]
+      "dependsOn": ["frontend@0.0.0|@types/json-schema@7.0.15"]
     },
     {
       "ref": "frontend@0.0.0|@eslint/eslintrc@3.3.3",
@@ -18815,9 +18797,7 @@
     },
     {
       "ref": "frontend@0.0.0|@hey-api/codegen-core@0.3.3",
-      "dependsOn": [
-        "frontend@0.0.0|typescript@5.9.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|typescript@5.9.3"]
     },
     {
       "ref": "frontend@0.0.0|@hey-api/json-schema-ref-parser@1.2.1",
@@ -19002,9 +18982,7 @@
     },
     {
       "ref": "frontend@0.0.0|@playwright/test@1.57.0",
-      "dependsOn": [
-        "frontend@0.0.0|playwright@1.57.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|playwright@1.57.0"]
     },
     {
       "ref": "frontend@0.0.0|@popperjs/core@2.11.8"
@@ -19041,9 +19019,7 @@
     },
     {
       "ref": "frontend@0.0.0|@rolldown/binding-wasm32-wasi@1.0.0-beta.50",
-      "dependsOn": [
-        "frontend@0.0.0|@napi-rs/wasm-runtime@1.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|@napi-rs/wasm-runtime@1.1.0"]
     },
     {
       "ref": "frontend@0.0.0|@rolldown/binding-win32-arm64-msvc@1.0.0-beta.50"
@@ -19282,9 +19258,7 @@
     },
     {
       "ref": "frontend@0.0.0|@tybys/wasm-util@0.10.1",
-      "dependsOn": [
-        "frontend@0.0.0|tslib@2.8.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|tslib@2.8.1"]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__core@7.20.5",
@@ -19298,9 +19272,7 @@
     },
     {
       "ref": "frontend@0.0.0|@types/babel__generator@7.27.0",
-      "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@babel/types@7.28.5"]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__template@7.4.4",
@@ -19311,9 +19283,7 @@
     },
     {
       "ref": "frontend@0.0.0|@types/babel__traverse@7.28.0",
-      "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@babel/types@7.28.5"]
     },
     {
       "ref": "frontend@0.0.0|@types/chai@5.2.3",
@@ -19333,9 +19303,7 @@
     },
     {
       "ref": "frontend@0.0.0|@types/node@24.10.1",
-      "dependsOn": [
-        "frontend@0.0.0|undici-types@7.16.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|undici-types@7.16.0"]
     },
     {
       "ref": "frontend@0.0.0|@types/parse-json@4.0.2"
@@ -19345,21 +19313,15 @@
     },
     {
       "ref": "frontend@0.0.0|@types/react-dom@19.2.3",
-      "dependsOn": [
-        "frontend@0.0.0|@types/react@19.2.7"
-      ]
+      "dependsOn": ["frontend@0.0.0|@types/react@19.2.7"]
     },
     {
       "ref": "frontend@0.0.0|@types/react-transition-group@4.4.12",
-      "dependsOn": [
-        "frontend@0.0.0|@types/react@19.2.7"
-      ]
+      "dependsOn": ["frontend@0.0.0|@types/react@19.2.7"]
     },
     {
       "ref": "frontend@0.0.0|@types/react@19.2.7",
-      "dependsOn": [
-        "frontend@0.0.0|csstype@3.2.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|csstype@3.2.3"]
     },
     {
       "ref": "frontend@0.0.0|@typescript-eslint/eslint-plugin@8.48.1",
@@ -19411,9 +19373,7 @@
     },
     {
       "ref": "frontend@0.0.0|@typescript-eslint/tsconfig-utils@8.48.1",
-      "dependsOn": [
-        "frontend@0.0.0|typescript@5.9.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|typescript@5.9.3"]
     },
     {
       "ref": "frontend@0.0.0|@typescript-eslint/type-utils@8.48.1",
@@ -19447,9 +19407,7 @@
     },
     {
       "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.48.1|brace-expansion@2.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|balanced-match@1.0.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|balanced-match@1.0.2"]
     },
     {
       "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.48.1|minimatch@9.0.5",
@@ -19511,9 +19469,7 @@
     },
     {
       "ref": "frontend@0.0.0|@vitest/pretty-format@3.2.4",
-      "dependsOn": [
-        "frontend@0.0.0|tinyrainbow@2.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|tinyrainbow@2.0.0"]
     },
     {
       "ref": "frontend@0.0.0|@vitest/runner@3.2.4",
@@ -19533,9 +19489,7 @@
     },
     {
       "ref": "frontend@0.0.0|@vitest/spy@3.2.4",
-      "dependsOn": [
-        "frontend@0.0.0|tinyspy@4.0.4"
-      ]
+      "dependsOn": ["frontend@0.0.0|tinyspy@4.0.4"]
     },
     {
       "ref": "frontend@0.0.0|@vitest/utils@3.2.4",
@@ -19547,9 +19501,7 @@
     },
     {
       "ref": "frontend@0.0.0|acorn-jsx@5.3.2",
-      "dependsOn": [
-        "frontend@0.0.0|acorn@8.15.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|acorn@8.15.0"]
     },
     {
       "ref": "frontend@0.0.0|acorn@8.15.0"
@@ -19568,9 +19520,7 @@
     },
     {
       "ref": "frontend@0.0.0|ansi-styles@4.3.0",
-      "dependsOn": [
-        "frontend@0.0.0|color-convert@2.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|color-convert@2.0.1"]
     },
     {
       "ref": "frontend@0.0.0|ansis@4.2.0"
@@ -19593,9 +19543,7 @@
     },
     {
       "ref": "frontend@0.0.0|ast-types@0.16.1",
-      "dependsOn": [
-        "frontend@0.0.0|tslib@2.8.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|tslib@2.8.1"]
     },
     {
       "ref": "frontend@0.0.0|asynckit@0.4.0"
@@ -19643,9 +19591,7 @@
     },
     {
       "ref": "frontend@0.0.0|braces@3.0.3",
-      "dependsOn": [
-        "frontend@0.0.0|fill-range@7.1.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|fill-range@7.1.1"]
     },
     {
       "ref": "frontend@0.0.0|browserslist@4.28.1",
@@ -19659,9 +19605,7 @@
     },
     {
       "ref": "frontend@0.0.0|bundle-name@4.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|run-applescript@7.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|run-applescript@7.1.0"]
     },
     {
       "ref": "frontend@0.0.0|c12@3.3.2",
@@ -19682,9 +19626,7 @@
     },
     {
       "ref": "frontend@0.0.0|c12@3.3.2|chokidar@4.0.3",
-      "dependsOn": [
-        "frontend@0.0.0|c12@3.3.2|readdirp@4.1.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|c12@3.3.2|readdirp@4.1.2"]
     },
     {
       "ref": "frontend@0.0.0|c12@3.3.2|readdirp@4.1.2"
@@ -19740,24 +19682,18 @@
     },
     {
       "ref": "frontend@0.0.0|chokidar@3.6.0|glob-parent@5.1.2",
-      "dependsOn": [
-        "frontend@0.0.0|is-glob@4.0.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-glob@4.0.3"]
     },
     {
       "ref": "frontend@0.0.0|citty@0.1.6",
-      "dependsOn": [
-        "frontend@0.0.0|consola@3.4.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|consola@3.4.2"]
     },
     {
       "ref": "frontend@0.0.0|clsx@2.1.1"
     },
     {
       "ref": "frontend@0.0.0|color-convert@2.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|color-name@1.1.4"
-      ]
+      "dependsOn": ["frontend@0.0.0|color-name@1.1.4"]
     },
     {
       "ref": "frontend@0.0.0|color-name@1.1.4"
@@ -19767,9 +19703,7 @@
     },
     {
       "ref": "frontend@0.0.0|combined-stream@1.0.8",
-      "dependsOn": [
-        "frontend@0.0.0|delayed-stream@1.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|delayed-stream@1.0.0"]
     },
     {
       "ref": "frontend@0.0.0|commander@14.0.2"
@@ -19815,9 +19749,7 @@
     },
     {
       "ref": "frontend@0.0.0|debug@4.4.3",
-      "dependsOn": [
-        "frontend@0.0.0|ms@2.1.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|ms@2.1.3"]
     },
     {
       "ref": "frontend@0.0.0|deep-eql@5.0.2"
@@ -19883,9 +19815,7 @@
     },
     {
       "ref": "frontend@0.0.0|error-ex@1.3.4",
-      "dependsOn": [
-        "frontend@0.0.0|is-arrayish@0.2.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-arrayish@0.2.1"]
     },
     {
       "ref": "frontend@0.0.0|es-define-property@1.0.1"
@@ -19898,9 +19828,7 @@
     },
     {
       "ref": "frontend@0.0.0|es-object-atoms@1.1.1",
-      "dependsOn": [
-        "frontend@0.0.0|es-errors@1.3.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|es-errors@1.3.0"]
     },
     {
       "ref": "frontend@0.0.0|es-set-tostringtag@2.1.0",
@@ -19930,9 +19858,7 @@
     },
     {
       "ref": "frontend@0.0.0|eslint-plugin-react-refresh@0.4.24",
-      "dependsOn": [
-        "frontend@0.0.0|eslint@9.39.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|eslint@9.39.1"]
     },
     {
       "ref": "frontend@0.0.0|eslint-scope@8.4.0",
@@ -19997,24 +19923,18 @@
     },
     {
       "ref": "frontend@0.0.0|esquery@1.6.0",
-      "dependsOn": [
-        "frontend@0.0.0|estraverse@5.3.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|estraverse@5.3.0"]
     },
     {
       "ref": "frontend@0.0.0|esrecurse@4.3.0",
-      "dependsOn": [
-        "frontend@0.0.0|estraverse@5.3.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|estraverse@5.3.0"]
     },
     {
       "ref": "frontend@0.0.0|estraverse@5.3.0"
     },
     {
       "ref": "frontend@0.0.0|estree-walker@3.0.3",
-      "dependsOn": [
-        "frontend@0.0.0|@types/estree@1.0.8"
-      ]
+      "dependsOn": ["frontend@0.0.0|@types/estree@1.0.8"]
     },
     {
       "ref": "frontend@0.0.0|esutils@2.0.3"
@@ -20036,21 +19956,15 @@
     },
     {
       "ref": "frontend@0.0.0|fdir@6.5.0",
-      "dependsOn": [
-        "frontend@0.0.0|picomatch@4.0.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|picomatch@4.0.3"]
     },
     {
       "ref": "frontend@0.0.0|file-entry-cache@8.0.0",
-      "dependsOn": [
-        "frontend@0.0.0|flat-cache@4.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|flat-cache@4.0.1"]
     },
     {
       "ref": "frontend@0.0.0|fill-range@7.1.1",
-      "dependsOn": [
-        "frontend@0.0.0|to-regex-range@5.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|to-regex-range@5.0.1"]
     },
     {
       "ref": "frontend@0.0.0|find-root@1.1.0"
@@ -20064,10 +19978,7 @@
     },
     {
       "ref": "frontend@0.0.0|flat-cache@4.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|flatted@3.3.3",
-        "frontend@0.0.0|keyv@4.5.4"
-      ]
+      "dependsOn": ["frontend@0.0.0|flatted@3.3.3", "frontend@0.0.0|keyv@4.5.4"]
     },
     {
       "ref": "frontend@0.0.0|flatted@3.3.3"
@@ -20118,9 +20029,7 @@
     },
     {
       "ref": "frontend@0.0.0|get-tsconfig@4.13.0",
-      "dependsOn": [
-        "frontend@0.0.0|resolve-pkg-maps@1.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|resolve-pkg-maps@1.0.0"]
     },
     {
       "ref": "frontend@0.0.0|giget@2.0.0",
@@ -20135,18 +20044,14 @@
     },
     {
       "ref": "frontend@0.0.0|glob-parent@6.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|is-glob@4.0.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-glob@4.0.3"]
     },
     {
       "ref": "frontend@0.0.0|globals@16.5.0"
     },
     {
       "ref": "frontend@0.0.0|goober@2.1.18",
-      "dependsOn": [
-        "frontend@0.0.0|csstype@3.2.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|csstype@3.2.3"]
     },
     {
       "ref": "frontend@0.0.0|gopd@1.2.0"
@@ -20165,24 +20070,18 @@
     },
     {
       "ref": "frontend@0.0.0|has-tostringtag@1.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|has-symbols@1.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|has-symbols@1.1.0"]
     },
     {
       "ref": "frontend@0.0.0|hasown@2.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|function-bind@1.1.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|function-bind@1.1.2"]
     },
     {
       "ref": "frontend@0.0.0|hermes-estree@0.25.1"
     },
     {
       "ref": "frontend@0.0.0|hermes-parser@0.25.1",
-      "dependsOn": [
-        "frontend@0.0.0|hermes-estree@0.25.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|hermes-estree@0.25.1"]
     },
     {
       "ref": "frontend@0.0.0|hoist-non-react-statics@3.3.2",
@@ -20211,15 +20110,11 @@
     },
     {
       "ref": "frontend@0.0.0|is-binary-path@2.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|binary-extensions@2.3.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|binary-extensions@2.3.0"]
     },
     {
       "ref": "frontend@0.0.0|is-core-module@2.16.1",
-      "dependsOn": [
-        "frontend@0.0.0|hasown@2.0.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|hasown@2.0.2"]
     },
     {
       "ref": "frontend@0.0.0|is-docker@3.0.0"
@@ -20229,27 +20124,21 @@
     },
     {
       "ref": "frontend@0.0.0|is-glob@4.0.3",
-      "dependsOn": [
-        "frontend@0.0.0|is-extglob@2.1.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-extglob@2.1.1"]
     },
     {
       "ref": "frontend@0.0.0|is-in-ssh@1.0.0"
     },
     {
       "ref": "frontend@0.0.0|is-inside-container@1.0.0",
-      "dependsOn": [
-        "frontend@0.0.0|is-docker@3.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-docker@3.0.0"]
     },
     {
       "ref": "frontend@0.0.0|is-number@7.0.0"
     },
     {
       "ref": "frontend@0.0.0|is-wsl@3.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|is-inside-container@1.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-inside-container@1.0.0"]
     },
     {
       "ref": "frontend@0.0.0|isbot@5.1.32"
@@ -20265,9 +20154,7 @@
     },
     {
       "ref": "frontend@0.0.0|js-yaml@4.1.1",
-      "dependsOn": [
-        "frontend@0.0.0|argparse@2.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|argparse@2.0.1"]
     },
     {
       "ref": "frontend@0.0.0|jsesc@3.1.0"
@@ -20289,9 +20176,7 @@
     },
     {
       "ref": "frontend@0.0.0|keyv@4.5.4",
-      "dependsOn": [
-        "frontend@0.0.0|json-buffer@3.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|json-buffer@3.0.1"]
     },
     {
       "ref": "frontend@0.0.0|levn@0.4.1",
@@ -20355,9 +20240,7 @@
     },
     {
       "ref": "frontend@0.0.0|locate-path@6.0.0",
-      "dependsOn": [
-        "frontend@0.0.0|p-locate@5.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|p-locate@5.0.0"]
     },
     {
       "ref": "frontend@0.0.0|lodash.merge@4.6.2"
@@ -20367,24 +20250,18 @@
     },
     {
       "ref": "frontend@0.0.0|loose-envify@1.4.0",
-      "dependsOn": [
-        "frontend@0.0.0|js-tokens@4.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|js-tokens@4.0.0"]
     },
     {
       "ref": "frontend@0.0.0|loupe@3.2.1"
     },
     {
       "ref": "frontend@0.0.0|lru-cache@5.1.1",
-      "dependsOn": [
-        "frontend@0.0.0|yallist@3.1.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|yallist@3.1.1"]
     },
     {
       "ref": "frontend@0.0.0|magic-string@0.30.21",
-      "dependsOn": [
-        "frontend@0.0.0|@jridgewell/sourcemap-codec@1.5.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|@jridgewell/sourcemap-codec@1.5.5"]
     },
     {
       "ref": "frontend@0.0.0|math-intrinsics@1.1.0"
@@ -20394,15 +20271,11 @@
     },
     {
       "ref": "frontend@0.0.0|mime-types@2.1.35",
-      "dependsOn": [
-        "frontend@0.0.0|mime-db@1.52.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|mime-db@1.52.0"]
     },
     {
       "ref": "frontend@0.0.0|minimatch@3.1.2",
-      "dependsOn": [
-        "frontend@0.0.0|brace-expansion@1.1.12"
-      ]
+      "dependsOn": ["frontend@0.0.0|brace-expansion@1.1.12"]
     },
     {
       "ref": "frontend@0.0.0|ms@2.1.3"
@@ -20462,21 +20335,15 @@
     },
     {
       "ref": "frontend@0.0.0|p-limit@3.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|yocto-queue@0.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|yocto-queue@0.1.0"]
     },
     {
       "ref": "frontend@0.0.0|p-locate@5.0.0",
-      "dependsOn": [
-        "frontend@0.0.0|p-limit@3.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|p-limit@3.1.0"]
     },
     {
       "ref": "frontend@0.0.0|parent-module@1.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|callsites@3.1.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|callsites@3.1.0"]
     },
     {
       "ref": "frontend@0.0.0|parse-json@5.2.0",
@@ -20571,10 +20438,7 @@
     },
     {
       "ref": "frontend@0.0.0|rc9@2.1.2",
-      "dependsOn": [
-        "frontend@0.0.0|defu@6.1.4",
-        "frontend@0.0.0|destr@2.0.5"
-      ]
+      "dependsOn": ["frontend@0.0.0|defu@6.1.4", "frontend@0.0.0|destr@2.0.5"]
     },
     {
       "ref": "frontend@0.0.0|react-dom@19.2.1",
@@ -20592,9 +20456,7 @@
     },
     {
       "ref": "frontend@0.0.0|react-hook-form@7.68.0",
-      "dependsOn": [
-        "frontend@0.0.0|react@19.2.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|react@19.2.1"]
     },
     {
       "ref": "frontend@0.0.0|react-is@19.2.1"
@@ -20618,9 +20480,7 @@
     },
     {
       "ref": "frontend@0.0.0|readdirp@3.6.0",
-      "dependsOn": [
-        "frontend@0.0.0|readdirp@3.6.0|picomatch@2.3.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|readdirp@3.6.0|picomatch@2.3.1"]
     },
     {
       "ref": "frontend@0.0.0|readdirp@3.6.0|picomatch@2.3.1"
@@ -20703,18 +20563,14 @@
     },
     {
       "ref": "frontend@0.0.0|seroval-plugins@1.4.0",
-      "dependsOn": [
-        "frontend@0.0.0|seroval@1.4.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|seroval@1.4.0"]
     },
     {
       "ref": "frontend@0.0.0|seroval@1.4.0"
     },
     {
       "ref": "frontend@0.0.0|shebang-command@2.0.0",
-      "dependsOn": [
-        "frontend@0.0.0|shebang-regex@3.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|shebang-regex@3.0.0"]
     },
     {
       "ref": "frontend@0.0.0|shebang-regex@3.0.0"
@@ -20732,9 +20588,7 @@
     },
     {
       "ref": "frontend@0.0.0|solid-js@1.9.10|seroval-plugins@1.3.3",
-      "dependsOn": [
-        "frontend@0.0.0|solid-js@1.9.10|seroval@1.3.2"
-      ]
+      "dependsOn": ["frontend@0.0.0|solid-js@1.9.10|seroval@1.3.2"]
     },
     {
       "ref": "frontend@0.0.0|solid-js@1.9.10|seroval@1.3.2"
@@ -20756,9 +20610,7 @@
     },
     {
       "ref": "frontend@0.0.0|strip-literal@3.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|strip-literal@3.1.0|js-tokens@9.0.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|strip-literal@3.1.0|js-tokens@9.0.1"]
     },
     {
       "ref": "frontend@0.0.0|strip-literal@3.1.0|js-tokens@9.0.1"
@@ -20768,9 +20620,7 @@
     },
     {
       "ref": "frontend@0.0.0|supports-color@7.2.0",
-      "dependsOn": [
-        "frontend@0.0.0|has-flag@4.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|has-flag@4.0.0"]
     },
     {
       "ref": "frontend@0.0.0|supports-preserve-symlinks-flag@1.0.0"
@@ -20811,15 +20661,11 @@
     },
     {
       "ref": "frontend@0.0.0|to-regex-range@5.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|is-number@7.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|is-number@7.0.0"]
     },
     {
       "ref": "frontend@0.0.0|ts-api-utils@2.1.0",
-      "dependsOn": [
-        "frontend@0.0.0|typescript@5.9.3"
-      ]
+      "dependsOn": ["frontend@0.0.0|typescript@5.9.3"]
     },
     {
       "ref": "frontend@0.0.0|tslib@2.8.1"
@@ -20943,9 +20789,7 @@
     },
     {
       "ref": "frontend@0.0.0|type-check@0.4.0",
-      "dependsOn": [
-        "frontend@0.0.0|prelude-ls@1.2.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|prelude-ls@1.2.1"]
     },
     {
       "ref": "frontend@0.0.0|typescript-eslint@8.48.1",
@@ -20983,15 +20827,11 @@
     },
     {
       "ref": "frontend@0.0.0|uri-js@4.4.1",
-      "dependsOn": [
-        "frontend@0.0.0|punycode@2.3.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|punycode@2.3.1"]
     },
     {
       "ref": "frontend@0.0.0|use-sync-external-store@1.6.0",
-      "dependsOn": [
-        "frontend@0.0.0|react@19.2.1"
-      ]
+      "dependsOn": ["frontend@0.0.0|react@19.2.1"]
     },
     {
       "ref": "frontend@0.0.0|vite-node@3.2.4",
@@ -21040,9 +20880,7 @@
     },
     {
       "ref": "frontend@0.0.0|which@2.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|isexe@2.0.0"
-      ]
+      "dependsOn": ["frontend@0.0.0|isexe@2.0.0"]
     },
     {
       "ref": "frontend@0.0.0|why-is-node-running@2.3.0",
@@ -21069,9 +20907,7 @@
     },
     {
       "ref": "frontend@0.0.0|zod-validation-error@4.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|zod@4.1.13"
-      ]
+      "dependsOn": ["frontend@0.0.0|zod@4.1.13"]
     },
     {
       "ref": "frontend@0.0.0|zod@4.1.13"

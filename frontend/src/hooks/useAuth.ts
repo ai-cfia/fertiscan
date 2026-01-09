@@ -34,7 +34,9 @@ const useAuth = () => {
 
   const signUpMutation = useMutation({
     mutationFn: async (data: PrivateUserCreate) => {
-      const response = await PrivateService.createUserNoVerification({ body: data })
+      const response = await PrivateService.createUserNoVerification({
+        body: data,
+      })
       if (response.error !== undefined) {
         throw response.error
       }

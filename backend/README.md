@@ -87,11 +87,11 @@ make start
 
 # Or directly
 uv run bash scripts/prestart.sh
-uv run fastapi dev app/main.py --port 5000
+uv run fastapi dev app/main.py --port 8000
 ```
 
 This runs pre-start checks (database health, table creation, initial data) and
-starts the development server at <http://localhost:5000>.
+starts the development server at <http://localhost:8000>.
 
 ## Development
 
@@ -100,11 +100,11 @@ starts the development server at <http://localhost:5000>.
 ```bash
 # Run development server (assumes DB is running)
 make dev
-# Or: uv run fastapi dev app/main.py --port 5000
+# Or: uv run fastapi dev app/main.py --port 8000
 
 # Or run with pre-start checks
 make start
-# Or: uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 5000
+# Or: uv run bash scripts/prestart.sh && uv run fastapi dev app/main.py --port 8000
 ```
 
 ### Available Commands
@@ -115,10 +115,10 @@ Run `make help` to see all available commands.
 
 Once the server is running:
 
-- **Interactive API docs**: <http://localhost:5000/docs>
-- **ReDoc**: <http://localhost:5000/redoc>
-- **Health check**: <http://localhost:5000/healthz>
-- **Readiness check**: <http://localhost:5000/readyz>
+- **Interactive API docs**: <http://localhost:8000/docs>
+- **ReDoc**: <http://localhost:8000/redoc>
+- **Health check**: <http://localhost:8000/healthz>
+- **Readiness check**: <http://localhost:8000/readyz>
 
 ## Project Structure
 

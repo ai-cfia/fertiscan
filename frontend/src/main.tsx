@@ -6,24 +6,32 @@ import {
 } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { AxiosError } from "axios"
+import { StatusCodes } from "http-status-codes"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { client } from "@/client/client.gen"
 import { SnackbarProvider } from "@/components/SnackbarProvider"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import { useConfig } from "@/stores/useConfig"
+import { setupBackendStatusInterceptor } from "@/utils/axiosInterceptors"
 import "./index.css"
 import { routeTree } from "./routeTree.gen"
 
+const { apiUrl } = useConfig.getState()
 client.setConfig({
-  baseURL: import.meta.env.VITE_API_URL || "",
+  baseURL: apiUrl,
   auth: () => localStorage.getItem("access_token") || "",
 })
+
+setupBackendStatusInterceptor()
 
 const handleApiError = (error: Error) => {
   if (
     error instanceof AxiosError &&
     error.response &&
-    [401, 403].includes(error.response.status)
+    [StatusCodes.UNAUTHORIZED, StatusCodes.FORBIDDEN].includes(
+      error.response.status,
+    )
   ) {
     localStorage.removeItem("access_token")
     window.location.href = "/login"

@@ -55,10 +55,10 @@ start:
 	@echo "Starting application..."
 	$(MAKE) prestart
 	@echo "Launching development server..."
-	uv run fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 8000
 
 dev:
-	uv run fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 8000
 
 prestart:
 	uv run bash scripts/prestart.sh

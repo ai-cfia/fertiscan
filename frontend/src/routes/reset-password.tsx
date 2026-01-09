@@ -12,6 +12,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
 import type { AxiosError } from "axios"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { LoginService, type NewPassword } from "@/client"
+import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
 import { confirmPasswordRules, handleError, passwordRules } from "@/utils"
@@ -69,59 +70,63 @@ function ResetPassword() {
     mutation.mutate(data)
   }
   return (
-    <Container
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      maxWidth="sm"
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <Box sx={{ textAlign: "center", mb: 2 }}>
-        <Typography variant="h4" component="h1">
+    <>
+      <BackendStatusBanner />
+      <Container
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        maxWidth="sm"
+        sx={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
+        <Box sx={{ textAlign: "center", mb: 2 }}>
+          <Typography variant="h4" component="h1">
+            Reset Password
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            Please enter your new password and confirm it to reset your
+            password.
+          </Typography>
+        </Box>
+        <TextField
+          {...register("new_password", passwordRules())}
+          label="New Password"
+          type="password"
+          fullWidth
+          error={!!errors.new_password}
+          helperText={errors.new_password?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          {...register("confirm_password", confirmPasswordRules(getValues))}
+          label="Confirm Password"
+          type="password"
+          fullWidth
+          error={!!errors.confirm_password}
+          helperText={errors.confirm_password?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button variant="contained" type="submit" fullWidth size="large">
           Reset Password
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Please enter your new password and confirm it to reset your password.
-        </Typography>
-      </Box>
-      <TextField
-        {...register("new_password", passwordRules())}
-        label="New Password"
-        type="password"
-        fullWidth
-        error={!!errors.new_password}
-        helperText={errors.new_password?.message}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        {...register("confirm_password", confirmPasswordRules(getValues))}
-        label="Confirm Password"
-        type="password"
-        fullWidth
-        error={!!errors.confirm_password}
-        helperText={errors.confirm_password?.message}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <Button variant="contained" type="submit" fullWidth size="large">
-        Reset Password
-      </Button>
-    </Container>
+        </Button>
+      </Container>
+    </>
   )
 }

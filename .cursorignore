@@ -4,3 +4,4 @@
 !tasks/
 !experiments/
 !template/
+!**/.env.example
