@@ -27,7 +27,11 @@ export default function BackendStatusBanner() {
   return (
     <Alert
       severity="error"
-      sx={{ borderRadius: 0 }}
+      sx={{
+        borderRadius: 0,
+        borderBottom: 1,
+        borderColor: "divider",
+      }}
       action={
         <>
           <Button color="inherit" size="small" onClick={handleRetry}>

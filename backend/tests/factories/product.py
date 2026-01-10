@@ -14,3 +14,4 @@ class ProductFactory(BaseFactory):
     brand_name_en = factory.Faker("company")
     brand_name_fr = None
     created_by = factory.SubFactory("tests.factories.user.UserFactory")
+    product_type = factory.SubFactory("tests.factories.product_type.ProductTypeFactory")

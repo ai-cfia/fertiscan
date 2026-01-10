@@ -35,7 +35,8 @@ const UserMenu = () => {
       <Button
         onClick={handleClick}
         startIcon={<AccountCircleIcon />}
-        sx={{ color: "inherit" }}
+        color="primary"
+        variant="contained"
       >
         {displayName}
       </Button>

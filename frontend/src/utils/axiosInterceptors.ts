@@ -1,6 +1,6 @@
 import type { AxiosError, AxiosResponse } from "axios"
 import { StatusCodes } from "http-status-codes"
-import { client } from "@/api/client.gen"
+import { client as apiClient } from "@/api/client.gen"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 
 // Status codes indicating backend unavailability (not application errors like
@@ -27,7 +27,7 @@ export const setupBackendStatusInterceptor = (() => {
       return
     }
 
-    const axiosInstance = client.instance
+    const axiosInstance = apiClient.instance
 
     if (!axiosInstance) {
       console.warn("Could not find axios instance for interceptor setup")

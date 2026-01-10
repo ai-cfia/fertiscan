@@ -9,6 +9,7 @@ from sqlalchemy import Column, DateTime
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base
+from app.db.models.product_type import ProductType
 from app.db.models.user import User
 
 if TYPE_CHECKING:
@@ -36,6 +37,9 @@ class Label(Base, table=True):
     product_id: UUID | None = Field(
         foreign_key="product.id", default=None, nullable=True, index=True
     )
+    product_type_id: UUID = Field(
+        foreign_key="producttype.id", nullable=False, index=True
+    )
     created_by_id: UUID = Field(foreign_key="user.id", nullable=False, index=True)
     extraction_status: ExtractionStatus = Field(
         default=ExtractionStatus.pending, index=True
@@ -45,6 +49,7 @@ class Label(Base, table=True):
     )
     extraction_error_message: str | None = Field(default=None)
     product: Optional["Product"] = Relationship(back_populates="labels")
+    product_type: "ProductType" = Relationship(back_populates="labels")
     created_by: User = Relationship(back_populates="labels")
     images: list["LabelImage"] = Relationship(
         back_populates="label", cascade_delete=True

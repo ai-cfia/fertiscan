@@ -16,9 +16,6 @@ export function useBackendHealthCheck() {
     queryKey: ["backend", "health", "readiness"],
     queryFn: async () => {
       const response = await HealthService.readiness()
-      if (response.error !== undefined) {
-        throw response.error
-      }
       return response.data
     },
     refetchInterval: backendHealthCheckIntervalMs,

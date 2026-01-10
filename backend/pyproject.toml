@@ -15,6 +15,7 @@ dependencies = [
     "aiosmtplib",
     "tenacity",
     "psycopg[binary]",
+    "fastapi-pagination>=0.15.5",
 ]
 
 [dependency-groups]

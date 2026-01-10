@@ -9,7 +9,7 @@ import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { client } from "@/api/client.gen"
+import { client as apiClient } from "@/api/client.gen"
 import { SnackbarProvider } from "@/components/SnackbarProvider"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { useConfig } from "@/stores/useConfig"
@@ -18,9 +18,10 @@ import "./index.css"
 import { routeTree } from "./routeTree.gen"
 
 const { apiUrl } = useConfig.getState()
-client.setConfig({
+apiClient.setConfig({
   baseURL: apiUrl,
   auth: () => localStorage.getItem("access_token") || "",
+  throwOnError: true,
 })
 
 setupBackendStatusInterceptor()

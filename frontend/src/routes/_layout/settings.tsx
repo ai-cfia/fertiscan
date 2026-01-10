@@ -1,6 +1,6 @@
 import { Box, Container, Tab, Tabs, Typography } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useAuth from "@/hooks/useAuth"
 
 export const Route = createFileRoute("/_layout/settings")({
@@ -10,6 +10,9 @@ export const Route = createFileRoute("/_layout/settings")({
 function UserSettings() {
   const { user: currentUser } = useAuth()
   const [value, setValue] = useState(0)
+  useEffect(() => {
+    document.title = "Settings - Label Inspection"
+  }, [])
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }

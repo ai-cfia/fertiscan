@@ -26,7 +26,8 @@ export const Route = createFileRoute("/reset-password")({
   beforeLoad: async () => {
     if (isLoggedIn()) {
       throw redirect({
-        to: "/",
+        to: "/$productType",
+        params: { productType: "fertilizer" },
       })
     }
   },

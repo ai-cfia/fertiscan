@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
+from fastapi_pagination import add_pagination
 from sqlalchemy.exc import (
     DatabaseError,
     DataError,
@@ -68,3 +69,4 @@ app.add_exception_handler(DataError, data_error_handler)
 app.add_exception_handler(DatabaseError, database_error_handler)
 app.include_router(health.router)
 app.include_router(api_router, prefix=settings.API_V1_STR)
+add_pagination(app)

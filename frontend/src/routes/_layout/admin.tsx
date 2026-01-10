@@ -14,6 +14,7 @@ import {
 } from "@mui/material"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { useEffect } from "react"
 import { z } from "zod"
 import { type UserPublic, UsersService } from "@/api"
 
@@ -25,10 +26,12 @@ const PER_PAGE = 5
 
 function getUsersQueryOptions({ page }: { page: number }) {
   return {
-    queryFn: () =>
-      UsersService.readUsers({
+    queryFn: async () => {
+      const response = await UsersService.readUsers({
         query: { skip: (page - 1) * PER_PAGE, limit: PER_PAGE },
-      }),
+      })
+      return response.data
+    },
     queryKey: ["users", { page }],
   }
 }
@@ -53,8 +56,8 @@ function UsersTable() {
       search: (prev) => ({ ...prev, page }),
     })
   }
-  const users = data?.data?.data?.slice(0, PER_PAGE) ?? []
-  const count = data?.data?.count ?? 0
+  const users = data?.data?.slice(0, PER_PAGE) ?? []
+  const count = data?.count ?? 0
   if (isLoading) {
     return <Typography>Loading...</Typography>
   }
@@ -118,6 +121,9 @@ function UsersTable() {
 }
 
 function Admin() {
+  useEffect(() => {
+    document.title = "Admin - Label Inspection"
+  }, [])
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ pt: 3, pb: 2 }}>

@@ -4,6 +4,8 @@
 
 ```mermaid
 erDiagram
+    ProductType ||--o{ Product : "has"
+    ProductType ||--o{ Label : "has"
     Product ||--o{ Label : "has"
     Label ||--o{ LabelImage : "has"
     Label ||--o| LabelData : "has"
@@ -11,9 +13,20 @@ erDiagram
     User ||--o{ Label : "creates"
     User ||--o{ Product : "creates"
 
+    ProductType {
+        uuid id PK
+        string code UK
+        string name_en "nullable"
+        string name_fr "nullable"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
     Product {
         uuid id PK
         uuid created_by_id FK
+        uuid product_type_id FK
         string brand_name_en "nullable"
         string brand_name_fr "nullable"
         string registration_number UK
@@ -26,6 +39,7 @@ erDiagram
     Label {
         uuid id PK
         uuid product_id FK "nullable"
+        uuid product_type_id FK
         uuid created_by_id FK
         string extraction_status
         string verification_status
@@ -201,6 +215,20 @@ Labels track state through two status fields (one per major step):
 - **French fields nullable**: French versions are nullable as not all products may
   have French labels, but English is typically required
 
+### Product Type Management
+
+- **ProductType table**: Central registry of product types (fertilizer, pesticide,
+  etc.)
+  - `code`: Unique identifier (e.g., "fertilizer", "pesticide")
+  - `name_en`/`name_fr`: Display names for i18n support (both nullable for
+    flexibility)
+  - `is_active`: Allows disabling types without deleting data
+- **Product.product_type_id**: Foreign key to ProductType (required)
+- **Label.product_type_id**: Foreign key to ProductType (required, even for
+  standalone labels)
+  - Labels always have an explicit product type, even when not linked to a product
+  - Enables efficient filtering and querying by product type
+
 ### Product Type Separation
 
 - **Generic fields in LabelData**: Common fields shared across all product types
@@ -213,6 +241,13 @@ Labels track state through two status fields (one per major step):
   (e.g., `PesticideLabelData`) following the same pattern
 - **Optional relationship**: `FertilizerLabelData` is optional (0..1), only
   created when the label is for a fertilizer product
+- **Type-specific table mapping**: The ProductType table serves as a registry,
+  while type-specific tables (FertilizerLabelData, etc.) are created via code
+  and migrations. This mismatch is acceptable because:
+  - Product types are domain concepts requiring code changes anyway (UI,
+    validation, extraction logic)
+  - Type-specific tables provide queryability and type safety
+  - ProductType table enables efficient filtering without relationship checks
 
 ### Structured Data Fields (JSONB)
 
@@ -349,12 +384,27 @@ showing different states and relationships.
 }
 ```
 
+### ProductType Record
+
+```json
+{
+  "id": "440e8400-e29b-41d4-a716-446655440000",
+  "code": "fertilizer",
+  "name_en": "Fertilizer",
+  "name_fr": "Engrais",
+  "is_active": true,
+  "created_at": "2025-01-01T00:00:00Z",
+  "updated_at": "2025-01-01T00:00:00Z"
+}
+```
+
 ### Product Record
 
 ```json
 {
   "id": "660e8400-e29b-41d4-a716-446655440001",
   "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
+  "product_type_id": "440e8400-e29b-41d4-a716-446655440000",
   "brand_name_en": "GreenGrow",
   "brand_name_fr": "CroissanceVerte",
   "registration_number": "12345-2024",
@@ -373,6 +423,7 @@ showing different states and relationships.
 {
   "id": "770e8400-e29b-41d4-a716-446655440002",
   "product_id": null,
+  "product_type_id": "440e8400-e29b-41d4-a716-446655440000",
   "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
   "extraction_status": "pending",
   "verification_status": "not_started",
@@ -388,6 +439,7 @@ showing different states and relationships.
 {
   "id": "880e8400-e29b-41d4-a716-446655440003",
   "product_id": "660e8400-e29b-41d4-a716-446655440001",
+  "product_type_id": "440e8400-e29b-41d4-a716-446655440000",
   "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
   "extraction_status": "completed",
   "verification_status": "in_progress",
@@ -403,6 +455,7 @@ showing different states and relationships.
 {
   "id": "990e8400-e29b-41d4-a716-446655440004",
   "product_id": null,
+  "product_type_id": "440e8400-e29b-41d4-a716-446655440000",
   "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
   "extraction_status": "failed",
   "verification_status": "not_started",
@@ -618,6 +671,7 @@ Label B (completed):
 {
   "id": "ee0e8400-e29b-41d4-a716-446655440009",
   "product_id": "660e8400-e29b-41d4-a716-446655440001",
+  "product_type_id": "440e8400-e29b-41d4-a716-446655440000",
   "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
   "extraction_status": "completed",
   "verification_status": "completed",

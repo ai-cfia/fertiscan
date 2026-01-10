@@ -191,5 +191,6 @@ end_to_end_pipeline_artifacts
 
 template/
 
-# Debug scripts
-scripts/debug/
+# Local scripts (not version controlled)
+backend/scripts-local/
+frontend/scripts-local/

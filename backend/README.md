@@ -5,8 +5,8 @@ Backend API for FertiScan built with FastAPI and SQLAlchemy ORM.
 ## Technology Stack
 
 - ⚡ [FastAPI](https://fastapi.tiangolo.com) - Python web framework
-- 💾 [PostgreSQL](https://www.postgresql.org) - Database (async with psycopg)
-- 🧰 [SQLAlchemy](https://www.sqlalchemy.org) - ORM (async)
+- 💾 [PostgreSQL](https://www.postgresql.org) - Database (with psycopg)
+- 🧰 [SQLAlchemy](https://www.sqlalchemy.org) - ORM
 - 🔍 [Pydantic](https://docs.pydantic.dev) - Data validation and settings
 - 📦 [uv](https://github.com/astral-sh/uv) - Python package manager
 - ✅ [pytest](https://pytest.org) - Testing framework
@@ -126,12 +126,15 @@ Once the server is running:
 app/
 ├── config.py          # Application settings
 ├── main.py            # FastAPI application entry point
-├── controllers/       # Request handlers
+├── dependencies.py    # FastAPI dependencies (DB session, auth)
+├── controllers/       # Request handlers (business logic)
 ├── routes/            # API route definitions
 ├── schemas/           # Pydantic models for validation
 ├── db/
 │   ├── base.py        # SQLAlchemy Base and MetaData
 │   ├── session.py     # Database session management
+│   ├── init_db.py     # Database initialization utilities
+│   ├── errors.py      # Database error handlers
 │   └── models/        # SQLAlchemy ORM models
 ├── core/              # Core utilities (security, etc.)
 └── email-templates/   # MJML email templates
@@ -151,3 +154,17 @@ make test-cov
 
 Tests use SQLite in-memory database via dependency overrides - no external
 database required.
+
+## Troubleshooting
+
+### Virtual Environment Corruption After SBOM Generation
+
+Generating the SBOM (Software Bill of Materials) can corrupt the `.venv`
+directory, causing errors like `Querying Python at .venv/bin/python3 failed
+with exit status signal: 9 (SIGKILL)`.
+
+**Solution**: Delete and recreate the virtual environment:
+
+```bash
+rm -rf .venv && uv sync
+```

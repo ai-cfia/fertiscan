@@ -14,9 +14,15 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
-import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutProductTypeRouteImport } from './routes/_layout/$productType'
+import { Route as LayoutProductTypeIndexRouteImport } from './routes/_layout/$productType/index'
+import { Route as LayoutProductTypeVerifyRouteImport } from './routes/_layout/$productType/verify'
+import { Route as LayoutProductTypeScanRouteImport } from './routes/_layout/$productType/scan'
+import { Route as LayoutProductTypeProductsRouteImport } from './routes/_layout/$productType/products'
+import { Route as LayoutProductTypeLabelsRouteImport } from './routes/_layout/$productType/labels'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -42,10 +48,10 @@ const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutIndexRoute = LayoutIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
   id: '/settings',
@@ -57,68 +63,134 @@ const LayoutAdminRoute = LayoutAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutProductTypeRoute = LayoutProductTypeRouteImport.update({
+  id: '/$productType',
+  path: '/$productType',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutProductTypeIndexRoute = LayoutProductTypeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
+const LayoutProductTypeVerifyRoute = LayoutProductTypeVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
+const LayoutProductTypeScanRoute = LayoutProductTypeScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
+const LayoutProductTypeProductsRoute =
+  LayoutProductTypeProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsRoute = LayoutProductTypeLabelsRouteImport.update({
+  id: '/labels',
+  path: '/labels',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/$productType': typeof LayoutProductTypeRouteWithChildren
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  '/$productType/labels': typeof LayoutProductTypeLabelsRoute
+  '/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/$productType/scan': typeof LayoutProductTypeScanRoute
+  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/$productType/': typeof LayoutProductTypeIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  '/$productType/labels': typeof LayoutProductTypeLabelsRoute
+  '/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/$productType/scan': typeof LayoutProductTypeScanRoute
+  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/$productType': typeof LayoutProductTypeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/_layout/$productType': typeof LayoutProductTypeRouteWithChildren
   '/_layout/admin': typeof LayoutAdminRoute
   '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/$productType/labels': typeof LayoutProductTypeLabelsRoute
+  '/_layout/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/_layout/$productType/scan': typeof LayoutProductTypeScanRoute
+  '/_layout/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/_layout/$productType/': typeof LayoutProductTypeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/$productType'
     | '/admin'
     | '/settings'
-    | '/'
+    | '/$productType/labels'
+    | '/$productType/products'
+    | '/$productType/scan'
+    | '/$productType/verify'
+    | '/$productType/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
     | '/admin'
     | '/settings'
-    | '/'
+    | '/$productType/labels'
+    | '/$productType/products'
+    | '/$productType/scan'
+    | '/$productType/verify'
+    | '/$productType'
   id:
     | '__root__'
+    | '/'
     | '/_layout'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/_layout/$productType'
     | '/_layout/admin'
     | '/_layout/settings'
-    | '/_layout/'
+    | '/_layout/$productType/labels'
+    | '/_layout/$productType/products'
+    | '/_layout/$productType/scan'
+    | '/_layout/$productType/verify'
+    | '/_layout/$productType/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
@@ -163,12 +235,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/': {
-      id: '/_layout/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_layout/settings': {
       id: '/_layout/settings'
@@ -184,25 +256,87 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/$productType': {
+      id: '/_layout/$productType'
+      path: '/$productType'
+      fullPath: '/$productType'
+      preLoaderRoute: typeof LayoutProductTypeRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/$productType/': {
+      id: '/_layout/$productType/'
+      path: '/'
+      fullPath: '/$productType/'
+      preLoaderRoute: typeof LayoutProductTypeIndexRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/verify': {
+      id: '/_layout/$productType/verify'
+      path: '/verify'
+      fullPath: '/$productType/verify'
+      preLoaderRoute: typeof LayoutProductTypeVerifyRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/scan': {
+      id: '/_layout/$productType/scan'
+      path: '/scan'
+      fullPath: '/$productType/scan'
+      preLoaderRoute: typeof LayoutProductTypeScanRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/products': {
+      id: '/_layout/$productType/products'
+      path: '/products'
+      fullPath: '/$productType/products'
+      preLoaderRoute: typeof LayoutProductTypeProductsRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels': {
+      id: '/_layout/$productType/labels'
+      path: '/labels'
+      fullPath: '/$productType/labels'
+      preLoaderRoute: typeof LayoutProductTypeLabelsRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
   }
 }
 
+interface LayoutProductTypeRouteChildren {
+  LayoutProductTypeLabelsRoute: typeof LayoutProductTypeLabelsRoute
+  LayoutProductTypeProductsRoute: typeof LayoutProductTypeProductsRoute
+  LayoutProductTypeScanRoute: typeof LayoutProductTypeScanRoute
+  LayoutProductTypeVerifyRoute: typeof LayoutProductTypeVerifyRoute
+  LayoutProductTypeIndexRoute: typeof LayoutProductTypeIndexRoute
+}
+
+const LayoutProductTypeRouteChildren: LayoutProductTypeRouteChildren = {
+  LayoutProductTypeLabelsRoute: LayoutProductTypeLabelsRoute,
+  LayoutProductTypeProductsRoute: LayoutProductTypeProductsRoute,
+  LayoutProductTypeScanRoute: LayoutProductTypeScanRoute,
+  LayoutProductTypeVerifyRoute: LayoutProductTypeVerifyRoute,
+  LayoutProductTypeIndexRoute: LayoutProductTypeIndexRoute,
+}
+
+const LayoutProductTypeRouteWithChildren =
+  LayoutProductTypeRoute._addFileChildren(LayoutProductTypeRouteChildren)
+
 interface LayoutRouteChildren {
+  LayoutProductTypeRoute: typeof LayoutProductTypeRouteWithChildren
   LayoutAdminRoute: typeof LayoutAdminRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
-  LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutProductTypeRoute: LayoutProductTypeRouteWithChildren,
   LayoutAdminRoute: LayoutAdminRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
-  LayoutIndexRoute: LayoutIndexRoute,
 }
 
 const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   LoginRoute: LoginRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,

@@ -1,7 +1,7 @@
 {
   "components": [
     {
-      "bom-ref": "Faker==39.0.0",
+      "bom-ref": "Faker==40.1.0",
       "description": "Faker is a Python package that generates fake data for you.",
       "externalReferences": [
         {
@@ -39,9 +39,9 @@
         }
       ],
       "name": "Faker",
-      "purl": "pkg:pypi/faker@39.0.0",
+      "purl": "pkg:pypi/faker@40.1.0",
       "type": "library",
-      "version": "39.0.0"
+      "version": "40.1.0"
     },
     {
       "bom-ref": "Jinja2==3.1.6",
@@ -354,7 +354,7 @@
       "version": "5.0.0"
     },
     {
-      "bom-ref": "alembic==1.17.2",
+      "bom-ref": "alembic==1.18.0",
       "description": "A database migration tool for SQLAlchemy.",
       "externalReferences": [
         {
@@ -392,9 +392,9 @@
         }
       ],
       "name": "alembic",
-      "purl": "pkg:pypi/alembic@1.17.2",
+      "purl": "pkg:pypi/alembic@1.18.0",
       "type": "library",
-      "version": "1.17.2"
+      "version": "1.18.0"
     },
     {
       "bom-ref": "annotated-doc==0.0.4",
@@ -473,7 +473,7 @@
       "version": "0.7.0"
     },
     {
-      "bom-ref": "anyio==4.12.0",
+      "bom-ref": "anyio==4.12.1",
       "description": "High-level concurrency and networking framework on top of asyncio or Trio",
       "externalReferences": [
         {
@@ -506,9 +506,9 @@
         }
       ],
       "name": "anyio",
-      "purl": "pkg:pypi/anyio@4.12.0",
+      "purl": "pkg:pypi/anyio@4.12.1",
       "type": "library",
-      "version": "4.12.0"
+      "version": "4.12.1"
     },
     {
       "bom-ref": "arrow==1.4.0",
@@ -639,7 +639,7 @@
       "version": "5.0"
     },
     {
-      "bom-ref": "certifi==2025.11.12",
+      "bom-ref": "certifi==2026.1.4",
       "description": "Python package for providing Mozilla's CA Bundle.",
       "externalReferences": [
         {
@@ -668,9 +668,9 @@
         }
       ],
       "name": "certifi",
-      "purl": "pkg:pypi/certifi@2025.11.12",
+      "purl": "pkg:pypi/certifi@2026.1.4",
       "type": "library",
-      "version": "2025.11.12"
+      "version": "2026.1.4"
     },
     {
       "bom-ref": "cfgv==3.5.0",
@@ -777,13 +777,13 @@
       "version": "8.3.1"
     },
     {
-      "bom-ref": "coverage==7.13.0",
+      "bom-ref": "coverage==7.13.1",
       "description": "Code coverage measurement for Python",
       "externalReferences": [
         {
           "comment": "from packaging metadata Project-URL: Documentation",
           "type": "documentation",
-          "url": "https://coverage.readthedocs.io/en/7.13.0"
+          "url": "https://coverage.readthedocs.io/en/7.13.1"
         },
         {
           "comment": "from packaging metadata Project-URL: Issues",
@@ -826,9 +826,9 @@
           "value": "toml"
         }
       ],
-      "purl": "pkg:pypi/coverage@7.13.0",
+      "purl": "pkg:pypi/coverage@7.13.1",
       "type": "library",
-      "version": "7.13.0"
+      "version": "7.13.1"
     },
     {
       "bom-ref": "cyclonedx-bom==7.2.1",
@@ -1124,7 +1124,7 @@
       "version": "3.3.3"
     },
     {
-      "bom-ref": "fastapi==0.125.0",
+      "bom-ref": "fastapi==0.128.0",
       "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
       "externalReferences": [
         {
@@ -1168,12 +1168,12 @@
           "value": "standard"
         }
       ],
-      "purl": "pkg:pypi/fastapi@0.125.0",
+      "purl": "pkg:pypi/fastapi@0.128.0",
       "type": "library",
-      "version": "0.125.0"
+      "version": "0.128.0"
     },
     {
-      "bom-ref": "fastapi-cli==0.0.16",
+      "bom-ref": "fastapi-cli==0.0.20",
       "description": "Run and manage FastAPI apps from the command line with FastAPI CLI. \ud83d\ude80",
       "externalReferences": [
         {
@@ -1221,12 +1221,12 @@
           "value": "standard-no-fastapi-cloud-cli"
         }
       ],
-      "purl": "pkg:pypi/fastapi-cli@0.0.16",
+      "purl": "pkg:pypi/fastapi-cli@0.0.20",
       "type": "library",
-      "version": "0.0.16"
+      "version": "0.0.20"
     },
     {
-      "bom-ref": "fastapi-cloud-cli==0.7.0",
+      "bom-ref": "fastapi-cloud-cli==0.9.0",
       "description": "Deploy and manage FastAPI Cloud apps from the command line \ud83d\ude80",
       "externalReferences": [
         {
@@ -1264,9 +1264,32 @@
         }
       ],
       "name": "fastapi-cloud-cli",
-      "purl": "pkg:pypi/fastapi-cloud-cli@0.7.0",
+      "purl": "pkg:pypi/fastapi-cloud-cli@0.9.0",
       "type": "library",
-      "version": "0.7.0"
+      "version": "0.9.0"
+    },
+    {
+      "bom-ref": "fastapi-pagination==0.15.6",
+      "description": "FastAPI pagination",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Repository",
+          "type": "vcs",
+          "url": "https://github.com/uriyyo/fastapi-pagination"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "acknowledgement": "declared",
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "fastapi-pagination",
+      "purl": "pkg:pypi/fastapi-pagination@0.15.6",
+      "type": "library",
+      "version": "0.15.6"
     },
     {
       "bom-ref": "fastar==0.8.0",
@@ -1302,7 +1325,7 @@
       "version": "0.8.0"
     },
     {
-      "bom-ref": "filelock==3.20.1",
+      "bom-ref": "filelock==3.20.3",
       "description": "A platform independent file lock.",
       "externalReferences": [
         {
@@ -1335,9 +1358,9 @@
         }
       ],
       "name": "filelock",
-      "purl": "pkg:pypi/filelock@3.20.1",
+      "purl": "pkg:pypi/filelock@3.20.3",
       "type": "library",
-      "version": "3.20.1"
+      "version": "3.20.3"
     },
     {
       "bom-ref": "fqdn==1.5.1",
@@ -1673,7 +1696,7 @@
       "version": "3.0.0"
     },
     {
-      "bom-ref": "jsonschema==4.25.1",
+      "bom-ref": "jsonschema==4.26.0",
       "description": "An implementation of JSON Schema validation for Python",
       "externalReferences": [
         {
@@ -1727,9 +1750,9 @@
           "value": "format-nongpl"
         }
       ],
-      "purl": "pkg:pypi/jsonschema@4.25.1",
+      "purl": "pkg:pypi/jsonschema@4.26.0",
       "type": "library",
-      "version": "4.25.1"
+      "version": "4.26.0"
     },
     {
       "bom-ref": "jsonschema-specifications==2025.9.1",
@@ -1808,7 +1831,7 @@
       "version": "1.3.1"
     },
     {
-      "bom-ref": "librt==0.7.4",
+      "bom-ref": "librt==0.7.7",
       "description": "Mypyc runtime library",
       "externalReferences": [
         {
@@ -1831,9 +1854,9 @@
         }
       ],
       "name": "librt",
-      "purl": "pkg:pypi/librt@0.7.4",
+      "purl": "pkg:pypi/librt@0.7.7",
       "type": "library",
-      "version": "0.7.4"
+      "version": "0.7.7"
     },
     {
       "bom-ref": "license-expression==30.4.4",
@@ -2009,7 +2032,7 @@
       "version": "1.1.0"
     },
     {
-      "bom-ref": "nodeenv==1.9.1",
+      "bom-ref": "nodeenv==1.10.0",
       "description": "Node.js virtual environment builder",
       "externalReferences": [
         {
@@ -2027,9 +2050,9 @@
         }
       ],
       "name": "nodeenv",
-      "purl": "pkg:pypi/nodeenv@1.9.1",
+      "purl": "pkg:pypi/nodeenv@1.10.0",
       "type": "library",
-      "version": "1.9.1"
+      "version": "1.10.0"
     },
     {
       "bom-ref": "packageurl-python==0.17.6",
@@ -2089,7 +2112,7 @@
       "version": "25.0"
     },
     {
-      "bom-ref": "pathspec==0.12.1",
+      "bom-ref": "pathspec==1.0.3",
       "description": "Utility library for gitignore style pattern matching of file paths.",
       "externalReferences": [
         {
@@ -2117,9 +2140,9 @@
         }
       ],
       "name": "pathspec",
-      "purl": "pkg:pypi/pathspec@0.12.1",
+      "purl": "pkg:pypi/pathspec@1.0.3",
       "type": "library",
-      "version": "0.12.1"
+      "version": "1.0.3"
     },
     {
       "bom-ref": "pip-requirements-parser==32.0.1",
@@ -2422,6 +2445,44 @@
       "version": "2.12.5"
     },
     {
+      "bom-ref": "pydantic-extra-types==2.11.0",
+      "description": "Extra Pydantic types.",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://docs.pydantic.dev/latest/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source",
+          "type": "other",
+          "url": "https://github.com/pydantic/pydantic-extra-types"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Changelog",
+          "type": "release-notes",
+          "url": "https://github.com/pydantic/pydantic-extra-types/releases"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Homepage",
+          "type": "website",
+          "url": "https://github.com/pydantic/pydantic-extra-types"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "acknowledgement": "declared",
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "pydantic-extra-types",
+      "purl": "pkg:pypi/pydantic-extra-types@2.11.0",
+      "type": "library",
+      "version": "2.11.0"
+    },
+    {
       "bom-ref": "pydantic-settings==2.12.0",
       "description": "Settings management using Pydantic",
       "externalReferences": [
@@ -2503,7 +2564,7 @@
       "version": "2.41.5"
     },
     {
-      "bom-ref": "pyparsing==3.2.5",
+      "bom-ref": "pyparsing==3.3.1",
       "description": "pyparsing - Classes and methods to define and execute parsing grammars",
       "externalReferences": [
         {
@@ -2521,9 +2582,9 @@
         }
       ],
       "name": "pyparsing",
-      "purl": "pkg:pypi/pyparsing@3.2.5",
+      "purl": "pkg:pypi/pyparsing@3.3.1",
       "type": "library",
-      "version": "3.2.5"
+      "version": "3.3.1"
     },
     {
       "bom-ref": "pytest==9.0.2",
@@ -3048,7 +3109,7 @@
       "version": "0.30.0"
     },
     {
-      "bom-ref": "ruff==0.14.10",
+      "bom-ref": "ruff==0.14.11",
       "description": "An extremely fast Python linter and code formatter, written in Rust.",
       "externalReferences": [
         {
@@ -3081,12 +3142,12 @@
         }
       ],
       "name": "ruff",
-      "purl": "pkg:pypi/ruff@0.14.10",
+      "purl": "pkg:pypi/ruff@0.14.11",
       "type": "library",
-      "version": "0.14.10"
+      "version": "0.14.11"
     },
     {
-      "bom-ref": "sentry-sdk==2.48.0",
+      "bom-ref": "sentry-sdk==2.49.0",
       "description": "Python client for Sentry (https://sentry.io)",
       "externalReferences": [
         {
@@ -3120,9 +3181,9 @@
         }
       ],
       "name": "sentry-sdk",
-      "purl": "pkg:pypi/sentry-sdk@2.48.0",
+      "purl": "pkg:pypi/sentry-sdk@2.49.0",
       "type": "library",
-      "version": "2.48.0"
+      "version": "2.49.0"
     },
     {
       "bom-ref": "shellingham==1.5.4",
@@ -3194,7 +3255,7 @@
       "version": "2.4.0"
     },
     {
-      "bom-ref": "sqlmodel==0.0.27",
+      "bom-ref": "sqlmodel==0.0.31",
       "description": "SQLModel, SQL databases in Python, designed for simplicity, compatibility, and robustness.",
       "externalReferences": [
         {
@@ -3232,9 +3293,9 @@
         }
       ],
       "name": "sqlmodel",
-      "purl": "pkg:pypi/sqlmodel@0.0.27",
+      "purl": "pkg:pypi/sqlmodel@0.0.31",
       "type": "library",
-      "version": "0.0.27"
+      "version": "0.0.31"
     },
     {
       "bom-ref": "starlette==0.50.0",
@@ -3303,7 +3364,7 @@
       "version": "9.1.2"
     },
     {
-      "bom-ref": "typer==0.20.1",
+      "bom-ref": "typer==0.21.1",
       "description": "Typer, build great CLIs. Easy to code. Based on Python type hints.",
       "externalReferences": [
         {
@@ -3341,9 +3402,9 @@
         }
       ],
       "name": "typer",
-      "purl": "pkg:pypi/typer@0.20.1",
+      "purl": "pkg:pypi/typer@0.21.1",
       "type": "library",
-      "version": "0.20.1"
+      "version": "0.21.1"
     },
     {
       "bom-ref": "types-Jinja2==2.11.9",
@@ -3605,7 +3666,7 @@
       "version": "1.3.0"
     },
     {
-      "bom-ref": "urllib3==2.6.2",
+      "bom-ref": "urllib3==2.6.3",
       "description": "HTTP library with thread-safe connection pooling, file post, and more.",
       "externalReferences": [
         {
@@ -3638,12 +3699,12 @@
         }
       ],
       "name": "urllib3",
-      "purl": "pkg:pypi/urllib3@2.6.2",
+      "purl": "pkg:pypi/urllib3@2.6.3",
       "type": "library",
-      "version": "2.6.2"
+      "version": "2.6.3"
     },
     {
-      "bom-ref": "uvicorn==0.38.0",
+      "bom-ref": "uvicorn==0.40.0",
       "description": "The lightning-fast ASGI server.",
       "externalReferences": [
         {
@@ -3682,9 +3743,9 @@
           "value": "standard"
         }
       ],
-      "purl": "pkg:pypi/uvicorn@0.38.0",
+      "purl": "pkg:pypi/uvicorn@0.40.0",
       "type": "library",
-      "version": "0.38.0"
+      "version": "0.40.0"
     },
     {
       "bom-ref": "uvloop==0.22.1",
@@ -3716,7 +3777,7 @@
       "version": "0.22.1"
     },
     {
-      "bom-ref": "virtualenv==20.35.4",
+      "bom-ref": "virtualenv==20.36.1",
       "description": "Virtual Python Environment builder",
       "externalReferences": [
         {
@@ -3749,9 +3810,9 @@
         }
       ],
       "name": "virtualenv",
-      "purl": "pkg:pypi/virtualenv@20.35.4",
+      "purl": "pkg:pypi/virtualenv@20.36.1",
       "type": "library",
-      "version": "20.35.4"
+      "version": "20.36.1"
     },
     {
       "bom-ref": "watchfiles==1.1.1",
@@ -3836,7 +3897,7 @@
       "version": "25.10.0"
     },
     {
-      "bom-ref": "websockets==15.0.1",
+      "bom-ref": "websockets==16.0",
       "description": "An implementation of the WebSocket Protocol (RFC 6455 & 7692)",
       "externalReferences": [
         {
@@ -3871,18 +3932,12 @@
             "acknowledgement": "declared",
             "id": "BSD-3-Clause"
           }
-        },
-        {
-          "license": {
-            "acknowledgement": "declared",
-            "name": "License :: OSI Approved :: BSD License"
-          }
         }
       ],
       "name": "websockets",
-      "purl": "pkg:pypi/websockets@15.0.1",
+      "purl": "pkg:pypi/websockets@16.0",
       "type": "library",
-      "version": "15.0.1"
+      "version": "16.0"
     }
   ],
   "dependencies": [
@@ -3890,7 +3945,7 @@
       "dependsOn": [
         "tzdata==2025.3"
       ],
-      "ref": "Faker==39.0.0"
+      "ref": "Faker==40.1.0"
     },
     {
       "dependsOn": [
@@ -3910,7 +3965,7 @@
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "pre_commit==4.5.1",
         "pytest==9.0.2"
       ],
@@ -3944,7 +3999,7 @@
         "typing_extensions==4.15.0",
         "tzdata==2025.3"
       ],
-      "ref": "alembic==1.17.2"
+      "ref": "alembic==1.18.0"
     },
     {
       "ref": "annotated-doc==0.0.4"
@@ -3960,7 +4015,7 @@
         "idna==3.11",
         "typing_extensions==4.15.0"
       ],
-      "ref": "anyio==4.12.0"
+      "ref": "anyio==4.12.1"
     },
     {
       "dependsOn": [
@@ -3990,7 +4045,7 @@
       "ref": "boolean.py==5.0"
     },
     {
-      "ref": "certifi==2025.11.12"
+      "ref": "certifi==2026.1.4"
     },
     {
       "ref": "cfgv==3.5.0"
@@ -4002,7 +4057,7 @@
       "ref": "click==8.3.1"
     },
     {
-      "ref": "coverage==7.13.0"
+      "ref": "coverage==7.13.1"
     },
     {
       "dependsOn": [
@@ -4016,7 +4071,7 @@
     },
     {
       "dependsOn": [
-        "jsonschema==4.25.1",
+        "jsonschema==4.26.0",
         "license-expression==30.4.4",
         "lxml==6.0.2",
         "packageurl-python==0.17.6",
@@ -4035,7 +4090,7 @@
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "httpcore==1.0.9",
         "httpx==0.28.1",
         "idna==3.11",
@@ -4061,21 +4116,21 @@
     },
     {
       "dependsOn": [
-        "Faker==39.0.0",
+        "Faker==40.1.0",
         "SQLAlchemy==2.0.45",
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "mypy==1.19.1"
       ],
       "ref": "factory_boy==3.3.3"
     },
     {
       "dependsOn": [
-        "fastapi-cloud-cli==0.7.0",
+        "fastapi-cloud-cli==0.9.0",
         "rich-toolkit==0.17.1",
-        "typer==0.20.1",
-        "uvicorn==0.38.0"
+        "typer==0.21.1",
+        "uvicorn==0.40.0"
       ],
-      "ref": "fastapi-cli==0.0.16"
+      "ref": "fastapi-cli==0.0.20"
     },
     {
       "dependsOn": [
@@ -4084,11 +4139,22 @@
         "pydantic==2.12.5",
         "rich-toolkit==0.17.1",
         "rignore==0.7.6",
-        "sentry-sdk==2.48.0",
-        "typer==0.20.1",
-        "uvicorn==0.38.0"
+        "sentry-sdk==2.49.0",
+        "typer==0.21.1",
+        "uvicorn==0.40.0"
       ],
-      "ref": "fastapi-cloud-cli==0.7.0"
+      "ref": "fastapi-cloud-cli==0.9.0"
+    },
+    {
+      "dependsOn": [
+        "SQLAlchemy==2.0.45",
+        "fastapi==0.128.0",
+        "psycopg==3.3.2",
+        "pydantic==2.12.5",
+        "sqlmodel==0.0.31",
+        "typing_extensions==4.15.0"
+      ],
+      "ref": "fastapi-pagination==0.15.6"
     },
     {
       "dependsOn": [
@@ -4096,22 +4162,23 @@
         "PyYAML==6.0.3",
         "annotated-doc==0.0.4",
         "email-validator==2.3.0",
-        "fastapi-cli==0.0.16",
+        "fastapi-cli==0.0.20",
         "httpx==0.28.1",
+        "pydantic-extra-types==2.11.0",
         "pydantic-settings==2.12.0",
         "pydantic==2.12.5",
         "python-multipart==0.0.21",
         "starlette==0.50.0",
         "typing_extensions==4.15.0",
-        "uvicorn==0.38.0"
+        "uvicorn==0.40.0"
       ],
-      "ref": "fastapi==0.125.0"
+      "ref": "fastapi==0.128.0"
     },
     {
       "ref": "fastar==0.8.0"
     },
     {
-      "ref": "filelock==3.20.1"
+      "ref": "filelock==3.20.3"
     },
     {
       "ref": "fqdn==1.5.1"
@@ -4124,8 +4191,8 @@
     },
     {
       "dependsOn": [
-        "anyio==4.12.0",
-        "certifi==2025.11.12",
+        "anyio==4.12.1",
+        "certifi==2026.1.4",
         "h11==0.16.0"
       ],
       "ref": "httpcore==1.0.9"
@@ -4136,8 +4203,8 @@
     {
       "dependsOn": [
         "Pygments==2.19.2",
-        "anyio==4.12.0",
-        "certifi==2025.11.12",
+        "anyio==4.12.1",
+        "certifi==2026.1.4",
         "click==8.3.1",
         "httpcore==1.0.9",
         "idna==3.11",
@@ -4152,7 +4219,7 @@
       "dependsOn": [
         "mypy==1.19.1",
         "pytest==9.0.2",
-        "ruff==0.14.10"
+        "ruff==0.14.11"
       ],
       "ref": "idna==3.11"
     },
@@ -4190,20 +4257,20 @@
         "uri-template==1.3.0",
         "webcolors==25.10.0"
       ],
-      "ref": "jsonschema==4.25.1"
+      "ref": "jsonschema==4.26.0"
     },
     {
       "ref": "lark==1.3.1"
     },
     {
-      "ref": "librt==0.7.4"
+      "ref": "librt==0.7.7"
     },
     {
       "dependsOn": [
         "boolean.py==5.0",
         "pytest-xdist==3.8.0",
         "pytest==9.0.2",
-        "ruff==0.14.10"
+        "ruff==0.14.11"
       ],
       "ref": "license-expression==30.4.4"
     },
@@ -4213,7 +4280,7 @@
     {
       "dependsOn": [
         "PyYAML==6.0.3",
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "mdurl==0.1.2",
         "pytest-cov==7.0.0",
         "pytest==9.0.2"
@@ -4225,10 +4292,10 @@
     },
     {
       "dependsOn": [
-        "librt==0.7.4",
+        "librt==0.7.7",
         "lxml==6.0.2",
         "mypy_extensions==1.1.0",
-        "pathspec==0.12.1",
+        "pathspec==1.0.3",
         "typing_extensions==4.15.0"
       ],
       "ref": "mypy==1.19.1"
@@ -4237,7 +4304,7 @@
       "ref": "mypy_extensions==1.1.0"
     },
     {
-      "ref": "nodeenv==1.9.1"
+      "ref": "nodeenv==1.10.0"
     },
     {
       "dependsOn": [
@@ -4251,12 +4318,16 @@
       "ref": "packaging==25.0"
     },
     {
-      "ref": "pathspec==0.12.1"
+      "dependsOn": [
+        "pytest==9.0.2",
+        "typing_extensions==4.15.0"
+      ],
+      "ref": "pathspec==1.0.3"
     },
     {
       "dependsOn": [
         "packaging==25.0",
-        "pyparsing==3.2.5",
+        "pyparsing==3.3.1",
         "pytest-xdist==3.8.0",
         "pytest==9.0.2"
       ],
@@ -4272,7 +4343,7 @@
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "pre_commit==4.5.1",
         "pytest==9.0.2"
       ],
@@ -4283,8 +4354,8 @@
         "PyYAML==6.0.3",
         "cfgv==3.5.0",
         "identify==2.6.15",
-        "nodeenv==1.9.1",
-        "virtualenv==20.35.4"
+        "nodeenv==1.10.0",
+        "virtualenv==20.36.1"
       ],
       "ref": "pre_commit==4.5.1"
     },
@@ -4293,7 +4364,7 @@
     },
     {
       "dependsOn": [
-        "anyio==4.12.0",
+        "anyio==4.12.1",
         "dnspython==2.8.0",
         "mypy==1.19.1",
         "pre_commit==4.5.1",
@@ -4310,6 +4381,14 @@
         "defusedxml==0.7.1"
       ],
       "ref": "py-serializable==2.1.0"
+    },
+    {
+      "dependsOn": [
+        "pydantic==2.12.5",
+        "typing_extensions==4.15.0",
+        "tzdata==2025.3"
+      ],
+      "ref": "pydantic-extra-types==2.11.0"
     },
     {
       "dependsOn": [
@@ -4341,11 +4420,11 @@
       "dependsOn": [
         "Jinja2==3.1.6"
       ],
-      "ref": "pyparsing==3.2.5"
+      "ref": "pyparsing==3.3.1"
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "pytest==9.0.2",
         "typing_extensions==4.15.0"
       ],
@@ -4353,18 +4432,18 @@
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "pluggy==1.6.0",
         "pytest-xdist==3.8.0",
         "pytest==9.0.2",
-        "virtualenv==20.35.4"
+        "virtualenv==20.36.1"
       ],
       "ref": "pytest-cov==7.0.0"
     },
     {
       "dependsOn": [
         "execnet==2.1.2",
-        "filelock==3.20.1",
+        "filelock==3.20.3",
         "pytest==9.0.2"
       ],
       "ref": "pytest-xdist==3.8.0"
@@ -4441,13 +4520,14 @@
         "Jinja2==3.1.6",
         "PyJWT==2.10.1",
         "aiosmtplib==5.0.0",
-        "alembic==1.17.2",
+        "alembic==1.18.0",
         "bcrypt==5.0.0",
-        "fastapi==0.125.0",
+        "fastapi-pagination==0.15.6",
+        "fastapi==0.128.0",
         "psycopg==3.3.2",
         "pydantic-settings==2.12.0",
         "python-dotenv==1.2.1",
-        "sqlmodel==0.0.27",
+        "sqlmodel==0.0.31",
         "tenacity==9.1.2"
       ],
       "ref": "root-component"
@@ -4456,20 +4536,20 @@
       "ref": "rpds-py==0.30.0"
     },
     {
-      "ref": "ruff==0.14.10"
+      "ref": "ruff==0.14.11"
     },
     {
       "dependsOn": [
         "MarkupSafe==3.0.3",
         "SQLAlchemy==2.0.45",
-        "certifi==2025.11.12",
-        "fastapi==0.125.0",
+        "certifi==2026.1.4",
+        "fastapi==0.128.0",
         "httpcore==1.0.9",
         "httpx==0.28.1",
         "starlette==0.50.0",
-        "urllib3==2.6.2"
+        "urllib3==2.6.3"
       ],
-      "ref": "sentry-sdk==2.48.0"
+      "ref": "sentry-sdk==2.49.0"
     },
     {
       "ref": "shellingham==1.5.4"
@@ -4485,13 +4565,13 @@
         "SQLAlchemy==2.0.45",
         "pydantic==2.12.5"
       ],
-      "ref": "sqlmodel==0.0.27"
+      "ref": "sqlmodel==0.0.31"
     },
     {
       "dependsOn": [
         "Jinja2==3.1.6",
         "PyYAML==6.0.3",
-        "anyio==4.12.0",
+        "anyio==4.12.1",
         "httpx==0.28.1",
         "python-multipart==0.0.21",
         "typing_extensions==4.15.0"
@@ -4511,7 +4591,7 @@
         "shellingham==1.5.4",
         "typing_extensions==4.15.0"
       ],
-      "ref": "typer==0.20.1"
+      "ref": "typer==0.21.1"
     },
     {
       "dependsOn": [
@@ -4550,7 +4630,7 @@
       "ref": "uri-template==1.3.0"
     },
     {
-      "ref": "urllib3==2.6.2"
+      "ref": "urllib3==2.6.3"
     },
     {
       "dependsOn": [
@@ -4562,9 +4642,9 @@
         "typing_extensions==4.15.0",
         "uvloop==0.22.1",
         "watchfiles==1.1.1",
-        "websockets==15.0.1"
+        "websockets==16.0"
       ],
-      "ref": "uvicorn==0.38.0"
+      "ref": "uvicorn==0.40.0"
     },
     {
       "dependsOn": [
@@ -4574,19 +4654,19 @@
     },
     {
       "dependsOn": [
-        "coverage==7.13.0",
+        "coverage==7.13.1",
         "distlib==0.4.0",
-        "filelock==3.20.1",
+        "filelock==3.20.3",
         "packaging==25.0",
         "platformdirs==4.5.1",
         "pytest==9.0.2",
         "typing_extensions==4.15.0"
       ],
-      "ref": "virtualenv==20.35.4"
+      "ref": "virtualenv==20.36.1"
     },
     {
       "dependsOn": [
-        "anyio==4.12.0"
+        "anyio==4.12.1"
       ],
       "ref": "watchfiles==1.1.1"
     },
@@ -4594,7 +4674,7 @@
       "ref": "webcolors==25.10.0"
     },
     {
-      "ref": "websockets==15.0.1"
+      "ref": "websockets==16.0"
     }
   ],
   "metadata": {

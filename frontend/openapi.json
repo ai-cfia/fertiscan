@@ -479,6 +479,185 @@
         }
       }
     },
+    "/api/v1/labels": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Labels",
+        "description": "List labels with optional filters.",
+        "operationId": "labels_read_labels",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          },
+          {
+            "name": "verification_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/VerificationStatus" },
+                { "type": "null" }
+              ],
+              "description": "Filter by verification status",
+              "title": "Verification Status"
+            },
+            "description": "Filter by verification status"
+          },
+          {
+            "name": "extraction_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/ExtractionStatus" },
+                { "type": "null" }
+              ],
+              "description": "Filter by extraction status",
+              "title": "Extraction Status"
+            },
+            "description": "Filter by extraction status"
+          },
+          {
+            "name": "unlinked",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter unlinked labels only (product_id is null)",
+              "title": "Unlinked"
+            },
+            "description": "Filter unlinked labels only (product_id is null)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_LabelPublic_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Read Products",
+        "description": "List products with optional filters.",
+        "operationId": "products_read_products",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_ProductPublic_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/private/users/": {
       "post": {
         "tags": ["private"],
@@ -546,6 +725,11 @@
         "required": ["username", "password"],
         "title": "Body_login_login_access_token"
       },
+      "ExtractionStatus": {
+        "type": "string",
+        "enum": ["pending", "in_progress", "completed", "failed"],
+        "title": "ExtractionStatus"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -562,6 +746,44 @@
         "type": "object",
         "required": ["status"],
         "title": "Health"
+      },
+      "LabelPublic": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["id"],
+        "title": "LabelPublic"
+      },
+      "LimitOffsetPage_LabelPublic_": {
+        "properties": {
+          "items": {
+            "items": { "$ref": "#/components/schemas/LabelPublic" },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[LabelPublic]"
+      },
+      "LimitOffsetPage_ProductPublic_": {
+        "properties": {
+          "items": {
+            "items": { "$ref": "#/components/schemas/ProductPublic" },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[ProductPublic]"
       },
       "Message": {
         "properties": { "message": { "type": "string", "title": "Message" } },
@@ -594,6 +816,14 @@
         "type": "object",
         "required": ["email", "password"],
         "title": "PrivateUserCreate"
+      },
+      "ProductPublic": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["id"],
+        "title": "ProductPublic"
       },
       "Readiness": {
         "properties": {
@@ -824,6 +1054,11 @@
         "type": "object",
         "required": ["loc", "msg", "type"],
         "title": "ValidationError"
+      },
+      "VerificationStatus": {
+        "type": "string",
+        "enum": ["not_started", "in_progress", "completed"],
+        "title": "VerificationStatus"
       }
     },
     "securitySchemes": {

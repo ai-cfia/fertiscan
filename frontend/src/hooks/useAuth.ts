@@ -24,9 +24,6 @@ const useAuth = () => {
     queryKey: ["currentUser"],
     queryFn: async () => {
       const response = await UsersService.readUserMe()
-      if (response.error !== undefined) {
-        throw response.error
-      }
       return response.data ?? null
     },
     enabled: isLoggedIn(),
@@ -37,9 +34,6 @@ const useAuth = () => {
       const response = await PrivateService.createUserNoVerification({
         body: data,
       })
-      if (response.error !== undefined) {
-        throw response.error
-      }
       return response.data
     },
     onSuccess: () => {
@@ -57,10 +51,7 @@ const useAuth = () => {
     const response = await LoginService.loginAccessToken({
       body: data,
     })
-    if (response.error !== undefined) {
-      throw response.error
-    }
-    localStorage.setItem("access_token", response.data.access_token)
+    localStorage.setItem("access_token", response.data?.access_token ?? "")
   }
 
   const loginMutation = useMutation({

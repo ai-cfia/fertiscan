@@ -11401,6 +11401,40 @@
     },
     {
       "type": "library",
+      "name": "http-status-codes",
+      "version": "2.3.0",
+      "bom-ref": "frontend@0.0.0|http-status-codes@2.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/http-status-codes@2.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/http-status-codes/-/http-status-codes-2.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "449f17bc5be93ccfc399ce5257e742e32e4f09e3a14f7c751ead0d537ae319e8396bf0aa96167bbae7649cfc19173e1a7805c371b03269e3fb180a3d96f9e0b4"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/http-status-codes"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "ignore",
       "version": "5.3.2",
       "bom-ref": "frontend@0.0.0|ignore@5.3.2",
@@ -18313,6 +18347,40 @@
           "value": "node_modules/zod"
         }
       ]
+    },
+    {
+      "type": "library",
+      "name": "zustand",
+      "version": "5.0.9",
+      "bom-ref": "frontend@0.0.0|zustand@5.0.9",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/zustand@5.0.9",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/zustand/-/zustand-5.0.9.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "00b06d523d007e326ddee3514282f5b4bdad32f8fa1a9ffa7b7f5d9df4fabb3a5e946aeef2fd6d3ce181cdac8e59b3c9bee8ccf09a230e4dc4d4bc5e162b0136"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/zustand"
+        }
+      ]
     }
   ],
   "dependencies": [
@@ -18346,6 +18414,7 @@
         "frontend@0.0.0|eslint@9.39.1",
         "frontend@0.0.0|form-data@4.0.5",
         "frontend@0.0.0|globals@16.5.0",
+        "frontend@0.0.0|http-status-codes@2.3.0",
         "frontend@0.0.0|react-dom@19.2.1",
         "frontend@0.0.0|react-error-boundary@6.0.0",
         "frontend@0.0.0|react-hook-form@7.68.0",
@@ -18354,7 +18423,8 @@
         "frontend@0.0.0|tailwindcss@4.1.17",
         "frontend@0.0.0|typescript-eslint@8.48.1",
         "frontend@0.0.0|typescript@5.9.3",
-        "frontend@0.0.0|vitest@3.2.4"
+        "frontend@0.0.0|vitest@3.2.4",
+        "frontend@0.0.0|zustand@5.0.9"
       ]
     },
     {
@@ -20093,6 +20163,9 @@
       "ref": "frontend@0.0.0|hoist-non-react-statics@3.3.2|react-is@16.13.1"
     },
     {
+      "ref": "frontend@0.0.0|http-status-codes@2.3.0"
+    },
+    {
       "ref": "frontend@0.0.0|ignore@5.3.2"
     },
     {
@@ -20911,6 +20984,14 @@
     },
     {
       "ref": "frontend@0.0.0|zod@4.1.13"
+    },
+    {
+      "ref": "frontend@0.0.0|zustand@5.0.9",
+      "dependsOn": [
+        "frontend@0.0.0|@types/react@19.2.7",
+        "frontend@0.0.0|react@19.2.1",
+        "frontend@0.0.0|use-sync-external-store@1.6.0"
+      ]
     }
   ]
 }
