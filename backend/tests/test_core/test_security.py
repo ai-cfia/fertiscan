@@ -59,7 +59,9 @@ def test_create_access_token() -> None:
     token = create_access_token(subject, expires_delta)
     assert isinstance(token, str)
     assert len(token) > 0
-    decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    decoded = jwt.decode(
+        token, settings.SECRET_KEY.get_secret_value(), algorithms=[ALGORITHM]
+    )
     assert decoded["sub"] == subject
     assert "exp" in decoded
 
@@ -69,7 +71,9 @@ def test_create_access_token_expiry() -> None:
     subject = str(uuid4())
     expires_delta = timedelta(minutes=30)
     token = create_access_token(subject, expires_delta)
-    decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    decoded = jwt.decode(
+        token, settings.SECRET_KEY.get_secret_value(), algorithms=[ALGORITHM]
+    )
     exp_timestamp = decoded["exp"]
     exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=UTC)
     now = datetime.now(UTC)
@@ -83,7 +87,9 @@ def test_generate_password_reset_token() -> None:
     token = generate_password_reset_token(email)
     assert isinstance(token, str)
     assert len(token) > 0
-    decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    decoded = jwt.decode(
+        token, settings.SECRET_KEY.get_secret_value(), algorithms=[ALGORITHM]
+    )
     assert decoded["sub"] == email
     assert "exp" in decoded
 
@@ -93,7 +99,9 @@ def test_generate_password_reset_token_custom_expiry() -> None:
     email = "test@example.com"
     expires_delta = timedelta(minutes=15)
     token = generate_password_reset_token(email, expires_delta=expires_delta)
-    decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    decoded = jwt.decode(
+        token, settings.SECRET_KEY.get_secret_value(), algorithms=[ALGORITHM]
+    )
     exp_timestamp = decoded["exp"]
     exp_datetime = datetime.fromtimestamp(exp_timestamp, tz=UTC)
     now = datetime.now(UTC)

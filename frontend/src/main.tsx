@@ -40,7 +40,7 @@ const handleApiError = (error: Error) => {
   console.error("API error:", error)
 }
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: handleApiError,
   }),

@@ -8,7 +8,12 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: backend/app/email-templates/build/.*
+        exclude: |
+          (?x)^(
+            backend/app/email-templates/build/.*|
+            frontend/sbom\.json|
+            backend/sbom\.json
+          )$
       - id: trailing-whitespace
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.2.2
@@ -38,6 +43,7 @@ repos:
           - jinja2
           - tenacity
           - aiosmtplib
+          - boto3-stubs[s3]
   - repo: local
     hooks:
       - id: alembic-check

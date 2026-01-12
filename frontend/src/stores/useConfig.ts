@@ -8,12 +8,14 @@ import { devtools } from "zustand/middleware"
 interface ConfigStore {
   backendHealthCheckIntervalMs: number
   apiUrl: string
+  maxImagesPerLabel: number
 }
 
 const config = {
   backendHealthCheckIntervalMs:
     Number(import.meta.env.VITE_BACKEND_HEALTH_CHECK_INTERVAL_MS) || 15000,
   apiUrl: import.meta.env.VITE_API_URL || "",
+  maxImagesPerLabel: 5,
 }
 
 const store = () => config

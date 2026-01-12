@@ -81,7 +81,11 @@ class TestGetCurrentUser:
         to_encode = {"exp": expire}
         token = cast(
             str,
-            jwt.encode(to_encode, settings.SECRET_KEY, algorithm=security.ALGORITHM),
+            jwt.encode(
+                to_encode,
+                settings.SECRET_KEY.get_secret_value(),
+                algorithm=security.ALGORITHM,
+            ),
         )
         with pytest.raises(HTTPException) as exc_info:
             get_current_user(session=db, token=token)

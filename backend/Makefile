@@ -158,6 +158,7 @@ docker-test:
 
 generate-sbom:
 	bash scripts/generate-sbom.sh
+	rm -rf .venv && uv sync
 
 clean:
 	rm -rf app/email-templates/build/*.html

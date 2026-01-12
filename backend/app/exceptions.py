@@ -59,3 +59,46 @@ class IncorrectEmailOrPassword(HTTPException):
 class InvalidToken(HTTPException):
     def __init__(self) -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, "Invalid token")
+
+
+class LabelNotFound(HTTPException):
+    def __init__(self, label_id: str | None = None) -> None:
+        detail = f"Label {label_id} not found" if label_id else "Label not found"
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)
+
+
+class ProductTypeNotFound(HTTPException):
+    def __init__(self, code: str | None = None) -> None:
+        detail = (
+            f"Product type '{code}' not found" if code else "Product type not found"
+        )
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class ImageCountLimitExceeded(HTTPException):
+    def __init__(
+        self,
+        current_count: int,
+        requested_count: int,
+        max_count: int,
+    ) -> None:
+        detail = f"Maximum {max_count} images per label. Current: {current_count}, requested: {requested_count}"
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class LabelImageNotFound(HTTPException):
+    def __init__(self, detail: str = "LabelImage not found") -> None:
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)
+
+
+class FileNotFoundInStorage(HTTPException):
+    def __init__(self, detail: str = "File not found in storage") -> None:
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)
+
+
+class ImageNotCompleted(HTTPException):
+    def __init__(
+        self,
+        detail: str = "Presigned download URL can only be generated for completed images",
+    ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)

@@ -2,18 +2,18 @@ import { Container, Typography } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect } from "react"
 
-export const Route = createFileRoute("/_layout/$productType/scan")({
-  component: Scan,
+export const Route = createFileRoute("/_layout/$productType/labels/")({
+  component: Labels,
 })
 
-function Scan() {
+function Labels() {
   useEffect(() => {
-    document.title = "Scan New Label - Label Inspection"
+    document.title = "Labels - Label Inspection"
   }, [])
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ py: 3 }}>
-        Scan New Label
+        Labels
       </Typography>
     </Container>
   )

@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import MenuIcon from "@mui/icons-material/Menu"
 import {
   AppBar,
@@ -9,12 +10,24 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router"
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "@tanstack/react-router"
 import { useState } from "react"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import SidebarItems from "@/components/Common/SidebarItems"
+import UploadCompletionSnackbar from "@/components/Common/UploadCompletionSnackbar"
+import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
 import UserMenu from "@/components/Common/UserMenu"
+import ValidationErrorBanner from "@/components/Common/ValidationErrorBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
+import { useLabelNew } from "@/stores/useLabelNew"
 
 const drawerWidth = 256
 
@@ -30,6 +43,14 @@ export const Route = createFileRoute("/_layout")({
 })
 
 function Layout() {
+  // ============================== Route & Store ==============================
+  const location = useLocation()
+  const params = useParams({ strict: false })
+  const navigate = useNavigate()
+  const { uploadedFiles, isProcessing, clearAll, process } = useLabelNew()
+  const isNewLabelPage = location.pathname.endsWith("/labels/new")
+  const productType = (params.productType as string) || "fertilizer"
+  // ============================== State ==============================
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const handleDrawerClose = () => {
@@ -60,16 +81,49 @@ function Layout() {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Label Inspection
           </Typography>
-          <Button
-            color="primary"
-            variant="contained"
-            component={Link}
-            to="/fertilizer/scan"
-            startIcon={<AddIcon />}
-            sx={{ mr: 2 }}
-          >
-            Scan
-          </Button>
+          {isNewLabelPage ? (
+            <>
+              {uploadedFiles.length > 0 && (
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  onClick={clearAll}
+                  disabled={isProcessing}
+                  sx={{ mr: 2 }}
+                >
+                  Clear All
+                </Button>
+              )}
+              <Button
+                variant="contained"
+                onClick={() =>
+                  process(productType, (to: string) => {
+                    navigate({ to })
+                  })
+                }
+                disabled={
+                  isProcessing ||
+                  uploadedFiles.length === 0 ||
+                  uploadedFiles.length > 5
+                }
+                startIcon={<CloudUploadIcon />}
+                sx={{ mr: 2 }}
+              >
+                {isProcessing ? "Uploading..." : "Upload Files"}
+              </Button>
+            </>
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              to={`/${productType}/labels/new`}
+              startIcon={<AddIcon />}
+              sx={{ mr: 2 }}
+            >
+              Label
+            </Button>
+          )}
           <UserMenu />
         </Toolbar>
       </AppBar>
@@ -107,7 +161,10 @@ function Layout() {
               },
             }}
           >
-            <SidebarItems onClose={handleDrawerClose} />
+            <SidebarItems
+              onClose={handleDrawerClose}
+              productType={productType}
+            />
           </Drawer>
           <Drawer
             variant="permanent"
@@ -123,7 +180,7 @@ function Layout() {
             }}
             open
           >
-            <SidebarItems />
+            <SidebarItems productType={productType} />
           </Drawer>
         </Box>
         <Box
@@ -136,6 +193,9 @@ function Layout() {
           }}
         >
           <BackendStatusBanner />
+          <ValidationErrorBanner />
+          <UploadProgressBanner />
+          <UploadCompletionSnackbar />
           <Box
             sx={{
               flexGrow: 1,

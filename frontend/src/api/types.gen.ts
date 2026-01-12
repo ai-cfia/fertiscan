@@ -60,6 +60,83 @@ export type Health = {
 };
 
 /**
+ * LabelCreate
+ */
+export type LabelCreate = {
+    /**
+     * Product Type
+     */
+    product_type: string;
+    /**
+     * Product Id
+     */
+    product_id?: string | null;
+};
+
+/**
+ * LabelDetail
+ */
+export type LabelDetail = {
+    /**
+     * Id
+     */
+    id: string;
+    extraction_status: ExtractionStatus;
+    verification_status: VerificationStatus;
+    /**
+     * Extraction Error Message
+     */
+    extraction_error_message?: string | null;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Images
+     */
+    images?: Array<LabelImageDetail>;
+    /**
+     * Has Label Data
+     */
+    has_label_data?: boolean;
+};
+
+/**
+ * LabelImageDetail
+ */
+export type LabelImageDetail = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Display Filename
+     */
+    display_filename: string;
+    /**
+     * Storage File Path
+     */
+    storage_file_path: string;
+    /**
+     * Sequence Order
+     */
+    sequence_order: number;
+    status: UploadStatus;
+    /**
+     * Presigned Url
+     */
+    presigned_url?: string | null;
+    /**
+     * Current Image Count
+     */
+    current_image_count?: number | null;
+};
+
+/**
  * LabelPublic
  */
 export type LabelPublic = {
@@ -138,6 +215,38 @@ export type NewPassword = {
 };
 
 /**
+ * PresignedDownloadUrlResponse
+ *
+ * Response schema for presigned download URL request.
+ */
+export type PresignedDownloadUrlResponse = {
+    /**
+     * Presigned Url
+     */
+    presigned_url: string;
+};
+
+/**
+ * PresignedUrlRequest
+ *
+ * Request schema for individual presigned URL generation.
+ */
+export type PresignedUrlRequest = {
+    /**
+     * Display Filename
+     */
+    display_filename: string;
+    /**
+     * Content Type
+     */
+    content_type: 'image/png' | 'image/jpeg' | 'image/webp';
+    /**
+     * Sequence Order
+     */
+    sequence_order: number;
+};
+
+/**
  * PrivateUserCreate
  */
 export type PrivateUserCreate = {
@@ -210,6 +319,23 @@ export type UpdatePassword = {
      */
     new_password: string;
 };
+
+/**
+ * UploadCompletionRequest
+ *
+ * Request schema for upload completion notification.
+ */
+export type UploadCompletionRequest = {
+    /**
+     * Storage File Path
+     */
+    storage_file_path: string;
+};
+
+/**
+ * UploadStatus
+ */
+export type UploadStatus = 'pending' | 'completed';
 
 /**
  * UserCreate
@@ -862,6 +988,251 @@ export type LabelsReadLabelsResponses = {
 };
 
 export type LabelsReadLabelsResponse = LabelsReadLabelsResponses[keyof LabelsReadLabelsResponses];
+
+export type LabelsCreateLabelData = {
+    body: LabelCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/labels';
+};
+
+export type LabelsCreateLabelErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsCreateLabelError = LabelsCreateLabelErrors[keyof LabelsCreateLabelErrors];
+
+export type LabelsCreateLabelResponses = {
+    /**
+     * Successful Response
+     */
+    201: LabelPublic;
+};
+
+export type LabelsCreateLabelResponse = LabelsCreateLabelResponses[keyof LabelsCreateLabelResponses];
+
+export type LabelsDeleteLabelData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}';
+};
+
+export type LabelsDeleteLabelErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsDeleteLabelError = LabelsDeleteLabelErrors[keyof LabelsDeleteLabelErrors];
+
+export type LabelsDeleteLabelResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type LabelsDeleteLabelResponse = LabelsDeleteLabelResponses[keyof LabelsDeleteLabelResponses];
+
+export type LabelsReadLabelData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}';
+};
+
+export type LabelsReadLabelErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadLabelError = LabelsReadLabelErrors[keyof LabelsReadLabelErrors];
+
+export type LabelsReadLabelResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelDetail;
+};
+
+export type LabelsReadLabelResponse = LabelsReadLabelResponses[keyof LabelsReadLabelResponses];
+
+export type LabelsReadLabelImageData = {
+    body?: never;
+    path: {
+        /**
+         * Image Id
+         */
+        image_id: string;
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/images/{image_id}';
+};
+
+export type LabelsReadLabelImageErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadLabelImageError = LabelsReadLabelImageErrors[keyof LabelsReadLabelImageErrors];
+
+export type LabelsReadLabelImageResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelImageDetail;
+};
+
+export type LabelsReadLabelImageResponse = LabelsReadLabelImageResponses[keyof LabelsReadLabelImageResponses];
+
+export type LabelsGetLabelImagePresignedDownloadUrlData = {
+    body?: never;
+    path: {
+        /**
+         * Image Id
+         */
+        image_id: string;
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url';
+};
+
+export type LabelsGetLabelImagePresignedDownloadUrlErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsGetLabelImagePresignedDownloadUrlError = LabelsGetLabelImagePresignedDownloadUrlErrors[keyof LabelsGetLabelImagePresignedDownloadUrlErrors];
+
+export type LabelsGetLabelImagePresignedDownloadUrlResponses = {
+    /**
+     * Successful Response
+     */
+    200: PresignedDownloadUrlResponse;
+};
+
+export type LabelsGetLabelImagePresignedDownloadUrlResponse = LabelsGetLabelImagePresignedDownloadUrlResponses[keyof LabelsGetLabelImagePresignedDownloadUrlResponses];
+
+export type LabelsReadLabelImagesData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/images';
+};
+
+export type LabelsReadLabelImagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadLabelImagesError = LabelsReadLabelImagesErrors[keyof LabelsReadLabelImagesErrors];
+
+export type LabelsReadLabelImagesResponses = {
+    /**
+     * Response Labels Read Label Images
+     *
+     * Successful Response
+     */
+    200: Array<LabelImageDetail>;
+};
+
+export type LabelsReadLabelImagesResponse = LabelsReadLabelImagesResponses[keyof LabelsReadLabelImagesResponses];
+
+export type LabelsCreateLabelImageData = {
+    body: PresignedUrlRequest;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/images';
+};
+
+export type LabelsCreateLabelImageErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsCreateLabelImageError = LabelsCreateLabelImageErrors[keyof LabelsCreateLabelImageErrors];
+
+export type LabelsCreateLabelImageResponses = {
+    /**
+     * Successful Response
+     */
+    201: LabelImageDetail;
+};
+
+export type LabelsCreateLabelImageResponse = LabelsCreateLabelImageResponses[keyof LabelsCreateLabelImageResponses];
+
+export type LabelsCompleteLabelImageUploadData = {
+    body: UploadCompletionRequest;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/images/complete';
+};
+
+export type LabelsCompleteLabelImageUploadErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsCompleteLabelImageUploadError = LabelsCompleteLabelImageUploadErrors[keyof LabelsCompleteLabelImageUploadErrors];
+
+export type LabelsCompleteLabelImageUploadResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelPublic;
+};
+
+export type LabelsCompleteLabelImageUploadResponse = LabelsCompleteLabelImageUploadResponses[keyof LabelsCompleteLabelImageUploadResponses];
 
 export type ProductsReadProductsData = {
     body?: never;

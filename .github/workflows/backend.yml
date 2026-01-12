@@ -43,6 +43,7 @@ jobs:
           - 5432:5432
     env:
       ENVIRONMENT: testing
+      USE_MOCKED_STORAGE: "true"
       SECRET_KEY: test-secret-key-min-32-chars-long-for-testing
       FIRST_SUPERUSER: admin@example.com
       FIRST_SUPERUSER_PASSWORD: changethis
@@ -50,6 +51,11 @@ jobs:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: changethis
       POSTGRES_DB: app
+      STORAGE_ENDPOINT: localhost:9000
+      STORAGE_BUCKET_NAME: fertiscan
+      STORAGE_REGION: ca-central-1
+      MINIO_ROOT_USER: changethis
+      MINIO_ROOT_PASSWORD: changethis
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6

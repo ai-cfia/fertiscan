@@ -29,7 +29,7 @@ class TestProductLabelCascadeDelete:
         label2_id = label2.id
 
         db.delete(product)
-        db.commit()
+        db.flush()
 
         assert db.get(Product, product.id) is None
         assert db.get(Label, label1_id) is None
@@ -49,7 +49,7 @@ class TestProductLabelCascadeDelete:
         db.flush()
 
         db.delete(product)
-        db.commit()
+        db.flush()
 
         assert db.get(Product, product.id) is None
         label1_refreshed = db.get(Label, label1_id)
@@ -73,7 +73,7 @@ class TestLabelLabelImageCascadeDelete:
         image2_id = image2.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelImage, image1_id) is None
@@ -87,7 +87,7 @@ class TestLabelLabelImageCascadeDelete:
         label_data_id = label_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelData, label_data_id) is None
@@ -100,7 +100,7 @@ class TestLabelLabelImageCascadeDelete:
         fertilizer_data_id = fertilizer_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(FertilizerLabelData, fertilizer_data_id) is None
@@ -117,7 +117,7 @@ class TestLabelLabelImageCascadeDelete:
         fertilizer_data_id = fertilizer_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelImage, image1_id) is None
@@ -135,7 +135,7 @@ class TestLabelDataRelationships:
         db.flush()
         with pytest.raises(IntegrityError):
             LabelDataFactory(label=label)
-            db.commit()
+            db.flush()
 
     def test_label_data_relationship(self, db: Session) -> None:
         """Test Label-LabelData relationship works."""
@@ -171,7 +171,7 @@ class TestFertilizerLabelDataRelationships:
         db.flush()
         with pytest.raises(IntegrityError):
             FertilizerLabelDataFactory(label=label)
-            db.commit()
+            db.flush()
 
     def test_label_fertilizer_label_data_relationship(self, db: Session) -> None:
         """Test Label-FertilizerLabelData relationship works."""

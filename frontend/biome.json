@@ -9,7 +9,8 @@
       "!**/src/routeTree.gen.ts",
       "!**/src/api/**/*",
       "!**/playwright-report",
-      "!**/playwright.config.ts"
+      "!**/playwright.config.ts",
+      "!**/sbom.json"
     ]
   },
   "linter": {

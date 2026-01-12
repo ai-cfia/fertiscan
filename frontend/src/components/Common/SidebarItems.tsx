@@ -1,5 +1,6 @@
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
 import DashboardIcon from "@mui/icons-material/Dashboard"
+import LabelIcon from "@mui/icons-material/Label"
 import LogoutIcon from "@mui/icons-material/Logout"
 import SettingsIcon from "@mui/icons-material/Settings"
 import {
@@ -19,15 +20,20 @@ import useAuth from "@/hooks/useAuth"
 
 interface SidebarItemsProps {
   onClose?: () => void
+  productType?: string
 }
 
-const SidebarItems = ({ onClose }: SidebarItemsProps) => {
+const SidebarItems = ({
+  onClose,
+  productType = "fertilizer",
+}: SidebarItemsProps) => {
   const { user, logout } = useAuth()
   const location = useLocation()
   const queryClient = useQueryClient()
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
   const navItems = [
     { text: "Dashboard", icon: DashboardIcon, to: "/" },
+    { text: "Labels", icon: LabelIcon, to: `/${productType}/labels` },
     { text: "User Settings", icon: SettingsIcon, to: "/settings" },
     ...(user?.is_superuser
       ? [{ text: "Admin", icon: AdminPanelSettingsIcon, to: "/admin" }]
@@ -47,7 +53,10 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
     >
       <List>
         {navItems.map((item) => {
-          const isActive = location.pathname === item.to
+          const isActive =
+            location.pathname === item.to ||
+            (item.to.includes("/labels") &&
+              location.pathname.startsWith(`/${productType}/labels`))
           return (
             <ListItem key={item.text} disablePadding>
               <ListItemButton

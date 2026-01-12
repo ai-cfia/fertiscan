@@ -23,6 +23,8 @@ function Dashboard() {
       })
       return response.data
     },
+    refetchInterval: 5000,
+    refetchIntervalInBackground: false,
   })
   const {
     data: labelsPendingVerification,
@@ -39,6 +41,8 @@ function Dashboard() {
       })
       return response.data
     },
+    refetchInterval: 5000,
+    refetchIntervalInBackground: false,
   })
   const { data: labelsExtracting, isLoading: isLoadingExtracting } = useQuery({
     queryKey: ["labels", "in-progress", productType],
@@ -79,6 +83,8 @@ function Dashboard() {
       })
       return response.data
     },
+    refetchInterval: 5000,
+    refetchIntervalInBackground: false,
   })
   const { data: unlinkedLabels, isLoading: isLoadingUnlinkedLabels } = useQuery(
     {
@@ -89,6 +95,8 @@ function Dashboard() {
         })
         return response.data
       },
+      refetchInterval: 5000,
+      refetchIntervalInBackground: false,
     },
   )
   // ============================== Effects ==============================
@@ -199,9 +207,9 @@ function Dashboard() {
             <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
-                  title="Scan New Label"
+                  title="Create New Label"
                   description="Upload and process a new label"
-                  to={`/${productType}/scan`}
+                  to={`/${productType}/labels/new`}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>

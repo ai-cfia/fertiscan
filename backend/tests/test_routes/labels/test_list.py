@@ -1,4 +1,4 @@
-"""Label route tests."""
+"""Tests for listing labels endpoint."""
 
 import pytest
 from fastapi.testclient import TestClient

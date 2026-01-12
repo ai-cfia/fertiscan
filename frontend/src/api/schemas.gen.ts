@@ -99,6 +99,146 @@ export const HealthSchema = {
     title: 'Health'
 } as const;
 
+export const LabelCreateSchema = {
+    properties: {
+        product_type: {
+            type: 'string',
+            title: 'Product Type'
+        },
+        product_id: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'product_type'
+    ],
+    title: 'LabelCreate'
+} as const;
+
+export const LabelDetailSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        extraction_status: {
+            $ref: '#/components/schemas/ExtractionStatus'
+        },
+        verification_status: {
+            $ref: '#/components/schemas/VerificationStatus'
+        },
+        extraction_error_message: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Extraction Error Message'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        images: {
+            items: {
+                $ref: '#/components/schemas/LabelImageDetail'
+            },
+            type: 'array',
+            title: 'Images'
+        },
+        has_label_data: {
+            type: 'boolean',
+            title: 'Has Label Data',
+            default: false
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'extraction_status',
+        'verification_status',
+        'created_at',
+        'updated_at'
+    ],
+    title: 'LabelDetail'
+} as const;
+
+export const LabelImageDetailSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        display_filename: {
+            type: 'string',
+            title: 'Display Filename'
+        },
+        storage_file_path: {
+            type: 'string',
+            title: 'Storage File Path'
+        },
+        sequence_order: {
+            type: 'integer',
+            title: 'Sequence Order'
+        },
+        status: {
+            $ref: '#/components/schemas/UploadStatus'
+        },
+        presigned_url: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Presigned Url'
+        },
+        current_image_count: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Image Count'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'display_filename',
+        'storage_file_path',
+        'sequence_order',
+        'status'
+    ],
+    title: 'LabelImageDetail'
+} as const;
+
 export const LabelPublicSchema = {
     properties: {
         id: {
@@ -215,6 +355,52 @@ export const NewPasswordSchema = {
         'new_password'
     ],
     title: 'NewPassword'
+} as const;
+
+export const PresignedDownloadUrlResponseSchema = {
+    properties: {
+        presigned_url: {
+            type: 'string',
+            title: 'Presigned Url'
+        }
+    },
+    type: 'object',
+    required: [
+        'presigned_url'
+    ],
+    title: 'PresignedDownloadUrlResponse',
+    description: 'Response schema for presigned download URL request.'
+} as const;
+
+export const PresignedUrlRequestSchema = {
+    properties: {
+        display_filename: {
+            type: 'string',
+            title: 'Display Filename'
+        },
+        content_type: {
+            type: 'string',
+            enum: [
+                'image/png',
+                'image/jpeg',
+                'image/webp'
+            ],
+            title: 'Content Type'
+        },
+        sequence_order: {
+            type: 'integer',
+            minimum: 1,
+            title: 'Sequence Order'
+        }
+    },
+    type: 'object',
+    required: [
+        'display_filename',
+        'content_type',
+        'sequence_order'
+    ],
+    title: 'PresignedUrlRequest',
+    description: 'Request schema for individual presigned URL generation.'
 } as const;
 
 export const PrivateUserCreateSchema = {
@@ -337,6 +523,30 @@ export const UpdatePasswordSchema = {
         'new_password'
     ],
     title: 'UpdatePassword'
+} as const;
+
+export const UploadCompletionRequestSchema = {
+    properties: {
+        storage_file_path: {
+            type: 'string',
+            title: 'Storage File Path'
+        }
+    },
+    type: 'object',
+    required: [
+        'storage_file_path'
+    ],
+    title: 'UploadCompletionRequest',
+    description: 'Request schema for upload completion notification.'
+} as const;
+
+export const UploadStatusSchema = {
+    type: 'string',
+    enum: [
+        'pending',
+        'completed'
+    ],
+    title: 'UploadStatus'
 } as const;
 
 export const UserCreateSchema = {

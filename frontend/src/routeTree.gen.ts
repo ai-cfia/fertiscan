@@ -20,9 +20,12 @@ import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
 import { Route as LayoutProductTypeRouteImport } from './routes/_layout/$productType'
 import { Route as LayoutProductTypeIndexRouteImport } from './routes/_layout/$productType/index'
 import { Route as LayoutProductTypeVerifyRouteImport } from './routes/_layout/$productType/verify'
-import { Route as LayoutProductTypeScanRouteImport } from './routes/_layout/$productType/scan'
 import { Route as LayoutProductTypeProductsRouteImport } from './routes/_layout/$productType/products'
-import { Route as LayoutProductTypeLabelsRouteImport } from './routes/_layout/$productType/labels'
+import { Route as LayoutProductTypeLabelsIndexRouteImport } from './routes/_layout/$productType/labels/index'
+import { Route as LayoutProductTypeLabelsNewRouteImport } from './routes/_layout/$productType/labels/new'
+import { Route as LayoutProductTypeLabelsLabelIdRouteImport } from './routes/_layout/$productType/labels/$labelId'
+import { Route as LayoutProductTypeLabelsLabelIdFilesRouteImport } from './routes/_layout/$productType/labels/$labelId/files'
+import { Route as LayoutProductTypeLabelsLabelIdDataRouteImport } from './routes/_layout/$productType/labels/$labelId/data'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -78,22 +81,42 @@ const LayoutProductTypeVerifyRoute = LayoutProductTypeVerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => LayoutProductTypeRoute,
 } as any)
-const LayoutProductTypeScanRoute = LayoutProductTypeScanRouteImport.update({
-  id: '/scan',
-  path: '/scan',
-  getParentRoute: () => LayoutProductTypeRoute,
-} as any)
 const LayoutProductTypeProductsRoute =
   LayoutProductTypeProductsRouteImport.update({
     id: '/products',
     path: '/products',
     getParentRoute: () => LayoutProductTypeRoute,
   } as any)
-const LayoutProductTypeLabelsRoute = LayoutProductTypeLabelsRouteImport.update({
-  id: '/labels',
-  path: '/labels',
-  getParentRoute: () => LayoutProductTypeRoute,
-} as any)
+const LayoutProductTypeLabelsIndexRoute =
+  LayoutProductTypeLabelsIndexRouteImport.update({
+    id: '/labels/',
+    path: '/labels/',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsNewRoute =
+  LayoutProductTypeLabelsNewRouteImport.update({
+    id: '/labels/new',
+    path: '/labels/new',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdRoute =
+  LayoutProductTypeLabelsLabelIdRouteImport.update({
+    id: '/labels/$labelId',
+    path: '/labels/$labelId',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdFilesRoute =
+  LayoutProductTypeLabelsLabelIdFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
+    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdDataRoute =
+  LayoutProductTypeLabelsLabelIdDataRouteImport.update({
+    id: '/data',
+    path: '/data',
+    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,11 +127,14 @@ export interface FileRoutesByFullPath {
   '/$productType': typeof LayoutProductTypeRouteWithChildren
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/$productType/labels': typeof LayoutProductTypeLabelsRoute
   '/$productType/products': typeof LayoutProductTypeProductsRoute
-  '/$productType/scan': typeof LayoutProductTypeScanRoute
   '/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/$productType/': typeof LayoutProductTypeIndexRoute
+  '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
+  '/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
+  '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,11 +144,14 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/$productType/labels': typeof LayoutProductTypeLabelsRoute
   '/$productType/products': typeof LayoutProductTypeProductsRoute
-  '/$productType/scan': typeof LayoutProductTypeScanRoute
   '/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/$productType': typeof LayoutProductTypeIndexRoute
+  '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
+  '/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
+  '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,11 +164,14 @@ export interface FileRoutesById {
   '/_layout/$productType': typeof LayoutProductTypeRouteWithChildren
   '/_layout/admin': typeof LayoutAdminRoute
   '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/$productType/labels': typeof LayoutProductTypeLabelsRoute
   '/_layout/$productType/products': typeof LayoutProductTypeProductsRoute
-  '/_layout/$productType/scan': typeof LayoutProductTypeScanRoute
   '/_layout/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/_layout/$productType/': typeof LayoutProductTypeIndexRoute
+  '/_layout/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/_layout/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/_layout/$productType/labels/': typeof LayoutProductTypeLabelsIndexRoute
+  '/_layout/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
+  '/_layout/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,11 +184,14 @@ export interface FileRouteTypes {
     | '/$productType'
     | '/admin'
     | '/settings'
-    | '/$productType/labels'
     | '/$productType/products'
-    | '/$productType/scan'
     | '/$productType/verify'
     | '/$productType/'
+    | '/$productType/labels/$labelId'
+    | '/$productType/labels/new'
+    | '/$productType/labels'
+    | '/$productType/labels/$labelId/data'
+    | '/$productType/labels/$labelId/files'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,11 +201,14 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin'
     | '/settings'
-    | '/$productType/labels'
     | '/$productType/products'
-    | '/$productType/scan'
     | '/$productType/verify'
     | '/$productType'
+    | '/$productType/labels/$labelId'
+    | '/$productType/labels/new'
+    | '/$productType/labels'
+    | '/$productType/labels/$labelId/data'
+    | '/$productType/labels/$labelId/files'
   id:
     | '__root__'
     | '/'
@@ -182,11 +220,14 @@ export interface FileRouteTypes {
     | '/_layout/$productType'
     | '/_layout/admin'
     | '/_layout/settings'
-    | '/_layout/$productType/labels'
     | '/_layout/$productType/products'
-    | '/_layout/$productType/scan'
     | '/_layout/$productType/verify'
     | '/_layout/$productType/'
+    | '/_layout/$productType/labels/$labelId'
+    | '/_layout/$productType/labels/new'
+    | '/_layout/$productType/labels/'
+    | '/_layout/$productType/labels/$labelId/data'
+    | '/_layout/$productType/labels/$labelId/files'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -277,13 +318,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeVerifyRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
-    '/_layout/$productType/scan': {
-      id: '/_layout/$productType/scan'
-      path: '/scan'
-      fullPath: '/$productType/scan'
-      preLoaderRoute: typeof LayoutProductTypeScanRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
     '/_layout/$productType/products': {
       id: '/_layout/$productType/products'
       path: '/products'
@@ -291,30 +325,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeProductsRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
-    '/_layout/$productType/labels': {
-      id: '/_layout/$productType/labels'
+    '/_layout/$productType/labels/': {
+      id: '/_layout/$productType/labels/'
       path: '/labels'
       fullPath: '/$productType/labels'
-      preLoaderRoute: typeof LayoutProductTypeLabelsRouteImport
+      preLoaderRoute: typeof LayoutProductTypeLabelsIndexRouteImport
       parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/new': {
+      id: '/_layout/$productType/labels/new'
+      path: '/labels/new'
+      fullPath: '/$productType/labels/new'
+      preLoaderRoute: typeof LayoutProductTypeLabelsNewRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/$labelId': {
+      id: '/_layout/$productType/labels/$labelId'
+      path: '/labels/$labelId'
+      fullPath: '/$productType/labels/$labelId'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/$labelId/files': {
+      id: '/_layout/$productType/labels/$labelId/files'
+      path: '/files'
+      fullPath: '/$productType/labels/$labelId/files'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdFilesRouteImport
+      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
+    }
+    '/_layout/$productType/labels/$labelId/data': {
+      id: '/_layout/$productType/labels/$labelId/data'
+      path: '/data'
+      fullPath: '/$productType/labels/$labelId/data'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdDataRouteImport
+      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
     }
   }
 }
 
+interface LayoutProductTypeLabelsLabelIdRouteChildren {
+  LayoutProductTypeLabelsLabelIdDataRoute: typeof LayoutProductTypeLabelsLabelIdDataRoute
+  LayoutProductTypeLabelsLabelIdFilesRoute: typeof LayoutProductTypeLabelsLabelIdFilesRoute
+}
+
+const LayoutProductTypeLabelsLabelIdRouteChildren: LayoutProductTypeLabelsLabelIdRouteChildren =
+  {
+    LayoutProductTypeLabelsLabelIdDataRoute:
+      LayoutProductTypeLabelsLabelIdDataRoute,
+    LayoutProductTypeLabelsLabelIdFilesRoute:
+      LayoutProductTypeLabelsLabelIdFilesRoute,
+  }
+
+const LayoutProductTypeLabelsLabelIdRouteWithChildren =
+  LayoutProductTypeLabelsLabelIdRoute._addFileChildren(
+    LayoutProductTypeLabelsLabelIdRouteChildren,
+  )
+
 interface LayoutProductTypeRouteChildren {
-  LayoutProductTypeLabelsRoute: typeof LayoutProductTypeLabelsRoute
   LayoutProductTypeProductsRoute: typeof LayoutProductTypeProductsRoute
-  LayoutProductTypeScanRoute: typeof LayoutProductTypeScanRoute
   LayoutProductTypeVerifyRoute: typeof LayoutProductTypeVerifyRoute
   LayoutProductTypeIndexRoute: typeof LayoutProductTypeIndexRoute
+  LayoutProductTypeLabelsLabelIdRoute: typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  LayoutProductTypeLabelsNewRoute: typeof LayoutProductTypeLabelsNewRoute
+  LayoutProductTypeLabelsIndexRoute: typeof LayoutProductTypeLabelsIndexRoute
 }
 
 const LayoutProductTypeRouteChildren: LayoutProductTypeRouteChildren = {
-  LayoutProductTypeLabelsRoute: LayoutProductTypeLabelsRoute,
   LayoutProductTypeProductsRoute: LayoutProductTypeProductsRoute,
-  LayoutProductTypeScanRoute: LayoutProductTypeScanRoute,
   LayoutProductTypeVerifyRoute: LayoutProductTypeVerifyRoute,
   LayoutProductTypeIndexRoute: LayoutProductTypeIndexRoute,
+  LayoutProductTypeLabelsLabelIdRoute:
+    LayoutProductTypeLabelsLabelIdRouteWithChildren,
+  LayoutProductTypeLabelsNewRoute: LayoutProductTypeLabelsNewRoute,
+  LayoutProductTypeLabelsIndexRoute: LayoutProductTypeLabelsIndexRoute,
 }
 
 const LayoutProductTypeRouteWithChildren =

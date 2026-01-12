@@ -10,6 +10,7 @@ from app.controllers.product_types import (
     get_product_type_by_code,
 )
 from app.controllers.users import create_user, get_user_by_email
+from app.db.session import get_sessionmaker
 from app.schemas.product_type import ProductTypeCreate
 from app.schemas.user import UserCreate
 
@@ -46,3 +47,19 @@ def init_db(session: Session) -> None:
         product_type = create_product_type(session, product_type_in)
         session.commit()
         logger.info(f"ProductType 'fertilizer' created: {product_type.code}")
+
+
+def run(session: Session | None = None) -> None:
+    """Run database initialization with optional session."""
+    logger.info("Initializing database")
+    if session:
+        init_db(session)
+    else:
+        with get_sessionmaker()() as s:
+            init_db(s)
+    logger.info("Database initialized")
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    run()
