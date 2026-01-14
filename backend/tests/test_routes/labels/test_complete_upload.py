@@ -52,7 +52,8 @@ class TestCompleteLabelImageUpload:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["id"] == str(label.id)
+        assert data["id"] == str(label_image.id)
+        assert data["label_id"] == str(label.id)
         db.refresh(label_image)
         assert label_image.status == UploadStatus.completed
 

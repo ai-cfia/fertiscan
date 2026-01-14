@@ -21,6 +21,7 @@ import {
 } from "@tanstack/react-router"
 import { useState } from "react"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import LabelListErrorBanner from "@/components/Common/LabelListErrorBanner"
 import SidebarItems from "@/components/Common/SidebarItems"
 import UploadCompletionSnackbar from "@/components/Common/UploadCompletionSnackbar"
 import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
@@ -195,6 +196,7 @@ function Layout() {
           <BackendStatusBanner />
           <ValidationErrorBanner />
           <UploadProgressBanner />
+          <LabelListErrorBanner />
           <UploadCompletionSnackbar />
           <Box
             sx={{

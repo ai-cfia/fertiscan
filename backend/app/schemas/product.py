@@ -7,6 +7,9 @@ from sqlmodel import SQLModel
 
 class ProductPublic(SQLModel):
     id: UUID
+    name_en: str | None = None
+    name_fr: str | None = None
+    registration_number: str
 
 
 class ProductsPublic(SQLModel):

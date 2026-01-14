@@ -44,7 +44,6 @@ class TestGetLabelDetail:
         assert "created_at" in data
         assert "updated_at" in data
         assert data["images"] == []
-        assert data["has_label_data"] is False
 
     @pytest.mark.asyncio
     async def test_get_label_detail_with_completed_images(
@@ -89,13 +88,11 @@ class TestGetLabelDetail:
         assert len(data["images"]) == 2
         assert data["images"][0]["id"] == str(image1.id)
         assert data["images"][0]["display_filename"] == "image1.jpg"
-        assert data["images"][0]["storage_file_path"] == image1.file_path
+        assert data["images"][0]["file_path"] == image1.file_path
         assert data["images"][0]["sequence_order"] == 1
         assert data["images"][0]["status"] == "completed"
-        assert data["images"][0]["presigned_url"] is None
         assert data["images"][1]["id"] == str(image2.id)
         assert data["images"][1]["sequence_order"] == 2
-        assert data["images"][1]["presigned_url"] is None
 
     @pytest.mark.asyncio
     async def test_get_label_detail_with_pending_images(
@@ -141,82 +138,8 @@ class TestGetLabelDetail:
         pending = next(
             img for img in data["images"] if img["id"] == str(pending_image.id)
         )
-        assert completed["presigned_url"] is None
-        assert pending["presigned_url"] is None
-
-    @pytest.mark.asyncio
-    async def test_get_label_detail_images_sorted_by_sequence(
-        self,
-        client: TestClient,
-        db: Session,
-        s3_client,
-    ) -> None:
-        """Test that images are sorted by sequence_order."""
-        user = UserFactory()
-        product = ProductFactory(created_by=user)
-        label = LabelFactory(created_by=user, product=product)
-        image3 = LabelImageFactory(
-            label=label,
-            file_path=f"labels/{label.id}/image3.jpg",
-            sequence_order=3,
-            status=UploadStatus.completed,
-        )
-        image1 = LabelImageFactory(
-            label=label,
-            file_path=f"labels/{label.id}/image1.jpg",
-            sequence_order=1,
-            status=UploadStatus.completed,
-        )
-        image2 = LabelImageFactory(
-            label=label,
-            file_path=f"labels/{label.id}/image2.jpg",
-            sequence_order=2,
-            status=UploadStatus.completed,
-        )
-        for img in [image1, image2, image3]:
-            await s3_client.put_object(
-                Bucket=settings.STORAGE_BUCKET_NAME,
-                Key=img.file_path,
-                Body=b"test content",
-            )
-        headers = authentication_token_from_email(
-            client=client, email=user.email, db=db
-        )
-        response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}",
-            headers=headers,
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert len(data["images"]) == 3
-        assert data["images"][0]["sequence_order"] == 1
-        assert data["images"][1]["sequence_order"] == 2
-        assert data["images"][2]["sequence_order"] == 3
-
-    @pytest.mark.asyncio
-    async def test_get_label_detail_with_label_data(
-        self,
-        client: TestClient,
-        db: Session,
-        s3_client,
-    ) -> None:
-        """Test has_label_data flag when label_data exists."""
-        from tests.factories.label_data import LabelDataFactory
-
-        user = UserFactory()
-        product = ProductFactory(created_by=user)
-        label = LabelFactory(created_by=user, product=product)
-        LabelDataFactory(label=label)
-        headers = authentication_token_from_email(
-            client=client, email=user.email, db=db
-        )
-        response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}",
-            headers=headers,
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert data["has_label_data"] is True
+        assert completed["status"] == "completed"
+        assert pending["status"] == "pending"
 
     def test_get_label_detail_invalid_id(
         self,

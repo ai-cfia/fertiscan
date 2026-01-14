@@ -15,3 +15,5 @@ class ProductFactory(BaseFactory):
     brand_name_fr = None
     created_by = factory.SubFactory("tests.factories.user.UserFactory")
     product_type = factory.SubFactory("tests.factories.product_type.ProductTypeFactory")
+    created_by_id = factory.LazyAttribute(lambda obj: obj.created_by.id)
+    product_type_id = factory.LazyAttribute(lambda obj: obj.product_type.id)

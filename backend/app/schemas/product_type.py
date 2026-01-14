@@ -1,5 +1,6 @@
 """ProductType API schemas."""
 
+from datetime import datetime
 from uuid import UUID
 
 from sqlmodel import Field, SQLModel
@@ -25,3 +26,5 @@ class ProductTypeUpdate(SQLModel):
 
 class ProductTypePublic(ProductTypeBase):
     id: UUID
+    created_at: datetime
+    updated_at: datetime

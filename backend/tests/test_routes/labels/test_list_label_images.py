@@ -71,7 +71,7 @@ class TestListLabelImages:
         assert data[1]["sequence_order"] == 2
         assert data[2]["id"] == str(image3.id)
         assert data[2]["sequence_order"] == 3
-        assert all(img["presigned_url"] is None for img in data)
+        assert all(img["label_id"] == str(label.id) for img in data)
 
     def test_list_label_images_sorted_by_sequence(
         self,

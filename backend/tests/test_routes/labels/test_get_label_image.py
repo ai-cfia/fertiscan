@@ -43,10 +43,10 @@ class TestGetLabelImage:
         data = response.json()
         assert data["id"] == str(image.id)
         assert data["display_filename"] == "test.png"
-        assert data["storage_file_path"] == image.file_path
+        assert data["file_path"] == image.file_path
         assert data["sequence_order"] == 1
         assert data["status"] == "completed"
-        assert data["presigned_url"] is None
+        assert data["label_id"] == str(label.id)
 
     def test_get_label_image_invalid_label_id(
         self,

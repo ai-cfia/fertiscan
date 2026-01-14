@@ -103,7 +103,8 @@ class TestListLabels:
             client=client, email=user.email, db=db
         )
         labels = LabelFactory.create_batch(5, created_by=user, product=product)
-        label_ids = [str(label.id) for label in labels]
+        sorted_labels = sorted(labels, key=lambda label: label.created_at, reverse=True)
+        label_ids = [str(label.id) for label in sorted_labels]
         response = client.get(
             f"{settings.API_V1_STR}/labels?limit=2&offset=2",
             headers=headers,

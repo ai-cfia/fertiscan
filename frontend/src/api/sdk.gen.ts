@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { HealthLivenessData, HealthLivenessResponses, HealthReadinessData, HealthReadinessResponses, LabelsCompleteLabelImageUploadData, LabelsCompleteLabelImageUploadErrors, LabelsCompleteLabelImageUploadResponses, LabelsCreateLabelData, LabelsCreateLabelErrors, LabelsCreateLabelImageData, LabelsCreateLabelImageErrors, LabelsCreateLabelImageResponses, LabelsCreateLabelResponses, LabelsDeleteLabelData, LabelsDeleteLabelErrors, LabelsDeleteLabelResponses, LabelsGetLabelImagePresignedDownloadUrlData, LabelsGetLabelImagePresignedDownloadUrlErrors, LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsReadLabelData, LabelsReadLabelErrors, LabelsReadLabelImageData, LabelsReadLabelImageErrors, LabelsReadLabelImageResponses, LabelsReadLabelImagesData, LabelsReadLabelImagesErrors, LabelsReadLabelImagesResponses, LabelsReadLabelResponses, LabelsReadLabelsData, LabelsReadLabelsErrors, LabelsReadLabelsResponses, LoginLoginAccessTokenData, LoginLoginAccessTokenErrors, LoginLoginAccessTokenResponses, LoginRecoverPasswordData, LoginRecoverPasswordErrors, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentErrors, LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordResponses, LoginResetPasswordData, LoginResetPasswordErrors, LoginResetPasswordResponses, LoginTestTokenData, LoginTestTokenResponses, PrivateCreateUserNoVerificationData, PrivateCreateUserNoVerificationErrors, PrivateCreateUserNoVerificationResponses, ProductsReadProductsData, ProductsReadProductsErrors, ProductsReadProductsResponses, UsersCreateUserData, UsersCreateUserErrors, UsersCreateUserResponses, UsersDeleteUserData, UsersDeleteUserErrors, UsersDeleteUserMeData, UsersDeleteUserMeResponses, UsersDeleteUserResponses, UsersReadUserByIdData, UsersReadUserByIdErrors, UsersReadUserByIdResponses, UsersReadUserMeData, UsersReadUserMeResponses, UsersReadUsersData, UsersReadUsersErrors, UsersReadUsersResponses, UsersUpdatePasswordMeData, UsersUpdatePasswordMeErrors, UsersUpdatePasswordMeResponses, UsersUpdateUserData, UsersUpdateUserErrors, UsersUpdateUserMeData, UsersUpdateUserMeErrors, UsersUpdateUserMeResponses, UsersUpdateUserResponses } from './types.gen';
+import type { HealthLivenessData, HealthLivenessResponses, HealthReadinessData, HealthReadinessResponses, LabelsCompleteLabelImageUploadData, LabelsCompleteLabelImageUploadErrors, LabelsCompleteLabelImageUploadResponses, LabelsCreateLabelData, LabelsCreateLabelErrors, LabelsCreateLabelImageData, LabelsCreateLabelImageErrors, LabelsCreateLabelImageResponses, LabelsCreateLabelResponses, LabelsDeleteLabelData, LabelsDeleteLabelErrors, LabelsDeleteLabelImageData, LabelsDeleteLabelImageErrors, LabelsDeleteLabelImageResponses, LabelsDeleteLabelResponses, LabelsGetLabelImagePresignedDownloadUrlData, LabelsGetLabelImagePresignedDownloadUrlErrors, LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedUploadUrlData, LabelsGetLabelImagePresignedUploadUrlErrors, LabelsGetLabelImagePresignedUploadUrlResponses, LabelsReadLabelData, LabelsReadLabelErrors, LabelsReadLabelImageData, LabelsReadLabelImageErrors, LabelsReadLabelImageResponses, LabelsReadLabelImagesData, LabelsReadLabelImagesErrors, LabelsReadLabelImagesResponses, LabelsReadLabelResponses, LabelsReadLabelsData, LabelsReadLabelsErrors, LabelsReadLabelsResponses, LoginLoginAccessTokenData, LoginLoginAccessTokenErrors, LoginLoginAccessTokenResponses, LoginRecoverPasswordData, LoginRecoverPasswordErrors, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentErrors, LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordResponses, LoginResetPasswordData, LoginResetPasswordErrors, LoginResetPasswordResponses, LoginTestTokenData, LoginTestTokenResponses, PrivateCreateUserNoVerificationData, PrivateCreateUserNoVerificationErrors, PrivateCreateUserNoVerificationResponses, ProductsReadProductsData, ProductsReadProductsErrors, ProductsReadProductsResponses, UsersCreateUserData, UsersCreateUserErrors, UsersCreateUserResponses, UsersDeleteUserData, UsersDeleteUserErrors, UsersDeleteUserMeData, UsersDeleteUserMeResponses, UsersDeleteUserResponses, UsersReadUserByIdData, UsersReadUserByIdErrors, UsersReadUserByIdResponses, UsersReadUserMeData, UsersReadUserMeResponses, UsersReadUsersData, UsersReadUsersErrors, UsersReadUsersResponses, UsersUpdatePasswordMeData, UsersUpdatePasswordMeErrors, UsersUpdatePasswordMeResponses, UsersUpdateUserData, UsersUpdateUserErrors, UsersUpdateUserMeData, UsersUpdateUserMeErrors, UsersUpdateUserMeResponses, UsersUpdateUserResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -272,7 +272,7 @@ export class LabelsService {
     /**
      * Read Labels
      *
-     * List labels with optional filters.
+     * List labels with optional filters and sorting.
      */
     public static readLabels<ThrowOnError extends boolean = false>(options?: Options<LabelsReadLabelsData, ThrowOnError>) {
         return (options?.client ?? client).get<LabelsReadLabelsResponses, LabelsReadLabelsErrors, ThrowOnError>({
@@ -329,34 +329,6 @@ export class LabelsService {
     }
 
     /**
-     * Read Label Image
-     *
-     * Get single label image (without presigned URL).
-     */
-    public static readLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelImageData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelImageResponses, LabelsReadLabelImageErrors, ThrowOnError>({
-            responseType: 'json',
-            security: [{ scheme: 'bearer', type: 'http' }],
-            url: '/api/v1/labels/{label_id}/images/{image_id}',
-            ...options
-        });
-    }
-
-    /**
-     * Get Label Image Presigned Download Url
-     *
-     * Get presigned download URL for a completed label image.
-     */
-    public static getLabelImagePresignedDownloadUrl<ThrowOnError extends boolean = false>(options: Options<LabelsGetLabelImagePresignedDownloadUrlData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedDownloadUrlErrors, ThrowOnError>({
-            responseType: 'json',
-            security: [{ scheme: 'bearer', type: 'http' }],
-            url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url',
-            ...options
-        });
-    }
-
-    /**
      * Read Label Images
      *
      * Get label images (without presigned URLs).
@@ -373,7 +345,7 @@ export class LabelsService {
     /**
      * Create Label Image
      *
-     * Create pending LabelImage and generate presigned URL for upload.
+     * Create pending LabelImage record.
      */
     public static createLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsCreateLabelImageData, ThrowOnError>) {
         return (options.client ?? client).post<LabelsCreateLabelImageResponses, LabelsCreateLabelImageErrors, ThrowOnError>({
@@ -385,6 +357,33 @@ export class LabelsService {
                 'Content-Type': 'application/json',
                 ...options.headers
             }
+        });
+    }
+
+    /**
+     * Delete Label Image
+     *
+     * Delete a label image, its storage file, and renumber remaining images.
+     */
+    public static deleteLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsDeleteLabelImageData, ThrowOnError>) {
+        return (options.client ?? client).delete<LabelsDeleteLabelImageResponses, LabelsDeleteLabelImageErrors, ThrowOnError>({
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/images/{image_id}',
+            ...options
+        });
+    }
+
+    /**
+     * Read Label Image
+     *
+     * Get single label image (without presigned URL).
+     */
+    public static readLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelImageData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsReadLabelImageResponses, LabelsReadLabelImageErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/images/{image_id}',
+            ...options
         });
     }
 
@@ -403,6 +402,34 @@ export class LabelsService {
                 'Content-Type': 'application/json',
                 ...options.headers
             }
+        });
+    }
+
+    /**
+     * Get Label Image Presigned Upload Url
+     *
+     * Get presigned upload URL for a pending label image.
+     */
+    public static getLabelImagePresignedUploadUrl<ThrowOnError extends boolean = false>(options: Options<LabelsGetLabelImagePresignedUploadUrlData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsGetLabelImagePresignedUploadUrlResponses, LabelsGetLabelImagePresignedUploadUrlErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-upload-url',
+            ...options
+        });
+    }
+
+    /**
+     * Get Label Image Presigned Download Url
+     *
+     * Get presigned download URL for a completed label image.
+     */
+    public static getLabelImagePresignedDownloadUrl<ThrowOnError extends boolean = false>(options: Options<LabelsGetLabelImagePresignedDownloadUrlData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedDownloadUrlErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url',
+            ...options
         });
     }
 }

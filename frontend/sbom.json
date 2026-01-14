@@ -3513,6 +3513,111 @@
     },
     {
       "type": "library",
+      "name": "x-data-grid",
+      "group": "@mui",
+      "version": "8.25.0",
+      "bom-ref": "frontend@0.0.0|@mui/x-data-grid@8.25.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40mui/x-data-grid@8.25.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@mui/x-data-grid/-/x-data-grid-8.25.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3abd7b4d7c238497ad830dfbe160068e01a4a0aa89667a8264e5f3dec739fd5a8c8537f512c7ef825132d006af6de13d3cc71e3a9f0c45db2e2e263c28b11781"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@mui/x-data-grid"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "x-internals",
+      "group": "@mui",
+      "version": "8.25.0",
+      "bom-ref": "frontend@0.0.0|@mui/x-internals@8.25.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40mui/x-internals@8.25.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@mui/x-internals/-/x-internals-8.25.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "44a7b191568adf1bc078b04d78b030ea8242b10ad7931ed36124684949a626f7b276a3aaa016e29affa76dcf0f98be142f44a154d91a14bd58598ee460209750"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@mui/x-internals"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "x-virtualizer",
+      "group": "@mui",
+      "version": "0.3.2",
+      "bom-ref": "frontend@0.0.0|@mui/x-virtualizer@0.3.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40mui/x-virtualizer@0.3.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@mui/x-virtualizer/-/x-virtualizer-0.3.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e5190efbb3994709529c897396605fb8eb20471e30b6ed7548fd20c6da78ddd5724994a5de2aa3434ed82d135e66b535c8b0b1ca6241b923f820ac40f33f58c6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@mui/x-virtualizer"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "wasm-runtime",
       "group": "@napi-rs",
       "version": "1.1.0",
@@ -8815,6 +8920,40 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/csstype"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "date-fns",
+      "version": "4.1.0",
+      "bom-ref": "frontend@0.0.0|date-fns@4.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/date-fns@4.1.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/date-fns/-/date-fns-4.1.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "524ab4a306d05f16bf537106b6c755064475c3b28e43980806a747da192f927cd93d8bc1c5bfda6ba13c2fbb668c5b64c1906edd45c16e32203e8fc4cf8c5a36"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/date-fns"
         }
       ]
     },
@@ -15077,6 +15216,40 @@
     },
     {
       "type": "library",
+      "name": "reselect",
+      "version": "5.1.1",
+      "bom-ref": "frontend@0.0.0|reselect@5.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/reselect@5.1.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/reselect/-/reselect-5.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "2bf046e9e224cbf481a737c766ffdd77ef49045892e12595ec522e8d5c8946ec7a7b8e7eef745a5075cb9884757fb58e31a434535926eaac24951431a49258d3"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/reselect"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "resolve-from",
       "version": "4.0.0",
       "bom-ref": "frontend@0.0.0|resolve-from@4.0.0",
@@ -18466,6 +18639,7 @@
         "frontend@0.0.0|@hey-api/openapi-ts@0.88.0",
         "frontend@0.0.0|@mui/icons-material@7.3.6",
         "frontend@0.0.0|@mui/material@7.3.6",
+        "frontend@0.0.0|@mui/x-data-grid@8.25.0",
         "frontend@0.0.0|@playwright/test@1.57.0",
         "frontend@0.0.0|@tailwindcss/vite@4.1.17",
         "frontend@0.0.0|@tanstack/react-query-devtools@5.91.1",
@@ -18478,6 +18652,7 @@
         "frontend@0.0.0|@types/react@19.2.7",
         "frontend@0.0.0|@vitejs/plugin-react@5.1.1",
         "frontend@0.0.0|axios@1.13.2",
+        "frontend@0.0.0|date-fns@4.1.0",
         "frontend@0.0.0|dotenv@17.2.3",
         "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
         "frontend@0.0.0|eslint-plugin-react-refresh@0.4.24",
@@ -19124,6 +19299,44 @@
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|prop-types@15.8.1",
         "frontend@0.0.0|react-is@19.2.1",
+        "frontend@0.0.0|react@19.2.1"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|@mui/x-data-grid@8.25.0",
+      "dependsOn": [
+        "frontend@0.0.0|@babel/runtime@7.28.4",
+        "frontend@0.0.0|@emotion/react@11.14.0",
+        "frontend@0.0.0|@emotion/styled@11.14.1",
+        "frontend@0.0.0|@mui/material@7.3.6",
+        "frontend@0.0.0|@mui/system@7.3.6",
+        "frontend@0.0.0|@mui/utils@7.3.6",
+        "frontend@0.0.0|@mui/x-internals@8.25.0",
+        "frontend@0.0.0|@mui/x-virtualizer@0.3.2",
+        "frontend@0.0.0|clsx@2.1.1",
+        "frontend@0.0.0|prop-types@15.8.1",
+        "frontend@0.0.0|react-dom@19.2.1",
+        "frontend@0.0.0|react@19.2.1",
+        "frontend@0.0.0|use-sync-external-store@1.6.0"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|@mui/x-internals@8.25.0",
+      "dependsOn": [
+        "frontend@0.0.0|@babel/runtime@7.28.4",
+        "frontend@0.0.0|@mui/utils@7.3.6",
+        "frontend@0.0.0|react@19.2.1",
+        "frontend@0.0.0|reselect@5.1.1",
+        "frontend@0.0.0|use-sync-external-store@1.6.0"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|@mui/x-virtualizer@0.3.2",
+      "dependsOn": [
+        "frontend@0.0.0|@babel/runtime@7.28.4",
+        "frontend@0.0.0|@mui/utils@7.3.6",
+        "frontend@0.0.0|@mui/x-internals@8.25.0",
+        "frontend@0.0.0|react-dom@19.2.1",
         "frontend@0.0.0|react@19.2.1"
       ]
     },
@@ -19953,6 +20166,9 @@
     },
     {
       "ref": "frontend@0.0.0|csstype@3.2.3"
+    },
+    {
+      "ref": "frontend@0.0.0|date-fns@4.1.0"
     },
     {
       "ref": "frontend@0.0.0|debug@4.4.3",
@@ -20790,6 +21006,9 @@
     },
     {
       "ref": "frontend@0.0.0|recast@0.23.11|source-map@0.6.1"
+    },
+    {
+      "ref": "frontend@0.0.0|reselect@5.1.1"
     },
     {
       "ref": "frontend@0.0.0|resolve-from@4.0.0"

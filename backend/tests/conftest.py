@@ -10,7 +10,7 @@ from botocore.config import Config
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from mypy_boto3_s3 import S3Client
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -37,6 +37,14 @@ else:
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
+
+    @event.listens_for(test_engine, "connect")
+    def set_sqlite_pragma(dbapi_conn, connection_record):  # noqa: ARG001
+        cursor = dbapi_conn.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+
 test_sessionmaker = sessionmaker(
     test_engine,
     class_=Session,

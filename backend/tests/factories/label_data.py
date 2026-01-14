@@ -9,6 +9,7 @@ class LabelDataFactory(BaseFactory):
         model = LabelData
 
     label = factory.SubFactory("tests.factories.label.LabelFactory")
+    label_id = factory.LazyAttribute(lambda obj: obj.label.id)
     brand_name_en_extracted = factory.Faker("company")
     brand_name_en_verified = factory.LazyAttribute(
         lambda obj: obj.brand_name_en_extracted

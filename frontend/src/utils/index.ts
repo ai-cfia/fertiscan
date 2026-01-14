@@ -49,3 +49,20 @@ export const handleError = (err: AxiosError) => {
   }
   showErrorToast(errorMessage)
 }
+
+export const statusLabelMap: Record<string, string> = {
+  pending: "Pending",
+  in_progress: "In Progress",
+  completed: "Completed",
+  failed: "Failed",
+  not_started: "Not Started",
+}
+
+export const formatStatusLabel = (status: string) => {
+  return statusLabelMap[status] ?? status
+}
+
+export const truncateUuid = (uuid: string, length = 8) => {
+  if (!uuid || uuid.length <= length) return uuid
+  return `${uuid.substring(0, length)}...`
+}

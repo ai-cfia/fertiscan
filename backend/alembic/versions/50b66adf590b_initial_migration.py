@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: bc4ea6099c2c
+Revision ID: 50b66adf590b
 Revises:
-Create Date: 2026-01-13 02:19:48.544014
+Create Date: 2026-01-14 16:19:42.953043
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'bc4ea6099c2c'
+revision: str = '50b66adf590b'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -152,7 +152,6 @@ def upgrade() -> None:
     sa.Column('display_filename', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
     sa.Column('sequence_order', sa.Integer(), nullable=False),
     sa.Column('status', sa.Enum('pending', 'completed', name='uploadstatus'), nullable=False),
-    sa.Column('presigned_url_expires_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.CheckConstraint('sequence_order >= 1', name=op.f('ck_labelimage_ck_labelimage_sequence_order_positive')),
