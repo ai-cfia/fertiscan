@@ -1,5 +1,6 @@
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
 import DashboardIcon from "@mui/icons-material/Dashboard"
+import InventoryIcon from "@mui/icons-material/Inventory"
 import LabelIcon from "@mui/icons-material/Label"
 import LogoutIcon from "@mui/icons-material/Logout"
 import SettingsIcon from "@mui/icons-material/Settings"
@@ -34,6 +35,7 @@ const SidebarItems = ({
   const navItems = [
     { text: "Dashboard", icon: DashboardIcon, to: "/" },
     { text: "Labels", icon: LabelIcon, to: `/${productType}/labels` },
+    { text: "Products", icon: InventoryIcon, to: `/${productType}/products` },
     { text: "User Settings", icon: SettingsIcon, to: "/settings" },
     ...(user?.is_superuser
       ? [{ text: "Admin", icon: AdminPanelSettingsIcon, to: "/admin" }]
@@ -56,7 +58,9 @@ const SidebarItems = ({
           const isActive =
             location.pathname === item.to ||
             (item.to.includes("/labels") &&
-              location.pathname.startsWith(`/${productType}/labels`))
+              location.pathname.startsWith(`/${productType}/labels`)) ||
+            (item.to.includes("/products") &&
+              location.pathname.startsWith(`/${productType}/products`))
           return (
             <ListItem key={item.text} disablePadding>
               <ListItemButton

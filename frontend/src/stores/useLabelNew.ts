@@ -79,12 +79,13 @@ async function createLabel(productType: string): Promise<{ id: string }> {
   return { id: response.data.id }
 }
 
-async function requestPresignedUrl(
+function requestPresignedUrl(
   labelId: string,
   displayFilename: string,
   contentType: "image/png" | "image/jpeg" | "image/webp",
   sequenceOrder: number,
-): Promise<LabelImageDetail> {
+): Promise<{ imageDetail: LabelImageDetail; presignedUrl: string }> {
+  // Step 1: Create label image record
   return LabelsService.createLabelImage({
     path: { label_id: labelId },
     body: {
@@ -93,11 +94,26 @@ async function requestPresignedUrl(
       sequence_order: sequenceOrder,
     },
   })
-    .then((response) => {
-      if (response.status !== 201 || !response.data) {
-        throw new Error("Failed to get presigned URL")
+    .then((createResponse) => {
+      if (createResponse.status !== 201 || !createResponse.data) {
+        throw new Error("Failed to create label image")
       }
-      return response.data
+      return createResponse.data
+    })
+    .then((imageDetail) => {
+      // Step 2: Get presigned upload URL
+      return LabelsService.getLabelImagePresignedUploadUrl({
+        path: { label_id: labelId, image_id: imageDetail.id },
+        query: { content_type: contentType },
+      }).then((presignedResponse) => {
+        if (presignedResponse.status !== 200 || !presignedResponse.data) {
+          throw new Error("Failed to get presigned URL")
+        }
+        return {
+          imageDetail,
+          presignedUrl: presignedResponse.data.url,
+        }
+      })
     })
     .catch((error) => {
       // Extract error message from axios error response
@@ -146,15 +162,16 @@ async function uploadToStorage(
 async function completeUpload(
   labelId: string,
   storageFilePath: string,
-): Promise<void> {
+): Promise<LabelImageDetail> {
   return LabelsService.completeLabelImageUpload({
     path: { label_id: labelId },
     body: { storage_file_path: storageFilePath },
   })
     .then((response) => {
-      if (response.status !== 200) {
+      if (response.status !== 200 || !response.data) {
         throw new Error("Failed to complete upload")
       }
+      return response.data
     })
     .catch((error) => {
       // Extract error message from axios error response
@@ -318,63 +335,48 @@ const store = (set: any, get: () => LabelNewStore) => {
                 | "image/png"
                 | "image/jpeg"
                 | "image/webp"
-              const presignedResponse = await requestPresignedUrl(
+              const { imageDetail, presignedUrl } = await requestPresignedUrl(
                 labelId,
                 file.name,
                 contentType,
                 index + 1,
               )
-              if (!presignedResponse.presigned_url) {
-                throw new Error("Presigned URL not provided")
-              }
               // Upload to storage with progress tracking
               updateState(index, {
                 status: "uploading",
-                storageFilePath: presignedResponse.storage_file_path,
-                currentImageCount:
-                  presignedResponse.current_image_count ?? undefined,
-                imageId: presignedResponse.id,
+                storageFilePath: imageDetail.file_path,
+                currentImageCount: imageDetail.current_image_count ?? undefined,
+                imageId: imageDetail.id,
               })
               await uploadToStorage(
-                presignedResponse.presigned_url,
+                presignedUrl,
                 file,
                 contentType,
                 (progress) => {
                   updateState(index, { progress })
                 },
               )
-              // Notify backend upload completed
-              await completeUpload(labelId, presignedResponse.storage_file_path)
+              // Notify backend upload completed and get updated image
+              const completedImage = await completeUpload(
+                labelId,
+                imageDetail.file_path,
+              )
               updateState(index, { status: "success", progress: 100 })
-              // Fetch updated image and update cache
-              if (presignedResponse.id) {
-                LabelsService.readLabelImage({
-                  path: { label_id: labelId, image_id: presignedResponse.id },
-                })
-                  .then((updatedImageResponse) => {
-                    if (updatedImageResponse.data) {
-                      queryClient.setQueryData<LabelImageDetail[]>(
-                        ["labels", labelId, "images"],
-                        (oldData = []) => {
-                          const existingIndex = oldData.findIndex(
-                            (img) => img.id === presignedResponse.id,
-                          )
-                          if (existingIndex >= 0) {
-                            const newData = [...oldData]
-                            newData[existingIndex] = updatedImageResponse.data
-                            return newData
-                          }
-                          return [...oldData, updatedImageResponse.data]
-                        },
-                      )
-                    }
-                  })
-                  .catch(() => {
-                    queryClient.invalidateQueries({
-                      queryKey: ["labels", labelId, "images"],
-                    })
-                  })
-              }
+              // Update cache with completed image data
+              queryClient.setQueryData<LabelImageDetail[]>(
+                ["labels", labelId, "images"],
+                (oldData = []) => {
+                  const existingIndex = oldData.findIndex(
+                    (img) => img.id === completedImage.id,
+                  )
+                  if (existingIndex >= 0) {
+                    const newData = [...oldData]
+                    newData[existingIndex] = completedImage
+                    return newData
+                  }
+                  return [...oldData, completedImage]
+                },
+              )
             } catch (error) {
               const err = error as Error
               // Detect limit exceeded errors: 400 status with "Maximum" in message

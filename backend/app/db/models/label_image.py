@@ -35,10 +35,6 @@ class LabelImage(Base, table=True):
     display_filename: str = Field(max_length=255)
     sequence_order: int = Field(index=True, ge=1)
     status: UploadStatus = Field(default=UploadStatus.pending, index=True)
-    presigned_url_expires_at: datetime | None = Field(
-        default=None,
-        sa_column=Column(DateTime(timezone=True)),
-    )
     label: "Label" = Relationship(back_populates="images")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),

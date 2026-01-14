@@ -22,7 +22,7 @@ export default function LabelImageCard({
   // ============================== State ==============================
   const [imageLoaded, setImageLoaded] = useState(false)
   // ============================== Fetch Presigned URL ==============================
-  const shouldFetchUrl = image.status === "completed" && !image.presigned_url
+  const shouldFetchUrl = image.status === "completed"
   const { data: presignedUrlData, isLoading: isLoadingUrl } = useQuery({
     queryKey: ["labels", labelId, "images", image.id, "presigned-download-url"],
     queryFn: async () => {
@@ -36,8 +36,7 @@ export default function LabelImageCard({
     },
     enabled: shouldFetchUrl,
   })
-  const displayUrl =
-    image.presigned_url || presignedUrlData?.presigned_url || null
+  const displayUrl = presignedUrlData?.presigned_url || null
   // Reset imageLoaded when URL changes
   useEffect(() => {
     setImageLoaded(false)

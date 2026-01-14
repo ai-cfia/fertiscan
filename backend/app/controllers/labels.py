@@ -1,20 +1,20 @@
 """Label CRUD operations."""
 
-import asyncio
+from typing import Any
 from uuid import UUID
 
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import validate_call
+from sqlalchemy import func
 from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.label import ExtractionStatus, Label, VerificationStatus
 from app.db.models.label_image import LabelImage, UploadStatus
+from app.db.models.product import Product
 from app.db.models.product_type import ProductType
 from app.schemas.label import (
-    LabelDetail,
-    LabelImageDetail,
     PresignedDownloadUrlResponse,
     PresignedUrlRequest,
 )
@@ -29,35 +29,36 @@ from app.storage import (
 from app.storage.presigned import PresignedUrl
 
 
-@validate_call(config={"arbitrary_types_allowed": True})
-def get_labels_query(
-    user_id: UUID,  # noqa: ARG001
-    product_type: str = "fertilizer",
-    verification_status: VerificationStatus | None = None,
-    extraction_status: ExtractionStatus | None = None,
-    unlinked: bool | None = None,
+# ============================== Label ==============================
+def _apply_label_sorting(
+    stmt: SelectOfScalar[Label],
+    order_by: str,
+    order: str,
 ) -> SelectOfScalar[Label]:
-    """Build labels query with optional filters."""
-    stmt = select(Label)
-
-    # Filter by product type
-    stmt = stmt.join(ProductType).where(
-        ProductType.code == product_type,
-        ProductType.is_active,
-    )
-
-    # Filter by verification status
-    if verification_status is not None:
-        stmt = stmt.where(Label.verification_status == verification_status)
-
-    # Filter by extraction status
-    if extraction_status is not None:
-        stmt = stmt.where(Label.extraction_status == extraction_status)
-
-    # Filter unlinked labels
-    if unlinked is True:
-        stmt = stmt.where(Label.product_id == None)  # noqa: E711
-
+    """Apply sorting to labels query."""
+    valid_sort_fields: dict[str, Any] = {
+        "id": Label.id,
+        "created_at": Label.created_at,
+        "createdAt": Label.created_at,
+        "extraction_status": Label.extraction_status,
+        "extractionStatus": Label.extraction_status,
+        "verification_status": Label.verification_status,
+        "verificationStatus": Label.verification_status,
+    }
+    if order_by in ("productName", "product_name"):
+        stmt = stmt.outerjoin(Product, Label.product_id == Product.id)  # type: ignore[arg-type]
+        product_name_sort = func.coalesce(
+            Product.name_en,
+            Product.name_fr,
+            Product.registration_number,
+        )
+        valid_sort_fields["productName"] = product_name_sort
+        valid_sort_fields["product_name"] = product_name_sort
+    sort_column: Any = valid_sort_fields.get(order_by, Label.created_at)
+    if order.lower() == "asc":
+        stmt = stmt.order_by(sort_column.asc())
+    else:
+        stmt = stmt.order_by(sort_column.desc())
     return stmt
 
 
@@ -80,25 +81,92 @@ def create_label(
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-async def create_label_image(
+def get_labels_query(
+    user_id: UUID,  # noqa: ARG001
+    product_type: str = "fertilizer",
+    verification_status: VerificationStatus | None = None,
+    extraction_status: ExtractionStatus | None = None,
+    unlinked: bool | None = None,
+    order_by: str = "created_at",
+    order: str = "desc",
+) -> SelectOfScalar[Label]:
+    """Build labels query with optional filters and sorting."""
+    stmt = select(Label)
+
+    # Filter by product type
+    stmt = stmt.join(ProductType).where(
+        ProductType.code == product_type,
+        ProductType.is_active,
+    )
+
+    # Filter by verification status
+    if verification_status is not None:
+        stmt = stmt.where(Label.verification_status == verification_status)
+
+    # Filter by extraction status
+    if extraction_status is not None:
+        stmt = stmt.where(Label.extraction_status == extraction_status)
+
+    # Filter unlinked labels
+    if unlinked is True:
+        stmt = stmt.where(Label.product_id == None)  # noqa: E711
+
+    # Apply sorting
+    stmt = _apply_label_sorting(stmt, order_by, order)
+
+    # Eagerly load product relationship for list view
+    stmt = stmt.options(selectinload(Label.product))  # type: ignore[arg-type]
+
+    return stmt
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def get_label_detail(
+    session: Session,
+    label: Label,
+) -> Label:
+    """Get label detail with images, product_type, and created_by relationships
+    loaded."""
+    # Eager load relationships
+    stmt = (
+        select(Label)
+        .where(Label.id == label.id)
+        .options(
+            selectinload(Label.images),  # type: ignore[arg-type]
+            selectinload(Label.product_type),  # type: ignore[arg-type]
+            selectinload(Label.created_by),  # type: ignore[arg-type]
+        )
+    )
+    result = session.execute(stmt)
+    return result.scalar_one()
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def delete_label(
     session: Session,
     s3_client: AioBaseClient,
     label: Label,
+) -> None:
+    """Delete a label and its associated storage files."""
+    file_paths = [img.file_path for img in label.images]
+    if file_paths:
+        await delete_files(s3_client, file_paths)
+    session.delete(label)
+    session.flush()
+
+
+# ============================== LabelImage ==============================
+@validate_call(config={"arbitrary_types_allowed": True})
+def create_label_image(
+    session: Session,
+    label: Label,
     request: PresignedUrlRequest,
-) -> LabelImageDetail:
-    """Create pending LabelImage record and generate presigned URL for
-    upload."""
+) -> tuple[LabelImage, int]:
+    """Create pending LabelImage record. Returns (LabelImage,
+    current_image_count)."""
     # Generate storage filename and path
     storage_filename = generate_storage_filename(request.extension)
     storage_file_path = build_storage_path(label.id, storage_filename)
-
-    # Generate presigned URL (returns URL and expires_at)
-    presigned_url_result = await generate_presigned_upload_url(
-        client=s3_client,
-        label_id=label.id,
-        storage_filename=storage_filename,
-        content_type=request.content_type,
-    )
 
     # Create LabelImage record with status='pending'
     label_image = LabelImage(
@@ -107,7 +175,6 @@ async def create_label_image(
         display_filename=request.display_filename,
         sequence_order=request.sequence_order,
         status=UploadStatus.pending,
-        presigned_url_expires_at=presigned_url_result.expires_at,
     )
     session.add(label_image)
     session.flush()
@@ -116,15 +183,21 @@ async def create_label_image(
     session.refresh(label)
     current_image_count = len(label.images)
 
-    return LabelImageDetail(
-        id=label_image.id,
-        display_filename=label_image.display_filename,
-        storage_file_path=label_image.file_path,
-        sequence_order=label_image.sequence_order,
-        status=label_image.status,
-        presigned_url=presigned_url_result.url,
-        current_image_count=current_image_count,
+    return (label_image, current_image_count)
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def get_label_images(
+    session: Session,
+    label: Label,
+) -> list[LabelImage]:
+    """Get label images (without presigned URLs)."""
+    stmt = (
+        select(Label).where(Label.id == label.id).options(selectinload(Label.images))  # type: ignore[arg-type]
     )
+    result = session.execute(stmt)
+    label_with_images = result.scalar_one()
+    return sorted(label_with_images.images, key=lambda x: x.sequence_order)
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -132,10 +205,8 @@ async def complete_label_image_upload(
     session: Session,
     label_image: LabelImage,
 ) -> LabelImage:
-    """Complete upload by updating LabelImage status from pending to
-    completed."""
-    # Sleep to simulate delay for testing cache update
-    await asyncio.sleep(2)
+    """Complete upload by updating LabelImage status from pending to completed.
+    Returns the updated LabelImage model."""
     # Update status from 'pending' to 'completed'
     label_image.status = UploadStatus.completed
     session.add(label_image)
@@ -178,95 +249,19 @@ async def delete_label_image(
     session.flush()
 
 
+# ============================== Presigned URLs ==============================
 @validate_call(config={"arbitrary_types_allowed": True})
-async def delete_label(
-    session: Session,
+async def get_label_image_presigned_upload_url(
     s3_client: AioBaseClient,
-    label: Label,
-) -> None:
-    """Delete a label and its associated storage files."""
-    file_paths = [img.file_path for img in label.images]
-    if file_paths:
-        await delete_files(s3_client, file_paths)
-    session.delete(label)
-    session.flush()
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-async def get_label_detail(
-    session: Session,
-    label: Label,
-) -> LabelDetail:
-    """Get label detail with images (without presigned URLs)."""
-    # Eager load images and label_data relationships
-    stmt = (
-        select(Label)
-        .where(Label.id == label.id)
-        .options(selectinload(Label.images), selectinload(Label.label_data))  # type: ignore[arg-type]
-    )
-    result = session.execute(stmt)
-    label_with_relations = result.scalar_one()
-    sorted_images = sorted(label_with_relations.images, key=lambda x: x.sequence_order)
-    images_detail = [
-        LabelImageDetail(
-            id=img.id,
-            display_filename=img.display_filename,
-            storage_file_path=img.file_path,
-            sequence_order=img.sequence_order,
-            status=img.status,
-            presigned_url=None,
-        )
-        for img in sorted_images
-    ]
-    return LabelDetail(
-        id=label_with_relations.id,
-        extraction_status=label_with_relations.extraction_status,
-        verification_status=label_with_relations.verification_status,
-        extraction_error_message=label_with_relations.extraction_error_message,
-        created_at=label_with_relations.created_at,
-        updated_at=label_with_relations.updated_at,
-        images=images_detail,
-        has_label_data=label_with_relations.label_data is not None,
-    )
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-async def get_label_images(
-    session: Session,
-    label: Label,
-) -> list[LabelImageDetail]:
-    """Get label images (without presigned URLs)."""
-    stmt = (
-        select(Label).where(Label.id == label.id).options(selectinload(Label.images))  # type: ignore[arg-type]
-    )
-    result = session.execute(stmt)
-    label_with_images = result.scalar_one()
-    sorted_images = sorted(label_with_images.images, key=lambda x: x.sequence_order)
-    return [
-        LabelImageDetail(
-            id=img.id,
-            display_filename=img.display_filename,
-            storage_file_path=img.file_path,
-            sequence_order=img.sequence_order,
-            status=img.status,
-            presigned_url=None,
-        )
-        for img in sorted_images
-    ]
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-async def get_label_image(
     label_image: LabelImage,
-) -> LabelImageDetail:
-    """Get single label image (without presigned URL)."""
-    return LabelImageDetail(
-        id=label_image.id,
-        display_filename=label_image.display_filename,
-        storage_file_path=label_image.file_path,
-        sequence_order=label_image.sequence_order,
-        status=label_image.status,
-        presigned_url=None,
+    content_type: str,
+) -> PresignedUrl:
+    """Generate presigned upload URL for a pending LabelImage."""
+    return await generate_presigned_upload_url(
+        client=s3_client,
+        label_id=label_image.label_id,
+        storage_filename=label_image.file_path.split("/")[-1],
+        content_type=content_type,
     )
 
 

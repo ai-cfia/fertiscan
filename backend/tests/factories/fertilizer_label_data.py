@@ -11,6 +11,7 @@ class FertilizerLabelDataFactory(BaseFactory):
         model = FertilizerLabelData
 
     label = factory.SubFactory("tests.factories.label.LabelFactory")
+    label_id = factory.LazyAttribute(lambda obj: obj.label.id)
     n_extracted = Decimal("10.0")
     n_verified = Decimal("10.0")
     p_extracted = Decimal("20.0")

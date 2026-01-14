@@ -123,6 +123,7 @@ function Dashboard() {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
+                      search: { page: 0 },
                     })
                   }}
                 />
@@ -134,8 +135,9 @@ function Dashboard() {
                   isLoading={isLoadingPendingVerification}
                   onViewAll={() => {
                     navigate({
-                      to: "/$productType/verify",
+                      to: "/$productType/labels",
                       params: { productType },
+                      search: { page: 0, verification_status: "not_started" },
                     })
                   }}
                 />
@@ -149,7 +151,7 @@ function Dashboard() {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { status: "in_progress" },
+                      search: { page: 0, extraction_status: "in_progress" },
                     })
                   }}
                 />
@@ -163,7 +165,7 @@ function Dashboard() {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { status: "failed" },
+                      search: { page: 0, extraction_status: "failed" },
                     })
                   }}
                 />
@@ -191,7 +193,7 @@ function Dashboard() {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { unlinked: true },
+                      search: { page: 0, unlinked: true },
                     })
                   }}
                 />

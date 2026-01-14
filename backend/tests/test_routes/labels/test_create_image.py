@@ -42,12 +42,12 @@ class TestCreateLabelImage:
         assert response.status_code == 201
         data = response.json()
         assert data["display_filename"] == "test.png"
-        assert "presigned_url" in data
-        assert data["presigned_url"].startswith("http")
-        assert "storage_file_path" in data
-        assert data["storage_file_path"].startswith(f"labels/{label.id}/")
-        assert data["storage_file_path"].endswith(".png")
+        assert data["label_id"] == str(label.id)
+        assert "file_path" in data
+        assert data["file_path"].startswith(f"labels/{label.id}/")
+        assert data["file_path"].endswith(".png")
         assert data["current_image_count"] == 1
+        assert data["status"] == "pending"
 
     def test_create_label_image_jpeg(
         self,
@@ -73,7 +73,7 @@ class TestCreateLabelImage:
         assert response.status_code == 201
         data = response.json()
         assert data["display_filename"] == "photo.jpg"
-        assert data["storage_file_path"].endswith(".jpg")
+        assert data["file_path"].endswith(".jpg")
         assert data["current_image_count"] == 1
 
     def test_create_label_image_webp(
@@ -100,7 +100,7 @@ class TestCreateLabelImage:
         assert response.status_code == 201
         data = response.json()
         assert data["display_filename"] == "image.webp"
-        assert data["storage_file_path"].endswith(".webp")
+        assert data["file_path"].endswith(".webp")
         assert data["current_image_count"] == 1
 
     def test_create_label_image_with_existing_images(

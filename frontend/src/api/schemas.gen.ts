@@ -125,7 +125,165 @@ export const LabelCreateSchema = {
     title: 'LabelCreate'
 } as const;
 
+export const LabelCreatedSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'id'
+    ],
+    title: 'LabelCreated',
+    description: 'Response schema for label creation.'
+} as const;
+
 export const LabelDetailSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        product_id: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Id'
+        },
+        created_by_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Created By Id'
+        },
+        extraction_status: {
+            $ref: '#/components/schemas/ExtractionStatus'
+        },
+        verification_status: {
+            $ref: '#/components/schemas/VerificationStatus'
+        },
+        extraction_error_message: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Extraction Error Message'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        product_type: {
+            $ref: '#/components/schemas/ProductTypePublic'
+        },
+        created_by: {
+            $ref: '#/components/schemas/UserPublic'
+        },
+        images: {
+            items: {
+                $ref: '#/components/schemas/LabelImageDetail'
+            },
+            type: 'array',
+            title: 'Images'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_by_id',
+        'extraction_status',
+        'verification_status',
+        'created_at',
+        'updated_at',
+        'product_type',
+        'created_by'
+    ],
+    title: 'LabelDetail'
+} as const;
+
+export const LabelImageDetailSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        label_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Label Id'
+        },
+        display_filename: {
+            type: 'string',
+            title: 'Display Filename'
+        },
+        file_path: {
+            type: 'string',
+            title: 'File Path'
+        },
+        sequence_order: {
+            type: 'integer',
+            title: 'Sequence Order'
+        },
+        status: {
+            $ref: '#/components/schemas/UploadStatus'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        current_image_count: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Image Count'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'label_id',
+        'display_filename',
+        'file_path',
+        'sequence_order',
+        'status',
+        'created_at',
+        'updated_at'
+    ],
+    title: 'LabelImageDetail'
+} as const;
+
+export const LabelListItemSchema = {
     properties: {
         id: {
             type: 'string',
@@ -159,17 +317,15 @@ export const LabelDetailSchema = {
             format: 'date-time',
             title: 'Updated At'
         },
-        images: {
-            items: {
-                $ref: '#/components/schemas/LabelImageDetail'
-            },
-            type: 'array',
-            title: 'Images'
-        },
-        has_label_data: {
-            type: 'boolean',
-            title: 'Has Label Data',
-            default: false
+        product: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/ProductPublic'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -180,85 +336,15 @@ export const LabelDetailSchema = {
         'created_at',
         'updated_at'
     ],
-    title: 'LabelDetail'
+    title: 'LabelListItem',
+    description: 'Schema for label list items.'
 } as const;
 
-export const LabelImageDetailSchema = {
-    properties: {
-        id: {
-            type: 'string',
-            format: 'uuid',
-            title: 'Id'
-        },
-        display_filename: {
-            type: 'string',
-            title: 'Display Filename'
-        },
-        storage_file_path: {
-            type: 'string',
-            title: 'Storage File Path'
-        },
-        sequence_order: {
-            type: 'integer',
-            title: 'Sequence Order'
-        },
-        status: {
-            $ref: '#/components/schemas/UploadStatus'
-        },
-        presigned_url: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Presigned Url'
-        },
-        current_image_count: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Current Image Count'
-        }
-    },
-    type: 'object',
-    required: [
-        'id',
-        'display_filename',
-        'storage_file_path',
-        'sequence_order',
-        'status'
-    ],
-    title: 'LabelImageDetail'
-} as const;
-
-export const LabelPublicSchema = {
-    properties: {
-        id: {
-            type: 'string',
-            format: 'uuid',
-            title: 'Id'
-        }
-    },
-    type: 'object',
-    required: [
-        'id'
-    ],
-    title: 'LabelPublic'
-} as const;
-
-export const LimitOffsetPage_LabelPublic_Schema = {
+export const LimitOffsetPage_LabelListItem_Schema = {
     properties: {
         items: {
             items: {
-                $ref: '#/components/schemas/LabelPublic'
+                $ref: '#/components/schemas/LabelListItem'
             },
             type: 'array',
             title: 'Items'
@@ -286,7 +372,7 @@ export const LimitOffsetPage_LabelPublic_Schema = {
         'limit',
         'offset'
     ],
-    title: 'LimitOffsetPage[LabelPublic]'
+    title: 'LimitOffsetPage[LabelListItem]'
 } as const;
 
 export const LimitOffsetPage_ProductPublic_Schema = {
@@ -372,6 +458,27 @@ export const PresignedDownloadUrlResponseSchema = {
     description: 'Response schema for presigned download URL request.'
 } as const;
 
+export const PresignedUploadUrlResponseSchema = {
+    properties: {
+        url: {
+            type: 'string',
+            title: 'Url'
+        },
+        expires_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Expires At'
+        }
+    },
+    type: 'object',
+    required: [
+        'url',
+        'expires_at'
+    ],
+    title: 'PresignedUploadUrlResponse',
+    description: 'Response schema for presigned upload URL request.'
+} as const;
+
 export const PresignedUrlRequestSchema = {
     properties: {
         display_filename: {
@@ -451,13 +558,102 @@ export const ProductPublicSchema = {
             type: 'string',
             format: 'uuid',
             title: 'Id'
+        },
+        name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name En'
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr'
+        },
+        registration_number: {
+            type: 'string',
+            title: 'Registration Number'
         }
     },
     type: 'object',
     required: [
-        'id'
+        'id',
+        'registration_number'
     ],
     title: 'ProductPublic'
+} as const;
+
+export const ProductTypePublicSchema = {
+    properties: {
+        code: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Code'
+        },
+        name_en: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 255
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name En'
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 255
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr'
+        },
+        is_active: {
+            type: 'boolean',
+            title: 'Is Active',
+            default: true
+        },
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: [
+        'code',
+        'id',
+        'created_at',
+        'updated_at'
+    ],
+    title: 'ProductTypePublic'
 } as const;
 
 export const ReadinessSchema = {

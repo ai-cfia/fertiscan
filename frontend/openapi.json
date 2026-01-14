@@ -480,10 +480,43 @@
       }
     },
     "/api/v1/labels": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label",
+        "description": "Create a new label.",
+        "operationId": "labels_create_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelCreated" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": ["labels"],
         "summary": "Read Labels",
-        "description": "List labels with optional filters.",
+        "description": "List labels with optional filters and sorting.",
         "operationId": "labels_read_labels",
         "security": [{ "OAuth2PasswordBearer": [] }],
         "parameters": [
@@ -539,6 +572,30 @@
             "description": "Filter unlinked labels only (product_id is null)"
           },
           {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Field to sort by",
+              "default": "created_at",
+              "title": "Order By"
+            },
+            "description": "Field to sort by"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sort direction (asc or desc)",
+              "default": "desc",
+              "title": "Order"
+            },
+            "description": "Sort direction (asc or desc)"
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -572,41 +629,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_LabelPublic_"
+                  "$ref": "#/components/schemas/LimitOffsetPage_LabelListItem_"
                 }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["labels"],
-        "summary": "Create Label",
-        "description": "Create a new label.",
-        "operationId": "labels_create_label",
-        "security": [{ "OAuth2PasswordBearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/LabelCreate" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/LabelPublic" }
               }
             }
           },
@@ -690,6 +714,94 @@
         }
       }
     },
+    "/api/v1/labels/{label_id}/images": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label Image",
+        "description": "Create pending LabelImage record.",
+        "operationId": "labels_create_label_image",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PresignedUrlRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Images",
+        "description": "Get label images (without presigned URLs).",
+        "operationId": "labels_read_label_images",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LabelImageDetail" },
+                  "title": "Response Labels Read Label Images"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/labels/{label_id}/images/{image_id}": {
       "get": {
         "tags": ["labels"],
@@ -725,6 +837,157 @@
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["labels"],
+        "summary": "Delete Label Image",
+        "description": "Delete a label image, its storage file, and renumber remaining images.",
+        "operationId": "labels_delete_label_image",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/complete": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Complete Label Image Upload",
+        "description": "Complete upload by updating LabelImage status from pending to completed.",
+        "operationId": "labels_complete_label_image_upload",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/{image_id}/presigned-upload-url": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Get Label Image Presigned Upload Url",
+        "description": "Get presigned upload URL for a pending label image.",
+        "operationId": "labels_get_label_image_presigned_upload_url",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "content_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Content type (image/png, image/jpeg, image/webp)",
+              "title": "Content Type"
+            },
+            "description": "Content type (image/png, image/jpeg, image/webp)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUploadUrlResponse"
+                }
               }
             }
           },
@@ -776,143 +1039,6 @@
                 "schema": {
                   "$ref": "#/components/schemas/PresignedDownloadUrlResponse"
                 }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/labels/{label_id}/images": {
-      "get": {
-        "tags": ["labels"],
-        "summary": "Read Label Images",
-        "description": "Get label images (without presigned URLs).",
-        "operationId": "labels_read_label_images",
-        "security": [{ "OAuth2PasswordBearer": [] }],
-        "parameters": [
-          {
-            "name": "label_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Label Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/LabelImageDetail" },
-                  "title": "Response Labels Read Label Images"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["labels"],
-        "summary": "Create Label Image",
-        "description": "Create pending LabelImage and generate presigned URL for upload.",
-        "operationId": "labels_create_label_image",
-        "security": [{ "OAuth2PasswordBearer": [] }],
-        "parameters": [
-          {
-            "name": "label_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Label Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/PresignedUrlRequest" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/labels/{label_id}/images/complete": {
-      "post": {
-        "tags": ["labels"],
-        "summary": "Complete Label Image Upload",
-        "description": "Complete upload by updating LabelImage status from pending to completed.",
-        "operationId": "labels_complete_label_image_upload",
-        "security": [{ "OAuth2PasswordBearer": [] }],
-        "parameters": [
-          {
-            "name": "label_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Label Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadCompletionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/LabelPublic" }
               }
             }
           },
@@ -1101,7 +1227,112 @@
         "required": ["product_type"],
         "title": "LabelCreate"
       },
+      "LabelCreated": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["id"],
+        "title": "LabelCreated",
+        "description": "Response schema for label creation."
+      },
       "LabelDetail": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "product_id": {
+            "anyOf": [
+              { "type": "string", "format": "uuid" },
+              { "type": "null" }
+            ],
+            "title": "Product Id"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          },
+          "extraction_status": {
+            "$ref": "#/components/schemas/ExtractionStatus"
+          },
+          "verification_status": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "extraction_error_message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Extraction Error Message"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "product_type": { "$ref": "#/components/schemas/ProductTypePublic" },
+          "created_by": { "$ref": "#/components/schemas/UserPublic" },
+          "images": {
+            "items": { "$ref": "#/components/schemas/LabelImageDetail" },
+            "type": "array",
+            "title": "Images"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_by_id",
+          "extraction_status",
+          "verification_status",
+          "created_at",
+          "updated_at",
+          "product_type",
+          "created_by"
+        ],
+        "title": "LabelDetail"
+      },
+      "LabelImageDetail": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "label_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Label Id"
+          },
+          "display_filename": { "type": "string", "title": "Display Filename" },
+          "file_path": { "type": "string", "title": "File Path" },
+          "sequence_order": { "type": "integer", "title": "Sequence Order" },
+          "status": { "$ref": "#/components/schemas/UploadStatus" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "current_image_count": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Current Image Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label_id",
+          "display_filename",
+          "file_path",
+          "sequence_order",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "LabelImageDetail"
+      },
+      "LabelListItem": {
         "properties": {
           "id": { "type": "string", "format": "uuid", "title": "Id" },
           "extraction_status": {
@@ -1124,15 +1355,11 @@
             "format": "date-time",
             "title": "Updated At"
           },
-          "images": {
-            "items": { "$ref": "#/components/schemas/LabelImageDetail" },
-            "type": "array",
-            "title": "Images"
-          },
-          "has_label_data": {
-            "type": "boolean",
-            "title": "Has Label Data",
-            "default": false
+          "product": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ProductPublic" },
+              { "type": "null" }
+            ]
           }
         },
         "type": "object",
@@ -1143,49 +1370,13 @@
           "created_at",
           "updated_at"
         ],
-        "title": "LabelDetail"
+        "title": "LabelListItem",
+        "description": "Schema for label list items."
       },
-      "LabelImageDetail": {
-        "properties": {
-          "id": { "type": "string", "format": "uuid", "title": "Id" },
-          "display_filename": { "type": "string", "title": "Display Filename" },
-          "storage_file_path": {
-            "type": "string",
-            "title": "Storage File Path"
-          },
-          "sequence_order": { "type": "integer", "title": "Sequence Order" },
-          "status": { "$ref": "#/components/schemas/UploadStatus" },
-          "presigned_url": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Presigned Url"
-          },
-          "current_image_count": {
-            "anyOf": [{ "type": "integer" }, { "type": "null" }],
-            "title": "Current Image Count"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "display_filename",
-          "storage_file_path",
-          "sequence_order",
-          "status"
-        ],
-        "title": "LabelImageDetail"
-      },
-      "LabelPublic": {
-        "properties": {
-          "id": { "type": "string", "format": "uuid", "title": "Id" }
-        },
-        "type": "object",
-        "required": ["id"],
-        "title": "LabelPublic"
-      },
-      "LimitOffsetPage_LabelPublic_": {
+      "LimitOffsetPage_LabelListItem_": {
         "properties": {
           "items": {
-            "items": { "$ref": "#/components/schemas/LabelPublic" },
+            "items": { "$ref": "#/components/schemas/LabelListItem" },
             "type": "array",
             "title": "Items"
           },
@@ -1195,7 +1386,7 @@
         },
         "type": "object",
         "required": ["items", "total", "limit", "offset"],
-        "title": "LimitOffsetPage[LabelPublic]"
+        "title": "LimitOffsetPage[LabelListItem]"
       },
       "LimitOffsetPage_ProductPublic_": {
         "properties": {
@@ -1236,6 +1427,20 @@
         "title": "PresignedDownloadUrlResponse",
         "description": "Response schema for presigned download URL request."
       },
+      "PresignedUploadUrlResponse": {
+        "properties": {
+          "url": { "type": "string", "title": "Url" },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": ["url", "expires_at"],
+        "title": "PresignedUploadUrlResponse",
+        "description": "Response schema for presigned upload URL request."
+      },
       "PresignedUrlRequest": {
         "properties": {
           "display_filename": { "type": "string", "title": "Display Filename" },
@@ -1274,11 +1479,61 @@
       },
       "ProductPublic": {
         "properties": {
-          "id": { "type": "string", "format": "uuid", "title": "Id" }
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr"
+          },
+          "registration_number": {
+            "type": "string",
+            "title": "Registration Number"
+          }
         },
         "type": "object",
-        "required": ["id"],
+        "required": ["id", "registration_number"],
         "title": "ProductPublic"
+      },
+      "ProductTypePublic": {
+        "properties": {
+          "code": { "type": "string", "maxLength": 255, "title": "Code" },
+          "name_en": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Name Fr"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          },
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": ["code", "id", "created_at", "updated_at"],
+        "title": "ProductTypePublic"
       },
       "Readiness": {
         "properties": {
