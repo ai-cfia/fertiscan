@@ -5,7 +5,7 @@ from fastapi_pagination import LimitOffsetPage, LimitOffsetParams
 from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.controllers import labels as label_controller
-from app.db.models.label import ExtractionStatus, VerificationStatus
+from app.db.models.label import ReviewStatus
 from app.dependencies import (
     CompletedLabelImageDep,
     CurrentUser,
@@ -58,11 +58,8 @@ def read_labels(
     current_user: CurrentUser,
     params: LimitOffsetParams = Depends(),
     product_type: str = Query(default="fertilizer", description="Product type"),
-    verification_status: VerificationStatus | None = Query(
-        default=None, description="Filter by verification status"
-    ),
-    extraction_status: ExtractionStatus | None = Query(
-        default=None, description="Filter by extraction status"
+    review_status: ReviewStatus | None = Query(
+        default=None, description="Filter by review status"
     ),
     unlinked: bool | None = Query(
         default=None, description="Filter unlinked labels only (product_id is null)"
@@ -74,8 +71,7 @@ def read_labels(
     stmt = label_controller.get_labels_query(
         user_id=current_user.id,
         product_type=product_type,
-        verification_status=verification_status,
-        extraction_status=extraction_status,
+        review_status=review_status,
         unlinked=unlinked,
         order_by=order_by,
         order=order,

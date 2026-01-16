@@ -156,9 +156,9 @@ class TestLabelDataRelationships:
                 "phone": "1-800-123-4567",
             }
         ]
-        label_data = LabelDataFactory(contacts_extracted=contacts)
-        assert label_data.contacts_extracted == contacts
-        assert label_data.contacts_extracted[0]["type"] == "manufacturer"
+        label_data = LabelDataFactory(contacts=contacts)
+        assert label_data.contacts == contacts
+        assert label_data.contacts[0]["type"] == "manufacturer"
 
 
 class TestFertilizerLabelDataRelationships:
@@ -187,13 +187,13 @@ class TestFertilizerLabelDataRelationships:
         from decimal import Decimal
 
         fertilizer_data = FertilizerLabelDataFactory(
-            n_extracted=Decimal("10.5"),
-            p_extracted=Decimal("20.75"),
-            k_extracted=Decimal("5.25"),
+            n=Decimal("10.5"),
+            p=Decimal("20.75"),
+            k=Decimal("5.25"),
         )
-        assert fertilizer_data.n_extracted == Decimal("10.5")
-        assert fertilizer_data.p_extracted == Decimal("20.75")
-        assert fertilizer_data.k_extracted == Decimal("5.25")
+        assert fertilizer_data.n == Decimal("10.5")
+        assert fertilizer_data.p == Decimal("20.75")
+        assert fertilizer_data.k == Decimal("5.25")
 
     def test_jsonb_ingredients_field(self, db: Session) -> None:
         """Test JSONB ingredients field can store and retrieve data."""
@@ -204,11 +204,9 @@ class TestFertilizerLabelDataRelationships:
                 "unit": "%",
             }
         ]
-        fertilizer_data = FertilizerLabelDataFactory(
-            ingredients_en_extracted=ingredients
-        )
-        assert fertilizer_data.ingredients_en_extracted == ingredients
-        assert fertilizer_data.ingredients_en_extracted[0]["name"] == "Urea"
+        fertilizer_data = FertilizerLabelDataFactory(ingredients_en=ingredients)
+        assert fertilizer_data.ingredients_en == ingredients
+        assert fertilizer_data.ingredients_en[0]["name"] == "Urea"
 
     def test_jsonb_guaranteed_analysis_field(self, db: Session) -> None:
         """Test JSONB guaranteed_analysis field can store and retrieve data."""
@@ -217,11 +215,9 @@ class TestFertilizerLabelDataRelationships:
             "is_minimum": True,
             "nutrients": [{"name": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}],
         }
-        fertilizer_data = FertilizerLabelDataFactory(
-            guaranteed_analysis_en_extracted=analysis
-        )
-        assert fertilizer_data.guaranteed_analysis_en_extracted == analysis
+        fertilizer_data = FertilizerLabelDataFactory(guaranteed_analysis_en=analysis)
+        assert fertilizer_data.guaranteed_analysis_en == analysis
         assert (
-            fertilizer_data.guaranteed_analysis_en_extracted["title"]
+            fertilizer_data.guaranteed_analysis_en["title"]
             == "Minimum Guaranteed Analysis"
         )

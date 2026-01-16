@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
-from app.db.models.label import ExtractionStatus, Label, VerificationStatus
+from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_image import LabelImage, UploadStatus
 from app.db.models.product import Product
 from app.db.models.product_type import ProductType
@@ -40,10 +40,8 @@ def _apply_label_sorting(
         "id": Label.id,
         "created_at": Label.created_at,
         "createdAt": Label.created_at,
-        "extraction_status": Label.extraction_status,
-        "extractionStatus": Label.extraction_status,
-        "verification_status": Label.verification_status,
-        "verificationStatus": Label.verification_status,
+        "review_status": Label.review_status,
+        "reviewStatus": Label.review_status,
     }
     if order_by in ("productName", "product_name"):
         stmt = stmt.outerjoin(Product, Label.product_id == Product.id)  # type: ignore[arg-type]
@@ -84,8 +82,7 @@ def create_label(
 def get_labels_query(
     user_id: UUID,  # noqa: ARG001
     product_type: str = "fertilizer",
-    verification_status: VerificationStatus | None = None,
-    extraction_status: ExtractionStatus | None = None,
+    review_status: ReviewStatus | None = None,
     unlinked: bool | None = None,
     order_by: str = "created_at",
     order: str = "desc",
@@ -99,13 +96,9 @@ def get_labels_query(
         ProductType.is_active,
     )
 
-    # Filter by verification status
-    if verification_status is not None:
-        stmt = stmt.where(Label.verification_status == verification_status)
-
-    # Filter by extraction status
-    if extraction_status is not None:
-        stmt = stmt.where(Label.extraction_status == extraction_status)
+    # Filter by review status
+    if review_status is not None:
+        stmt = stmt.where(Label.review_status == review_status)
 
     # Filter unlinked labels
     if unlinked is True:

@@ -38,9 +38,7 @@ class TestGetLabelDetail:
         assert response.status_code == 200
         data = response.json()
         assert data["id"] == str(label.id)
-        assert data["extraction_status"] == label.extraction_status.value
-        assert data["verification_status"] == label.verification_status.value
-        assert data["extraction_error_message"] == label.extraction_error_message
+        assert data["review_status"] == label.review_status.value
         assert "created_at" in data
         assert "updated_at" in data
         assert data["images"] == []

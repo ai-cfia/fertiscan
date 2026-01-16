@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.db.models.label import ExtractionStatus, VerificationStatus
+from app.db.models.label import ReviewStatus
 from app.db.models.product import Product
 from app.db.models.user import User
 from tests.factories.label import LabelFactory
@@ -118,12 +118,12 @@ class TestListLabels:
         returned_ids = [item["id"] for item in content["items"]]
         assert returned_ids == label_ids[2:4]
 
-    def test_list_labels_filter_verification_status(
+    def test_list_labels_filter_review_status(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test filtering by verification status."""
+        """Test filtering by review status."""
         user, product = self._create_user_and_product()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -132,47 +132,16 @@ class TestListLabels:
             2,
             created_by=user,
             product=product,
-            verification_status=VerificationStatus.completed,
+            review_status=ReviewStatus.completed,
         )
         LabelFactory.create_batch(
             3,
             created_by=user,
             product=product,
-            verification_status=VerificationStatus.not_started,
+            review_status=ReviewStatus.not_started,
         )
         response = client.get(
-            f"{settings.API_V1_STR}/labels?verification_status=completed",
-            headers=headers,
-        )
-        assert response.status_code == 200
-        content = response.json()
-        assert len(content["items"]) == 2
-        assert content["total"] == 2
-
-    def test_list_labels_filter_extraction_status(
-        self,
-        client: TestClient,
-        db: Session,
-    ) -> None:
-        """Test filtering by extraction status."""
-        user, product = self._create_user_and_product()
-        headers = authentication_token_from_email(
-            client=client, email=user.email, db=db
-        )
-        LabelFactory.create_batch(
-            2,
-            created_by=user,
-            product=product,
-            extraction_status=ExtractionStatus.completed,
-        )
-        LabelFactory.create_batch(
-            3,
-            created_by=user,
-            product=product,
-            extraction_status=ExtractionStatus.pending,
-        )
-        response = client.get(
-            f"{settings.API_V1_STR}/labels?extraction_status=completed",
+            f"{settings.API_V1_STR}/labels?review_status=completed",
             headers=headers,
         )
         assert response.status_code == 200
@@ -215,19 +184,17 @@ class TestListLabels:
         LabelFactory.create_batch(
             2,
             created_by=user,
-            verification_status=VerificationStatus.completed,
-            extraction_status=ExtractionStatus.completed,
+            review_status=ReviewStatus.completed,
             standalone=True,
         )
         LabelFactory.create_batch(
             3,
             created_by=user,
-            verification_status=VerificationStatus.not_started,
-            extraction_status=ExtractionStatus.completed,
+            review_status=ReviewStatus.not_started,
             standalone=True,
         )
         response = client.get(
-            f"{settings.API_V1_STR}/labels?verification_status=completed&extraction_status=completed&unlinked=true",
+            f"{settings.API_V1_STR}/labels?review_status=completed&unlinked=true",
             headers=headers,
         )
         assert response.status_code == 200

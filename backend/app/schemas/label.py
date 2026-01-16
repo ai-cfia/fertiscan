@@ -8,7 +8,7 @@ from uuid import UUID
 from pydantic import computed_field
 from sqlmodel import Field, SQLModel
 
-from app.db.models.label import ExtractionStatus, VerificationStatus
+from app.db.models.label import ReviewStatus
 from app.db.models.label_image import UploadStatus
 from app.schemas.product import ProductPublic
 from app.schemas.product_type import ProductTypePublic
@@ -65,9 +65,7 @@ class LabelListItem(SQLModel):
     """Schema for label list items."""
 
     id: UUID
-    extraction_status: ExtractionStatus
-    verification_status: VerificationStatus
-    extraction_error_message: str | None = None
+    review_status: ReviewStatus
     created_at: datetime
     updated_at: datetime
     product: ProductPublic | None = None
@@ -89,9 +87,7 @@ class LabelDetail(SQLModel):
     id: UUID
     product_id: UUID | None = None
     created_by_id: UUID
-    extraction_status: ExtractionStatus
-    verification_status: VerificationStatus
-    extraction_error_message: str | None = None
+    review_status: ReviewStatus
     created_at: datetime
     updated_at: datetime
     product_type: ProductTypePublic

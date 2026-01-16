@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: 50b66adf590b
+Revision ID: 200d78bb51cd
 Revises:
-Create Date: 2026-01-14 16:19:42.953043
+Create Date: 2026-01-16 09:08:47.196371
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '50b66adf590b'
+revision: str = '200d78bb51cd'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -72,9 +72,7 @@ def upgrade() -> None:
     sa.Column('product_id', sa.Uuid(), nullable=True),
     sa.Column('product_type_id', sa.Uuid(), nullable=False),
     sa.Column('created_by_id', sa.Uuid(), nullable=False),
-    sa.Column('extraction_status', sa.Enum('pending', 'in_progress', 'completed', 'failed', name='extractionstatus'), nullable=False),
-    sa.Column('verification_status', sa.Enum('not_started', 'in_progress', 'completed', name='verificationstatus'), nullable=False),
-    sa.Column('extraction_error_message', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('review_status', sa.Enum('not_started', 'in_progress', 'completed', name='reviewstatus'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['created_by_id'], ['user.id'], name=op.f('fk_label_created_by_id_user')),
@@ -83,35 +81,23 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id', name=op.f('pk_label'))
     )
     op.create_index(op.f('ix_label_created_by_id'), 'label', ['created_by_id'], unique=False)
-    op.create_index(op.f('ix_label_extraction_status'), 'label', ['extraction_status'], unique=False)
     op.create_index(op.f('ix_label_product_id'), 'label', ['product_id'], unique=False)
     op.create_index(op.f('ix_label_product_type_id'), 'label', ['product_type_id'], unique=False)
-    op.create_index(op.f('ix_label_verification_status'), 'label', ['verification_status'], unique=False)
+    op.create_index(op.f('ix_label_review_status'), 'label', ['review_status'], unique=False)
     op.create_table('fertilizerlabeldata',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('label_id', sa.Uuid(), nullable=False),
-    sa.Column('n_extracted', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('n_verified', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('p_extracted', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('p_verified', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('k_extracted', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('k_verified', sa.Numeric(precision=10, scale=2), nullable=True),
-    sa.Column('ingredients_en_extracted', sa.JSON(), nullable=True),
-    sa.Column('ingredients_en_verified', sa.JSON(), nullable=True),
-    sa.Column('ingredients_fr_extracted', sa.JSON(), nullable=True),
-    sa.Column('ingredients_fr_verified', sa.JSON(), nullable=True),
-    sa.Column('guaranteed_analysis_en_extracted', sa.JSON(), nullable=True),
-    sa.Column('guaranteed_analysis_en_verified', sa.JSON(), nullable=True),
-    sa.Column('guaranteed_analysis_fr_extracted', sa.JSON(), nullable=True),
-    sa.Column('guaranteed_analysis_fr_verified', sa.JSON(), nullable=True),
-    sa.Column('caution_en_extracted', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('caution_en_verified', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('caution_fr_extracted', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('caution_fr_verified', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_en_extracted', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_en_verified', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_fr_extracted', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_fr_verified', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('n', sa.Numeric(precision=10, scale=2), nullable=True),
+    sa.Column('p', sa.Numeric(precision=10, scale=2), nullable=True),
+    sa.Column('k', sa.Numeric(precision=10, scale=2), nullable=True),
+    sa.Column('ingredients_en', sa.JSON(), nullable=True),
+    sa.Column('ingredients_fr', sa.JSON(), nullable=True),
+    sa.Column('guaranteed_analysis_en', sa.JSON(), nullable=True),
+    sa.Column('guaranteed_analysis_fr', sa.JSON(), nullable=True),
+    sa.Column('caution_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('caution_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('instructions_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('instructions_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_fertilizerlabeldata_label_id_label')),
@@ -121,24 +107,15 @@ def upgrade() -> None:
     op.create_table('labeldata',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('label_id', sa.Uuid(), nullable=False),
-    sa.Column('brand_name_en_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('brand_name_en_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('brand_name_fr_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('brand_name_fr_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_en_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_en_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_fr_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_fr_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('contacts_extracted', sa.JSON(), nullable=True),
-    sa.Column('contacts_verified', sa.JSON(), nullable=True),
-    sa.Column('registration_number_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('registration_number_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('lot_number_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('lot_number_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('net_weight_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('net_weight_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('volume_extracted', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('volume_verified', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('brand_name_en', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('brand_name_fr', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('product_name_en', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('product_name_fr', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('contacts', sa.JSON(), nullable=True),
+    sa.Column('registration_number', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('lot_number', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('net_weight', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('volume', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_labeldata_label_id_label')),
@@ -162,12 +139,48 @@ def upgrade() -> None:
     op.create_index(op.f('ix_labelimage_label_id'), 'labelimage', ['label_id'], unique=False)
     op.create_index(op.f('ix_labelimage_sequence_order'), 'labelimage', ['sequence_order'], unique=False)
     op.create_index(op.f('ix_labelimage_status'), 'labelimage', ['status'], unique=False)
+    op.create_table('fertilizerlabeldatameta',
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('label_id', sa.Uuid(), nullable=False),
+    sa.Column('field_name', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
+    sa.Column('needs_review', sa.Boolean(), nullable=False),
+    sa.Column('note', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('ai_generated', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['label_id'], ['fertilizerlabeldata.id'], name=op.f('fk_fertilizerlabeldatameta_label_id_fertilizerlabeldata')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_fertilizerlabeldatameta')),
+    sa.UniqueConstraint('label_id', 'field_name', name='uq_fertilizerlabeldatameta_label_id_field_name')
+    )
+    op.create_index(op.f('ix_fertilizerlabeldatameta_field_name'), 'fertilizerlabeldatameta', ['field_name'], unique=False)
+    op.create_index(op.f('ix_fertilizerlabeldatameta_label_id'), 'fertilizerlabeldatameta', ['label_id'], unique=False)
+    op.create_table('labeldatameta',
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('label_id', sa.Uuid(), nullable=False),
+    sa.Column('field_name', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
+    sa.Column('needs_review', sa.Boolean(), nullable=False),
+    sa.Column('note', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('ai_generated', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['label_id'], ['labeldata.id'], name=op.f('fk_labeldatameta_label_id_labeldata')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_labeldatameta')),
+    sa.UniqueConstraint('label_id', 'field_name', name='uq_labeldatameta_label_id_field_name')
+    )
+    op.create_index(op.f('ix_labeldatameta_field_name'), 'labeldatameta', ['field_name'], unique=False)
+    op.create_index(op.f('ix_labeldatameta_label_id'), 'labeldatameta', ['label_id'], unique=False)
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     """Downgrade schema."""
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_index(op.f('ix_labeldatameta_label_id'), table_name='labeldatameta')
+    op.drop_index(op.f('ix_labeldatameta_field_name'), table_name='labeldatameta')
+    op.drop_table('labeldatameta')
+    op.drop_index(op.f('ix_fertilizerlabeldatameta_label_id'), table_name='fertilizerlabeldatameta')
+    op.drop_index(op.f('ix_fertilizerlabeldatameta_field_name'), table_name='fertilizerlabeldatameta')
+    op.drop_table('fertilizerlabeldatameta')
     op.drop_index(op.f('ix_labelimage_status'), table_name='labelimage')
     op.drop_index(op.f('ix_labelimage_sequence_order'), table_name='labelimage')
     op.drop_index(op.f('ix_labelimage_label_id'), table_name='labelimage')
@@ -176,10 +189,9 @@ def downgrade() -> None:
     op.drop_table('labeldata')
     op.drop_index(op.f('ix_fertilizerlabeldata_label_id'), table_name='fertilizerlabeldata')
     op.drop_table('fertilizerlabeldata')
-    op.drop_index(op.f('ix_label_verification_status'), table_name='label')
+    op.drop_index(op.f('ix_label_review_status'), table_name='label')
     op.drop_index(op.f('ix_label_product_type_id'), table_name='label')
     op.drop_index(op.f('ix_label_product_id'), table_name='label')
-    op.drop_index(op.f('ix_label_extraction_status'), table_name='label')
     op.drop_index(op.f('ix_label_created_by_id'), table_name='label')
     op.drop_table('label')
     op.drop_index(op.f('ix_product_registration_number'), table_name='product')
@@ -192,4 +204,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
+    # Drop enum types
+    op.execute('DROP TYPE IF EXISTS uploadstatus')
+    op.execute('DROP TYPE IF EXISTS reviewstatus')
     # ### end Alembic commands ###

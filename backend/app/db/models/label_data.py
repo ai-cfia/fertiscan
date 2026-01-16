@@ -11,6 +11,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
+    from app.db.models.label_data_meta import LabelDataMeta
 
 
 class LabelData(Base, table=True):
@@ -18,25 +19,19 @@ class LabelData(Base, table=True):
     label_id: UUID = Field(
         foreign_key="label.id", nullable=False, unique=True, index=True
     )
-    brand_name_en_extracted: str | None = Field(default=None, max_length=255)
-    brand_name_en_verified: str | None = Field(default=None, max_length=255)
-    brand_name_fr_extracted: str | None = Field(default=None, max_length=255)
-    brand_name_fr_verified: str | None = Field(default=None, max_length=255)
-    product_name_en_extracted: str | None = Field(default=None, max_length=255)
-    product_name_en_verified: str | None = Field(default=None, max_length=255)
-    product_name_fr_extracted: str | None = Field(default=None, max_length=255)
-    product_name_fr_verified: str | None = Field(default=None, max_length=255)
-    contacts_extracted: list[dict[str, Any]] | None = Field(default=None, sa_type=JSON)
-    contacts_verified: list[dict[str, Any]] | None = Field(default=None, sa_type=JSON)
-    registration_number_extracted: str | None = Field(default=None, max_length=255)
-    registration_number_verified: str | None = Field(default=None, max_length=255)
-    lot_number_extracted: str | None = Field(default=None, max_length=255)
-    lot_number_verified: str | None = Field(default=None, max_length=255)
-    net_weight_extracted: str | None = Field(default=None, max_length=255)
-    net_weight_verified: str | None = Field(default=None, max_length=255)
-    volume_extracted: str | None = Field(default=None, max_length=255)
-    volume_verified: str | None = Field(default=None, max_length=255)
+    brand_name_en: str | None = Field(default=None, max_length=255)
+    brand_name_fr: str | None = Field(default=None, max_length=255)
+    product_name_en: str | None = Field(default=None, max_length=255)
+    product_name_fr: str | None = Field(default=None, max_length=255)
+    contacts: list[dict[str, Any]] | None = Field(default=None, sa_type=JSON)
+    registration_number: str | None = Field(default=None, max_length=255)
+    lot_number: str | None = Field(default=None, max_length=255)
+    net_weight: str | None = Field(default=None, max_length=255)
+    volume: str | None = Field(default=None, max_length=255)
     label: "Label" = Relationship(back_populates="label_data")
+    meta: list["LabelDataMeta"] = Relationship(
+        back_populates="label_data", cascade_delete=True
+    )
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         sa_column=Column(DateTime(timezone=True)),
