@@ -1,7 +1,9 @@
 import { Alert, Box, Button, Typography } from "@mui/material"
+import { useTranslation } from "react-i18next"
 import { useLabelNew } from "@/stores/useLabelNew"
 
 export default function ValidationErrorBanner() {
+  const { t } = useTranslation(["errors", "common"])
   const { fileTypeValidationErrors, clearFileTypeValidationErrors } =
     useLabelNew()
   if (fileTypeValidationErrors.length === 0) {
@@ -21,7 +23,7 @@ export default function ValidationErrorBanner() {
           size="small"
           onClick={clearFileTypeValidationErrors}
         >
-          Dismiss
+          {t("button.dismiss", { ns: "common" })}
         </Button>
       }
     >
@@ -30,7 +32,7 @@ export default function ValidationErrorBanner() {
         component="div"
         sx={{ fontWeight: 600, mb: 0.5 }}
       >
-        Invalid file types:
+        {t("fileType.invalidTitle")}
       </Typography>
       <Box component="ul" sx={{ m: 0, pl: 2 }}>
         {fileTypeValidationErrors.map((error, index) => (

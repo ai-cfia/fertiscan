@@ -8,6 +8,7 @@ import {
 } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { type LabelImageDetail, LabelsService } from "@/api"
 
 interface LabelImageCardProps {
@@ -19,6 +20,7 @@ export default function LabelImageCard({
   image,
   labelId,
 }: LabelImageCardProps) {
+  const { t } = useTranslation("labels")
   // ============================== State ==============================
   const [imageLoaded, setImageLoaded] = useState(false)
   // ============================== Fetch Presigned URL ==============================
@@ -125,13 +127,13 @@ export default function LabelImageCard({
           >
             <ImageIcon sx={{ fontSize: 48, color: "grey.400" }} />
             <Typography variant="caption" color="text.secondary">
-              Image not available
+              {t("image.notAvailable")}
             </Typography>
           </Box>
         )}
         <Typography variant="body2">{image.display_filename}</Typography>
         <Typography variant="caption" color="text.secondary">
-          Sequence: {image.sequence_order}
+          {t("image.sequence", { order: image.sequence_order })}
         </Typography>
       </CardContent>
     </Card>

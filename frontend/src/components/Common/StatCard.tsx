@@ -9,6 +9,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material"
+import { useTranslation } from "react-i18next"
 
 interface StatCardProps {
   label: string
@@ -25,6 +26,7 @@ export default function StatCard({
   onViewAll,
   isLoading = false,
 }: StatCardProps) {
+  const { t } = useTranslation("common")
   return (
     <Card
       sx={{
@@ -79,7 +81,7 @@ export default function StatCard({
               onViewAll()
             }}
           >
-            View All
+            {t("button.viewAll")}
           </Button>
         </CardActions>
       )}

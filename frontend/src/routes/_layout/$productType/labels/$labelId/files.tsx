@@ -8,6 +8,7 @@ import {
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useParams } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { LabelsService } from "@/api"
 import LabelImageCard from "@/components/Common/LabelImageCard"
 import { useConfig } from "@/stores/useConfig"
@@ -19,6 +20,7 @@ export const Route = createFileRoute(
 })
 
 function LabelFiles() {
+  const { t } = useTranslation("labels")
   // ============================== Params ==============================
   const { labelId } = useParams({
     from: "/_layout/$productType/labels/$labelId/files",
@@ -37,8 +39,8 @@ function LabelFiles() {
   })
   // ============================== Effects ==============================
   useEffect(() => {
-    document.title = `Label Files - Label Inspection`
-  }, [])
+    document.title = t("files.pageTitle")
+  }, [t])
   // ============================== Computed ==============================
   const sortedImages = useMemo(
     () => [...images].sort((a, b) => a.sequence_order - b.sequence_order),
@@ -58,7 +60,10 @@ function LabelFiles() {
     <Container maxWidth="xl">
       <Box sx={{ pt: 3, pb: 4 }}>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          Label Images: {sortedImages.length} (max {maxImagesPerLabel})
+          {t("files.title", {
+            count: sortedImages.length,
+            max: maxImagesPerLabel,
+          })}
         </Typography>
         {/* ============================== Label Images ============================== */}
         {sortedImages.length > 0 && (

@@ -1,0 +1,10 @@
+{
+  "fileType": {
+    "invalidTitle": "Invalid file types:"
+  },
+  "labels": {
+    "errorOccurred": "An error occurred",
+    "loadFailed": "Failed to load labels",
+    "loadFailedRetry": "Failed to load labels. Please try again."
+  }
+}

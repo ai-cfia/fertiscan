@@ -20,8 +20,10 @@ import {
   useParams,
 } from "@tanstack/react-router"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import LabelListErrorBanner from "@/components/Common/LabelListErrorBanner"
+import LanguageSwitcher from "@/components/Common/LanguageSwitcher"
 import SidebarItems from "@/components/Common/SidebarItems"
 import UploadCompletionSnackbar from "@/components/Common/UploadCompletionSnackbar"
 import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
@@ -51,6 +53,7 @@ function Layout() {
   const { uploadedFiles, isProcessing, clearAll, process } = useLabelNew()
   const isNewLabelPage = location.pathname.endsWith("/labels/new")
   const productType = (params.productType as string) || "fertilizer"
+  const { t } = useTranslation(["common", "labels"])
   // ============================== State ==============================
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -72,7 +75,7 @@ function Layout() {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label={t("aria.openDrawer")}
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}
@@ -80,7 +83,7 @@ function Layout() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Label Inspection
+            {t("app.title")}
           </Typography>
           {isNewLabelPage ? (
             <>
@@ -92,7 +95,7 @@ function Layout() {
                   disabled={isProcessing}
                   sx={{ mr: 2 }}
                 >
-                  Clear All
+                  {t("button.clearAll")}
                 </Button>
               )}
               <Button
@@ -110,7 +113,7 @@ function Layout() {
                 startIcon={<CloudUploadIcon />}
                 sx={{ mr: 2 }}
               >
-                {isProcessing ? "Uploading..." : "Upload Files"}
+                {isProcessing ? t("button.uploading") : t("button.upload")}
               </Button>
             </>
           ) : (
@@ -122,9 +125,12 @@ function Layout() {
               startIcon={<AddIcon />}
               sx={{ mr: 2 }}
             >
-              Label
+              {t("button.label")}
             </Button>
           )}
+          <Box sx={{ mr: 2 }}>
+            <LanguageSwitcher />
+          </Box>
           <UserMenu />
         </Toolbar>
       </AppBar>
@@ -139,7 +145,7 @@ function Layout() {
         <Box
           component="nav"
           sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
-          aria-label="navigation"
+          aria-label={t("aria.navigation")}
         >
           <Drawer
             variant="temporary"

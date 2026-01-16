@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query"
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import type { AxiosError } from "axios"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { LoginService } from "@/api"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/recover-password")({
 })
 
 function RecoverPassword() {
+  const { t } = useTranslation("auth")
   const {
     register,
     handleSubmit,
@@ -49,7 +51,7 @@ function RecoverPassword() {
   const mutation = useMutation({
     mutationFn: recoverPassword,
     onSuccess: () => {
-      showSuccessToast("Password recovery email sent successfully.")
+      showSuccessToast(t("recoverPassword.success"))
       reset()
     },
     onError: (err: AxiosError) => {
@@ -76,28 +78,33 @@ function RecoverPassword() {
       >
         <Box sx={{ textAlign: "center", mb: 2 }}>
           <Typography variant="h4" component="h1">
-            Password Recovery
+            {t("recoverPassword.title")}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            A password recovery email will be sent to the registered account.
+            {t("recoverPassword.description")}
           </Typography>
         </Box>
         <TextField
           {...register("email", {
-            required: "Email is required",
-            pattern: emailPattern,
+            required: t("recoverPassword.emailRequired"),
+            pattern: {
+              value: emailPattern.value,
+              message: t("recoverPassword.emailInvalid"),
+            },
           })}
-          label="Email"
+          label={t("recoverPassword.email")}
           type="email"
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailIcon />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailIcon />
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <Button
@@ -107,7 +114,9 @@ function RecoverPassword() {
           fullWidth
           size="large"
         >
-          {isSubmitting ? "Sending..." : "Continue"}
+          {isSubmitting
+            ? t("recoverPassword.submitting")
+            : t("recoverPassword.submit")}
         </Button>
       </Container>
     </>

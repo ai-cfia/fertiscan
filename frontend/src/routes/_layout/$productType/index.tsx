@@ -2,15 +2,19 @@ import { Box, Container, Grid, Typography } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { LabelsService, ProductsService } from "@/api"
 import ActionButton from "@/components/Common/ActionButton"
 import StatCard from "@/components/Common/StatCard"
+import { useConfig } from "@/stores/useConfig"
 
 export const Route = createFileRoute("/_layout/$productType/")({
   component: Dashboard,
 })
 
 function Dashboard() {
+  const { t } = useTranslation("labels")
+  const { defaultPerPage } = useConfig()
   // ============================== Route & Navigation ==============================
   const { productType } = Route.useParams()
   const navigate = useNavigate()
@@ -101,8 +105,8 @@ function Dashboard() {
   )
   // ============================== Effects ==============================
   useEffect(() => {
-    document.title = "Dashboard - Label Inspection"
-  }, [])
+    document.title = t("dashboard.title")
+  }, [t])
   return (
     <Container maxWidth="xl">
       <Box sx={{ pt: 3, pb: 4 }}>
@@ -110,69 +114,81 @@ function Dashboard() {
           {/* ============================== Overview ============================== */}
           <Box component="section">
             <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-              Overview
+              {t("dashboard.overview")}
             </Typography>
             {/* ------------------------------ Stat Cards ------------------------------ */}
             <Grid container spacing={3} sx={{ alignItems: "stretch" }}>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Total Labels"
+                  label={t("dashboard.totalLabels")}
                   value={totalLabels?.total ?? 0}
                   isLoading={isLoadingTotalLabels}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0 },
+                      search: { page: 0, per_page: defaultPerPage },
                     })
                   }}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Pending Verification"
+                  label={t("dashboard.pendingVerification")}
                   value={labelsPendingVerification?.total ?? 0}
                   isLoading={isLoadingPendingVerification}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0, verification_status: "not_started" },
+                      search: {
+                        page: 0,
+                        per_page: 10,
+                        verification_status: "not_started",
+                      },
                     })
                   }}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Extracting"
+                  label={t("dashboard.extracting")}
                   value={labelsExtracting?.total ?? 0}
                   isLoading={isLoadingExtracting}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0, extraction_status: "in_progress" },
+                      search: {
+                        page: 0,
+                        per_page: 10,
+                        extraction_status: "in_progress",
+                      },
                     })
                   }}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Failed Extractions"
+                  label={t("dashboard.failedExtractions")}
                   value={labelsFailedExtraction?.total ?? 0}
                   isLoading={isLoadingFailedExtraction}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0, extraction_status: "failed" },
+                      search: {
+                        page: 0,
+                        per_page: 10,
+                        extraction_status: "failed",
+                      },
                     })
                   }}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Total Products"
+                  label={t("dashboard.totalProducts")}
                   value={totalProducts?.total ?? 0}
                   isLoading={isLoadingTotalProducts}
                   onViewAll={() => {
@@ -185,15 +201,15 @@ function Dashboard() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label="Unlinked Labels"
+                  label={t("dashboard.unlinkedLabels")}
+                  supportingText={t("dashboard.unlinkedLabelsDescription")}
                   value={unlinkedLabels?.total ?? 0}
-                  supportingText="Labels not associated with products"
                   isLoading={isLoadingUnlinkedLabels}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0, unlinked: true },
+                      search: { page: 0, per_page: 10, unlinked: true },
                     })
                   }}
                 />
@@ -203,35 +219,35 @@ function Dashboard() {
           {/* ============================== Quick Actions ============================== */}
           <Box component="section">
             <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-              Quick Actions
+              {t("dashboard.quickActions")}
             </Typography>
             {/* ------------------------------ Action Buttons ------------------------------ */}
             <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
-                  title="Create New Label"
-                  description="Upload and process a new label"
+                  title={t("dashboard.createNewLabel")}
+                  description={t("dashboard.createNewLabelDescription")}
                   to={`/${productType}/labels/new`}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
-                  title="View All Labels"
-                  description="Browse and manage all labels"
+                  title={t("dashboard.viewAllLabels")}
+                  description={t("dashboard.viewAllLabelsDescription")}
                   to={`/${productType}/labels`}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
-                  title="Manage Products"
-                  description="View and edit products"
+                  title={t("dashboard.manageProducts")}
+                  description={t("dashboard.manageProductsDescription")}
                   to={`/${productType}/products`}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
-                  title="Verify Labels"
-                  description="Review labels ready for verification"
+                  title={t("dashboard.verifyLabels")}
+                  description={t("dashboard.verifyLabelsDescription")}
                   to={`/${productType}/verify`}
                 />
               </Grid>

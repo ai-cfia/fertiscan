@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useConfig } from "@/stores/useConfig"
 import { useLabelNew } from "@/stores/useLabelNew"
 
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/_layout/$productType/labels/new")({
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"] as const
 
 function NewLabel() {
+  const { t } = useTranslation(["labels", "errors"])
   // ============================== Store ==============================
   const {
     uploadedFiles,
@@ -37,12 +39,12 @@ function NewLabel() {
   const [isDragging, setIsDragging] = useState(false)
   // ============================== Effects ==============================
   useEffect(() => {
-    document.title = "Create New Label - Label Inspection"
+    document.title = t("labels.create.pageTitle")
     // Clear previous state when entering new label page (unless currently processing)
     if (!isProcessing) {
       clearAll()
     }
-  }, [clearAll, isProcessing])
+  }, [clearAll, isProcessing, t])
   // ============================== Handlers ==============================
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return
@@ -52,7 +54,7 @@ function NewLabel() {
       if (ALLOWED_TYPES.includes(file.type as (typeof ALLOWED_TYPES)[number])) {
         validFiles.push(file)
       } else {
-        errors.push(`${file.name}: Not added - must be PNG, JPEG, or WebP`)
+        errors.push(t("errors.fileType.invalid", { fileName: file.name }))
       }
     })
     if (validFiles.length > 0) {
@@ -88,23 +90,24 @@ function NewLabel() {
           {/* ============================== Header ============================== */}
           <Box component="section">
             <Typography variant="h4" gutterBottom>
-              Create New Label
+              {t("labels.create.title")}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Select at least one label image to create a new label
+              {t("labels.create.description")}
             </Typography>
           </Box>
           {/* ============================== Selected Files ============================== */}
           <Box component="section">
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Selected Files ({uploadedFiles.length} of {maxImagesPerLabel})
+              {t("labels.create.selectedFiles")} ({uploadedFiles.length}{" "}
+              {t("labels.create.of")} {maxImagesPerLabel})
             </Typography>
             {uploadedFiles.length > maxImagesPerLabel && (
               <Alert variant="outlined" severity="warning" sx={{ mb: 2 }}>
-                Maximum {maxImagesPerLabel} files allowed. Please remove{" "}
-                {uploadedFiles.length - maxImagesPerLabel} file
-                {uploadedFiles.length - maxImagesPerLabel !== 1 ? "s" : ""}{" "}
-                before uploading.
+                {t("labels.create.maxFilesWarning", {
+                  max: maxImagesPerLabel,
+                  count: uploadedFiles.length - maxImagesPerLabel,
+                })}
               </Alert>
             )}
             <Box
@@ -179,7 +182,7 @@ function NewLabel() {
                           onClick={() => removeFile(index)}
                           sx={{ mt: "auto" }}
                         >
-                          Remove
+                          {t("labels.create.remove")}
                         </Button>
                       </CardContent>
                     </Card>
@@ -223,7 +226,7 @@ function NewLabel() {
                         sx={{ fontSize: 48, color: "primary.main", mb: 1 }}
                       />
                       <Typography variant="body2" color="text.secondary">
-                        Select files or drag and drop
+                        {t("labels.create.selectFiles")}
                       </Typography>
                     </Box>
                   </Button>

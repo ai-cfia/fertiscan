@@ -16,6 +16,7 @@ import {
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link, useLocation } from "@tanstack/react-router"
+import { useTranslation } from "react-i18next"
 import type { UserPublic } from "@/api"
 import useAuth from "@/hooks/useAuth"
 
@@ -28,17 +29,32 @@ const SidebarItems = ({
   onClose,
   productType = "fertilizer",
 }: SidebarItemsProps) => {
+  const { t } = useTranslation("common")
   const { user, logout } = useAuth()
   const location = useLocation()
   const queryClient = useQueryClient()
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
   const navItems = [
-    { text: "Dashboard", icon: DashboardIcon, to: "/" },
-    { text: "Labels", icon: LabelIcon, to: `/${productType}/labels` },
-    { text: "Products", icon: InventoryIcon, to: `/${productType}/products` },
-    { text: "User Settings", icon: SettingsIcon, to: "/settings" },
+    { text: t("sidebar.dashboard"), icon: DashboardIcon, to: "/" },
+    {
+      text: t("sidebar.labels"),
+      icon: LabelIcon,
+      to: `/${productType}/labels`,
+    },
+    {
+      text: t("sidebar.products"),
+      icon: InventoryIcon,
+      to: `/${productType}/products`,
+    },
+    { text: t("sidebar.userSettings"), icon: SettingsIcon, to: "/settings" },
     ...(user?.is_superuser
-      ? [{ text: "Admin", icon: AdminPanelSettingsIcon, to: "/admin" }]
+      ? [
+          {
+            text: t("sidebar.admin"),
+            icon: AdminPanelSettingsIcon,
+            to: "/admin",
+          },
+        ]
       : []),
   ]
   const handleLogout = () => {
@@ -117,7 +133,7 @@ const SidebarItems = ({
                 whiteSpace: "nowrap",
               }}
             >
-              Logged in as: {currentUser.email}
+              {t("sidebar.loggedInAs", { email: currentUser.email })}
             </ListSubheader>
           )}
           <ListItem disablePadding>
@@ -125,7 +141,7 @@ const SidebarItems = ({
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Log Out" />
+              <ListItemText primary={t("sidebar.logOut")} />
             </ListItemButton>
           </ListItem>
         </List>

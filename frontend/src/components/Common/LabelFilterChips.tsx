@@ -2,8 +2,8 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import CheckIcon from "@mui/icons-material/Check"
 import { Chip } from "@mui/material"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import type { ExtractionStatus, VerificationStatus } from "@/api"
-import { formatStatusLabel } from "@/utils"
 
 interface LabelFilterChipsProps {
   extractionStatus?: ExtractionStatus
@@ -22,30 +22,42 @@ export default function LabelFilterChips({
   onVerificationStatusRemove,
   onUnlinkedRemove,
 }: LabelFilterChipsProps) {
+  const { t } = useTranslation("labels")
   const activeFilters = useMemo(() => {
     const filters: Array<{
       key: string
       label: string
       onDelete: () => void
     }> = []
+    const extractionStatusLabelMap: Record<ExtractionStatus, string> = {
+      pending: t("filter.pending"),
+      in_progress: t("filter.inProgress"),
+      completed: t("filter.completed"),
+      failed: t("filter.failed"),
+    }
+    const verificationStatusLabelMap: Record<VerificationStatus, string> = {
+      not_started: t("filter.notStarted"),
+      in_progress: t("filter.inProgress"),
+      completed: t("filter.completed"),
+    }
     if (extractionStatus) {
       filters.push({
         key: "extraction_status",
-        label: `Extraction Status: ${formatStatusLabel(extractionStatus)}`,
+        label: `${t("filter.extractionStatus")}: ${extractionStatusLabelMap[extractionStatus]}`,
         onDelete: onExtractionStatusRemove,
       })
     }
     if (verificationStatus) {
       filters.push({
         key: "verification_status",
-        label: `Verification Status: ${formatStatusLabel(verificationStatus)}`,
+        label: `${t("filter.verificationStatus")}: ${verificationStatusLabelMap[verificationStatus]}`,
         onDelete: onVerificationStatusRemove,
       })
     }
     if (unlinked === true) {
       filters.push({
         key: "unlinked",
-        label: "Unlinked",
+        label: t("filter.unlinked"),
         onDelete: onUnlinkedRemove,
       })
     }
@@ -57,6 +69,7 @@ export default function LabelFilterChips({
     onExtractionStatusRemove,
     onVerificationStatusRemove,
     onUnlinkedRemove,
+    t,
   ])
   if (activeFilters.length === 0) {
     return null

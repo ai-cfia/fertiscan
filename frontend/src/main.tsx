@@ -14,8 +14,13 @@ import { SnackbarProvider } from "@/components/SnackbarProvider"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { useConfig } from "@/stores/useConfig"
 import { setupBackendStatusInterceptor } from "@/utils/axiosInterceptors"
+import "./i18n" // Initialize i18next before React render
 import "./index.css"
 import { routeTree } from "./routeTree.gen"
+
+// Initialize language store after i18next is initialized
+// Import the store to ensure it's initialized and synced with i18next
+import("@/stores/useLanguage")
 
 const { apiUrl } = useConfig.getState()
 apiClient.setConfig({

@@ -1,8 +1,10 @@
 import { Alert, Box, Button, LinearProgress } from "@mui/material"
 import { useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useLabelNew } from "@/stores/useLabelNew"
 
 export default function UploadProgressBanner() {
+  const { t } = useTranslation(["labels", "common"])
   const { uploadStatesByLabelId, labelId } = useLabelNew()
   const [dismissed, setDismissed] = useState(false)
   // ============================== Calculate Progress ==============================
@@ -65,10 +67,18 @@ export default function UploadProgressBanner() {
   }
   const message =
     progress.inProgress > 0
-      ? `Uploading ${progress.completed + progress.inProgress} of ${progress.total} file${progress.total !== 1 ? "s" : ""}...`
+      ? t("labels.upload.uploading", {
+          current: progress.completed + progress.inProgress,
+          total: progress.total,
+          count: progress.total,
+        })
       : progress.completed > 0
-        ? `${progress.completed} of ${progress.total} file${progress.total !== 1 ? "s" : ""} uploaded`
-        : "Preparing uploads..."
+        ? t("labels.upload.uploaded", {
+            completed: progress.completed,
+            total: progress.total,
+            count: progress.total,
+          })
+        : t("labels.upload.preparing")
   return (
     <Alert
       severity="info"
@@ -80,7 +90,7 @@ export default function UploadProgressBanner() {
       icon={false}
       action={
         <Button color="inherit" size="small" onClick={() => setDismissed(true)}>
-          Dismiss
+          {t("button.dismiss", { ns: "common" })}
         </Button>
       }
     >

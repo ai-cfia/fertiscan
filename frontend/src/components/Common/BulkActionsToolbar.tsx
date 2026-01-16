@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useSnackbar } from "@/components/SnackbarProvider"
 
 interface BulkActionsToolbarProps {
@@ -28,6 +29,7 @@ export default function BulkActionsToolbar({
   onExport,
   onClearSelection,
 }: BulkActionsToolbarProps) {
+  const { t } = useTranslation(["labels", "common"])
   const { showErrorToast } = useSnackbar()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const handleDeleteClick = () => {
@@ -35,14 +37,14 @@ export default function BulkActionsToolbar({
   }
   const handleDeleteConfirm = () => {
     setDeleteDialogOpen(false)
-    showErrorToast("Bulk delete functionality not yet implemented")
+    showErrorToast(t("labels.bulkActions.deleteNotImplemented"))
     onDelete()
   }
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
   }
   const handleExportClick = () => {
-    showErrorToast("Export functionality not yet implemented")
+    showErrorToast(t("labels.bulkActions.exportNotImplemented"))
     onExport()
   }
   return (
@@ -64,14 +66,14 @@ export default function BulkActionsToolbar({
           component="div"
           id="bulk-actions-title"
         >
-          {selectedCount} selected
+          {t("labels.bulkActions.selected", { count: selectedCount })}
         </Typography>
         <Button
           startIcon={<FileDownloadIcon />}
           onClick={handleExportClick}
           variant="outlined"
         >
-          Export
+          {t("labels.bulkActions.export")}
         </Button>
         <Button
           startIcon={<DeleteIcon />}
@@ -79,9 +81,12 @@ export default function BulkActionsToolbar({
           color="error"
           variant="outlined"
         >
-          Delete
+          {t("labels.bulkActions.delete")}
         </Button>
-        <IconButton onClick={onClearSelection} aria-label="clear selection">
+        <IconButton
+          onClick={onClearSelection}
+          aria-label={t("common.aria.clearSelection")}
+        >
           <CloseIcon />
         </IconButton>
       </Toolbar>
@@ -92,24 +97,25 @@ export default function BulkActionsToolbar({
         aria-describedby="bulk-delete-dialog-description"
       >
         <DialogTitle id="bulk-delete-dialog-title">
-          Delete {selectedCount} Label{selectedCount !== 1 ? "s" : ""}?
+          {t("labels.bulkActions.deleteDialog.title", { count: selectedCount })}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="bulk-delete-dialog-description">
-            Are you sure you want to delete {selectedCount} selected label
-            {selectedCount !== 1 ? "s" : ""}? This action cannot be undone and
-            will permanently delete the label{selectedCount !== 1 ? "s" : ""}{" "}
-            and all associated files.
+            {t("labels.bulkActions.deleteDialog.description", {
+              count: selectedCount,
+            })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteCancel}>
+            {t("common.button.cancel")}
+          </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
           >
-            Delete
+            {t("labels.bulkActions.delete")}
           </Button>
         </DialogActions>
       </Dialog>

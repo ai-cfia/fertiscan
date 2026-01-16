@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelNew } from "@/stores/useLabelNew"
 
 export default function UploadCompletionSnackbar() {
+  const { t } = useTranslation("labels")
   const { uploadStatesByLabelId, labelId } = useLabelNew()
   const { showSuccessToast, showErrorToast } = useSnackbar()
   const previousInProgressRef = useRef(false)
@@ -40,19 +42,15 @@ export default function UploadCompletionSnackbar() {
     if (wasInProgress && isDone) {
       if (failed === 0) {
         showSuccessToast(
-          `Successfully uploaded ${completed} of ${total} file${total !== 1 ? "s" : ""}`,
+          t("upload.success", { completed, total, count: total }),
         )
       } else if (completed === 0) {
-        showErrorToast(
-          `Failed to upload ${failed} of ${total} file${total !== 1 ? "s" : ""}`,
-        )
+        showErrorToast(t("upload.failed", { failed, total, count: total }))
       } else {
-        showErrorToast(
-          `Upload complete: ${completed} succeeded, ${failed} failed`,
-        )
+        showErrorToast(t("upload.partial", { completed, failed }))
       }
     }
     previousInProgressRef.current = inProgress > 0
-  }, [uploadStatesByLabelId, labelId, showSuccessToast, showErrorToast])
+  }, [uploadStatesByLabelId, labelId, showSuccessToast, showErrorToast, t])
   return null
 }

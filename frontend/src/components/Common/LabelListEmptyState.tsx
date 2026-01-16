@@ -1,6 +1,7 @@
 import LabelIcon from "@mui/icons-material/Label"
 import SearchOffIcon from "@mui/icons-material/SearchOff"
 import { Box, TableCell, TableRow, Typography } from "@mui/material"
+import { useTranslation } from "react-i18next"
 
 interface LabelListEmptyStateProps {
   hasActiveFilters: boolean
@@ -11,6 +12,7 @@ export default function LabelListEmptyState({
   hasActiveFilters,
   colSpan,
 }: LabelListEmptyStateProps) {
+  const { t } = useTranslation("labels")
   return (
     <TableRow>
       <TableCell colSpan={colSpan} align="center" sx={{ py: 8 }}>
@@ -26,20 +28,20 @@ export default function LabelListEmptyState({
             <>
               <SearchOffIcon sx={{ fontSize: 64, color: "text.secondary" }} />
               <Typography variant="h6" color="text.secondary">
-                No labels match your current filters
+                {t("empty.noMatches")}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Try adjusting your filters to see more results.
+                {t("empty.noMatchesDescription")}
               </Typography>
             </>
           ) : (
             <>
               <LabelIcon sx={{ fontSize: 64, color: "text.secondary" }} />
               <Typography variant="h6" color="text.secondary">
-                No labels found
+                {t("empty.noLabels")}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Labels you upload will appear here.
+                {t("empty.noLabelsDescription")}
               </Typography>
             </>
           )}

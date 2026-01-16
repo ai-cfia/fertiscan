@@ -1,6 +1,6 @@
 import { Box, Chip } from "@mui/material"
+import { useTranslation } from "react-i18next"
 import type { ExtractionStatus } from "@/api"
-import { formatStatusLabel } from "@/utils"
 
 interface ExtractionStatusChipProps {
   status: ExtractionStatus | null
@@ -9,6 +9,7 @@ interface ExtractionStatusChipProps {
 export default function ExtractionStatusChip({
   status,
 }: ExtractionStatusChipProps) {
+  const { t } = useTranslation("labels")
   if (!status) {
     return (
       <Box
@@ -28,9 +29,15 @@ export default function ExtractionStatusChip({
     completed: "success",
     failed: "error",
   }
+  const statusLabelMap: Record<ExtractionStatus, string> = {
+    pending: t("filter.pending"),
+    in_progress: t("filter.inProgress"),
+    completed: t("filter.completed"),
+    failed: t("filter.failed"),
+  }
   return (
     <Chip
-      label={formatStatusLabel(status)}
+      label={statusLabelMap[status]}
       color={colorMap[status]}
       variant="filled"
       size="small"

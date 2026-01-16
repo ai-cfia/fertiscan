@@ -9,6 +9,7 @@ interface ConfigStore {
   backendHealthCheckIntervalMs: number
   apiUrl: string
   maxImagesPerLabel: number
+  defaultPerPage: number
 }
 
 const config = {
@@ -16,6 +17,7 @@ const config = {
     Number(import.meta.env.VITE_BACKEND_HEALTH_CHECK_INTERVAL_MS) || 15000,
   apiUrl: import.meta.env.VITE_API_URL || "",
   maxImagesPerLabel: 5,
+  defaultPerPage: 10,
 }
 
 const store = () => config

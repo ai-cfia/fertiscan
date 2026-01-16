@@ -15,6 +15,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import type { BodyLoginLoginAccessToken as AccessToken } from "@/api"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/login")({
 })
 
 function Login() {
+  const { t } = useTranslation("auth")
   const { loginMutation, error, resetError } = useAuth()
   const {
     register,
@@ -72,42 +74,57 @@ function Login() {
       >
         <Box sx={{ textAlign: "center", mb: 2 }}>
           <Typography variant="h4" component="h1">
-            Login
+            {t("login.title")}
           </Typography>
         </Box>
         <TextField
           {...register("username", {
-            required: "Username is required",
-            pattern: emailPattern,
+            required: t("login.usernameRequired"),
+            pattern: {
+              ...emailPattern,
+              message: t("login.emailInvalid"),
+            },
           })}
-          label="Email"
+          label={t("login.email")}
           type="email"
           fullWidth
           error={!!errors.username || !!error}
-          helperText={errors.username?.message || (error ? "Login failed" : "")}
-          InputProps={{
-            startAdornment: (
-              <EmailIcon sx={{ mr: 1, color: "action.active" }} />
-            ),
+          helperText={
+            errors.username?.message || (error ? t("login.failed") : "")
+          }
+          slotProps={{
+            input: {
+              startAdornment: (
+                <EmailIcon sx={{ mr: 1, color: "action.active" }} />
+              ),
+            },
           }}
         />
         <TextField
-          {...register("password", passwordRules())}
-          label="Password"
+          {...register(
+            "password",
+            passwordRules(true, {
+              required: t("signup.passwordRequired"),
+              minLength: t("signup.passwordMinLength"),
+            }),
+          )}
+          label={t("login.password")}
           type="password"
           fullWidth
           error={!!errors.password}
           helperText={errors.password?.message}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockIcon />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <Link component={RouterLink} to="/recover-password" underline="hover">
-          Forgot Password?
+          {t("login.forgotPassword")}
         </Link>
         <Button
           variant="contained"
@@ -116,12 +133,12 @@ function Login() {
           fullWidth
           size="large"
         >
-          {isSubmitting ? "Logging in..." : "Log In"}
+          {isSubmitting ? t("login.submitting") : t("login.submit")}
         </Button>
         <Typography textAlign="center">
-          Don't have an account?{" "}
+          {t("login.noAccount")}{" "}
           <Link component={RouterLink} to="/signup" underline="hover">
-            Sign Up
+            {t("login.signUp")}
           </Link>
         </Typography>
       </Container>

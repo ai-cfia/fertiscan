@@ -3,9 +3,11 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useLocation } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useLabelList } from "@/stores/useLabelList"
 
 export default function LabelListErrorBanner() {
+  const { t } = useTranslation(["errors", "common"])
   const location = useLocation()
   const { error, setError } = useLabelList()
   const queryClient = useQueryClient()
@@ -26,12 +28,12 @@ export default function LabelListErrorBanner() {
         return typeof detail.detail === "string"
           ? detail.detail
           : Array.isArray(detail.detail) && detail.detail.length > 0
-            ? detail.detail[0].msg || "An error occurred"
-            : "An error occurred"
+            ? detail.detail[0].msg || t("labels.errorOccurred")
+            : t("labels.errorOccurred")
       }
-      return error.message || "Failed to load labels"
+      return error.message || t("labels.loadFailed")
     }
-    return "Failed to load labels. Please try again."
+    return t("labels.loadFailedRetry")
   }
   const handleRetry = () => {
     setError(null)
@@ -50,14 +52,14 @@ export default function LabelListErrorBanner() {
       action={
         <>
           <Button color="inherit" size="small" onClick={handleRetry}>
-            Retry
+            {t("button.retry", { ns: "common" })}
           </Button>
           <Button
             color="inherit"
             size="small"
             onClick={() => setDismissed(true)}
           >
-            Dismiss
+            {t("button.dismiss", { ns: "common" })}
           </Button>
         </>
       }

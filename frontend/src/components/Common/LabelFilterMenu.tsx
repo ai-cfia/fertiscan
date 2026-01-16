@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from "@mui/material"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import type { ExtractionStatus, VerificationStatus } from "@/api"
 
 interface LabelFilterMenuProps {
@@ -19,24 +20,7 @@ interface LabelFilterMenuProps {
   onUnlinkedChange: (value?: boolean) => void
 }
 
-const EXTRACTION_STATUS_OPTIONS: Array<{
-  value: ExtractionStatus
-  label: string
-}> = [
-  { value: "pending", label: "Pending" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-  { value: "failed", label: "Failed" },
-]
-
-const VERIFICATION_STATUS_OPTIONS: Array<{
-  value: VerificationStatus
-  label: string
-}> = [
-  { value: "not_started", label: "Not Started" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-]
+// These will be created dynamically with translations in the component
 
 const SubmenuArrow = () => (
   <Box
@@ -61,6 +45,7 @@ export default function LabelFilterMenu({
   onVerificationStatusChange,
   onUnlinkedChange,
 }: LabelFilterMenuProps) {
+  const { t } = useTranslation("labels")
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
   const [extractionStatusAnchorEl, setExtractionStatusAnchorEl] =
     useState<null | HTMLElement>(null)
@@ -69,6 +54,25 @@ export default function LabelFilterMenu({
   const filterMenuOpen = Boolean(filterAnchorEl)
   const extractionStatusMenuOpen = Boolean(extractionStatusAnchorEl)
   const verificationStatusMenuOpen = Boolean(verificationStatusAnchorEl)
+
+  const EXTRACTION_STATUS_OPTIONS: Array<{
+    value: ExtractionStatus
+    label: string
+  }> = [
+    { value: "pending", label: t("filter.pending") },
+    { value: "in_progress", label: t("filter.inProgress") },
+    { value: "completed", label: t("filter.completed") },
+    { value: "failed", label: t("filter.failed") },
+  ]
+
+  const VERIFICATION_STATUS_OPTIONS: Array<{
+    value: VerificationStatus
+    label: string
+  }> = [
+    { value: "not_started", label: t("filter.notStarted") },
+    { value: "in_progress", label: t("filter.inProgress") },
+    { value: "completed", label: t("filter.completed") },
+  ]
   const handleFilterMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setFilterAnchorEl(event.currentTarget)
   }
@@ -91,7 +95,7 @@ export default function LabelFilterMenu({
   }
   return (
     <>
-      <Tooltip title="Filter list">
+      <Tooltip title={t("filter.title")}>
         <IconButton onClick={handleFilterMenuOpen}>
           <FilterListIcon />
         </IconButton>
@@ -110,7 +114,7 @@ export default function LabelFilterMenu({
         }}
       >
         <MenuItem onClick={(e) => setExtractionStatusAnchorEl(e.currentTarget)}>
-          <ListItemText>Extraction Status</ListItemText>
+          <ListItemText>{t("filter.extractionStatus")}</ListItemText>
           <SubmenuArrow />
         </MenuItem>
         <Menu
@@ -139,7 +143,7 @@ export default function LabelFilterMenu({
         <MenuItem
           onClick={(e) => setVerificationStatusAnchorEl(e.currentTarget)}
         >
-          <ListItemText>Verification Status</ListItemText>
+          <ListItemText>{t("filter.verificationStatus")}</ListItemText>
           <SubmenuArrow />
         </MenuItem>
         <Menu
@@ -171,7 +175,7 @@ export default function LabelFilterMenu({
             handleUnlinkedChange(unlinked === true ? undefined : true)
           }
         >
-          <ListItemText>Unlinked</ListItemText>
+          <ListItemText>{t("filter.unlinked")}</ListItemText>
         </MenuItem>
       </Menu>
     </>

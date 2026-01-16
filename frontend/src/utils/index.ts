@@ -1,9 +1,11 @@
 import type { AxiosError } from "axios"
 import useCustomToast from "@/hooks/useCustomToast"
 
+// Note: Email pattern validation messages are now handled via i18n in components
+// This pattern is kept for the regex value only
 export const emailPattern = {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  message: "Invalid email address",
+  message: "Invalid email address", // This will be overridden by i18n in components
 }
 
 export const namePattern = {
@@ -11,15 +13,23 @@ export const namePattern = {
   message: "Invalid name",
 }
 
-export const passwordRules = (isRequired = true) => {
+// Note: These functions accept optional translation messages
+// Components should pass translated messages when calling these functions
+export const passwordRules = (
+  isRequired = true,
+  messages?: {
+    required?: string
+    minLength?: string
+  },
+) => {
   const rules: any = {
     minLength: {
       value: 8,
-      message: "Password must be at least 8 characters",
+      message: messages?.minLength || "Password must be at least 8 characters",
     },
   }
   if (isRequired) {
-    rules.required = "Password is required"
+    rules.required = messages?.required || "Password is required"
   }
   return rules
 }
@@ -27,15 +37,21 @@ export const passwordRules = (isRequired = true) => {
 export const confirmPasswordRules = (
   getValues: () => any,
   isRequired = true,
+  messages?: {
+    required?: string
+    validate?: string
+  },
 ) => {
   const rules: any = {
     validate: (value: string) => {
       const password = getValues().password || getValues().new_password
-      return value === password ? true : "The passwords do not match"
+      return (
+        value === password || messages?.validate || "The passwords do not match"
+      )
     },
   }
   if (isRequired) {
-    rules.required = "Password confirmation is required"
+    rules.required = messages?.required || "Password confirmation is required"
   }
   return rules
 }
@@ -50,19 +66,18 @@ export const handleError = (err: AxiosError) => {
   showErrorToast(errorMessage)
 }
 
-export const statusLabelMap: Record<string, string> = {
-  pending: "Pending",
-  in_progress: "In Progress",
-  completed: "Completed",
-  failed: "Failed",
-  not_started: "Not Started",
-}
-
-export const formatStatusLabel = (status: string) => {
-  return statusLabelMap[status] ?? status
-}
-
 export const truncateUuid = (uuid: string, length = 8) => {
   if (!uuid || uuid.length <= length) return uuid
   return `${uuid.substring(0, length)}...`
 }
+
+// Date and number formatting utilities
+export {
+  formatCurrency,
+  formatDate,
+  formatDateTime,
+  formatNumber,
+  formatPercent,
+  formatTime,
+  formatUnit,
+} from "./formatting"

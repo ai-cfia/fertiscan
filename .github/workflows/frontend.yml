@@ -45,3 +45,18 @@ jobs:
       - name: Run tests
         if: steps.check-tests.outputs.has_tests == 'true'
         run: npm test
+
+  translations:
+    name: Validate Translations
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Validate translation files
+        run: npm run i18n:validate

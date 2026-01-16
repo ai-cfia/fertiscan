@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from "@mui/material"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useSnackbar } from "@/components/SnackbarProvider"
 
 interface LabelRowActionsProps {
@@ -28,6 +29,7 @@ export default function LabelRowActions({
   onViewDetails,
   onDelete,
 }: LabelRowActionsProps) {
+  const { t } = useTranslation(["labels", "common"])
   const { showErrorToast } = useSnackbar()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -49,7 +51,7 @@ export default function LabelRowActions({
   }
   const handleDeleteConfirm = () => {
     setDeleteDialogOpen(false)
-    showErrorToast("Delete functionality not yet implemented")
+    showErrorToast(t("labels.rowActions.deleteNotImplemented"))
     onDelete()
   }
   const handleDeleteCancel = () => {
@@ -60,7 +62,7 @@ export default function LabelRowActions({
       <IconButton
         onClick={handleClick}
         size="small"
-        aria-label={`Actions for label ${labelId}`}
+        aria-label={t("labels.rowActions.actionsForLabel", { id: labelId })}
         aria-controls={open ? `label-menu-${labelId}` : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -85,13 +87,13 @@ export default function LabelRowActions({
           <ListItemIcon>
             <VisibilityIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View Details</ListItemText>
+          <ListItemText>{t("labels.rowActions.viewDetails")}</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleDeleteClick}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>{t("labels.rowActions.delete")}</ListItemText>
         </MenuItem>
       </Menu>
       <Dialog
@@ -100,22 +102,24 @@ export default function LabelRowActions({
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="delete-dialog-title">Delete Label</DialogTitle>
+        <DialogTitle id="delete-dialog-title">
+          {t("labels.rowActions.deleteDialog.title")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete this label? This action cannot be
-            undone and will permanently delete the label and all associated
-            files.
+            {t("labels.rowActions.deleteDialog.description")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteCancel}>
+            {t("common.button.cancel")}
+          </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
           >
-            Delete
+            {t("labels.rowActions.delete")}
           </Button>
         </DialogActions>
       </Dialog>

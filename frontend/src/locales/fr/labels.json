@@ -1,0 +1,140 @@
+{
+  "common": {
+    "aria": {
+      "clearSelection": "effacer la sélection"
+    },
+    "button": {
+      "cancel": "Annuler"
+    }
+  },
+  "dashboard": {
+    "createNewLabel": "Créer une nouvelle étiquette",
+    "createNewLabelDescription": "Téléverser et traiter une nouvelle étiquette",
+    "extracting": "Extraction en cours",
+    "failedExtractions": "Extractions échouées",
+    "manageProducts": "Gérer les produits",
+    "manageProductsDescription": "Voir et modifier les produits",
+    "overview": "Aperçu",
+    "pendingVerification": "Vérification en attente",
+    "quickActions": "Actions rapides",
+    "title": "Tableau de bord - Inspection d'étiquettes",
+    "totalLabels": "Total des étiquettes",
+    "totalProducts": "Total des produits",
+    "unlinkedLabels": "Étiquettes non liées",
+    "unlinkedLabelsDescription": "Étiquettes non associées à des produits",
+    "verifyLabels": "Vérifier les étiquettes",
+    "verifyLabelsDescription": "Examiner les étiquettes prêtes pour vérification",
+    "verifyPageTitle": "Vérifier les étiquettes - Inspection d'étiquettes",
+    "viewAllLabels": "Voir toutes les étiquettes",
+    "viewAllLabelsDescription": "Parcourir et gérer toutes les étiquettes"
+  },
+  "data": {
+    "placeholder": "Affichage/édition des données (placeholder)"
+  },
+  "empty": {
+    "noLabels": "Aucune étiquette trouvée",
+    "noLabelsDescription": "Les étiquettes que vous téléversez apparaîtront ici.",
+    "noMatches": "Aucune étiquette ne correspond à vos filtres actuels",
+    "noMatchesDescription": "Essayez d'ajuster vos filtres pour voir plus de résultats."
+  },
+  "errors": {
+    "fileType": {
+      "invalid": "{{fileName}} : Non ajouté - doit être PNG, JPEG ou WebP"
+    }
+  },
+  "files": {
+    "pageTitle": "Fichiers d'étiquette - Inspection d'étiquettes",
+    "title_one": "Image d'étiquette : {{count}} (max {{max}})",
+    "title_other": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_many": "Images d'étiquette : {{count}} (max {{max}})"
+  },
+  "filter": {
+    "completed": "Terminé",
+    "extractionStatus": "Statut d'extraction",
+    "failed": "Échoué",
+    "inProgress": "En cours",
+    "notStarted": "Non commencé",
+    "pending": "En attente",
+    "title": "Filtrer la liste",
+    "unlinked": "Non liées",
+    "verificationStatus": "Statut de vérification"
+  },
+  "image": {
+    "notAvailable": "Image non disponible",
+    "sequence": "Séquence : {{order}}"
+  },
+  "labels": {
+    "bulkActions": {
+      "delete": "Supprimer",
+      "deleteDialog": {
+        "description_one": "Êtes-vous sûr de vouloir supprimer {{count}} étiquette sélectionnée ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer {{count}} étiquettes sélectionnées ? Cette action ne peut pas être annulée et supprimera définitivement les étiquettes et tous les fichiers associés.",
+        "description_many": "Êtes-vous sûr de vouloir supprimer {{count}} étiquettes sélectionnées ? Cette action ne peut pas être annulée et supprimera définitivement les étiquettes et tous les fichiers associés.",
+        "title_one": "Supprimer {{count}} étiquette ?",
+        "title_other": "Supprimer {{count}} étiquettes ?",
+        "title_many": "Supprimer {{count}} étiquettes ?"
+      },
+      "deleteNotImplemented": "Fonctionnalité de suppression groupée pas encore implémentée",
+      "export": "Exporter",
+      "exportNotImplemented": "Fonctionnalité d'exportation pas encore implémentée",
+      "selected_one": "{{count}} sélectionné",
+      "selected_other": "{{count}} sélectionnés",
+      "selected_many": "{{count}} sélectionnés"
+    },
+    "create": {
+      "description": "Sélectionnez au moins une image d'étiquette pour créer une nouvelle étiquette",
+      "maxFilesWarning_one": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichier avant de téléverser.",
+      "maxFilesWarning_other": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichiers avant de téléverser.",
+      "maxFilesWarning_many": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichiers avant de téléverser.",
+      "of": "de",
+      "pageTitle": "Créer une nouvelle étiquette - Inspection d'étiquettes",
+      "remove": "Supprimer",
+      "selectedFiles": "Fichiers sélectionnés",
+      "selectFiles": "Sélectionner des fichiers ou glisser-déposer",
+      "title": "Créer une nouvelle étiquette"
+    },
+    "rowActions": {
+      "actionsForLabel": "Actions pour l'étiquette {{id}}",
+      "delete": "Supprimer",
+      "deleteDialog": {
+        "description": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
+        "title": "Supprimer l'étiquette"
+      },
+      "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
+      "viewDetails": "Voir les détails"
+    },
+    "upload": {
+      "preparing": "Préparation des téléversements...",
+      "uploaded_one": "{{completed}} fichier sur {{total}} téléversé",
+      "uploaded_other": "{{completed}} fichiers sur {{total}} téléversés",
+      "uploaded_many": "{{completed}} fichiers sur {{total}} téléversés",
+      "uploading_one": "Téléversement de {{current}} fichier sur {{total}}...",
+      "uploading_other": "Téléversement de {{current}} fichiers sur {{total}}...",
+      "uploading_many": "Téléversement de {{current}} fichiers sur {{total}}..."
+    }
+  },
+  "pageTitle": "Étiquettes - Inspection d'étiquettes",
+  "table": {
+    "actions": "Actions",
+    "copyId": "Copier l'ID de l'étiquette {{id}}",
+    "createdAt": "Créé le",
+    "extractionStatus": "Statut d'extraction",
+    "id": "ID",
+    "idCopied": "ID de l'étiquette copié dans le presse-papiers",
+    "productName": "Nom du produit",
+    "selectAll": "sélectionner toutes les étiquettes",
+    "sortedAscending": "trié par ordre croissant",
+    "sortedDescending": "trié par ordre décroissant",
+    "verificationStatus": "Statut de vérification"
+  },
+  "title": "Étiquettes",
+  "upload": {
+    "failed_one": "Échec du téléversement de {{failed}} fichier sur {{total}}",
+    "failed_other": "Échec du téléversement de {{failed}} fichiers sur {{total}}",
+    "failed_many": "Échec du téléversement de {{failed}} fichiers sur {{total}}",
+    "partial": "Téléversement terminé : {{completed}} réussi, {{failed}} échoué",
+    "success_one": "{{completed}} fichier sur {{total}} téléversé avec succès",
+    "success_other": "{{completed}} fichiers sur {{total}} téléversés avec succès",
+    "success_many": "{{completed}} fichiers sur {{total}} téléversés avec succès"
+  }
+}

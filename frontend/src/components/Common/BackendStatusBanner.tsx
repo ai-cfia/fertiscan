@@ -1,9 +1,11 @@
 import { Alert, Button } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 
 export default function BackendStatusBanner() {
+  const { t } = useTranslation("common")
   const { ready } = useBackendStatus()
   const queryClient = useQueryClient()
   const [dismissed, setDismissed] = useState(false)
@@ -35,19 +37,19 @@ export default function BackendStatusBanner() {
       action={
         <>
           <Button color="inherit" size="small" onClick={handleRetry}>
-            Retry
+            {t("button.retry")}
           </Button>
           <Button
             color="inherit"
             size="small"
             onClick={() => setDismissed(true)}
           >
-            Dismiss
+            {t("button.dismiss")}
           </Button>
         </>
       }
     >
-      Backend unavailable. Some features may not work. Please try again later.
+      {t("backend.unavailable")}
     </Alert>
   )
 }

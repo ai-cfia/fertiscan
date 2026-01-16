@@ -15,6 +15,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import type { PrivateUserCreate } from "@/api"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
@@ -37,6 +38,7 @@ interface UserRegisterForm extends PrivateUserCreate {
 }
 
 function SignUp() {
+  const { t } = useTranslation("auth")
   const { signUpMutation } = useAuth()
   const {
     register,
@@ -75,14 +77,14 @@ function SignUp() {
       >
         <Box sx={{ textAlign: "center", mb: 2 }}>
           <Typography variant="h4" component="h1">
-            Sign Up
+            {t("signup.title")}
           </Typography>
         </Box>
         <TextField
           {...register("first_name", {
-            required: "First Name is required",
+            required: t("signup.firstNameRequired"),
           })}
-          label="First Name"
+          label={t("signup.firstName")}
           type="text"
           fullWidth
           error={!!errors.first_name}
@@ -99,9 +101,9 @@ function SignUp() {
         />
         <TextField
           {...register("last_name", {
-            required: "Last Name is required",
+            required: t("signup.lastNameRequired"),
           })}
-          label="Last Name"
+          label={t("signup.lastName")}
           type="text"
           fullWidth
           error={!!errors.last_name}
@@ -118,10 +120,13 @@ function SignUp() {
         />
         <TextField
           {...register("email", {
-            required: "Email is required",
-            pattern: emailPattern,
+            required: t("signup.emailRequired"),
+            pattern: {
+              ...emailPattern,
+              message: t("signup.emailInvalid"),
+            },
           })}
-          label="Email"
+          label={t("signup.email")}
           type="email"
           fullWidth
           error={!!errors.email}
@@ -137,8 +142,14 @@ function SignUp() {
           }}
         />
         <TextField
-          {...register("password", passwordRules())}
-          label="Password"
+          {...register(
+            "password",
+            passwordRules(true, {
+              required: t("signup.passwordRequired"),
+              minLength: t("signup.passwordMinLength"),
+            }),
+          )}
+          label={t("signup.password")}
           type="password"
           fullWidth
           error={!!errors.password}
@@ -154,8 +165,14 @@ function SignUp() {
           }}
         />
         <TextField
-          {...register("confirm_password", confirmPasswordRules(getValues))}
-          label="Confirm Password"
+          {...register(
+            "confirm_password",
+            confirmPasswordRules(getValues, true, {
+              required: t("signup.confirmPasswordRequired"),
+              validate: t("signup.passwordsDoNotMatch"),
+            }),
+          )}
+          label={t("signup.confirmPassword")}
           type="password"
           fullWidth
           error={!!errors.confirm_password}
@@ -177,12 +194,12 @@ function SignUp() {
           fullWidth
           size="large"
         >
-          {isSubmitting ? "Signing up..." : "Sign Up"}
+          {isSubmitting ? t("signup.submitting") : t("signup.submit")}
         </Button>
         <Typography textAlign="center">
-          Already have an account?{" "}
+          {t("signup.hasAccount")}{" "}
           <Link component={RouterLink} to="/login" underline="hover">
-            Log In
+            {t("signup.logIn")}
           </Link>
         </Typography>
       </Container>

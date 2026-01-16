@@ -24,6 +24,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { format } from "date-fns"
 import { enCA } from "date-fns/locale"
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import {
   type ExtractionStatus,
@@ -43,14 +44,13 @@ import LabelListEmptyState from "@/components/Common/LabelListEmptyState"
 import LabelRowActions from "@/components/Common/LabelRowActions"
 import VerificationStatusChip from "@/components/Common/VerificationStatusChip"
 import { useSnackbar } from "@/components/SnackbarProvider"
+import { useConfig } from "@/stores/useConfig"
 import { useLabelList } from "@/stores/useLabelList"
 import { truncateUuid } from "@/utils"
 
-const PER_PAGE = 10
-
 const labelsSearchSchema = z.object({
   page: z.number().catch(0),
-  per_page: z.number().catch(PER_PAGE),
+  per_page: z.number().catch(10), // Default will be overridden by config in component
   extraction_status: z
     .enum(ExtractionStatusSchema.enum as unknown as [string, ...string[]])
     .optional(),
@@ -104,38 +104,7 @@ interface HeadCell {
   numeric: boolean
 }
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: false,
-    label: "ID",
-  },
-  {
-    id: "productName",
-    numeric: false,
-    disablePadding: false,
-    label: "Product Name",
-  },
-  {
-    id: "extractionStatus",
-    numeric: false,
-    disablePadding: false,
-    label: "Extraction Status",
-  },
-  {
-    id: "verificationStatus",
-    numeric: false,
-    disablePadding: false,
-    label: "Verification Status",
-  },
-  {
-    id: "createdAt",
-    numeric: false,
-    disablePadding: false,
-    label: "Created At",
-  },
-]
+// headCells will be created dynamically with translations in the component
 
 export const Route = createFileRoute("/_layout/$productType/labels/")({
   component: Labels,
@@ -143,6 +112,8 @@ export const Route = createFileRoute("/_layout/$productType/labels/")({
 })
 
 function LabelsTable() {
+  const { t } = useTranslation("labels")
+  const { defaultPerPage } = useConfig()
   const {
     page,
     per_page,
@@ -153,13 +124,46 @@ function LabelsTable() {
     order,
   } = Route.useSearch()
   const { productType } = Route.useParams()
-  const rowsPerPage = per_page
+  const rowsPerPage = per_page || defaultPerPage
   const [selected, setSelected] = useState<readonly string[]>([])
   const navigate = Route.useNavigate()
   const orderBy = (order_by as keyof LabelRow) || "createdAt"
   const sortOrder = (order as Order) || "desc"
   const { setError } = useLabelList()
   const { showSuccessToast } = useSnackbar()
+
+  const headCells: readonly HeadCell[] = [
+    {
+      id: "id",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.id"),
+    },
+    {
+      id: "productName",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.productName"),
+    },
+    {
+      id: "extractionStatus",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.extractionStatus"),
+    },
+    {
+      id: "verificationStatus",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.verificationStatus"),
+    },
+    {
+      id: "createdAt",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.createdAt"),
+    },
+  ]
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [
       "labels",
@@ -346,9 +350,9 @@ function LabelsTable() {
     (event: React.MouseEvent, id: string) => {
       event.stopPropagation()
       navigator.clipboard.writeText(id)
-      showSuccessToast("Label ID copied to clipboard")
+      showSuccessToast(t("table.idCopied"))
     },
-    [showSuccessToast],
+    [showSuccessToast, t],
   )
   const handleBulkExport = useCallback(() => {
     // TODO: Implement export functionality
@@ -442,7 +446,7 @@ function LabelsTable() {
                   onChange={handleSelectAllClick}
                   slotProps={{
                     input: {
-                      "aria-label": "select all labels",
+                      "aria-label": t("table.selectAll"),
                     },
                   }}
                 />
@@ -474,8 +478,8 @@ function LabelsTable() {
                     {orderBy === headCell.id ? (
                       <Box component="span" sx={visuallyHidden}>
                         {sortOrder === "desc"
-                          ? "sorted descending"
-                          : "sorted ascending"}
+                          ? t("table.sortedDescending")
+                          : t("table.sortedAscending")}
                       </Box>
                     ) : null}
                   </TableSortLabel>
@@ -483,7 +487,7 @@ function LabelsTable() {
               ))}
               <TableCell align="right" padding="normal">
                 <Box component="span" sx={visuallyHidden}>
-                  Actions
+                  {t("table.actions")}
                 </Box>
               </TableCell>
             </TableRow>
@@ -567,7 +571,7 @@ function LabelsTable() {
                                 fontSize: "0.875rem",
                               },
                             }}
-                            aria-label={`Copy label ID ${label.id}`}
+                            aria-label={t("table.copyId", { id: label.id })}
                           >
                             <ContentCopyIcon />
                           </IconButton>
@@ -635,13 +639,14 @@ function LabelsTable() {
 }
 
 function Labels() {
+  const { t } = useTranslation("labels")
   useEffect(() => {
-    document.title = "Labels - Label Inspection"
-  }, [])
+    document.title = t("pageTitle")
+  }, [t])
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ py: 3 }}>
-        Labels
+        {t("title")}
       </Typography>
       <LabelsTable />
     </Container>

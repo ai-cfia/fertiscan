@@ -1,0 +1,131 @@
+{
+  "common": {
+    "aria": {
+      "clearSelection": "common.aria.clearSelection"
+    },
+    "button": {
+      "cancel": "common.button.cancel"
+    }
+  },
+  "dashboard": {
+    "createNewLabel": "Create New Label",
+    "createNewLabelDescription": "Upload and process a new label",
+    "extracting": "Extracting",
+    "failedExtractions": "Failed Extractions",
+    "manageProducts": "Manage Products",
+    "manageProductsDescription": "View and edit products",
+    "overview": "Overview",
+    "pendingVerification": "Pending Verification",
+    "quickActions": "Quick Actions",
+    "title": "Dashboard - Label Inspection",
+    "totalLabels": "Total Labels",
+    "totalProducts": "Total Products",
+    "unlinkedLabels": "Unlinked Labels",
+    "unlinkedLabelsDescription": "Labels not associated with products",
+    "verifyLabels": "Verify Labels",
+    "verifyLabelsDescription": "Review labels ready for verification",
+    "verifyPageTitle": "Verify Labels - Label Inspection",
+    "viewAllLabels": "View All Labels",
+    "viewAllLabelsDescription": "Browse and manage all labels"
+  },
+  "data": {
+    "placeholder": "Data view/edit (placeholder)"
+  },
+  "empty": {
+    "noLabels": "No labels found",
+    "noLabelsDescription": "Labels you upload will appear here.",
+    "noMatches": "No labels match your current filters",
+    "noMatchesDescription": "Try adjusting your filters to see more results."
+  },
+  "errors": {
+    "fileType": {
+      "invalid": "errors.fileType.invalid"
+    }
+  },
+  "files": {
+    "pageTitle": "Label Files - Label Inspection",
+    "title_one": "Label Image: {{count}} (max {{max}})",
+    "title_other": "Label Images: {{count}} (max {{max}})"
+  },
+  "filter": {
+    "completed": "Completed",
+    "extractionStatus": "Extraction Status",
+    "failed": "Failed",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started",
+    "pending": "Pending",
+    "title": "Filter list",
+    "unlinked": "Unlinked",
+    "verificationStatus": "Verification Status"
+  },
+  "image": {
+    "notAvailable": "Image not available",
+    "sequence": "Sequence: {{order}}"
+  },
+  "labels": {
+    "bulkActions": {
+      "delete": "labels.bulkActions.delete",
+      "deleteDialog": {
+        "description_one": "labels.bulkActions.deleteDialog.description",
+        "description_other": "labels.bulkActions.deleteDialog.description",
+        "title_one": "labels.bulkActions.deleteDialog.title",
+        "title_other": "labels.bulkActions.deleteDialog.title"
+      },
+      "deleteNotImplemented": "labels.bulkActions.deleteNotImplemented",
+      "export": "labels.bulkActions.export",
+      "exportNotImplemented": "labels.bulkActions.exportNotImplemented",
+      "selected_one": "labels.bulkActions.selected",
+      "selected_other": "labels.bulkActions.selected"
+    },
+    "create": {
+      "description": "labels.create.description",
+      "maxFilesWarning_one": "labels.create.maxFilesWarning",
+      "maxFilesWarning_other": "labels.create.maxFilesWarning",
+      "of": "labels.create.of",
+      "pageTitle": "labels.create.pageTitle",
+      "remove": "labels.create.remove",
+      "selectedFiles": "labels.create.selectedFiles",
+      "selectFiles": "labels.create.selectFiles",
+      "title": "labels.create.title"
+    },
+    "rowActions": {
+      "actionsForLabel": "labels.rowActions.actionsForLabel",
+      "delete": "labels.rowActions.delete",
+      "deleteDialog": {
+        "description": "labels.rowActions.deleteDialog.description",
+        "title": "labels.rowActions.deleteDialog.title"
+      },
+      "deleteNotImplemented": "labels.rowActions.deleteNotImplemented",
+      "viewDetails": "labels.rowActions.viewDetails"
+    },
+    "upload": {
+      "preparing": "labels.upload.preparing",
+      "uploaded_one": "labels.upload.uploaded",
+      "uploaded_other": "labels.upload.uploaded",
+      "uploading_one": "labels.upload.uploading",
+      "uploading_other": "labels.upload.uploading"
+    }
+  },
+  "pageTitle": "Labels - Label Inspection",
+  "table": {
+    "actions": "Actions",
+    "copyId": "Copy label ID {{id}}",
+    "createdAt": "Created At",
+    "extractionStatus": "Extraction Status",
+    "id": "ID",
+    "idCopied": "Label ID copied to clipboard",
+    "productName": "Product Name",
+    "selectAll": "select all labels",
+    "sortedAscending": "sorted ascending",
+    "sortedDescending": "sorted descending",
+    "verificationStatus": "Verification Status"
+  },
+  "title": "Labels",
+  "upload": {
+    "failed_one": "Failed to upload {{failed}} of {{total}} file",
+    "failed_other": "Failed to upload {{failed}} of {{total}} files",
+    "partial": "Upload complete: {{completed}} succeeded, {{failed}} failed",
+    "success_one": "Successfully uploaded {{completed}} of {{total}} file",
+    "success_other": "Successfully uploaded {{completed}} of {{total}} files"
+  }
+}

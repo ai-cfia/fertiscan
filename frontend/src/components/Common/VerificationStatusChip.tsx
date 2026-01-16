@@ -1,6 +1,6 @@
 import { Box, Chip } from "@mui/material"
+import { useTranslation } from "react-i18next"
 import type { VerificationStatus } from "@/api"
-import { formatStatusLabel } from "@/utils"
 
 interface VerificationStatusChipProps {
   status: VerificationStatus | null
@@ -9,6 +9,7 @@ interface VerificationStatusChipProps {
 export default function VerificationStatusChip({
   status,
 }: VerificationStatusChipProps) {
+  const { t } = useTranslation("labels")
   if (!status) {
     return (
       <Box
@@ -27,9 +28,14 @@ export default function VerificationStatusChip({
     in_progress: "warning",
     completed: "success",
   }
+  const statusLabelMap: Record<VerificationStatus, string> = {
+    not_started: t("filter.notStarted"),
+    in_progress: t("filter.inProgress"),
+    completed: t("filter.completed"),
+  }
   return (
     <Chip
-      label={formatStatusLabel(status)}
+      label={statusLabelMap[status]}
       color={colorMap[status]}
       variant="filled"
       size="small"
