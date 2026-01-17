@@ -1,5 +1,7 @@
 """Tests for GET /labels/{label_id}/images/{image_id} endpoint."""
 
+from uuid import uuid4
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -76,8 +78,6 @@ class TestGetLabelImage:
         db: Session,
     ) -> None:
         """Test getting image with invalid image ID."""
-        from uuid import uuid4
-
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)

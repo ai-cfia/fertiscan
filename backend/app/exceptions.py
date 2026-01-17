@@ -75,6 +75,11 @@ class ProductTypeNotFound(HTTPException):
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
+class InvalidProductType(HTTPException):
+    def __init__(self, detail: str = "Invalid product type") -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
 class ImageCountLimitExceeded(HTTPException):
     def __init__(
         self,
@@ -101,4 +106,14 @@ class ImageNotCompleted(HTTPException):
         self,
         detail: str = "Presigned download URL can only be generated for completed images",
     ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class ResourceConflict(HTTPException):
+    def __init__(self, detail: str = "Resource already exists") -> None:
+        super().__init__(status.HTTP_409_CONFLICT, detail)
+
+
+class LabelCompleted(HTTPException):
+    def __init__(self, detail: str = "Label is completed and cannot be edited") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)

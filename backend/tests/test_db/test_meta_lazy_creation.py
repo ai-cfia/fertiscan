@@ -7,7 +7,7 @@ from app.db.models.fertilizer_label_data_meta import (
     FertilizerLabelDataFieldName,
     FertilizerLabelDataMeta,
 )
-from app.db.models.label_data_meta import LabelDataFieldName, LabelDataMeta
+from app.db.models.label_data_field_meta import LabelDataFieldMeta, LabelDataFieldName
 from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label_data import LabelDataFactory
 
@@ -202,8 +202,8 @@ class TestFertilizerLabelDataMetaLazyCreation:
         assert found_meta.ai_generated is True
 
 
-class TestLabelDataMetaLazyCreation:
-    """Tests for LabelDataMeta lazy creation/deletion logic."""
+class TestLabelDataFieldMetaLazyCreation:
+    """Tests for LabelDataFieldMeta lazy creation/deletion logic."""
 
     def test_meta_row_created_when_needs_review_true(self, db: Session) -> None:
         """Test that meta row is created when needs_review=True."""
@@ -211,7 +211,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Create meta row with needs_review=True
-        meta = LabelDataMeta(
+        meta = LabelDataFieldMeta(
             label_id=label_data.id,
             field_name=LabelDataFieldName.brand_name_en,
             needs_review=True,
@@ -220,9 +220,9 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row exists
-        stmt = select(LabelDataMeta).where(
-            LabelDataMeta.label_id == label_data.id,
-            LabelDataMeta.field_name == LabelDataFieldName.brand_name_en,
+        stmt = select(LabelDataFieldMeta).where(
+            LabelDataFieldMeta.label_id == label_data.id,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name_en,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -237,7 +237,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Create meta row with note
-        meta = LabelDataMeta(
+        meta = LabelDataFieldMeta(
             label_id=label_data.id,
             field_name=LabelDataFieldName.registration_number,
             note="Test note",
@@ -246,9 +246,9 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row exists
-        stmt = select(LabelDataMeta).where(
-            LabelDataMeta.label_id == label_data.id,
-            LabelDataMeta.field_name == LabelDataFieldName.registration_number,
+        stmt = select(LabelDataFieldMeta).where(
+            LabelDataFieldMeta.label_id == label_data.id,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.registration_number,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -263,7 +263,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Create meta row with ai_generated=True
-        meta = LabelDataMeta(
+        meta = LabelDataFieldMeta(
             label_id=label_data.id,
             field_name=LabelDataFieldName.product_name_en,
             ai_generated=True,
@@ -272,9 +272,9 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row exists
-        stmt = select(LabelDataMeta).where(
-            LabelDataMeta.label_id == label_data.id,
-            LabelDataMeta.field_name == LabelDataFieldName.product_name_en,
+        stmt = select(LabelDataFieldMeta).where(
+            LabelDataFieldMeta.label_id == label_data.id,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.product_name_en,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -289,15 +289,17 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify no meta rows exist
-        stmt = select(LabelDataMeta).where(LabelDataMeta.label_id == label_data.id)
+        stmt = select(LabelDataFieldMeta).where(
+            LabelDataFieldMeta.label_id == label_data.id
+        )
         result = db.execute(stmt)
         meta_rows = list(result.scalars().all())
         assert len(meta_rows) == 0
 
         # When querying for meta, should return None (indicating defaults)
-        stmt = select(LabelDataMeta).where(
-            LabelDataMeta.label_id == label_data.id,
-            LabelDataMeta.field_name == LabelDataFieldName.brand_name_en,
+        stmt = select(LabelDataFieldMeta).where(
+            LabelDataFieldMeta.label_id == label_data.id,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name_en,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -311,7 +313,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Create meta row with needs_review=True
-        meta = LabelDataMeta(
+        meta = LabelDataFieldMeta(
             label_id=label_data.id,
             field_name=LabelDataFieldName.brand_name_en,
             needs_review=True,
@@ -321,7 +323,7 @@ class TestLabelDataMetaLazyCreation:
         meta_id = meta.id
 
         # Verify meta row exists
-        stmt = select(LabelDataMeta).where(LabelDataMeta.id == meta_id)
+        stmt = select(LabelDataFieldMeta).where(LabelDataFieldMeta.id == meta_id)
         result = db.execute(stmt)
         assert result.scalar_one_or_none() is not None
 
@@ -336,7 +338,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row is deleted
-        stmt = select(LabelDataMeta).where(LabelDataMeta.id == meta_id)
+        stmt = select(LabelDataFieldMeta).where(LabelDataFieldMeta.id == meta_id)
         result = db.execute(stmt)
         assert result.scalar_one_or_none() is None
 
@@ -346,7 +348,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Create meta row with needs_review=True
-        meta = LabelDataMeta(
+        meta = LabelDataFieldMeta(
             label_id=label_data.id,
             field_name=LabelDataFieldName.brand_name_en,
             needs_review=True,
@@ -362,7 +364,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row still exists
-        stmt = select(LabelDataMeta).where(LabelDataMeta.id == meta_id)
+        stmt = select(LabelDataFieldMeta).where(LabelDataFieldMeta.id == meta_id)
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
         assert found_meta is not None
@@ -375,7 +377,7 @@ class TestLabelDataMetaLazyCreation:
         db.flush()
 
         # Verify meta row still exists
-        stmt = select(LabelDataMeta).where(LabelDataMeta.id == meta_id)
+        stmt = select(LabelDataFieldMeta).where(LabelDataFieldMeta.id == meta_id)
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
         assert found_meta is not None

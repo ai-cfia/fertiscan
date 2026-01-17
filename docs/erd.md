@@ -10,7 +10,7 @@ erDiagram
     Label ||--o{ LabelImage : "has"
     Label ||--o| LabelData : "has"
     Label ||--o| FertilizerLabelData : "has"
-    LabelData ||--o{ LabelDataMeta : "has"
+    LabelData ||--o{ LabelDataFieldMeta : "has"
     FertilizerLabelData ||--o{ FertilizerLabelDataMeta : "has"
     User ||--o{ Label : "creates"
     User ||--o{ Product : "creates"
@@ -52,13 +52,16 @@ erDiagram
         uuid id PK
         uuid label_id FK
         string file_path
+        string display_filename
         int sequence_order
+        string status
         timestamp created_at
+        timestamp updated_at
     }
 
     LabelData {
         uuid id PK
-        uuid label_id FK
+        uuid label_id FK "unique"
         string brand_name_en "nullable"
         string brand_name_fr "nullable"
         string product_name_en "nullable"
@@ -72,7 +75,7 @@ erDiagram
         timestamp updated_at
     }
 
-    LabelDataMeta {
+    LabelDataFieldMeta {
         uuid id PK
         uuid label_id FK
         string field_name
@@ -85,14 +88,12 @@ erDiagram
 
     FertilizerLabelData {
         uuid id PK
-        uuid label_id FK
+        uuid label_id FK "unique"
         decimal n "nullable"
         decimal p "nullable"
         decimal k "nullable"
-        jsonb ingredients_en "nullable"
-        jsonb ingredients_fr "nullable"
-        jsonb guaranteed_analysis_en "nullable"
-        jsonb guaranteed_analysis_fr "nullable"
+        jsonb ingredients "nullable"
+        jsonb guaranteed_analysis "nullable"
         string caution_en "nullable"
         string caution_fr "nullable"
         string instructions_en "nullable"
@@ -119,6 +120,8 @@ erDiagram
         string last_name "nullable"
         boolean is_active
         boolean is_superuser
+        string hashed_password "nullable"
+        string external_id UK "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -170,12 +173,14 @@ Labels track state through a single review status field:
 
 ### Field-Level Metadata and Review
 
-- **Metadata tables**: `LabelDataMeta` and `FertilizerLabelDataMeta` provide
-  field-level metadata
+- **Metadata tables**: `LabelDataFieldMeta` and `FertilizerLabelDataMeta`
+  provide field-level metadata
   - One row per field per label data record
   - Fields: `needs_review` (bool), `note` (string, nullable), `ai_generated`
     (bool)
   - Unique constraint on `(label_id, field_name)`
+  - `LabelDataFieldMeta.label_id` references `LabelData.id`
+  - `FertilizerLabelDataMeta.label_id` references `FertilizerLabelData.id`
 - **Lazy creation**: Meta rows are created when `needs_review=True`, `note` is
   added, or `ai_generated=True`
 - **Lazy deletion**: Meta rows are deleted when `needs_review=False`,
@@ -192,6 +197,8 @@ Labels track state through a single review status field:
 - Images stored in separate `LabelImage` entity with sequence order
 - Sequence order is 1-indexed (starts at 1, not 0)
 - Sequence order matters for extraction processing
+- `display_filename`: Original filename from upload (for user display)
+- `status`: Upload status enum (`pending`, `completed`)
 - When an individual image is deleted, remaining images are renumbered to
   maintain consecutive sequence order (1, 2, 3...)
 - Storage path structure: `{app_prefix}/labels/{label_id}/{uuid}.{ext}` where
@@ -217,6 +224,8 @@ Labels track state through a single review status field:
   `product_name_fr`
 - **FertilizerLabelData entity**: `caution_en`, `caution_fr`, `instructions_en`,
   `instructions_fr`
+- **JSONB fields**: `ingredients` and `guaranteed_analysis` are single JSONB
+  fields (not separate `_en`/`_fr` versions)
 - **French fields nullable**: French versions are nullable as not all products
   may have French labels, but English is typically required
 
@@ -241,11 +250,11 @@ Labels track state through a single review status field:
   (brand_name_en/fr, product_name_en/fr, registration_number, lot_number,
   contacts, net_weight, volume)
 - **Fertilizer-specific fields in FertilizerLabelData**: NPK values (n, p, k),
-  ingredients_en/fr, guaranteed_analysis_en/fr, caution_en/fr, and
+  ingredients (JSONB), guaranteed_analysis (JSONB), caution_en/fr, and
   instructions_en/fr specific to fertilizer products
 - **Metadata tables**: Each label data table has a corresponding meta table
-  (`LabelDataMeta`, `FertilizerLabelDataMeta`) for field-level review flags,
-  notes, and AI generation tracking
+  (`LabelDataFieldMeta`, `FertilizerLabelDataMeta`) for field-level review
+  flags, notes, and AI generation tracking
 - **Extensibility**: Other product types can have their own label data tables
   (e.g., `PesticideLabelData`) and corresponding meta tables following the same
   pattern
@@ -298,58 +307,61 @@ Array of contact information objects:
 - `email` (string, optional): Email address
 - `website` (string, optional): Website URL
 
-#### `ingredients_en` / `ingredients_fr` (in FertilizerLabelData)
+#### `ingredients` (in FertilizerLabelData)
 
-Array of ingredient objects with optional nested sub-ingredients:
+Array of ingredient objects:
 
 ```json
 [
   {
-    "name": "Urea",
-    "value": 46.0,
+    "name_en": "Urea",
+    "name_fr": "Urée",
+    "value": "46.0",
     "unit": "%"
   },
   {
-    "name": "Total Nitrogen",
-    "value": 10.0,
-    "unit": "%",
-    "sub_ingredients": [
-      { "name": "Ammoniacal Nitrogen", "value": 5.0, "unit": "%" },
-      { "name": "Urea Nitrogen", "value": 5.0, "unit": "%" }
-    ]
+    "name_en": "Total Nitrogen",
+    "name_fr": "Azote Total",
+    "value": "10.0",
+    "unit": "%"
   }
 ]
 ```
 
 **Fields:**
 
-- `name` (string): Ingredient name
-- `value` (decimal): Ingredient value/percentage
-- `unit` (string): Unit of measurement (typically "%")
-- `sub_ingredients` (array, optional): Nested array of sub-ingredient objects
-  with same structure
+- `name_en` (string): Ingredient name in English as it appears on the label
+- `name_fr` (string, optional): Ingredient name in French as it appears on the
+  label
+- `value` (string): Ingredient percentage or amount
+- `unit` (string): Unit of measurement (typically "%", "ppm", "mg/kg", "g/kg",
+  "mm")
 
-#### `guaranteed_analysis_en` / `guaranteed_analysis_fr` (in FertilizerLabelData)
+#### `guaranteed_analysis` (in FertilizerLabelData)
 
 Object containing analysis title and nutrients array:
 
 ```json
 {
-  "title": "Minimum Guaranteed Analysis",
+  "title_en": "Minimum Guaranteed Analysis",
+  "title_fr": "Analyse Garantie Minimale",
   "is_minimum": true,
   "nutrients": [
     {
-      "name": "Total Nitrogen (N)",
+      "name_en": "Total Nitrogen (N)",
+      "name_fr": "Azote Total (N)",
       "value": 10.0,
       "unit": "%"
     },
     {
-      "name": "Available Phosphate (P₂O₅)",
+      "name_en": "Available Phosphate (P₂O₅)",
+      "name_fr": "Phosphate Disponible (P₂O₅)",
       "value": 20.0,
       "unit": "%"
     },
     {
-      "name": "Calcium (Ca)",
+      "name_en": "Calcium (Ca)",
+      "name_fr": "Calcium (Ca)",
       "value": 1.0,
       "unit": "%"
     }
@@ -359,13 +371,15 @@ Object containing analysis title and nutrients array:
 
 **Fields:**
 
-- `title` (string): Section title from label ("Minimum Guaranteed Analysis" or
-  "Guaranteed Analysis")
+- `title_en` (string): Section title in English from label ("Minimum Guaranteed
+  Analysis" or "Guaranteed Analysis")
+- `title_fr` (string, optional): Section title in French from label
 - `is_minimum` (boolean): True if title contains "Minimum", false otherwise
 - `nutrients` (array): Array of nutrient objects, each containing:
-  - `name` (string): Nutrient name (e.g., "Total Nitrogen (N)")
+  - `name_en` (string): Nutrient name in English (e.g., "Total Nitrogen (N)")
+  - `name_fr` (string, optional): Nutrient name in French
   - `value` (decimal): Nutrient percentage value
-  - `unit` (string): Unit of measurement (typically "%")
+  - `unit` (string): Unit of measurement (typically "%", "ppm", "mg/kg", "g/kg")
 
 ### Audit Trail
 
@@ -373,3 +387,11 @@ Object containing analysis title and nutrients array:
   regulatory compliance)
 - **`Label.created_by_id`**: Tracks who created each label (audit trail)
 - Both fields are non-nullable to ensure complete audit trail
+
+### User Authentication
+
+- **`User.hashed_password`**: Bcrypt hashed password for local authentication
+  (nullable, for external auth users)
+- **`User.external_id`**: External identity provider subject identifier (OIDC
+  sub claim) (nullable, unique, for external auth users)
+- Users can authenticate via local password or external identity provider

@@ -10,6 +10,7 @@ from app.db.models.product import Product
 from app.db.models.user import User
 from tests.factories.label import LabelFactory
 from tests.factories.product import ProductFactory
+from tests.factories.product_type import ProductTypeFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import authentication_token_from_email
 
@@ -239,8 +240,6 @@ class TestListLabels:
         db: Session,
     ) -> None:
         """Test that fetching inactive product types returns empty results."""
-        from tests.factories.product_type import ProductTypeFactory
-
         user = UserFactory()
         inactive_type = ProductTypeFactory(code="seed", is_active=False)
         inactive_product = ProductFactory(created_by=user, product_type=inactive_type)

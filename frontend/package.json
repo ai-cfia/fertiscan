@@ -39,6 +39,7 @@
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.68.0",
     "react-i18next": "^16.5.3",
+    "swiper": "^12.0.3",
     "zustand": "^5.0.9"
   },
   "devDependencies": {

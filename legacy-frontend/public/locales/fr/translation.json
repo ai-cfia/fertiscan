@@ -1,3 +1,0 @@
-{
-        "debugMessage": "\n      -------------------------------------------------\n      -                                               -\n      -       Le mode débogage est ACTIVÉ             -\n      - pour le désactiver, définissez DEBUG=false    -\n      -               dans .env                       -\n      -------------------------------------------------\n        "
-}

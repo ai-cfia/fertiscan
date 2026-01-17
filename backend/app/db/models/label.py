@@ -39,7 +39,9 @@ class Label(Base, table=True):
     product_type: "ProductType" = Relationship(back_populates="labels")
     created_by: User = Relationship(back_populates="labels")
     images: list["LabelImage"] = Relationship(
-        back_populates="label", cascade_delete=True
+        back_populates="label",
+        cascade_delete=True,
+        sa_relationship_kwargs={"order_by": "LabelImage.sequence_order"},
     )
     label_data: Optional["LabelData"] = Relationship(
         back_populates="label", cascade_delete=True

@@ -1,5 +1,7 @@
 """Tests for label detail endpoint."""
 
+from uuid import uuid4
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -145,8 +147,6 @@ class TestGetLabelDetail:
         db: Session,
     ) -> None:
         """Test getting non-existent label returns 404."""
-        from uuid import uuid4
-
         user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db

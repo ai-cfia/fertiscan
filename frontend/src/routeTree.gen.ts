@@ -24,8 +24,8 @@ import { Route as LayoutProductTypeProductsRouteImport } from './routes/_layout/
 import { Route as LayoutProductTypeLabelsIndexRouteImport } from './routes/_layout/$productType/labels/index'
 import { Route as LayoutProductTypeLabelsNewRouteImport } from './routes/_layout/$productType/labels/new'
 import { Route as LayoutProductTypeLabelsLabelIdRouteImport } from './routes/_layout/$productType/labels/$labelId'
+import { Route as LayoutProductTypeLabelsLabelIdReviewRouteImport } from './routes/_layout/$productType/labels/$labelId/review'
 import { Route as LayoutProductTypeLabelsLabelIdFilesRouteImport } from './routes/_layout/$productType/labels/$labelId/files'
-import { Route as LayoutProductTypeLabelsLabelIdDataRouteImport } from './routes/_layout/$productType/labels/$labelId/data'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -105,16 +105,16 @@ const LayoutProductTypeLabelsLabelIdRoute =
     path: '/labels/$labelId',
     getParentRoute: () => LayoutProductTypeRoute,
   } as any)
+const LayoutProductTypeLabelsLabelIdReviewRoute =
+  LayoutProductTypeLabelsLabelIdReviewRouteImport.update({
+    id: '/review',
+    path: '/review',
+    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
+  } as any)
 const LayoutProductTypeLabelsLabelIdFilesRoute =
   LayoutProductTypeLabelsLabelIdFilesRouteImport.update({
     id: '/files',
     path: '/files',
-    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
-  } as any)
-const LayoutProductTypeLabelsLabelIdDataRoute =
-  LayoutProductTypeLabelsLabelIdDataRouteImport.update({
-    id: '/data',
-    path: '/data',
     getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
   } as any)
 
@@ -133,8 +133,8 @@ export interface FileRoutesByFullPath {
   '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
   '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
-  '/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
   '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -150,8 +150,8 @@ export interface FileRoutesByTo {
   '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
   '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
-  '/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
   '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,8 +170,8 @@ export interface FileRoutesById {
   '/_layout/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/_layout/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
   '/_layout/$productType/labels/': typeof LayoutProductTypeLabelsIndexRoute
-  '/_layout/$productType/labels/$labelId/data': typeof LayoutProductTypeLabelsLabelIdDataRoute
   '/_layout/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/_layout/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -190,8 +190,8 @@ export interface FileRouteTypes {
     | '/$productType/labels/$labelId'
     | '/$productType/labels/new'
     | '/$productType/labels'
-    | '/$productType/labels/$labelId/data'
     | '/$productType/labels/$labelId/files'
+    | '/$productType/labels/$labelId/review'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -207,8 +207,8 @@ export interface FileRouteTypes {
     | '/$productType/labels/$labelId'
     | '/$productType/labels/new'
     | '/$productType/labels'
-    | '/$productType/labels/$labelId/data'
     | '/$productType/labels/$labelId/files'
+    | '/$productType/labels/$labelId/review'
   id:
     | '__root__'
     | '/'
@@ -226,8 +226,8 @@ export interface FileRouteTypes {
     | '/_layout/$productType/labels/$labelId'
     | '/_layout/$productType/labels/new'
     | '/_layout/$productType/labels/'
-    | '/_layout/$productType/labels/$labelId/data'
     | '/_layout/$productType/labels/$labelId/files'
+    | '/_layout/$productType/labels/$labelId/review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -346,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
+    '/_layout/$productType/labels/$labelId/review': {
+      id: '/_layout/$productType/labels/$labelId/review'
+      path: '/review'
+      fullPath: '/$productType/labels/$labelId/review'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdReviewRouteImport
+      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
+    }
     '/_layout/$productType/labels/$labelId/files': {
       id: '/_layout/$productType/labels/$labelId/files'
       path: '/files'
@@ -353,27 +360,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdFilesRouteImport
       parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
     }
-    '/_layout/$productType/labels/$labelId/data': {
-      id: '/_layout/$productType/labels/$labelId/data'
-      path: '/data'
-      fullPath: '/$productType/labels/$labelId/data'
-      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdDataRouteImport
-      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
-    }
   }
 }
 
 interface LayoutProductTypeLabelsLabelIdRouteChildren {
-  LayoutProductTypeLabelsLabelIdDataRoute: typeof LayoutProductTypeLabelsLabelIdDataRoute
   LayoutProductTypeLabelsLabelIdFilesRoute: typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  LayoutProductTypeLabelsLabelIdReviewRoute: typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 
 const LayoutProductTypeLabelsLabelIdRouteChildren: LayoutProductTypeLabelsLabelIdRouteChildren =
   {
-    LayoutProductTypeLabelsLabelIdDataRoute:
-      LayoutProductTypeLabelsLabelIdDataRoute,
     LayoutProductTypeLabelsLabelIdFilesRoute:
       LayoutProductTypeLabelsLabelIdFilesRoute,
+    LayoutProductTypeLabelsLabelIdReviewRoute:
+      LayoutProductTypeLabelsLabelIdReviewRoute,
   }
 
 const LayoutProductTypeLabelsLabelIdRouteWithChildren =

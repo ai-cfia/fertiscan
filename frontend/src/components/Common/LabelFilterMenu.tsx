@@ -9,14 +9,12 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import type { ExtractionStatus, VerificationStatus } from "@/api"
+import type { ReviewStatus } from "@/api"
 
 interface LabelFilterMenuProps {
-  extractionStatus?: ExtractionStatus
-  verificationStatus?: VerificationStatus
+  reviewStatus?: ReviewStatus
   unlinked?: boolean
-  onExtractionStatusChange: (value?: ExtractionStatus) => void
-  onVerificationStatusChange: (value?: VerificationStatus) => void
+  onReviewStatusChange: (value?: ReviewStatus) => void
   onUnlinkedChange: (value?: boolean) => void
 }
 
@@ -38,35 +36,20 @@ const SubmenuArrow = () => (
 )
 
 export default function LabelFilterMenu({
-  extractionStatus,
-  verificationStatus,
+  reviewStatus,
   unlinked,
-  onExtractionStatusChange,
-  onVerificationStatusChange,
+  onReviewStatusChange,
   onUnlinkedChange,
 }: LabelFilterMenuProps) {
   const { t } = useTranslation("labels")
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
-  const [extractionStatusAnchorEl, setExtractionStatusAnchorEl] =
-    useState<null | HTMLElement>(null)
-  const [verificationStatusAnchorEl, setVerificationStatusAnchorEl] =
+  const [reviewStatusAnchorEl, setReviewStatusAnchorEl] =
     useState<null | HTMLElement>(null)
   const filterMenuOpen = Boolean(filterAnchorEl)
-  const extractionStatusMenuOpen = Boolean(extractionStatusAnchorEl)
-  const verificationStatusMenuOpen = Boolean(verificationStatusAnchorEl)
+  const reviewStatusMenuOpen = Boolean(reviewStatusAnchorEl)
 
-  const EXTRACTION_STATUS_OPTIONS: Array<{
-    value: ExtractionStatus
-    label: string
-  }> = [
-    { value: "pending", label: t("filter.pending") },
-    { value: "in_progress", label: t("filter.inProgress") },
-    { value: "completed", label: t("filter.completed") },
-    { value: "failed", label: t("filter.failed") },
-  ]
-
-  const VERIFICATION_STATUS_OPTIONS: Array<{
-    value: VerificationStatus
+  const REVIEW_STATUS_OPTIONS: Array<{
+    value: ReviewStatus
     label: string
   }> = [
     { value: "not_started", label: t("filter.notStarted") },
@@ -78,15 +61,10 @@ export default function LabelFilterMenu({
   }
   const handleFilterMenuClose = () => {
     setFilterAnchorEl(null)
-    setExtractionStatusAnchorEl(null)
-    setVerificationStatusAnchorEl(null)
+    setReviewStatusAnchorEl(null)
   }
-  const handleExtractionStatusChange = (value?: ExtractionStatus) => {
-    onExtractionStatusChange(value)
-    handleFilterMenuClose()
-  }
-  const handleVerificationStatusChange = (value?: VerificationStatus) => {
-    onVerificationStatusChange(value)
+  const handleReviewStatusChange = (value?: ReviewStatus) => {
+    onReviewStatusChange(value)
     handleFilterMenuClose()
   }
   const handleUnlinkedChange = (value?: boolean) => {
@@ -113,14 +91,14 @@ export default function LabelFilterMenu({
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={(e) => setExtractionStatusAnchorEl(e.currentTarget)}>
-          <ListItemText>{t("filter.extractionStatus")}</ListItemText>
+        <MenuItem onClick={(e) => setReviewStatusAnchorEl(e.currentTarget)}>
+          <ListItemText>{t("filter.reviewStatus")}</ListItemText>
           <SubmenuArrow />
         </MenuItem>
         <Menu
-          anchorEl={extractionStatusAnchorEl}
-          open={extractionStatusMenuOpen}
-          onClose={() => setExtractionStatusAnchorEl(null)}
+          anchorEl={reviewStatusAnchorEl}
+          open={reviewStatusMenuOpen}
+          onClose={() => setReviewStatusAnchorEl(null)}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",
@@ -130,40 +108,11 @@ export default function LabelFilterMenu({
             horizontal: "left",
           }}
         >
-          {EXTRACTION_STATUS_OPTIONS.map((option) => (
+          {REVIEW_STATUS_OPTIONS.map((option) => (
             <MenuItem
               key={option.value}
-              selected={extractionStatus === option.value}
-              onClick={() => handleExtractionStatusChange(option.value)}
-            >
-              {option.label}
-            </MenuItem>
-          ))}
-        </Menu>
-        <MenuItem
-          onClick={(e) => setVerificationStatusAnchorEl(e.currentTarget)}
-        >
-          <ListItemText>{t("filter.verificationStatus")}</ListItemText>
-          <SubmenuArrow />
-        </MenuItem>
-        <Menu
-          anchorEl={verificationStatusAnchorEl}
-          open={verificationStatusMenuOpen}
-          onClose={() => setVerificationStatusAnchorEl(null)}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-        >
-          {VERIFICATION_STATUS_OPTIONS.map((option) => (
-            <MenuItem
-              key={option.value}
-              selected={verificationStatus === option.value}
-              onClick={() => handleVerificationStatusChange(option.value)}
+              selected={reviewStatus === option.value}
+              onClick={() => handleReviewStatusChange(option.value)}
             >
               {option.label}
             </MenuItem>

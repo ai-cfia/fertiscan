@@ -1,5 +1,4 @@
 import AddIcon from "@mui/icons-material/Add"
-import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import MenuIcon from "@mui/icons-material/Menu"
 import {
   AppBar,
@@ -16,12 +15,12 @@ import {
   Outlet,
   redirect,
   useLocation,
-  useNavigate,
   useParams,
 } from "@tanstack/react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import BreakpointIndicator from "@/components/Common/BreakpointIndicator"
 import LabelListErrorBanner from "@/components/Common/LabelListErrorBanner"
 import LanguageSwitcher from "@/components/Common/LanguageSwitcher"
 import SidebarItems from "@/components/Common/SidebarItems"
@@ -30,7 +29,7 @@ import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
 import UserMenu from "@/components/Common/UserMenu"
 import ValidationErrorBanner from "@/components/Common/ValidationErrorBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
-import { useLabelNew } from "@/stores/useLabelNew"
+import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 
 const drawerWidth = 256
 
@@ -49,13 +48,20 @@ function Layout() {
   // ============================== Route & Store ==============================
   const location = useLocation()
   const params = useParams({ strict: false })
-  const navigate = useNavigate()
-  const { uploadedFiles, isProcessing, clearAll, process } = useLabelNew()
-  const isNewLabelPage = location.pathname.endsWith("/labels/new")
+  const { actions: appBarActions, clearActions } = useAppBarActionsStore()
+  const normalizedPath = location.pathname.replace(/\/+$/, "")
+  const isNewLabelPage = /\/labels\/new\/?$/.test(normalizedPath)
+  const isDataPage = /\/labels\/[^/]+\/review\/?$/.test(normalizedPath)
   const productType = (params.productType as string) || "fertilizer"
   const { t } = useTranslation(["common", "labels"])
   // ============================== State ==============================
   const [mobileOpen, setMobileOpen] = useState(false)
+  // ============================== Effects ==============================
+  useEffect(() => {
+    if (!isNewLabelPage && !isDataPage) {
+      clearActions()
+    }
+  }, [isNewLabelPage, isDataPage, clearActions])
   const [isClosing, setIsClosing] = useState(false)
   const handleDrawerClose = () => {
     setIsClosing(true)
@@ -78,45 +84,22 @@ function Layout() {
             aria-label={t("aria.openDrawer")}
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}
+            sx={{
+              mr: 2,
+              display: {
+                xs: "block",
+                sm: "block",
+                md: isDataPage ? "block" : "none",
+              },
+            }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             {t("app.title")}
           </Typography>
-          {isNewLabelPage ? (
-            <>
-              {uploadedFiles.length > 0 && (
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  onClick={clearAll}
-                  disabled={isProcessing}
-                  sx={{ mr: 2 }}
-                >
-                  {t("button.clearAll")}
-                </Button>
-              )}
-              <Button
-                variant="contained"
-                onClick={() =>
-                  process(productType, (to: string) => {
-                    navigate({ to })
-                  })
-                }
-                disabled={
-                  isProcessing ||
-                  uploadedFiles.length === 0 ||
-                  uploadedFiles.length > 5
-                }
-                startIcon={<CloudUploadIcon />}
-                sx={{ mr: 2 }}
-              >
-                {isProcessing ? t("button.uploading") : t("button.upload")}
-              </Button>
-            </>
-          ) : (
+          {appBarActions}
+          {!isNewLabelPage ? (
             <Button
               color="primary"
               variant="contained"
@@ -127,7 +110,7 @@ function Layout() {
             >
               {t("button.label")}
             </Button>
-          )}
+          ) : null}
           <Box sx={{ mr: 2 }}>
             <LanguageSwitcher />
           </Box>
@@ -144,7 +127,10 @@ function Layout() {
       >
         <Box
           component="nav"
-          sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+          sx={{
+            width: { md: isDataPage ? 0 : drawerWidth },
+            flexShrink: { md: 0 },
+          }}
           aria-label={t("aria.navigation")}
         >
           <Drawer
@@ -153,7 +139,11 @@ function Layout() {
             onTransitionEnd={handleDrawerTransitionEnd}
             onClose={handleDrawerClose}
             sx={{
-              display: { xs: "block", sm: "block", md: "none" },
+              display: {
+                xs: "block",
+                sm: "block",
+                md: isDataPage ? "block" : "none",
+              },
               zIndex: (theme) => theme.zIndex.appBar - 1,
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
@@ -176,7 +166,11 @@ function Layout() {
           <Drawer
             variant="permanent"
             sx={{
-              display: { xs: "none", sm: "none", md: "block" },
+              display: {
+                xs: "none",
+                sm: "none",
+                md: isDataPage ? "none" : "block",
+              },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
@@ -207,8 +201,8 @@ function Layout() {
           <Box
             sx={{
               flexGrow: 1,
-              p: 3,
-              ml: { md: 6 },
+              p: isDataPage ? 0 : 3,
+              ml: { md: isDataPage ? 0 : 6 },
               overflow: "auto",
             }}
           >
@@ -216,6 +210,7 @@ function Layout() {
           </Box>
         </Box>
       </Box>
+      <BreakpointIndicator />
     </Box>
   )
 }

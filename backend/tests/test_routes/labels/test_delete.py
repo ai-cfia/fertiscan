@@ -1,6 +1,9 @@
 """Tests for label deletion endpoint."""
 
+from uuid import uuid4
+
 import pytest
+from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
@@ -8,6 +11,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.db.models.label import Label
 from tests.factories.label import LabelFactory
+from tests.factories.label_image import LabelImageFactory
 from tests.factories.product import ProductFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import (
@@ -49,10 +53,6 @@ class TestDeleteLabel:
         s3_client,
     ) -> None:
         """Test deleting label with images removes files from storage."""
-        from botocore.exceptions import ClientError
-
-        from tests.factories.label_image import LabelImageFactory
-
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
@@ -94,8 +94,6 @@ class TestDeleteLabel:
         db: Session,
     ) -> None:
         """Test deleting non-existent label."""
-        from uuid import uuid4
-
         user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db

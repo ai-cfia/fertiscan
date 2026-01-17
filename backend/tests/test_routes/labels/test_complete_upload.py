@@ -1,5 +1,7 @@
 """Tests for label image upload completion endpoint."""
 
+from uuid import uuid4
+
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -135,8 +137,6 @@ class TestCompleteLabelImageUpload:
         db: Session,
     ) -> None:
         """Test completing upload for non-existent label."""
-        from uuid import uuid4
-
         user = UserFactory()
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db

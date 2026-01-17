@@ -1,7 +1,11 @@
 """Pytest configuration and shared fixtures."""
 
+import json
 from collections.abc import AsyncGenerator, Generator
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock
 
+import instructor
 import pytest
 import pytest_asyncio
 from aioboto3 import Session as AioSession
@@ -18,7 +22,9 @@ from app.config import settings
 from app.db.base import Base
 from app.db.init_db import run as init_db
 from app.db.session import get_session
+from app.dependencies.instructor import get_instructor
 from app.main import app
+from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.storage import get_s3_client
 from app.storage.init import init_storage
 from tests.utils.user import authentication_token_from_email
@@ -121,12 +127,33 @@ def db(setup_db: None) -> Generator[Session, None, None]:  # noqa: ARG001
         TestSession.remove()
 
 
+DUMMY_EXTRACTION_DATA_PATH = Path(__file__).parent / "dummy_extraction_data.json"
+with open(DUMMY_EXTRACTION_DATA_PATH) as f:
+    DUMMY_EXTRACTION_DATA = json.load(f)
+
+
+@pytest.fixture(scope="function")
+def mock_instructor() -> MagicMock:
+    """Mock instructor that returns dummy data.
+
+    Can be overridden per test by modifying the mock's behavior.
+    """
+    mock = MagicMock(spec=instructor.AsyncInstructor)
+    mock_response = ExtractFertilizerFieldsOutput.model_validate(DUMMY_EXTRACTION_DATA)
+    mock_completion = MagicMock()
+    mock.chat.completions.create_with_completion = AsyncMock(
+        return_value=(mock_response, mock_completion)
+    )
+    return mock
+
+
 @pytest_asyncio.fixture(scope="function")
 async def override_dependencies(
     db: Session,
     s3_client: S3Client,
+    mock_instructor: MagicMock,
 ) -> AsyncGenerator[None, None]:
-    """Override database session and S3 client dependencies for tests."""
+    """Override database session, S3 client, and instructor dependencies for tests."""
 
     def get_db_session() -> Generator[Session, None, None]:
         yield db
@@ -134,8 +161,12 @@ async def override_dependencies(
     async def get_test_s3_client() -> AsyncGenerator[S3Client, None]:
         yield s3_client
 
+    def get_test_instructor():
+        return mock_instructor
+
     app.dependency_overrides[get_session] = get_db_session
     app.dependency_overrides[get_s3_client] = get_test_s3_client
+    app.dependency_overrides[get_instructor] = get_test_instructor
     yield None
     app.dependency_overrides.clear()
 

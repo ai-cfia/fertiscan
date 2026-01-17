@@ -26,36 +26,25 @@ import { enCA } from "date-fns/locale"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import {
-  type ExtractionStatus,
-  type LabelListItem,
-  LabelsService,
-  type VerificationStatus,
-} from "@/api"
-import {
-  ExtractionStatusSchema,
-  VerificationStatusSchema,
-} from "@/api/schemas.gen"
+import { type LabelListItem, LabelsService, type ReviewStatus } from "@/api"
+import { ReviewStatusSchema } from "@/api/schemas.gen"
 import BulkActionsToolbar from "@/components/Common/BulkActionsToolbar"
-import ExtractionStatusChip from "@/components/Common/ExtractionStatusChip"
 import LabelFilterChips from "@/components/Common/LabelFilterChips"
 import LabelFilterMenu from "@/components/Common/LabelFilterMenu"
 import LabelListEmptyState from "@/components/Common/LabelListEmptyState"
 import LabelRowActions from "@/components/Common/LabelRowActions"
-import VerificationStatusChip from "@/components/Common/VerificationStatusChip"
+import ReviewStatusChip from "@/components/Common/ReviewStatusChip"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useConfig } from "@/stores/useConfig"
 import { useLabelList } from "@/stores/useLabelList"
+import { useLanguage } from "@/stores/useLanguage"
 import { truncateUuid } from "@/utils"
 
 const labelsSearchSchema = z.object({
   page: z.number().catch(0),
   per_page: z.number().catch(10), // Default will be overridden by config in component
-  extraction_status: z
-    .enum(ExtractionStatusSchema.enum as unknown as [string, ...string[]])
-    .optional(),
-  verification_status: z
-    .enum(VerificationStatusSchema.enum as unknown as [string, ...string[]])
+  review_status: z
+    .enum(ReviewStatusSchema.enum as unknown as [string, ...string[]])
     .optional(),
   unlinked: z.boolean().optional(),
   order_by: z.string().optional(),
@@ -64,35 +53,48 @@ const labelsSearchSchema = z.object({
 
 type LabelRow = {
   id: string
+  brand: string | null
   productName: string | null
-  verificationStatus: VerificationStatus | null
-  extractionStatus: ExtractionStatus | null
+  reviewStatus: ReviewStatus | null
   createdAt: string | null
 }
 
-function mapLabelToRow(label: LabelListItem): LabelRow {
+function mapLabelToRow(label: LabelListItem, language: "en" | "fr"): LabelRow {
+  const isFrench = language === "fr"
   return {
     id: label.id,
-    productName:
-      label.product?.name_en ??
-      label.product?.name_fr ??
-      label.product?.registration_number ??
-      null,
-    verificationStatus: label.verification_status ?? null,
-    extractionStatus: label.extraction_status ?? null,
+    brand: isFrench
+      ? (label.label_data?.brand_name_fr ??
+        label.label_data?.brand_name_en ??
+        null)
+      : (label.label_data?.brand_name_en ??
+        label.label_data?.brand_name_fr ??
+        null),
+    productName: isFrench
+      ? (label.label_data?.product_name_fr ??
+        label.label_data?.product_name_en ??
+        null)
+      : (label.label_data?.product_name_en ??
+        label.label_data?.product_name_fr ??
+        null),
+    reviewStatus: label.review_status ?? null,
     createdAt: label.created_at ?? null,
   }
 }
 
 type Order = "asc" | "desc"
 
-function mapFrontendFieldToBackend(field: keyof LabelRow): string {
+function mapFrontendFieldToBackend(
+  field: keyof LabelRow,
+  language: "en" | "fr",
+): string {
+  const isFrench = language === "fr"
   const fieldMap: Record<keyof LabelRow, string> = {
     id: "id",
+    brand: isFrench ? "brand_name_fr" : "brand_name_en",
     createdAt: "created_at",
-    productName: "product_name",
-    extractionStatus: "extraction_status",
-    verificationStatus: "verification_status",
+    productName: isFrench ? "product_name_fr" : "product_name_en",
+    reviewStatus: "review_status",
   }
   return fieldMap[field] ?? "created_at"
 }
@@ -114,15 +116,9 @@ export const Route = createFileRoute("/_layout/$productType/labels/")({
 function LabelsTable() {
   const { t } = useTranslation("labels")
   const { defaultPerPage } = useConfig()
-  const {
-    page,
-    per_page,
-    extraction_status,
-    verification_status,
-    unlinked,
-    order_by,
-    order,
-  } = Route.useSearch()
+  const { language } = useLanguage()
+  const { page, per_page, review_status, unlinked, order_by, order } =
+    Route.useSearch()
   const { productType } = Route.useParams()
   const rowsPerPage = per_page || defaultPerPage
   const [selected, setSelected] = useState<readonly string[]>([])
@@ -140,22 +136,22 @@ function LabelsTable() {
       label: t("table.id"),
     },
     {
+      id: "brand",
+      numeric: false,
+      disablePadding: false,
+      label: t("table.brand"),
+    },
+    {
       id: "productName",
       numeric: false,
       disablePadding: false,
       label: t("table.productName"),
     },
     {
-      id: "extractionStatus",
+      id: "reviewStatus",
       numeric: false,
       disablePadding: false,
-      label: t("table.extractionStatus"),
-    },
-    {
-      id: "verificationStatus",
-      numeric: false,
-      disablePadding: false,
-      label: t("table.verificationStatus"),
+      label: t("table.reviewStatus"),
     },
     {
       id: "createdAt",
@@ -170,11 +166,11 @@ function LabelsTable() {
       productType,
       page,
       per_page,
-      extraction_status,
-      verification_status,
+      review_status,
       unlinked,
       order_by,
       order,
+      language,
     ],
     queryFn: async () => {
       const response = await LabelsService.readLabels({
@@ -182,12 +178,9 @@ function LabelsTable() {
           product_type: productType,
           limit: rowsPerPage,
           offset: page * rowsPerPage,
-          extraction_status: extraction_status as ExtractionStatus | undefined,
-          verification_status: verification_status as
-            | VerificationStatus
-            | undefined,
+          review_status: review_status as ReviewStatus | undefined,
           unlinked: unlinked ?? undefined,
-          order_by: mapFrontendFieldToBackend(orderBy),
+          order_by: mapFrontendFieldToBackend(orderBy, language),
           order: sortOrder,
         },
       })
@@ -203,8 +196,8 @@ function LabelsTable() {
   }, [isError, error, setError])
   const labels: LabelRow[] = useMemo(() => {
     if (!data?.items) return []
-    return data.items.map(mapLabelToRow)
-  }, [data])
+    return data.items.map((label) => mapLabelToRow(label, language))
+  }, [data, language])
   const setPage = (newPage: number) => {
     navigate({
       search: (prev) => ({ ...prev, page: newPage }),
@@ -241,9 +234,7 @@ function LabelsTable() {
     })
   }
   const visibleRows = labels
-  const hasActiveFilters = Boolean(
-    extraction_status || verification_status || unlinked,
-  )
+  const hasActiveFilters = Boolean(review_status || unlinked)
   const isEmpty = !data?.items || data.items.length === 0
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -285,31 +276,15 @@ function LabelsTable() {
     })
   }
   const isSelected = (id: string) => selected.indexOf(id) !== -1
-  const handleExtractionStatusChange = useCallback(
-    (value?: ExtractionStatus) => {
+  const handleReviewStatusChange = useCallback(
+    (value?: ReviewStatus) => {
       navigate({
         search: (prev) => {
           const newSearch = { ...prev, page: 0 }
           if (value === undefined) {
-            delete newSearch.extraction_status
+            delete newSearch.review_status
           } else {
-            newSearch.extraction_status = value
-          }
-          return newSearch
-        },
-      })
-    },
-    [navigate],
-  )
-  const handleVerificationStatusChange = useCallback(
-    (value?: VerificationStatus) => {
-      navigate({
-        search: (prev) => {
-          const newSearch = { ...prev, page: 0 }
-          if (value === undefined) {
-            delete newSearch.verification_status
-          } else {
-            newSearch.verification_status = value
+            newSearch.review_status = value
           }
           return newSearch
         },
@@ -392,39 +367,19 @@ function LabelsTable() {
           }}
         >
           <LabelFilterMenu
-            extractionStatus={
-              extraction_status
-                ? (extraction_status as ExtractionStatus)
-                : undefined
-            }
-            verificationStatus={
-              verification_status
-                ? (verification_status as VerificationStatus)
-                : undefined
+            reviewStatus={
+              review_status ? (review_status as ReviewStatus) : undefined
             }
             unlinked={unlinked}
-            onExtractionStatusChange={handleExtractionStatusChange}
-            onVerificationStatusChange={handleVerificationStatusChange}
+            onReviewStatusChange={handleReviewStatusChange}
             onUnlinkedChange={handleUnlinkedChange}
           />
           <LabelFilterChips
-            extractionStatus={
-              extraction_status
-                ? (extraction_status as ExtractionStatus)
-                : undefined
-            }
-            verificationStatus={
-              verification_status
-                ? (verification_status as VerificationStatus)
-                : undefined
+            reviewStatus={
+              review_status ? (review_status as ReviewStatus) : undefined
             }
             unlinked={unlinked}
-            onExtractionStatusRemove={() =>
-              handleExtractionStatusChange(undefined)
-            }
-            onVerificationStatusRemove={() =>
-              handleVerificationStatusChange(undefined)
-            }
+            onReviewStatusRemove={() => handleReviewStatusChange(undefined)}
             onUnlinkedRemove={() => handleUnlinkedChange(undefined)}
           />
         </Toolbar>
@@ -551,7 +506,6 @@ function LabelsTable() {
                               sx={{
                                 fontFamily: "monospace",
                                 fontSize: "0.875rem",
-                                cursor: "help",
                               }}
                             >
                               {truncateUuid(label.id)}
@@ -580,14 +534,10 @@ function LabelsTable() {
                         formatCell(null)
                       )}
                     </TableCell>
+                    <TableCell>{formatCell(label.brand)}</TableCell>
                     <TableCell>{formatCell(label.productName)}</TableCell>
                     <TableCell>
-                      <ExtractionStatusChip status={label.extractionStatus} />
-                    </TableCell>
-                    <TableCell>
-                      <VerificationStatusChip
-                        status={label.verificationStatus}
-                      />
+                      <ReviewStatusChip status={label.reviewStatus} />
                     </TableCell>
                     <TableCell>
                       {label.createdAt
@@ -606,10 +556,16 @@ function LabelsTable() {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <LabelRowActions
-                        labelId={label.id}
+                        reviewStatus={label.reviewStatus}
                         onViewDetails={() => {
                           navigate({
                             to: "/$productType/labels/$labelId",
+                            params: { productType, labelId: label.id },
+                          })
+                        }}
+                        onReview={() => {
+                          navigate({
+                            to: "/$productType/labels/$labelId/review",
                             params: { productType, labelId: label.id },
                           })
                         }}

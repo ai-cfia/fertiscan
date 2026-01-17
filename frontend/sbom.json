@@ -19728,6 +19728,40 @@
     },
     {
       "type": "library",
+      "name": "swiper",
+      "version": "12.0.3",
+      "bom-ref": "frontend@0.0.0|swiper@12.0.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/swiper@12.0.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/swiper/-/swiper-12.0.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "04777a53554f10892cad79725e33264563b4a2799d34f69300576ecea477a608ef8bb29f9940809bfd1c8f8f6ed83ec1d33363330d364d27977e29c2d610c25e"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/swiper"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "tailwindcss",
       "version": "4.1.17",
       "bom-ref": "frontend@0.0.0|tailwindcss@4.1.17",
@@ -22415,6 +22449,7 @@
         "frontend@0.0.0|react-i18next@16.5.3",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|rolldown-vite@7.2.5",
+        "frontend@0.0.0|swiper@12.0.3",
         "frontend@0.0.0|tailwindcss@4.1.17",
         "frontend@0.0.0|typescript-eslint@8.48.1",
         "frontend@0.0.0|typescript@5.9.3",
@@ -25425,6 +25460,9 @@
       "dependsOn": [
         "frontend@0.0.0|acorn-walk@8.3.4"
       ]
+    },
+    {
+      "ref": "frontend@0.0.0|swiper@12.0.3"
     },
     {
       "ref": "frontend@0.0.0|tailwindcss@4.1.17"

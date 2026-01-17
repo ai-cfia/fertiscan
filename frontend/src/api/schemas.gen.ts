@@ -60,15 +60,937 @@ export const Body_login_login_access_tokenSchema = {
     title: 'Body_login_login_access_token'
 } as const;
 
-export const ExtractionStatusSchema = {
+export const ContactSchema = {
+    properties: {
+        type: {
+            type: 'string',
+            title: 'Type',
+            description: 'Type of contact',
+            examples: [
+                'manufacturer',
+                'distributor',
+                'importer'
+            ]
+        },
+        name: {
+            type: 'string',
+            title: 'Name',
+            description: 'Company or organization name'
+        },
+        address: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Address',
+            description: 'Full mailing address'
+        },
+        phone: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Phone',
+            description: 'Phone number in any format'
+        },
+        email: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'email'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Email',
+            description: 'Email address'
+        },
+        website: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Website',
+            description: 'Website URL'
+        }
+    },
+    type: 'object',
+    required: [
+        'type',
+        'name'
+    ],
+    title: 'Contact'
+} as const;
+
+export const ExtractFertilizerFieldsOutputSchema = {
+    properties: {
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En',
+            description: 'Brand name in English',
+            examples: [
+                'GreenGrow'
+            ]
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr',
+            description: 'Brand name in French',
+            examples: [
+                'CroissanceVerte'
+            ]
+        },
+        product_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name En',
+            description: 'Product name in English',
+            examples: [
+                'Premium All-Purpose Fertilizer'
+            ]
+        },
+        product_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name Fr',
+            description: 'Product name in French',
+            examples: [
+                'Engrais Polyvalent Premium'
+            ]
+        },
+        contacts: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Contact'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Contacts',
+            description: 'List of contact information (manufacturer, distributor, etc.)'
+        },
+        registration_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Registration Number',
+            description: 'Product registration number',
+            examples: [
+                'REG-2024-12345'
+            ]
+        },
+        lot_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Lot Number',
+            description: 'Lot or batch number',
+            examples: [
+                'LOT-2024-001'
+            ]
+        },
+        net_weight: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Net Weight',
+            description: 'Net weight with unit',
+            examples: [
+                '10 kg'
+            ]
+        },
+        volume: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Volume',
+            description: 'Volume with unit',
+            examples: [
+                '1 L'
+            ]
+        },
+        n: {
+            anyOf: [
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'N',
+            description: 'Nitrogen percentage (NPK analysis)',
+            examples: [
+                '10.0'
+            ]
+        },
+        p: {
+            anyOf: [
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'P',
+            description: 'Phosphorus percentage (NPK analysis)',
+            examples: [
+                '5.0'
+            ]
+        },
+        k: {
+            anyOf: [
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'K',
+            description: 'Potassium percentage (NPK analysis)',
+            examples: [
+                '5.0'
+            ]
+        },
+        ingredients: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Ingredient'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ingredients',
+            description: 'List of ingredients with bilingual names, values and units'
+        },
+        guaranteed_analysis: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/GuaranteedAnalysis-Output'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            description: 'Guaranteed analysis section with bilingual title and nutrients'
+        },
+        caution_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution En',
+            description: 'Caution statements in English',
+            examples: [
+                'Keep out of reach of children'
+            ]
+        },
+        caution_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution Fr',
+            description: 'Caution statements in French',
+            examples: [
+                'Tenir hors de la portée des enfants'
+            ]
+        },
+        instructions_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions En',
+            description: 'Usage instructions in English',
+            examples: [
+                'Apply 2-3 cups per 100 square feet'
+            ]
+        },
+        instructions_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions Fr',
+            description: 'Usage instructions in French',
+            examples: [
+                'Appliquer 2-3 tasses par 100 pieds carrés'
+            ]
+        }
+    },
+    type: 'object',
+    title: 'ExtractFertilizerFieldsOutput'
+} as const;
+
+export const ExtractFieldsRequestSchema = {
+    properties: {
+        field_names: {
+            anyOf: [
+                {
+                    items: {
+                        anyOf: [
+                            {
+                                $ref: '#/components/schemas/LabelDataFieldName'
+                            },
+                            {
+                                $ref: '#/components/schemas/FertilizerLabelDataFieldName'
+                            }
+                        ]
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Field Names',
+            description: 'List of field names to extract. If None or empty, extract all fields.'
+        }
+    },
+    type: 'object',
+    title: 'ExtractFieldsRequest'
+} as const;
+
+export const FertilizerLabelDataSchema = {
+    properties: {
+        n: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'N'
+        },
+        p: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'P'
+        },
+        k: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'K'
+        },
+        ingredients: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Ingredient'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ingredients'
+        },
+        guaranteed_analysis: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/GuaranteedAnalysis-Output'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        caution_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution En'
+        },
+        caution_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution Fr'
+        },
+        instructions_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions En'
+        },
+        instructions_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions Fr'
+        }
+    },
+    type: 'object',
+    title: 'FertilizerLabelData'
+} as const;
+
+export const FertilizerLabelDataCreateSchema = {
+    properties: {
+        n: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'N'
+        },
+        p: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'P'
+        },
+        k: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'K'
+        },
+        ingredients: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Ingredient'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ingredients'
+        },
+        guaranteed_analysis: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/GuaranteedAnalysis-Input'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        caution_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution En'
+        },
+        caution_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution Fr'
+        },
+        instructions_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions En'
+        },
+        instructions_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions Fr'
+        }
+    },
+    type: 'object',
+    title: 'FertilizerLabelDataCreate'
+} as const;
+
+export const FertilizerLabelDataFieldNameSchema = {
     type: 'string',
     enum: [
-        'pending',
-        'in_progress',
-        'completed',
-        'failed'
+        'n',
+        'p',
+        'k',
+        'ingredients',
+        'guaranteed_analysis',
+        'caution_en',
+        'caution_fr',
+        'instructions_en',
+        'instructions_fr'
     ],
-    title: 'ExtractionStatus'
+    title: 'FertilizerLabelDataFieldName',
+    description: 'Valid field names for FertilizerLabelDataMeta.'
+} as const;
+
+export const FertilizerLabelDataMetaResponseSchema = {
+    properties: {
+        field_name: {
+            type: 'string',
+            title: 'Field Name'
+        },
+        needs_review: {
+            type: 'boolean',
+            title: 'Needs Review'
+        },
+        note: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Note'
+        },
+        ai_generated: {
+            type: 'boolean',
+            title: 'Ai Generated'
+        }
+    },
+    type: 'object',
+    required: [
+        'field_name',
+        'needs_review',
+        'note',
+        'ai_generated'
+    ],
+    title: 'FertilizerLabelDataMetaResponse'
+} as const;
+
+export const FertilizerLabelDataMetaUpdateSchema = {
+    properties: {
+        field_name: {
+            $ref: '#/components/schemas/FertilizerLabelDataFieldName'
+        },
+        needs_review: {
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Needs Review'
+        },
+        note: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Note'
+        },
+        ai_generated: {
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ai Generated'
+        }
+    },
+    type: 'object',
+    required: [
+        'field_name'
+    ],
+    title: 'FertilizerLabelDataMetaUpdate'
+} as const;
+
+export const FertilizerLabelDataUpdateSchema = {
+    properties: {
+        n: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'N'
+        },
+        p: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'P'
+        },
+        k: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'K'
+        },
+        ingredients: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Ingredient'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ingredients'
+        },
+        guaranteed_analysis: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/GuaranteedAnalysis-Input'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        caution_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution En'
+        },
+        caution_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Caution Fr'
+        },
+        instructions_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions En'
+        },
+        instructions_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions Fr'
+        }
+    },
+    type: 'object',
+    title: 'FertilizerLabelDataUpdate'
+} as const;
+
+export const GuaranteedAnalysis_InputSchema = {
+    properties: {
+        title_en: {
+            type: 'string',
+            title: 'Title En',
+            description: 'Section title in English from label',
+            examples: [
+                'Minimum Guaranteed Analysis',
+                'Guaranteed Analysis'
+            ]
+        },
+        title_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Title Fr',
+            description: 'Section title in French from label',
+            examples: [
+                'Analyse Garantie Minimale',
+                'Analyse Garantie'
+            ]
+        },
+        is_minimum: {
+            type: 'boolean',
+            title: 'Is Minimum',
+            description: 'True if title contains \'Minimum\', false otherwise'
+        },
+        nutrients: {
+            items: {
+                $ref: '#/components/schemas/Nutrient-Input'
+            },
+            type: 'array',
+            title: 'Nutrients',
+            description: 'List of nutrients with bilingual names, values and units'
+        }
+    },
+    type: 'object',
+    required: [
+        'title_en',
+        'is_minimum',
+        'nutrients'
+    ],
+    title: 'GuaranteedAnalysis'
+} as const;
+
+export const GuaranteedAnalysis_OutputSchema = {
+    properties: {
+        title_en: {
+            type: 'string',
+            title: 'Title En',
+            description: 'Section title in English from label',
+            examples: [
+                'Minimum Guaranteed Analysis',
+                'Guaranteed Analysis'
+            ]
+        },
+        title_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Title Fr',
+            description: 'Section title in French from label',
+            examples: [
+                'Analyse Garantie Minimale',
+                'Analyse Garantie'
+            ]
+        },
+        is_minimum: {
+            type: 'boolean',
+            title: 'Is Minimum',
+            description: 'True if title contains \'Minimum\', false otherwise'
+        },
+        nutrients: {
+            items: {
+                $ref: '#/components/schemas/Nutrient-Output'
+            },
+            type: 'array',
+            title: 'Nutrients',
+            description: 'List of nutrients with bilingual names, values and units'
+        }
+    },
+    type: 'object',
+    required: [
+        'title_en',
+        'is_minimum',
+        'nutrients'
+    ],
+    title: 'GuaranteedAnalysis'
 } as const;
 
 export const HTTPValidationErrorSchema = {
@@ -97,6 +1019,52 @@ export const HealthSchema = {
         'status'
     ],
     title: 'Health'
+} as const;
+
+export const IngredientSchema = {
+    properties: {
+        name_en: {
+            type: 'string',
+            title: 'Name En',
+            description: 'Ingredient name in English as it appears on the label'
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr',
+            description: 'Ingredient name in French as it appears on the label'
+        },
+        value: {
+            type: 'string',
+            title: 'Value',
+            description: 'Ingredient percentage or amount.'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit',
+            description: 'Unit of measurement',
+            examples: [
+                '%',
+                'ppm',
+                'mg/kg',
+                'g/kg',
+                'mm'
+            ]
+        }
+    },
+    type: 'object',
+    required: [
+        'name_en',
+        'value',
+        'unit'
+    ],
+    title: 'Ingredient'
 } as const;
 
 export const LabelCreateSchema = {
@@ -141,6 +1109,483 @@ export const LabelCreatedSchema = {
     description: 'Response schema for label creation.'
 } as const;
 
+export const LabelDataSchema = {
+    properties: {
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
+        },
+        product_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name En'
+        },
+        product_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name Fr'
+        },
+        contacts: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Contact'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Contacts'
+        },
+        registration_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Registration Number'
+        },
+        lot_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Lot Number'
+        },
+        net_weight: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Net Weight'
+        },
+        volume: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Volume'
+        }
+    },
+    type: 'object',
+    title: 'LabelData'
+} as const;
+
+export const LabelDataCreateSchema = {
+    properties: {
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
+        },
+        product_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name En'
+        },
+        product_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name Fr'
+        },
+        contacts: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Contact'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Contacts'
+        },
+        registration_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Registration Number'
+        },
+        lot_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Lot Number'
+        },
+        net_weight: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Net Weight'
+        },
+        volume: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Volume'
+        }
+    },
+    type: 'object',
+    title: 'LabelDataCreate'
+} as const;
+
+export const LabelDataFieldMetaResponseSchema = {
+    properties: {
+        field_name: {
+            type: 'string',
+            title: 'Field Name'
+        },
+        needs_review: {
+            type: 'boolean',
+            title: 'Needs Review'
+        },
+        note: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Note'
+        },
+        ai_generated: {
+            type: 'boolean',
+            title: 'Ai Generated'
+        }
+    },
+    type: 'object',
+    required: [
+        'field_name',
+        'needs_review',
+        'note',
+        'ai_generated'
+    ],
+    title: 'LabelDataFieldMetaResponse'
+} as const;
+
+export const LabelDataFieldMetaUpdateSchema = {
+    properties: {
+        field_name: {
+            $ref: '#/components/schemas/LabelDataFieldName'
+        },
+        needs_review: {
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Needs Review'
+        },
+        note: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Note'
+        },
+        ai_generated: {
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Ai Generated'
+        }
+    },
+    type: 'object',
+    required: [
+        'field_name'
+    ],
+    title: 'LabelDataFieldMetaUpdate'
+} as const;
+
+export const LabelDataFieldNameSchema = {
+    type: 'string',
+    enum: [
+        'brand_name_en',
+        'brand_name_fr',
+        'product_name_en',
+        'product_name_fr',
+        'contacts',
+        'registration_number',
+        'lot_number',
+        'net_weight',
+        'volume'
+    ],
+    title: 'LabelDataFieldName',
+    description: 'Valid field names for LabelDataFieldMeta.'
+} as const;
+
+export const LabelDataLiteSchema = {
+    properties: {
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
+        },
+        product_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name En'
+        },
+        product_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name Fr'
+        }
+    },
+    type: 'object',
+    title: 'LabelDataLite'
+} as const;
+
+export const LabelDataUpdateSchema = {
+    properties: {
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
+        },
+        product_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name En'
+        },
+        product_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Name Fr'
+        },
+        contacts: {
+            anyOf: [
+                {
+                    items: {
+                        $ref: '#/components/schemas/Contact'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Contacts'
+        },
+        registration_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Registration Number'
+        },
+        lot_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Lot Number'
+        },
+        net_weight: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Net Weight'
+        },
+        volume: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Volume'
+        }
+    },
+    type: 'object',
+    title: 'LabelDataUpdate'
+} as const;
+
 export const LabelDetailSchema = {
     properties: {
         id: {
@@ -165,22 +1610,8 @@ export const LabelDetailSchema = {
             format: 'uuid',
             title: 'Created By Id'
         },
-        extraction_status: {
-            $ref: '#/components/schemas/ExtractionStatus'
-        },
-        verification_status: {
-            $ref: '#/components/schemas/VerificationStatus'
-        },
-        extraction_error_message: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Extraction Error Message'
+        review_status: {
+            $ref: '#/components/schemas/ReviewStatus'
         },
         created_at: {
             type: 'string',
@@ -210,8 +1641,7 @@ export const LabelDetailSchema = {
     required: [
         'id',
         'created_by_id',
-        'extraction_status',
-        'verification_status',
+        'review_status',
         'created_at',
         'updated_at',
         'product_type',
@@ -290,22 +1720,8 @@ export const LabelListItemSchema = {
             format: 'uuid',
             title: 'Id'
         },
-        extraction_status: {
-            $ref: '#/components/schemas/ExtractionStatus'
-        },
-        verification_status: {
-            $ref: '#/components/schemas/VerificationStatus'
-        },
-        extraction_error_message: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Extraction Error Message'
+        review_status: {
+            $ref: '#/components/schemas/ReviewStatus'
         },
         created_at: {
             type: 'string',
@@ -317,10 +1733,10 @@ export const LabelListItemSchema = {
             format: 'date-time',
             title: 'Updated At'
         },
-        product: {
+        label_data: {
             anyOf: [
                 {
-                    $ref: '#/components/schemas/ProductPublic'
+                    $ref: '#/components/schemas/LabelDataLite'
                 },
                 {
                     type: 'null'
@@ -331,13 +1747,44 @@ export const LabelListItemSchema = {
     type: 'object',
     required: [
         'id',
-        'extraction_status',
-        'verification_status',
+        'review_status',
         'created_at',
         'updated_at'
     ],
     title: 'LabelListItem',
     description: 'Schema for label list items.'
+} as const;
+
+export const LabelReviewStatusUpdateSchema = {
+    properties: {
+        review_status: {
+            $ref: '#/components/schemas/ReviewStatus'
+        }
+    },
+    type: 'object',
+    required: [
+        'review_status'
+    ],
+    title: 'LabelReviewStatusUpdate'
+} as const;
+
+export const LabelUpdateSchema = {
+    properties: {
+        product_id: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Product Id'
+        }
+    },
+    type: 'object',
+    title: 'LabelUpdate'
 } as const;
 
 export const LimitOffsetPage_LabelListItem_Schema = {
@@ -441,6 +1888,122 @@ export const NewPasswordSchema = {
         'new_password'
     ],
     title: 'NewPassword'
+} as const;
+
+export const Nutrient_InputSchema = {
+    properties: {
+        name_en: {
+            type: 'string',
+            title: 'Name En',
+            description: 'Nutrient name in English as it appears on the label',
+            examples: [
+                'Total Nitrogen (N)',
+                'Available Phosphate (P₂O₅)'
+            ]
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr',
+            description: 'Nutrient name in French as it appears on the label',
+            examples: [
+                'Azote Total (N)',
+                'Phosphate Disponible (P₂O₅)'
+            ]
+        },
+        value: {
+            anyOf: [
+                {
+                    type: 'number',
+                    minimum: 0
+                },
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                }
+            ],
+            title: 'Value',
+            description: 'Nutrient percentage value'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit',
+            description: 'Unit of measurement',
+            examples: [
+                '%',
+                'ppm',
+                'mg/kg',
+                'g/kg'
+            ]
+        }
+    },
+    type: 'object',
+    required: [
+        'name_en',
+        'value',
+        'unit'
+    ],
+    title: 'Nutrient'
+} as const;
+
+export const Nutrient_OutputSchema = {
+    properties: {
+        name_en: {
+            type: 'string',
+            title: 'Name En',
+            description: 'Nutrient name in English as it appears on the label',
+            examples: [
+                'Total Nitrogen (N)',
+                'Available Phosphate (P₂O₅)'
+            ]
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr',
+            description: 'Nutrient name in French as it appears on the label',
+            examples: [
+                'Azote Total (N)',
+                'Phosphate Disponible (P₂O₅)'
+            ]
+        },
+        value: {
+            type: 'string',
+            pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$',
+            title: 'Value',
+            description: 'Nutrient percentage value'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit',
+            description: 'Unit of measurement',
+            examples: [
+                '%',
+                'ppm',
+                'mg/kg',
+                'g/kg'
+            ]
+        }
+    },
+    type: 'object',
+    required: [
+        'name_en',
+        'value',
+        'unit'
+    ],
+    title: 'Nutrient'
 } as const;
 
 export const PresignedDownloadUrlResponseSchema = {
@@ -673,6 +2236,16 @@ export const ReadinessSchema = {
         'database'
     ],
     title: 'Readiness'
+} as const;
+
+export const ReviewStatusSchema = {
+    type: 'string',
+    enum: [
+        'not_started',
+        'in_progress',
+        'completed'
+    ],
+    title: 'ReviewStatus'
 } as const;
 
 export const TokenSchema = {
@@ -1023,16 +2596,6 @@ export const ValidationErrorSchema = {
         'type'
     ],
     title: 'ValidationError'
-} as const;
-
-export const VerificationStatusSchema = {
-    type: 'string',
-    enum: [
-        'not_started',
-        'in_progress',
-        'completed'
-    ],
-    title: 'VerificationStatus'
 } as const;
 
 export const UserCreateWritableSchema = {

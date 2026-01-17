@@ -1,8 +1,8 @@
 """Email schemas."""
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class EmailData(SQLModel):
+class EmailData(BaseModel):
     html_content: str
     subject: str

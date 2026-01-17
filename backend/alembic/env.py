@@ -8,7 +8,7 @@ import app.db.models.product  # noqa: F401
 import app.db.models.label  # noqa: F401
 import app.db.models.label_image  # noqa: F401
 import app.db.models.label_data  # noqa: F401
-import app.db.models.label_data_meta  # noqa: F401
+import app.db.models.label_data_field_meta  # noqa: F401
 import app.db.models.fertilizer_label_data  # noqa: F401
 import app.db.models.fertilizer_label_data_meta  # noqa: F401
 from alembic import context

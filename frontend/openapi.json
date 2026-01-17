@@ -533,32 +533,18 @@
             "description": "Product type"
           },
           {
-            "name": "verification_status",
+            "name": "review_status",
             "in": "query",
             "required": false,
             "schema": {
               "anyOf": [
-                { "$ref": "#/components/schemas/VerificationStatus" },
+                { "$ref": "#/components/schemas/ReviewStatus" },
                 { "type": "null" }
               ],
-              "description": "Filter by verification status",
-              "title": "Verification Status"
+              "description": "Filter by review status",
+              "title": "Review Status"
             },
-            "description": "Filter by verification status"
-          },
-          {
-            "name": "extraction_status",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                { "$ref": "#/components/schemas/ExtractionStatus" },
-                { "type": "null" }
-              ],
-              "description": "Filter by extraction status",
-              "title": "Extraction Status"
-            },
-            "description": "Filter by extraction status"
+            "description": "Filter by review status"
           },
           {
             "name": "unlinked",
@@ -566,10 +552,10 @@
             "required": false,
             "schema": {
               "anyOf": [{ "type": "boolean" }, { "type": "null" }],
-              "description": "Filter unlinked labels only (product_id is null)",
+              "description": "Filter labels not linked to a product (product_id is null)",
               "title": "Unlinked"
             },
-            "description": "Filter unlinked labels only (product_id is null)"
+            "description": "Filter labels not linked to a product (product_id is null)"
           },
           {
             "name": "order_by",
@@ -683,6 +669,51 @@
           }
         }
       },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label",
+        "description": "Update Label (partial update, excludes review_status).",
+        "operationId": "labels_update_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": ["labels"],
         "summary": "Delete Label",
@@ -703,6 +734,55 @@
         ],
         "responses": {
           "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/review-status": {
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Review Status",
+        "description": "Update Label review_status (allowed even when completed).",
+        "operationId": "labels_update_label_review_status",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelReviewStatusUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelDetail" }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1053,6 +1133,554 @@
         }
       }
     },
+    "/api/v1/labels/{label_id}/data": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label Data",
+        "description": "Create LabelData for label.",
+        "operationId": "labels_create_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelDataCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Data",
+        "description": "Get LabelData for label.",
+        "operationId": "labels_read_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Data",
+        "description": "Update LabelData (partial update).",
+        "operationId": "labels_update_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelDataUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/data/meta": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Data Meta",
+        "description": "Get LabelDataFieldMeta records for label.",
+        "operationId": "labels_read_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "field_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Filter by field name",
+              "title": "Field Name"
+            },
+            "description": "Filter by field name"
+          },
+          {
+            "name": "needs_review",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter by needs_review flag",
+              "title": "Needs Review"
+            },
+            "description": "Filter by needs_review flag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDataFieldMetaResponse"
+                  },
+                  "title": "Response Labels Read Label Data Meta"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Data Meta",
+        "description": "Update LabelDataFieldMeta (upsert).",
+        "operationId": "labels_update_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelDataFieldMetaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelDataFieldMetaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-data": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Fertilizer Label Data",
+        "description": "Create FertilizerLabelData for label.",
+        "operationId": "labels_create_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Fertilizer Label Data",
+        "description": "Get FertilizerLabelData for label.",
+        "operationId": "labels_read_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Fertilizer Label Data",
+        "description": "Update FertilizerLabelData (partial update).",
+        "operationId": "labels_update_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-data/meta": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Fertilizer Label Data Meta",
+        "description": "Get FertilizerLabelDataMeta records for label.",
+        "operationId": "labels_read_fertilizer_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "field_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Filter by field name",
+              "title": "Field Name"
+            },
+            "description": "Filter by field name"
+          },
+          {
+            "name": "needs_review",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter by needs_review flag",
+              "title": "Needs Review"
+            },
+            "description": "Filter by needs_review flag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FertilizerLabelDataMetaResponse"
+                  },
+                  "title": "Response Labels Read Fertilizer Label Data Meta"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Fertilizer Label Data Meta",
+        "description": "Update FertilizerLabelDataMeta (upsert).",
+        "operationId": "labels_update_fertilizer_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataMetaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FertilizerLabelDataMetaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-extract": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Extract Fertilizer Fields",
+        "description": "Extract specified fields (or all fields if none specified) for fertilizer labels.",
+        "operationId": "labels_extract_fertilizer_fields",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ExtractFieldsRequest" },
+                  { "type": "null" }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractFertilizerFieldsOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products": {
       "get": {
         "tags": ["products"],
@@ -1190,10 +1818,517 @@
         "required": ["username", "password"],
         "title": "Body_login_login_access_token"
       },
-      "ExtractionStatus": {
+      "Contact": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Type of contact",
+            "examples": ["manufacturer", "distributor", "importer"]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Company or organization name"
+          },
+          "address": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Address",
+            "description": "Full mailing address"
+          },
+          "phone": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Phone",
+            "description": "Phone number in any format"
+          },
+          "email": {
+            "anyOf": [
+              { "type": "string", "format": "email" },
+              { "type": "null" }
+            ],
+            "title": "Email",
+            "description": "Email address"
+          },
+          "website": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Website",
+            "description": "Website URL"
+          }
+        },
+        "type": "object",
+        "required": ["type", "name"],
+        "title": "Contact"
+      },
+      "ExtractFertilizerFieldsOutput": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En",
+            "description": "Brand name in English",
+            "examples": ["GreenGrow"]
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr",
+            "description": "Brand name in French",
+            "examples": ["CroissanceVerte"]
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En",
+            "description": "Product name in English",
+            "examples": ["Premium All-Purpose Fertilizer"]
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr",
+            "description": "Product name in French",
+            "examples": ["Engrais Polyvalent Premium"]
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts",
+            "description": "List of contact information (manufacturer, distributor, etc.)"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number",
+            "description": "Product registration number",
+            "examples": ["REG-2024-12345"]
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number",
+            "description": "Lot or batch number",
+            "examples": ["LOT-2024-001"]
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight",
+            "description": "Net weight with unit",
+            "examples": ["10 kg"]
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume",
+            "description": "Volume with unit",
+            "examples": ["1 L"]
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N",
+            "description": "Nitrogen percentage (NPK analysis)",
+            "examples": ["10.0"]
+          },
+          "p": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P",
+            "description": "Phosphorus percentage (NPK analysis)",
+            "examples": ["5.0"]
+          },
+          "k": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K",
+            "description": "Potassium percentage (NPK analysis)",
+            "examples": ["5.0"]
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients",
+            "description": "List of ingredients with bilingual names, values and units"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Output" },
+              { "type": "null" }
+            ],
+            "description": "Guaranteed analysis section with bilingual title and nutrients"
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En",
+            "description": "Caution statements in English",
+            "examples": ["Keep out of reach of children"]
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr",
+            "description": "Caution statements in French",
+            "examples": ["Tenir hors de la port\u00e9e des enfants"]
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En",
+            "description": "Usage instructions in English",
+            "examples": ["Apply 2-3 cups per 100 square feet"]
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr",
+            "description": "Usage instructions in French",
+            "examples": ["Appliquer 2-3 tasses par 100 pieds carr\u00e9s"]
+          }
+        },
+        "type": "object",
+        "title": "ExtractFertilizerFieldsOutput"
+      },
+      "ExtractFieldsRequest": {
+        "properties": {
+          "field_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "anyOf": [
+                    { "$ref": "#/components/schemas/LabelDataFieldName" },
+                    {
+                      "$ref": "#/components/schemas/FertilizerLabelDataFieldName"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Field Names",
+            "description": "List of field names to extract. If None or empty, extract all fields."
+          }
+        },
+        "type": "object",
+        "title": "ExtractFieldsRequest"
+      },
+      "FertilizerLabelData": {
+        "properties": {
+          "n": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Output" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelData"
+      },
+      "FertilizerLabelDataCreate": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Input" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelDataCreate"
+      },
+      "FertilizerLabelDataFieldName": {
         "type": "string",
-        "enum": ["pending", "in_progress", "completed", "failed"],
-        "title": "ExtractionStatus"
+        "enum": [
+          "n",
+          "p",
+          "k",
+          "ingredients",
+          "guaranteed_analysis",
+          "caution_en",
+          "caution_fr",
+          "instructions_en",
+          "instructions_fr"
+        ],
+        "title": "FertilizerLabelDataFieldName",
+        "description": "Valid field names for FertilizerLabelDataMeta."
+      },
+      "FertilizerLabelDataMetaResponse": {
+        "properties": {
+          "field_name": { "type": "string", "title": "Field Name" },
+          "needs_review": { "type": "boolean", "title": "Needs Review" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": { "type": "boolean", "title": "Ai Generated" }
+        },
+        "type": "object",
+        "required": ["field_name", "needs_review", "note", "ai_generated"],
+        "title": "FertilizerLabelDataMetaResponse"
+      },
+      "FertilizerLabelDataMetaUpdate": {
+        "properties": {
+          "field_name": {
+            "$ref": "#/components/schemas/FertilizerLabelDataFieldName"
+          },
+          "needs_review": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Needs Review"
+          },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Ai Generated"
+          }
+        },
+        "type": "object",
+        "required": ["field_name"],
+        "title": "FertilizerLabelDataMetaUpdate"
+      },
+      "FertilizerLabelDataUpdate": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Input" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelDataUpdate"
+      },
+      "GuaranteedAnalysis-Input": {
+        "properties": {
+          "title_en": {
+            "type": "string",
+            "title": "Title En",
+            "description": "Section title in English from label",
+            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr",
+            "description": "Section title in French from label",
+            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          },
+          "is_minimum": {
+            "type": "boolean",
+            "title": "Is Minimum",
+            "description": "True if title contains 'Minimum', false otherwise"
+          },
+          "nutrients": {
+            "items": { "$ref": "#/components/schemas/Nutrient-Input" },
+            "type": "array",
+            "title": "Nutrients",
+            "description": "List of nutrients with bilingual names, values and units"
+          }
+        },
+        "type": "object",
+        "required": ["title_en", "is_minimum", "nutrients"],
+        "title": "GuaranteedAnalysis"
+      },
+      "GuaranteedAnalysis-Output": {
+        "properties": {
+          "title_en": {
+            "type": "string",
+            "title": "Title En",
+            "description": "Section title in English from label",
+            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr",
+            "description": "Section title in French from label",
+            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          },
+          "is_minimum": {
+            "type": "boolean",
+            "title": "Is Minimum",
+            "description": "True if title contains 'Minimum', false otherwise"
+          },
+          "nutrients": {
+            "items": { "$ref": "#/components/schemas/Nutrient-Output" },
+            "type": "array",
+            "title": "Nutrients",
+            "description": "List of nutrients with bilingual names, values and units"
+          }
+        },
+        "type": "object",
+        "required": ["title_en", "is_minimum", "nutrients"],
+        "title": "GuaranteedAnalysis"
       },
       "HTTPValidationError": {
         "properties": {
@@ -1211,6 +2346,34 @@
         "type": "object",
         "required": ["status"],
         "title": "Health"
+      },
+      "Ingredient": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Ingredient name in English as it appears on the label"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Ingredient name in French as it appears on the label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Ingredient percentage or amount."
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg", "mm"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Ingredient"
       },
       "LabelCreate": {
         "properties": {
@@ -1236,6 +2399,222 @@
         "title": "LabelCreated",
         "description": "Response schema for label creation."
       },
+      "LabelData": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelData"
+      },
+      "LabelDataCreate": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataCreate"
+      },
+      "LabelDataFieldMetaResponse": {
+        "properties": {
+          "field_name": { "type": "string", "title": "Field Name" },
+          "needs_review": { "type": "boolean", "title": "Needs Review" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": { "type": "boolean", "title": "Ai Generated" }
+        },
+        "type": "object",
+        "required": ["field_name", "needs_review", "note", "ai_generated"],
+        "title": "LabelDataFieldMetaResponse"
+      },
+      "LabelDataFieldMetaUpdate": {
+        "properties": {
+          "field_name": { "$ref": "#/components/schemas/LabelDataFieldName" },
+          "needs_review": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Needs Review"
+          },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Ai Generated"
+          }
+        },
+        "type": "object",
+        "required": ["field_name"],
+        "title": "LabelDataFieldMetaUpdate"
+      },
+      "LabelDataFieldName": {
+        "type": "string",
+        "enum": [
+          "brand_name_en",
+          "brand_name_fr",
+          "product_name_en",
+          "product_name_fr",
+          "contacts",
+          "registration_number",
+          "lot_number",
+          "net_weight",
+          "volume"
+        ],
+        "title": "LabelDataFieldName",
+        "description": "Valid field names for LabelDataFieldMeta."
+      },
+      "LabelDataLite": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataLite"
+      },
+      "LabelDataUpdate": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataUpdate"
+      },
       "LabelDetail": {
         "properties": {
           "id": { "type": "string", "format": "uuid", "title": "Id" },
@@ -1251,16 +2630,7 @@
             "format": "uuid",
             "title": "Created By Id"
           },
-          "extraction_status": {
-            "$ref": "#/components/schemas/ExtractionStatus"
-          },
-          "verification_status": {
-            "$ref": "#/components/schemas/VerificationStatus"
-          },
-          "extraction_error_message": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Extraction Error Message"
-          },
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -1283,8 +2653,7 @@
         "required": [
           "id",
           "created_by_id",
-          "extraction_status",
-          "verification_status",
+          "review_status",
           "created_at",
           "updated_at",
           "product_type",
@@ -1335,16 +2704,7 @@
       "LabelListItem": {
         "properties": {
           "id": { "type": "string", "format": "uuid", "title": "Id" },
-          "extraction_status": {
-            "$ref": "#/components/schemas/ExtractionStatus"
-          },
-          "verification_status": {
-            "$ref": "#/components/schemas/VerificationStatus"
-          },
-          "extraction_error_message": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Extraction Error Message"
-          },
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -1355,23 +2715,38 @@
             "format": "date-time",
             "title": "Updated At"
           },
-          "product": {
+          "label_data": {
             "anyOf": [
-              { "$ref": "#/components/schemas/ProductPublic" },
+              { "$ref": "#/components/schemas/LabelDataLite" },
               { "type": "null" }
             ]
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "extraction_status",
-          "verification_status",
-          "created_at",
-          "updated_at"
-        ],
+        "required": ["id", "review_status", "created_at", "updated_at"],
         "title": "LabelListItem",
         "description": "Schema for label list items."
+      },
+      "LabelReviewStatusUpdate": {
+        "properties": {
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" }
+        },
+        "type": "object",
+        "required": ["review_status"],
+        "title": "LabelReviewStatusUpdate"
+      },
+      "LabelUpdate": {
+        "properties": {
+          "product_id": {
+            "anyOf": [
+              { "type": "string", "format": "uuid" },
+              { "type": "null" }
+            ],
+            "title": "Product Id"
+          }
+        },
+        "type": "object",
+        "title": "LabelUpdate"
       },
       "LimitOffsetPage_LabelListItem_": {
         "properties": {
@@ -1417,6 +2792,85 @@
         "type": "object",
         "required": ["token", "new_password"],
         "title": "NewPassword"
+      },
+      "Nutrient-Input": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Nutrient name in English as it appears on the label",
+            "examples": [
+              "Total Nitrogen (N)",
+              "Available Phosphate (P\u2082O\u2085)"
+            ]
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Nutrient name in French as it appears on the label",
+            "examples": [
+              "Azote Total (N)",
+              "Phosphate Disponible (P\u2082O\u2085)"
+            ]
+          },
+          "value": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Value",
+            "description": "Nutrient percentage value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Nutrient"
+      },
+      "Nutrient-Output": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Nutrient name in English as it appears on the label",
+            "examples": [
+              "Total Nitrogen (N)",
+              "Available Phosphate (P\u2082O\u2085)"
+            ]
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Nutrient name in French as it appears on the label",
+            "examples": [
+              "Azote Total (N)",
+              "Phosphate Disponible (P\u2082O\u2085)"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Value",
+            "description": "Nutrient percentage value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Nutrient"
       },
       "PresignedDownloadUrlResponse": {
         "properties": {
@@ -1543,6 +2997,11 @@
         "type": "object",
         "required": ["status", "database"],
         "title": "Readiness"
+      },
+      "ReviewStatus": {
+        "type": "string",
+        "enum": ["not_started", "in_progress", "completed"],
+        "title": "ReviewStatus"
       },
       "Token": {
         "properties": {
@@ -1781,11 +3240,6 @@
         "type": "object",
         "required": ["loc", "msg", "type"],
         "title": "ValidationError"
-      },
-      "VerificationStatus": {
-        "type": "string",
-        "enum": ["not_started", "in_progress", "completed"],
-        "title": "VerificationStatus"
       }
     },
     "securitySchemes": {

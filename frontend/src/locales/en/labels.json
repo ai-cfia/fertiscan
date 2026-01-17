@@ -1,21 +1,21 @@
 {
   "common": {
     "aria": {
-      "clearSelection": "common.aria.clearSelection"
+      "clearSelection": "Clear selection"
     },
     "button": {
-      "cancel": "common.button.cancel"
+      "cancel": "Cancel"
     }
   },
   "dashboard": {
+    "completed": "dashboard.completed",
     "createNewLabel": "Create New Label",
     "createNewLabelDescription": "Upload and process a new label",
-    "extracting": "Extracting",
-    "failedExtractions": "Failed Extractions",
+    "inProgress": "dashboard.inProgress",
     "manageProducts": "Manage Products",
     "manageProductsDescription": "View and edit products",
+    "notStarted": "dashboard.notStarted",
     "overview": "Overview",
-    "pendingVerification": "Pending Verification",
     "quickActions": "Quick Actions",
     "title": "Dashboard - Label Inspection",
     "totalLabels": "Total Labels",
@@ -29,7 +29,110 @@
     "viewAllLabelsDescription": "Browse and manage all labels"
   },
   "data": {
-    "placeholder": "Data view/edit (placeholder)"
+    "pageTitle": "Label Review - Label Inspection",
+    "title": "Label Review",
+    "contacts": {
+      "addContact": "Add Contact",
+      "address": "Address",
+      "contactNumber": "Contact {{number}}",
+      "email": "Email",
+      "name": "Name",
+      "noContacts": "No contacts added",
+      "phone": "Phone",
+      "type": "Type",
+      "types": {
+        "distributor": "Distributor",
+        "importer": "Importer",
+        "manufacturer": "Manufacturer",
+        "notSpecified": "Not specified"
+      },
+      "website": "Website"
+    },
+    "continueReview": "Continue Review",
+    "extractAllBasic": "Extract All Basic Fields",
+    "extractAllFields": "Extract All Fields",
+    "extractAllGuaranteed": "Extract All Guaranteed Analysis",
+    "extractAllIngredients": "Extract All Ingredients",
+    "extractAllNPK": "Extract All NPK Fields",
+    "extractAllSafety": "Extract All Safety Fields",
+    "extractField": "Extract with AI",
+    "extractionAllSuccess": "All fields extracted successfully",
+    "extractionFailed": "Extraction failed. Please try again.",
+    "extractionNoImages": "No images available for extraction",
+    "extractionNoValue": "No value was extracted for this field",
+    "extractionOnlyFertilizer": "Extraction is only available for fertilizer labels",
+    "extractionSuccess": "Field extracted successfully",
+    "fields": {
+      "brandNameEn": "Brand Name (English)",
+      "brandNameFr": "Brand Name (French)",
+      "cautionEn": "Caution (English)",
+      "cautionFr": "Caution (French)",
+      "contacts": "Contacts",
+      "guaranteedAnalysis": "Guaranteed Analysis",
+      "ingredients": "Ingredient List",
+      "instructionsEn": "Instructions (English)",
+      "instructionsFr": "Instructions (French)",
+      "k": "Potassium (K)",
+      "lotNumber": "Lot Number",
+      "n": "Nitrogen (N)",
+      "netWeight": "Net Weight",
+      "p": "Phosphorus (P)",
+      "productNameEn": "Product Name (English)",
+      "productNameFr": "Product Name (French)",
+      "registrationNumber": "Registration Number",
+      "volume": "Volume"
+    },
+    "flagForReview": "Flag for review",
+    "guaranteedAnalysis": {
+      "addNutrient": "Add Nutrient",
+      "isMinimum": "Is Minimum",
+      "nameEn": "Name (English)",
+      "nameFr": "Name (French)",
+      "noNutrients": "No nutrients added",
+      "titleEn": "Title (English)",
+      "titleFr": "Title (French)",
+      "unit": "Unit",
+      "value": "Value"
+    },
+    "helperText": {
+      "brandNameEn": "Enter the brand name as it appears on the label",
+      "brandNameFr": "Enter the brand name as it appears on the label",
+      "cautionEn": "Enter caution statements as they appear on the label",
+      "cautionFr": "Enter caution statements as they appear on the label",
+      "contacts": "Enter contact information for manufacturer, distributor, or importer",
+      "guaranteedAnalysis": "Enter guaranteed analysis with title, nutrients, values and units",
+      "ingredients": "Enter ingredients with bilingual names, values and units",
+      "instructionsEn": "Enter usage instructions as they appear on the label",
+      "instructionsFr": "Enter usage instructions as they appear on the label",
+      "k": "Enter potassium percentage",
+      "lotNumber": "Enter the lot or batch number",
+      "n": "Enter nitrogen percentage",
+      "netWeight": "Enter net weight with unit (e.g., 5 kg, 10 lbs)",
+      "p": "Enter phosphorus percentage",
+      "productNameEn": "Enter the product name as it appears on the label",
+      "productNameFr": "Enter the product name as it appears on the label",
+      "registrationNumber": "Enter the product registration number",
+      "volume": "Enter volume with unit (e.g., 1 L, 500 ml)"
+    },
+    "ingredients": {
+      "addIngredient": "Add Ingredient",
+      "nameEn": "Name (English)",
+      "nameFr": "Name (French)",
+      "noIngredients": "No ingredients added",
+      "unit": "Unit",
+      "value": "Value"
+    },
+    "markComplete": "Mark Complete",
+    "removeReviewFlag": "Remove review flag",
+    "save": "Save",
+    "saved": "Changes saved successfully",
+    "sections": {
+      "basic": "Basic Information",
+      "npk": "NPK Analysis",
+      "ingredients": "Ingredients",
+      "guaranteed": "Guaranteed Analysis",
+      "safety": "Safety Information"
+    }
   },
   "empty": {
     "noLabels": "No labels found",
@@ -39,7 +142,7 @@
   },
   "errors": {
     "fileType": {
-      "invalid": "errors.fileType.invalid"
+      "invalid": "{{fileName}}: Not added - must be PNG, JPEG or WebP"
     }
   },
   "files": {
@@ -49,61 +152,68 @@
   },
   "filter": {
     "completed": "Completed",
-    "extractionStatus": "Extraction Status",
-    "failed": "Failed",
     "inProgress": "In Progress",
     "notStarted": "Not Started",
-    "pending": "Pending",
+    "reviewStatus": "Review Status",
     "title": "Filter list",
-    "unlinked": "Unlinked",
-    "verificationStatus": "Verification Status"
+    "unlinked": "Unlinked"
   },
   "image": {
+    "delete": "Delete",
+    "deleteDialog": {
+      "description": "Are you sure you want to delete \"{{filename}}\"? This action cannot be undone and will permanently delete the image file.",
+      "title": "Delete image"
+    },
+    "deleteError": "Failed to delete image. Please try again.",
+    "deleteSuccess": "Image deleted successfully",
     "notAvailable": "Image not available",
-    "sequence": "Sequence: {{order}}"
+    "sequence": "Sequence: {{order}}",
+    "slideAlt": "Slide {{number}}"
   },
   "labels": {
     "bulkActions": {
-      "delete": "labels.bulkActions.delete",
+      "delete": "Delete",
       "deleteDialog": {
-        "description_one": "labels.bulkActions.deleteDialog.description",
-        "description_other": "labels.bulkActions.deleteDialog.description",
-        "title_one": "labels.bulkActions.deleteDialog.title",
-        "title_other": "labels.bulkActions.deleteDialog.title"
+        "description_one": "Are you sure you want to delete {{count}} selected label? This action cannot be undone and will permanently delete the label and all associated files.",
+        "description_other": "Are you sure you want to delete {{count}} selected labels? This action cannot be undone and will permanently delete the labels and all associated files.",
+        "title_one": "Delete {{count}} label?",
+        "title_other": "Delete {{count}} labels?"
       },
-      "deleteNotImplemented": "labels.bulkActions.deleteNotImplemented",
-      "export": "labels.bulkActions.export",
-      "exportNotImplemented": "labels.bulkActions.exportNotImplemented",
-      "selected_one": "labels.bulkActions.selected",
-      "selected_other": "labels.bulkActions.selected"
+      "deleteNotImplemented": "Bulk delete functionality not yet implemented",
+      "export": "Export",
+      "exportNotImplemented": "Export functionality not yet implemented",
+      "selected_one": "{{count}} selected",
+      "selected_other": "{{count}} selected"
     },
     "create": {
-      "description": "labels.create.description",
-      "maxFilesWarning_one": "labels.create.maxFilesWarning",
-      "maxFilesWarning_other": "labels.create.maxFilesWarning",
-      "of": "labels.create.of",
-      "pageTitle": "labels.create.pageTitle",
-      "remove": "labels.create.remove",
-      "selectedFiles": "labels.create.selectedFiles",
-      "selectFiles": "labels.create.selectFiles",
-      "title": "labels.create.title"
+      "description": "Select at least one label image to create a new label",
+      "maxFilesWarning_one": "Maximum {{max}} files allowed. Please remove {{count}} file before uploading.",
+      "maxFilesWarning_other": "Maximum {{max}} files allowed. Please remove {{count}} files before uploading.",
+      "of": "of",
+      "pageTitle": "Create New Label - Label Inspection",
+      "remove": "Remove",
+      "selectedFiles": "Selected files",
+      "selectFiles": "Select files or drag and drop",
+      "title": "Create New Label"
     },
     "rowActions": {
-      "actionsForLabel": "labels.rowActions.actionsForLabel",
-      "delete": "labels.rowActions.delete",
+      "actionsForLabel": "Actions for label {{id}}",
+      "continueReview": "Continue review",
+      "delete": "Delete",
       "deleteDialog": {
-        "description": "labels.rowActions.deleteDialog.description",
-        "title": "labels.rowActions.deleteDialog.title"
+        "description": "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files.",
+        "title": "Delete label"
       },
-      "deleteNotImplemented": "labels.rowActions.deleteNotImplemented",
-      "viewDetails": "labels.rowActions.viewDetails"
+      "deleteNotImplemented": "Delete functionality not yet implemented",
+      "startReview": "Start review",
+      "viewDetails": "View Details"
     },
     "upload": {
-      "preparing": "labels.upload.preparing",
-      "uploaded_one": "labels.upload.uploaded",
-      "uploaded_other": "labels.upload.uploaded",
-      "uploading_one": "labels.upload.uploading",
-      "uploading_other": "labels.upload.uploading"
+      "preparing": "Preparing uploads...",
+      "uploaded_one": "{{completed}} of {{total}} file uploaded",
+      "uploaded_other": "{{completed}} of {{total}} files uploaded",
+      "uploading_one": "Uploading {{current}} of {{total}} file...",
+      "uploading_other": "Uploading {{current}} of {{total}} files..."
     }
   },
   "pageTitle": "Labels - Label Inspection",
@@ -111,14 +221,14 @@
     "actions": "Actions",
     "copyId": "Copy label ID {{id}}",
     "createdAt": "Created At",
-    "extractionStatus": "Extraction Status",
     "id": "ID",
     "idCopied": "Label ID copied to clipboard",
-    "productName": "Product Name",
+    "brand": "Brand",
+    "productName": "Product",
+    "reviewStatus": "Review Status",
     "selectAll": "select all labels",
     "sortedAscending": "sorted ascending",
-    "sortedDescending": "sorted descending",
-    "verificationStatus": "Verification Status"
+    "sortedDescending": "sorted descending"
   },
   "title": "Labels",
   "upload": {

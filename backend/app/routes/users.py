@@ -38,7 +38,8 @@ def read_users(
 ) -> UsersPublic:
     """List all users (superuser only)."""
     user_list, count = users.get_users(session, skip=skip, limit=limit)
-    return UsersPublic(data=user_list, count=count)
+    user_public_list = [UserPublic.model_validate(u.model_dump()) for u in user_list]
+    return UsersPublic(data=user_public_list, count=count)
 
 
 @router.post("", response_model=UserPublic, status_code=201)

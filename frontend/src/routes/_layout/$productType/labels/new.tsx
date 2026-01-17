@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import DeleteIcon from "@mui/icons-material/Delete"
 import {
   Alert,
@@ -10,9 +11,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useConfig } from "@/stores/useConfig"
 import { useLabelNew } from "@/stores/useLabelNew"
 
@@ -24,7 +26,10 @@ export const Route = createFileRoute("/_layout/$productType/labels/new")({
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"] as const
 
 function NewLabel() {
-  const { t } = useTranslation(["labels", "errors"])
+  const { t } = useTranslation(["labels", "errors", "common"])
+  const navigate = useNavigate()
+  const params = useParams({ strict: false })
+  const productType = (params.productType as string) || "fertilizer"
   // ============================== Store ==============================
   const {
     uploadedFiles,
@@ -33,8 +38,10 @@ function NewLabel() {
     clearAll,
     isProcessing,
     addFileTypeValidationErrors,
+    process,
   } = useLabelNew()
   const { maxImagesPerLabel } = useConfig()
+  const { setActions, clearActions } = useAppBarActionsStore()
   // ============================== State ==============================
   const [isDragging, setIsDragging] = useState(false)
   // ============================== Effects ==============================
@@ -45,6 +52,57 @@ function NewLabel() {
       clearAll()
     }
   }, [clearAll, isProcessing, t])
+  useEffect(() => {
+    const actions = (
+      <>
+        {uploadedFiles.length > 0 && (
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={clearAll}
+            disabled={isProcessing}
+            sx={{ mr: 2 }}
+          >
+            {t("button.clearAll", { ns: "common" })}
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          color="inherit"
+          onClick={() =>
+            process(productType, (to: string) => {
+              navigate({ to })
+            })
+          }
+          disabled={
+            isProcessing ||
+            uploadedFiles.length === 0 ||
+            uploadedFiles.length > 5
+          }
+          startIcon={<CloudUploadIcon />}
+          sx={{ mr: 2 }}
+        >
+          {isProcessing
+            ? t("button.uploading", { ns: "common" })
+            : t("button.upload", { ns: "common" })}
+        </Button>
+      </>
+    )
+    setActions(actions)
+    return () => {
+      clearActions()
+    }
+  }, [
+    uploadedFiles.length,
+    isProcessing,
+    productType,
+    process,
+    navigate,
+    clearAll,
+    t,
+    setActions,
+    clearActions,
+  ])
   // ============================== Handlers ==============================
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return

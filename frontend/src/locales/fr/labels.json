@@ -8,14 +8,14 @@
     }
   },
   "dashboard": {
+    "completed": "Terminé",
     "createNewLabel": "Créer une nouvelle étiquette",
     "createNewLabelDescription": "Téléverser et traiter une nouvelle étiquette",
-    "extracting": "Extraction en cours",
-    "failedExtractions": "Extractions échouées",
+    "inProgress": "En cours",
     "manageProducts": "Gérer les produits",
     "manageProductsDescription": "Voir et modifier les produits",
+    "notStarted": "Non commencé",
     "overview": "Aperçu",
-    "pendingVerification": "Vérification en attente",
     "quickActions": "Actions rapides",
     "title": "Tableau de bord - Inspection d'étiquettes",
     "totalLabels": "Total des étiquettes",
@@ -29,7 +29,110 @@
     "viewAllLabelsDescription": "Parcourir et gérer toutes les étiquettes"
   },
   "data": {
-    "placeholder": "Affichage/édition des données (placeholder)"
+    "pageTitle": "Révision d'étiquette - Inspection d'étiquettes",
+    "title": "Révision d'étiquette",
+    "contacts": {
+      "addContact": "Ajouter un contact",
+      "address": "Adresse",
+      "contactNumber": "Contact {{number}}",
+      "email": "Courriel",
+      "name": "Nom",
+      "noContacts": "Aucun contact ajouté",
+      "phone": "Téléphone",
+      "type": "Type",
+      "types": {
+        "distributor": "Distributeur",
+        "importer": "Importateur",
+        "manufacturer": "Fabricant",
+        "notSpecified": "Non spécifié"
+      },
+      "website": "Site Web"
+    },
+    "continueReview": "Continuer la révision",
+    "extractAllBasic": "Extraire tous les champs de base",
+    "extractAllFields": "Extraire tous les champs",
+    "extractAllGuaranteed": "Extraire toute l'analyse garantie",
+    "extractAllIngredients": "Extraire tous les ingrédients",
+    "extractAllNPK": "Extraire tous les champs NPK",
+    "extractAllSafety": "Extraire tous les champs de sécurité",
+    "extractField": "Extraire avec l'IA",
+    "extractionAllSuccess": "Tous les champs ont été extraits avec succès",
+    "extractionFailed": "L'extraction a échoué. Veuillez réessayer.",
+    "extractionNoImages": "Aucune image disponible pour l'extraction",
+    "extractionNoValue": "Aucune valeur n'a été extraite pour ce champ",
+    "extractionOnlyFertilizer": "L'extraction n'est disponible que pour les étiquettes d'engrais",
+    "extractionSuccess": "Champ extrait avec succès",
+    "fields": {
+      "brandNameEn": "Nom de marque (anglais)",
+      "brandNameFr": "Nom de marque (français)",
+      "cautionEn": "Mise en garde (anglais)",
+      "cautionFr": "Mise en garde (français)",
+      "contacts": "Contacts",
+      "guaranteedAnalysis": "Analyse garantie",
+      "ingredients": "Liste des ingrédients",
+      "instructionsEn": "Instructions (anglais)",
+      "instructionsFr": "Instructions (français)",
+      "k": "Potassium (K)",
+      "lotNumber": "Numéro de lot",
+      "n": "Azote (N)",
+      "netWeight": "Poids net",
+      "p": "Phosphore (P)",
+      "productNameEn": "Nom du produit (anglais)",
+      "productNameFr": "Nom du produit (français)",
+      "registrationNumber": "Numéro d'enregistrement",
+      "volume": "Volume"
+    },
+    "flagForReview": "Marquer pour révision",
+    "guaranteedAnalysis": {
+      "addNutrient": "Ajouter un nutriment",
+      "isMinimum": "Est minimum",
+      "nameEn": "Nom (Anglais)",
+      "nameFr": "Nom (Français)",
+      "noNutrients": "Aucun nutriment ajouté",
+      "titleEn": "Titre (Anglais)",
+      "titleFr": "Titre (Français)",
+      "unit": "Unité",
+      "value": "Valeur"
+    },
+    "helperText": {
+      "brandNameEn": "Entrez le nom de marque tel qu'il apparaît sur l'étiquette",
+      "brandNameFr": "Entrez le nom de marque tel qu'il apparaît sur l'étiquette",
+      "cautionEn": "Entrez les mises en garde telles qu'elles apparaissent sur l'étiquette",
+      "cautionFr": "Entrez les mises en garde telles qu'elles apparaissent sur l'étiquette",
+      "contacts": "Entrez les informations de contact pour le fabricant, le distributeur ou l'importateur",
+      "guaranteedAnalysis": "Entrez l'analyse garantie avec le titre, les nutriments, les valeurs et les unités",
+      "ingredients": "Ingrédients",
+      "instructionsEn": "Entrez les instructions d'utilisation telles qu'elles apparaissent sur l'étiquette",
+      "instructionsFr": "Entrez les instructions d'utilisation telles qu'elles apparaissent sur l'étiquette",
+      "k": "Entrez le pourcentage de potassium",
+      "lotNumber": "Entrez le numéro de lot ou de lot",
+      "n": "Entrez le pourcentage d'azote",
+      "netWeight": "Entrez le poids net avec l'unité (ex. 5 kg, 10 lbs)",
+      "p": "Entrez le pourcentage de phosphore",
+      "productNameEn": "Entrez le nom du produit tel qu'il apparaît sur l'étiquette",
+      "productNameFr": "Entrez le nom du produit tel qu'il apparaît sur l'étiquette",
+      "registrationNumber": "Entrez le numéro d'enregistrement du produit",
+      "volume": "Entrez le volume avec l'unité (ex. 1 L, 500 ml)"
+    },
+    "ingredients": {
+      "addIngredient": "Ajouter un ingrédient",
+      "nameEn": "Nom (Anglais)",
+      "nameFr": "Nom (Français)",
+      "noIngredients": "Aucun ingrédient ajouté",
+      "unit": "Unité",
+      "value": "Valeur"
+    },
+    "markComplete": "Marquer comme terminé",
+    "removeReviewFlag": "Retirer le drapeau de révision",
+    "save": "Enregistrer",
+    "saved": "Modifications enregistrées avec succès",
+    "sections": {
+      "basic": "Informations de base",
+      "npk": "Analyse NPK",
+      "ingredients": "Ingrédients",
+      "guaranteed": "Analyse garantie",
+      "safety": "Informations de sécurité"
+    }
   },
   "empty": {
     "noLabels": "Aucune étiquette trouvée",
@@ -45,47 +148,52 @@
   "files": {
     "pageTitle": "Fichiers d'étiquette - Inspection d'étiquettes",
     "title_one": "Image d'étiquette : {{count}} (max {{max}})",
-    "title_other": "Images d'étiquette : {{count}} (max {{max}})",
-    "title_many": "Images d'étiquette : {{count}} (max {{max}})"
+    "title_many": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_other": "Images d'étiquette : {{count}} (max {{max}})"
   },
   "filter": {
     "completed": "Terminé",
-    "extractionStatus": "Statut d'extraction",
-    "failed": "Échoué",
     "inProgress": "En cours",
     "notStarted": "Non commencé",
-    "pending": "En attente",
+    "reviewStatus": "Statut de révision",
     "title": "Filtrer la liste",
-    "unlinked": "Non liées",
-    "verificationStatus": "Statut de vérification"
+    "unlinked": "Non liées"
   },
   "image": {
+    "delete": "Supprimer",
+    "deleteDialog": {
+      "description": "Êtes-vous sûr de vouloir supprimer \"{{filename}}\" ? Cette action ne peut pas être annulée et supprimera définitivement le fichier image.",
+      "title": "Supprimer l'image"
+    },
+    "deleteError": "Échec de la suppression de l'image. Veuillez réessayer.",
+    "deleteSuccess": "Image supprimée avec succès",
     "notAvailable": "Image non disponible",
-    "sequence": "Séquence : {{order}}"
+    "sequence": "Séquence : {{order}}",
+    "slideAlt": "Diapositive {{number}}"
   },
   "labels": {
     "bulkActions": {
       "delete": "Supprimer",
       "deleteDialog": {
         "description_one": "Êtes-vous sûr de vouloir supprimer {{count}} étiquette sélectionnée ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
-        "description_other": "Êtes-vous sûr de vouloir supprimer {{count}} étiquettes sélectionnées ? Cette action ne peut pas être annulée et supprimera définitivement les étiquettes et tous les fichiers associés.",
         "description_many": "Êtes-vous sûr de vouloir supprimer {{count}} étiquettes sélectionnées ? Cette action ne peut pas être annulée et supprimera définitivement les étiquettes et tous les fichiers associés.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer {{count}} étiquettes sélectionnées ? Cette action ne peut pas être annulée et supprimera définitivement les étiquettes et tous les fichiers associés.",
         "title_one": "Supprimer {{count}} étiquette ?",
-        "title_other": "Supprimer {{count}} étiquettes ?",
-        "title_many": "Supprimer {{count}} étiquettes ?"
+        "title_many": "Supprimer {{count}} étiquettes ?",
+        "title_other": "Supprimer {{count}} étiquettes ?"
       },
       "deleteNotImplemented": "Fonctionnalité de suppression groupée pas encore implémentée",
       "export": "Exporter",
       "exportNotImplemented": "Fonctionnalité d'exportation pas encore implémentée",
       "selected_one": "{{count}} sélectionné",
-      "selected_other": "{{count}} sélectionnés",
-      "selected_many": "{{count}} sélectionnés"
+      "selected_many": "{{count}} sélectionnés",
+      "selected_other": "{{count}} sélectionnés"
     },
     "create": {
       "description": "Sélectionnez au moins une image d'étiquette pour créer une nouvelle étiquette",
       "maxFilesWarning_one": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichier avant de téléverser.",
-      "maxFilesWarning_other": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichiers avant de téléverser.",
       "maxFilesWarning_many": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichiers avant de téléverser.",
+      "maxFilesWarning_other": "Maximum {{max}} fichiers autorisés. Veuillez supprimer {{count}} fichiers avant de téléverser.",
       "of": "de",
       "pageTitle": "Créer une nouvelle étiquette - Inspection d'étiquettes",
       "remove": "Supprimer",
@@ -95,22 +203,24 @@
     },
     "rowActions": {
       "actionsForLabel": "Actions pour l'étiquette {{id}}",
+      "continueReview": "Continuer la révision",
       "delete": "Supprimer",
       "deleteDialog": {
         "description": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
         "title": "Supprimer l'étiquette"
       },
       "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
+      "startReview": "Démarrer l'examen",
       "viewDetails": "Voir les détails"
     },
     "upload": {
       "preparing": "Préparation des téléversements...",
       "uploaded_one": "{{completed}} fichier sur {{total}} téléversé",
-      "uploaded_other": "{{completed}} fichiers sur {{total}} téléversés",
       "uploaded_many": "{{completed}} fichiers sur {{total}} téléversés",
+      "uploaded_other": "{{completed}} fichiers sur {{total}} téléversés",
       "uploading_one": "Téléversement de {{current}} fichier sur {{total}}...",
-      "uploading_other": "Téléversement de {{current}} fichiers sur {{total}}...",
-      "uploading_many": "Téléversement de {{current}} fichiers sur {{total}}..."
+      "uploading_many": "Téléversement de {{current}} fichiers sur {{total}}...",
+      "uploading_other": "Téléversement de {{current}} fichiers sur {{total}}..."
     }
   },
   "pageTitle": "Étiquettes - Inspection d'étiquettes",
@@ -118,23 +228,23 @@
     "actions": "Actions",
     "copyId": "Copier l'ID de l'étiquette {{id}}",
     "createdAt": "Créé le",
-    "extractionStatus": "Statut d'extraction",
     "id": "ID",
     "idCopied": "ID de l'étiquette copié dans le presse-papiers",
-    "productName": "Nom du produit",
+    "brand": "Marque",
+    "productName": "Produit",
+    "reviewStatus": "Statut de révision",
     "selectAll": "sélectionner toutes les étiquettes",
     "sortedAscending": "trié par ordre croissant",
-    "sortedDescending": "trié par ordre décroissant",
-    "verificationStatus": "Statut de vérification"
+    "sortedDescending": "trié par ordre décroissant"
   },
   "title": "Étiquettes",
   "upload": {
     "failed_one": "Échec du téléversement de {{failed}} fichier sur {{total}}",
-    "failed_other": "Échec du téléversement de {{failed}} fichiers sur {{total}}",
     "failed_many": "Échec du téléversement de {{failed}} fichiers sur {{total}}",
+    "failed_other": "Échec du téléversement de {{failed}} fichiers sur {{total}}",
     "partial": "Téléversement terminé : {{completed}} réussi, {{failed}} échoué",
     "success_one": "{{completed}} fichier sur {{total}} téléversé avec succès",
-    "success_other": "{{completed}} fichiers sur {{total}} téléversés avec succès",
-    "success_many": "{{completed}} fichiers sur {{total}} téléversés avec succès"
+    "success_many": "{{completed}} fichiers sur {{total}} téléversés avec succès",
+    "success_other": "{{completed}} fichiers sur {{total}} téléversés avec succès"
   }
 }

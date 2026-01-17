@@ -1,6 +1,9 @@
 """Tests for DELETE /labels/{label_id}/images/{image_id} endpoint."""
 
+from uuid import uuid4
+
 import pytest
+from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
@@ -52,8 +55,6 @@ class TestDeleteLabelImage:
         )
         assert response.status_code == 204
         assert db.get(LabelImage, image_id) is None
-        from botocore.exceptions import ClientError
-
         try:
             await s3_client.head_object(
                 Bucket=settings.STORAGE_BUCKET_NAME, Key=image.file_path
@@ -161,8 +162,6 @@ class TestDeleteLabelImage:
         db: Session,
     ) -> None:
         """Test deleting non-existent image."""
-        from uuid import uuid4
-
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
@@ -211,3 +210,34 @@ class TestDeleteLabelImage:
             f"{settings.API_V1_STR}/labels/{label.id}/images/{image.id}"
         )
         assert response.status_code == 401
+
+    @pytest.mark.asyncio
+    async def test_delete_label_image_completed_label(
+        self,
+        async_client: AsyncClient,
+        db: Session,
+        s3_client,
+    ) -> None:
+        """Test deleting label image for completed label returns 400."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product, completed=True)
+        image = LabelImageFactory(
+            label=label,
+            file_path="labels/test-uuid/image.png",
+            sequence_order=1,
+        )
+        await s3_client.put_object(
+            Bucket=settings.STORAGE_BUCKET_NAME,
+            Key=image.file_path,
+            Body=b"test content",
+        )
+        headers = await authentication_token_from_email_async(
+            client=async_client, email=user.email, db=db
+        )
+        response = await async_client.delete(
+            f"{settings.API_V1_STR}/labels/{label.id}/images/{image.id}",
+            headers=headers,
+        )
+        assert response.status_code == 400
+        assert "completed" in response.json()["detail"].lower()

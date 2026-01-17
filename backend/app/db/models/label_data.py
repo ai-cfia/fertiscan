@@ -11,7 +11,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
-    from app.db.models.label_data_meta import LabelDataMeta
+    from app.db.models.label_data_field_meta import LabelDataFieldMeta
 
 
 class LabelData(Base, table=True):
@@ -29,7 +29,7 @@ class LabelData(Base, table=True):
     net_weight: str | None = Field(default=None, max_length=255)
     volume: str | None = Field(default=None, max_length=255)
     label: "Label" = Relationship(back_populates="label_data")
-    meta: list["LabelDataMeta"] = Relationship(
+    meta: list["LabelDataFieldMeta"] = Relationship(
         back_populates="label_data", cascade_delete=True
     )
     created_at: datetime = Field(

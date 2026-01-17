@@ -35,9 +35,395 @@ export type BodyLoginLoginAccessToken = {
 };
 
 /**
- * ExtractionStatus
+ * Contact
  */
-export type ExtractionStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
+export type Contact = {
+    /**
+     * Type
+     *
+     * Type of contact
+     */
+    type: string;
+    /**
+     * Name
+     *
+     * Company or organization name
+     */
+    name: string;
+    /**
+     * Address
+     *
+     * Full mailing address
+     */
+    address?: string | null;
+    /**
+     * Phone
+     *
+     * Phone number in any format
+     */
+    phone?: string | null;
+    /**
+     * Email
+     *
+     * Email address
+     */
+    email?: string | null;
+    /**
+     * Website
+     *
+     * Website URL
+     */
+    website?: string | null;
+};
+
+/**
+ * ExtractFertilizerFieldsOutput
+ */
+export type ExtractFertilizerFieldsOutput = {
+    /**
+     * Brand Name En
+     *
+     * Brand name in English
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     *
+     * Brand name in French
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Product Name En
+     *
+     * Product name in English
+     */
+    product_name_en?: string | null;
+    /**
+     * Product Name Fr
+     *
+     * Product name in French
+     */
+    product_name_fr?: string | null;
+    /**
+     * Contacts
+     *
+     * List of contact information (manufacturer, distributor, etc.)
+     */
+    contacts?: Array<Contact> | null;
+    /**
+     * Registration Number
+     *
+     * Product registration number
+     */
+    registration_number?: string | null;
+    /**
+     * Lot Number
+     *
+     * Lot or batch number
+     */
+    lot_number?: string | null;
+    /**
+     * Net Weight
+     *
+     * Net weight with unit
+     */
+    net_weight?: string | null;
+    /**
+     * Volume
+     *
+     * Volume with unit
+     */
+    volume?: string | null;
+    /**
+     * N
+     *
+     * Nitrogen percentage (NPK analysis)
+     */
+    n?: string | null;
+    /**
+     * P
+     *
+     * Phosphorus percentage (NPK analysis)
+     */
+    p?: string | null;
+    /**
+     * K
+     *
+     * Potassium percentage (NPK analysis)
+     */
+    k?: string | null;
+    /**
+     * Ingredients
+     *
+     * List of ingredients with bilingual names, values and units
+     */
+    ingredients?: Array<Ingredient> | null;
+    /**
+     * Guaranteed analysis section with bilingual title and nutrients
+     */
+    guaranteed_analysis?: GuaranteedAnalysisOutput | null;
+    /**
+     * Caution En
+     *
+     * Caution statements in English
+     */
+    caution_en?: string | null;
+    /**
+     * Caution Fr
+     *
+     * Caution statements in French
+     */
+    caution_fr?: string | null;
+    /**
+     * Instructions En
+     *
+     * Usage instructions in English
+     */
+    instructions_en?: string | null;
+    /**
+     * Instructions Fr
+     *
+     * Usage instructions in French
+     */
+    instructions_fr?: string | null;
+};
+
+/**
+ * ExtractFieldsRequest
+ */
+export type ExtractFieldsRequest = {
+    /**
+     * Field Names
+     *
+     * List of field names to extract. If None or empty, extract all fields.
+     */
+    field_names?: Array<LabelDataFieldName | FertilizerLabelDataFieldName> | null;
+};
+
+/**
+ * FertilizerLabelData
+ */
+export type FertilizerLabelData = {
+    /**
+     * N
+     */
+    n?: string | null;
+    /**
+     * P
+     */
+    p?: string | null;
+    /**
+     * K
+     */
+    k?: string | null;
+    /**
+     * Ingredients
+     */
+    ingredients?: Array<Ingredient> | null;
+    guaranteed_analysis?: GuaranteedAnalysisOutput | null;
+    /**
+     * Caution En
+     */
+    caution_en?: string | null;
+    /**
+     * Caution Fr
+     */
+    caution_fr?: string | null;
+    /**
+     * Instructions En
+     */
+    instructions_en?: string | null;
+    /**
+     * Instructions Fr
+     */
+    instructions_fr?: string | null;
+};
+
+/**
+ * FertilizerLabelDataCreate
+ */
+export type FertilizerLabelDataCreate = {
+    /**
+     * N
+     */
+    n?: number | string | null;
+    /**
+     * P
+     */
+    p?: number | string | null;
+    /**
+     * K
+     */
+    k?: number | string | null;
+    /**
+     * Ingredients
+     */
+    ingredients?: Array<Ingredient> | null;
+    guaranteed_analysis?: GuaranteedAnalysisInput | null;
+    /**
+     * Caution En
+     */
+    caution_en?: string | null;
+    /**
+     * Caution Fr
+     */
+    caution_fr?: string | null;
+    /**
+     * Instructions En
+     */
+    instructions_en?: string | null;
+    /**
+     * Instructions Fr
+     */
+    instructions_fr?: string | null;
+};
+
+/**
+ * FertilizerLabelDataFieldName
+ *
+ * Valid field names for FertilizerLabelDataMeta.
+ */
+export type FertilizerLabelDataFieldName = 'n' | 'p' | 'k' | 'ingredients' | 'guaranteed_analysis' | 'caution_en' | 'caution_fr' | 'instructions_en' | 'instructions_fr';
+
+/**
+ * FertilizerLabelDataMetaResponse
+ */
+export type FertilizerLabelDataMetaResponse = {
+    /**
+     * Field Name
+     */
+    field_name: string;
+    /**
+     * Needs Review
+     */
+    needs_review: boolean;
+    /**
+     * Note
+     */
+    note: string | null;
+    /**
+     * Ai Generated
+     */
+    ai_generated: boolean;
+};
+
+/**
+ * FertilizerLabelDataMetaUpdate
+ */
+export type FertilizerLabelDataMetaUpdate = {
+    field_name: FertilizerLabelDataFieldName;
+    /**
+     * Needs Review
+     */
+    needs_review?: boolean | null;
+    /**
+     * Note
+     */
+    note?: string | null;
+    /**
+     * Ai Generated
+     */
+    ai_generated?: boolean | null;
+};
+
+/**
+ * FertilizerLabelDataUpdate
+ */
+export type FertilizerLabelDataUpdate = {
+    /**
+     * N
+     */
+    n?: number | string | null;
+    /**
+     * P
+     */
+    p?: number | string | null;
+    /**
+     * K
+     */
+    k?: number | string | null;
+    /**
+     * Ingredients
+     */
+    ingredients?: Array<Ingredient> | null;
+    guaranteed_analysis?: GuaranteedAnalysisInput | null;
+    /**
+     * Caution En
+     */
+    caution_en?: string | null;
+    /**
+     * Caution Fr
+     */
+    caution_fr?: string | null;
+    /**
+     * Instructions En
+     */
+    instructions_en?: string | null;
+    /**
+     * Instructions Fr
+     */
+    instructions_fr?: string | null;
+};
+
+/**
+ * GuaranteedAnalysis
+ */
+export type GuaranteedAnalysisInput = {
+    /**
+     * Title En
+     *
+     * Section title in English from label
+     */
+    title_en: string;
+    /**
+     * Title Fr
+     *
+     * Section title in French from label
+     */
+    title_fr?: string | null;
+    /**
+     * Is Minimum
+     *
+     * True if title contains 'Minimum', false otherwise
+     */
+    is_minimum: boolean;
+    /**
+     * Nutrients
+     *
+     * List of nutrients with bilingual names, values and units
+     */
+    nutrients: Array<NutrientInput>;
+};
+
+/**
+ * GuaranteedAnalysis
+ */
+export type GuaranteedAnalysisOutput = {
+    /**
+     * Title En
+     *
+     * Section title in English from label
+     */
+    title_en: string;
+    /**
+     * Title Fr
+     *
+     * Section title in French from label
+     */
+    title_fr?: string | null;
+    /**
+     * Is Minimum
+     *
+     * True if title contains 'Minimum', false otherwise
+     */
+    is_minimum: boolean;
+    /**
+     * Nutrients
+     *
+     * List of nutrients with bilingual names, values and units
+     */
+    nutrients: Array<NutrientOutput>;
+};
 
 /**
  * HTTPValidationError
@@ -57,6 +443,36 @@ export type Health = {
      * Status
      */
     status: string;
+};
+
+/**
+ * Ingredient
+ */
+export type Ingredient = {
+    /**
+     * Name En
+     *
+     * Ingredient name in English as it appears on the label
+     */
+    name_en: string;
+    /**
+     * Name Fr
+     *
+     * Ingredient name in French as it appears on the label
+     */
+    name_fr?: string | null;
+    /**
+     * Value
+     *
+     * Ingredient percentage or amount.
+     */
+    value: string;
+    /**
+     * Unit
+     *
+     * Unit of measurement
+     */
+    unit: string;
 };
 
 /**
@@ -86,6 +502,202 @@ export type LabelCreated = {
 };
 
 /**
+ * LabelData
+ */
+export type LabelData = {
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Product Name En
+     */
+    product_name_en?: string | null;
+    /**
+     * Product Name Fr
+     */
+    product_name_fr?: string | null;
+    /**
+     * Contacts
+     */
+    contacts?: Array<Contact> | null;
+    /**
+     * Registration Number
+     */
+    registration_number?: string | null;
+    /**
+     * Lot Number
+     */
+    lot_number?: string | null;
+    /**
+     * Net Weight
+     */
+    net_weight?: string | null;
+    /**
+     * Volume
+     */
+    volume?: string | null;
+};
+
+/**
+ * LabelDataCreate
+ */
+export type LabelDataCreate = {
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Product Name En
+     */
+    product_name_en?: string | null;
+    /**
+     * Product Name Fr
+     */
+    product_name_fr?: string | null;
+    /**
+     * Contacts
+     */
+    contacts?: Array<Contact> | null;
+    /**
+     * Registration Number
+     */
+    registration_number?: string | null;
+    /**
+     * Lot Number
+     */
+    lot_number?: string | null;
+    /**
+     * Net Weight
+     */
+    net_weight?: string | null;
+    /**
+     * Volume
+     */
+    volume?: string | null;
+};
+
+/**
+ * LabelDataFieldMetaResponse
+ */
+export type LabelDataFieldMetaResponse = {
+    /**
+     * Field Name
+     */
+    field_name: string;
+    /**
+     * Needs Review
+     */
+    needs_review: boolean;
+    /**
+     * Note
+     */
+    note: string | null;
+    /**
+     * Ai Generated
+     */
+    ai_generated: boolean;
+};
+
+/**
+ * LabelDataFieldMetaUpdate
+ */
+export type LabelDataFieldMetaUpdate = {
+    field_name: LabelDataFieldName;
+    /**
+     * Needs Review
+     */
+    needs_review?: boolean | null;
+    /**
+     * Note
+     */
+    note?: string | null;
+    /**
+     * Ai Generated
+     */
+    ai_generated?: boolean | null;
+};
+
+/**
+ * LabelDataFieldName
+ *
+ * Valid field names for LabelDataFieldMeta.
+ */
+export type LabelDataFieldName = 'brand_name_en' | 'brand_name_fr' | 'product_name_en' | 'product_name_fr' | 'contacts' | 'registration_number' | 'lot_number' | 'net_weight' | 'volume';
+
+/**
+ * LabelDataLite
+ */
+export type LabelDataLite = {
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Product Name En
+     */
+    product_name_en?: string | null;
+    /**
+     * Product Name Fr
+     */
+    product_name_fr?: string | null;
+};
+
+/**
+ * LabelDataUpdate
+ */
+export type LabelDataUpdate = {
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Product Name En
+     */
+    product_name_en?: string | null;
+    /**
+     * Product Name Fr
+     */
+    product_name_fr?: string | null;
+    /**
+     * Contacts
+     */
+    contacts?: Array<Contact> | null;
+    /**
+     * Registration Number
+     */
+    registration_number?: string | null;
+    /**
+     * Lot Number
+     */
+    lot_number?: string | null;
+    /**
+     * Net Weight
+     */
+    net_weight?: string | null;
+    /**
+     * Volume
+     */
+    volume?: string | null;
+};
+
+/**
  * LabelDetail
  */
 export type LabelDetail = {
@@ -101,12 +713,7 @@ export type LabelDetail = {
      * Created By Id
      */
     created_by_id: string;
-    extraction_status: ExtractionStatus;
-    verification_status: VerificationStatus;
-    /**
-     * Extraction Error Message
-     */
-    extraction_error_message?: string | null;
+    review_status: ReviewStatus;
     /**
      * Created At
      */
@@ -172,12 +779,7 @@ export type LabelListItem = {
      * Id
      */
     id: string;
-    extraction_status: ExtractionStatus;
-    verification_status: VerificationStatus;
-    /**
-     * Extraction Error Message
-     */
-    extraction_error_message?: string | null;
+    review_status: ReviewStatus;
     /**
      * Created At
      */
@@ -186,7 +788,24 @@ export type LabelListItem = {
      * Updated At
      */
     updated_at: string;
-    product?: ProductPublic | null;
+    label_data?: LabelDataLite | null;
+};
+
+/**
+ * LabelReviewStatusUpdate
+ */
+export type LabelReviewStatusUpdate = {
+    review_status: ReviewStatus;
+};
+
+/**
+ * LabelUpdate
+ */
+export type LabelUpdate = {
+    /**
+     * Product Id
+     */
+    product_id?: string | null;
 };
 
 /**
@@ -255,6 +874,66 @@ export type NewPassword = {
      * New Password
      */
     new_password: string;
+};
+
+/**
+ * Nutrient
+ */
+export type NutrientInput = {
+    /**
+     * Name En
+     *
+     * Nutrient name in English as it appears on the label
+     */
+    name_en: string;
+    /**
+     * Name Fr
+     *
+     * Nutrient name in French as it appears on the label
+     */
+    name_fr?: string | null;
+    /**
+     * Value
+     *
+     * Nutrient percentage value
+     */
+    value: number | string;
+    /**
+     * Unit
+     *
+     * Unit of measurement
+     */
+    unit: string;
+};
+
+/**
+ * Nutrient
+ */
+export type NutrientOutput = {
+    /**
+     * Name En
+     *
+     * Nutrient name in English as it appears on the label
+     */
+    name_en: string;
+    /**
+     * Name Fr
+     *
+     * Nutrient name in French as it appears on the label
+     */
+    name_fr?: string | null;
+    /**
+     * Value
+     *
+     * Nutrient percentage value
+     */
+    value: string;
+    /**
+     * Unit
+     *
+     * Unit of measurement
+     */
+    unit: string;
 };
 
 /**
@@ -396,6 +1075,11 @@ export type Readiness = {
      */
     database: string;
 };
+
+/**
+ * ReviewStatus
+ */
+export type ReviewStatus = 'not_started' | 'in_progress' | 'completed';
 
 /**
  * Token
@@ -577,11 +1261,6 @@ export type ValidationError = {
      */
     type: string;
 };
-
-/**
- * VerificationStatus
- */
-export type VerificationStatus = 'not_started' | 'in_progress' | 'completed';
 
 /**
  * UserCreate
@@ -1043,21 +1722,15 @@ export type LabelsReadLabelsData = {
          */
         product_type?: string;
         /**
-         * Verification Status
+         * Review Status
          *
-         * Filter by verification status
+         * Filter by review status
          */
-        verification_status?: VerificationStatus | null;
-        /**
-         * Extraction Status
-         *
-         * Filter by extraction status
-         */
-        extraction_status?: ExtractionStatus | null;
+        review_status?: ReviewStatus | null;
         /**
          * Unlinked
          *
-         * Filter unlinked labels only (product_id is null)
+         * Filter labels not linked to a product (product_id is null)
          */
         unlinked?: boolean | null;
         /**
@@ -1190,6 +1863,66 @@ export type LabelsReadLabelResponses = {
 };
 
 export type LabelsReadLabelResponse = LabelsReadLabelResponses[keyof LabelsReadLabelResponses];
+
+export type LabelsUpdateLabelData = {
+    body: LabelUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}';
+};
+
+export type LabelsUpdateLabelErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateLabelError = LabelsUpdateLabelErrors[keyof LabelsUpdateLabelErrors];
+
+export type LabelsUpdateLabelResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelDetail;
+};
+
+export type LabelsUpdateLabelResponse = LabelsUpdateLabelResponses[keyof LabelsUpdateLabelResponses];
+
+export type LabelsUpdateLabelReviewStatusData = {
+    body: LabelReviewStatusUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/review-status';
+};
+
+export type LabelsUpdateLabelReviewStatusErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateLabelReviewStatusError = LabelsUpdateLabelReviewStatusErrors[keyof LabelsUpdateLabelReviewStatusErrors];
+
+export type LabelsUpdateLabelReviewStatusResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelDetail;
+};
+
+export type LabelsUpdateLabelReviewStatusResponse = LabelsUpdateLabelReviewStatusResponses[keyof LabelsUpdateLabelReviewStatusResponses];
 
 export type LabelsReadLabelImagesData = {
     body?: never;
@@ -1425,6 +2158,369 @@ export type LabelsGetLabelImagePresignedDownloadUrlResponses = {
 };
 
 export type LabelsGetLabelImagePresignedDownloadUrlResponse = LabelsGetLabelImagePresignedDownloadUrlResponses[keyof LabelsGetLabelImagePresignedDownloadUrlResponses];
+
+export type LabelsReadLabelDataData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/data';
+};
+
+export type LabelsReadLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadLabelDataError = LabelsReadLabelDataErrors[keyof LabelsReadLabelDataErrors];
+
+export type LabelsReadLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelData;
+};
+
+export type LabelsReadLabelDataResponse = LabelsReadLabelDataResponses[keyof LabelsReadLabelDataResponses];
+
+export type LabelsUpdateLabelDataData = {
+    body: LabelDataUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/data';
+};
+
+export type LabelsUpdateLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateLabelDataError = LabelsUpdateLabelDataErrors[keyof LabelsUpdateLabelDataErrors];
+
+export type LabelsUpdateLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelData;
+};
+
+export type LabelsUpdateLabelDataResponse = LabelsUpdateLabelDataResponses[keyof LabelsUpdateLabelDataResponses];
+
+export type LabelsCreateLabelDataData = {
+    body: LabelDataCreate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/data';
+};
+
+export type LabelsCreateLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsCreateLabelDataError = LabelsCreateLabelDataErrors[keyof LabelsCreateLabelDataErrors];
+
+export type LabelsCreateLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    201: LabelData;
+};
+
+export type LabelsCreateLabelDataResponse = LabelsCreateLabelDataResponses[keyof LabelsCreateLabelDataResponses];
+
+export type LabelsReadLabelDataMetaData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: {
+        /**
+         * Field Name
+         *
+         * Filter by field name
+         */
+        field_name?: string | null;
+        /**
+         * Needs Review
+         *
+         * Filter by needs_review flag
+         */
+        needs_review?: boolean | null;
+    };
+    url: '/api/v1/labels/{label_id}/data/meta';
+};
+
+export type LabelsReadLabelDataMetaErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadLabelDataMetaError = LabelsReadLabelDataMetaErrors[keyof LabelsReadLabelDataMetaErrors];
+
+export type LabelsReadLabelDataMetaResponses = {
+    /**
+     * Response Labels Read Label Data Meta
+     *
+     * Successful Response
+     */
+    200: Array<LabelDataFieldMetaResponse>;
+};
+
+export type LabelsReadLabelDataMetaResponse = LabelsReadLabelDataMetaResponses[keyof LabelsReadLabelDataMetaResponses];
+
+export type LabelsUpdateLabelDataMetaData = {
+    body: LabelDataFieldMetaUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/data/meta';
+};
+
+export type LabelsUpdateLabelDataMetaErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateLabelDataMetaError = LabelsUpdateLabelDataMetaErrors[keyof LabelsUpdateLabelDataMetaErrors];
+
+export type LabelsUpdateLabelDataMetaResponses = {
+    /**
+     * Successful Response
+     */
+    200: LabelDataFieldMetaResponse;
+};
+
+export type LabelsUpdateLabelDataMetaResponse = LabelsUpdateLabelDataMetaResponses[keyof LabelsUpdateLabelDataMetaResponses];
+
+export type LabelsReadFertilizerLabelDataData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/fertilizer-data';
+};
+
+export type LabelsReadFertilizerLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadFertilizerLabelDataError = LabelsReadFertilizerLabelDataErrors[keyof LabelsReadFertilizerLabelDataErrors];
+
+export type LabelsReadFertilizerLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    200: FertilizerLabelData;
+};
+
+export type LabelsReadFertilizerLabelDataResponse = LabelsReadFertilizerLabelDataResponses[keyof LabelsReadFertilizerLabelDataResponses];
+
+export type LabelsUpdateFertilizerLabelDataData = {
+    body: FertilizerLabelDataUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/fertilizer-data';
+};
+
+export type LabelsUpdateFertilizerLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateFertilizerLabelDataError = LabelsUpdateFertilizerLabelDataErrors[keyof LabelsUpdateFertilizerLabelDataErrors];
+
+export type LabelsUpdateFertilizerLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    200: FertilizerLabelData;
+};
+
+export type LabelsUpdateFertilizerLabelDataResponse = LabelsUpdateFertilizerLabelDataResponses[keyof LabelsUpdateFertilizerLabelDataResponses];
+
+export type LabelsCreateFertilizerLabelDataData = {
+    body: FertilizerLabelDataCreate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/fertilizer-data';
+};
+
+export type LabelsCreateFertilizerLabelDataErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsCreateFertilizerLabelDataError = LabelsCreateFertilizerLabelDataErrors[keyof LabelsCreateFertilizerLabelDataErrors];
+
+export type LabelsCreateFertilizerLabelDataResponses = {
+    /**
+     * Successful Response
+     */
+    201: FertilizerLabelData;
+};
+
+export type LabelsCreateFertilizerLabelDataResponse = LabelsCreateFertilizerLabelDataResponses[keyof LabelsCreateFertilizerLabelDataResponses];
+
+export type LabelsReadFertilizerLabelDataMetaData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: {
+        /**
+         * Field Name
+         *
+         * Filter by field name
+         */
+        field_name?: string | null;
+        /**
+         * Needs Review
+         *
+         * Filter by needs_review flag
+         */
+        needs_review?: boolean | null;
+    };
+    url: '/api/v1/labels/{label_id}/fertilizer-data/meta';
+};
+
+export type LabelsReadFertilizerLabelDataMetaErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsReadFertilizerLabelDataMetaError = LabelsReadFertilizerLabelDataMetaErrors[keyof LabelsReadFertilizerLabelDataMetaErrors];
+
+export type LabelsReadFertilizerLabelDataMetaResponses = {
+    /**
+     * Response Labels Read Fertilizer Label Data Meta
+     *
+     * Successful Response
+     */
+    200: Array<FertilizerLabelDataMetaResponse>;
+};
+
+export type LabelsReadFertilizerLabelDataMetaResponse = LabelsReadFertilizerLabelDataMetaResponses[keyof LabelsReadFertilizerLabelDataMetaResponses];
+
+export type LabelsUpdateFertilizerLabelDataMetaData = {
+    body: FertilizerLabelDataMetaUpdate;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/fertilizer-data/meta';
+};
+
+export type LabelsUpdateFertilizerLabelDataMetaErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsUpdateFertilizerLabelDataMetaError = LabelsUpdateFertilizerLabelDataMetaErrors[keyof LabelsUpdateFertilizerLabelDataMetaErrors];
+
+export type LabelsUpdateFertilizerLabelDataMetaResponses = {
+    /**
+     * Successful Response
+     */
+    200: FertilizerLabelDataMetaResponse;
+};
+
+export type LabelsUpdateFertilizerLabelDataMetaResponse = LabelsUpdateFertilizerLabelDataMetaResponses[keyof LabelsUpdateFertilizerLabelDataMetaResponses];
+
+export type LabelsExtractFertilizerFieldsData = {
+    /**
+     * Request
+     */
+    body?: ExtractFieldsRequest | null;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/fertilizer-extract';
+};
+
+export type LabelsExtractFertilizerFieldsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LabelsExtractFertilizerFieldsError = LabelsExtractFertilizerFieldsErrors[keyof LabelsExtractFertilizerFieldsErrors];
+
+export type LabelsExtractFertilizerFieldsResponses = {
+    /**
+     * Successful Response
+     */
+    200: ExtractFertilizerFieldsOutput;
+};
+
+export type LabelsExtractFertilizerFieldsResponse = LabelsExtractFertilizerFieldsResponses[keyof LabelsExtractFertilizerFieldsResponses];
 
 export type ProductsReadProductsData = {
     body?: never;

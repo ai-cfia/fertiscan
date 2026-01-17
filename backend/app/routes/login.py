@@ -90,7 +90,11 @@ def reset_password(
         raise UserWithEmailNotFound()
     elif not user.is_active:
         raise InactiveUser()
-    if not users.update_user(session, user.id, UserUpdate(password=body.new_password)):
+    if not users.update_user(
+        session=session,
+        user_id=user.id,
+        user_in=UserUpdate(password=SecretStr(body.new_password)),
+    ):
         raise UserWithEmailNotFound()
     return Message(message="Password updated successfully")
 

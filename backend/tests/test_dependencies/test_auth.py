@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.core import security
-from app.dependencies import get_current_active_superuser, get_current_user
+from app.dependencies.auth import get_current_active_superuser, get_current_user
 from tests.factories.user import UserFactory
 
 

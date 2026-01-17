@@ -17,6 +17,8 @@ dependencies = [
     "psycopg[binary]",
     "fastapi-pagination>=0.15.5",
     "aioboto3",
+    "openai",
+    "instructor",
 ]
 
 [dependency-groups]

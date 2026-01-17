@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { HealthLivenessData, HealthLivenessResponses, HealthReadinessData, HealthReadinessResponses, LabelsCompleteLabelImageUploadData, LabelsCompleteLabelImageUploadErrors, LabelsCompleteLabelImageUploadResponses, LabelsCreateLabelData, LabelsCreateLabelErrors, LabelsCreateLabelImageData, LabelsCreateLabelImageErrors, LabelsCreateLabelImageResponses, LabelsCreateLabelResponses, LabelsDeleteLabelData, LabelsDeleteLabelErrors, LabelsDeleteLabelImageData, LabelsDeleteLabelImageErrors, LabelsDeleteLabelImageResponses, LabelsDeleteLabelResponses, LabelsGetLabelImagePresignedDownloadUrlData, LabelsGetLabelImagePresignedDownloadUrlErrors, LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedUploadUrlData, LabelsGetLabelImagePresignedUploadUrlErrors, LabelsGetLabelImagePresignedUploadUrlResponses, LabelsReadLabelData, LabelsReadLabelErrors, LabelsReadLabelImageData, LabelsReadLabelImageErrors, LabelsReadLabelImageResponses, LabelsReadLabelImagesData, LabelsReadLabelImagesErrors, LabelsReadLabelImagesResponses, LabelsReadLabelResponses, LabelsReadLabelsData, LabelsReadLabelsErrors, LabelsReadLabelsResponses, LoginLoginAccessTokenData, LoginLoginAccessTokenErrors, LoginLoginAccessTokenResponses, LoginRecoverPasswordData, LoginRecoverPasswordErrors, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentErrors, LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordResponses, LoginResetPasswordData, LoginResetPasswordErrors, LoginResetPasswordResponses, LoginTestTokenData, LoginTestTokenResponses, PrivateCreateUserNoVerificationData, PrivateCreateUserNoVerificationErrors, PrivateCreateUserNoVerificationResponses, ProductsReadProductsData, ProductsReadProductsErrors, ProductsReadProductsResponses, UsersCreateUserData, UsersCreateUserErrors, UsersCreateUserResponses, UsersDeleteUserData, UsersDeleteUserErrors, UsersDeleteUserMeData, UsersDeleteUserMeResponses, UsersDeleteUserResponses, UsersReadUserByIdData, UsersReadUserByIdErrors, UsersReadUserByIdResponses, UsersReadUserMeData, UsersReadUserMeResponses, UsersReadUsersData, UsersReadUsersErrors, UsersReadUsersResponses, UsersUpdatePasswordMeData, UsersUpdatePasswordMeErrors, UsersUpdatePasswordMeResponses, UsersUpdateUserData, UsersUpdateUserErrors, UsersUpdateUserMeData, UsersUpdateUserMeErrors, UsersUpdateUserMeResponses, UsersUpdateUserResponses } from './types.gen';
+import type { HealthLivenessData, HealthLivenessResponses, HealthReadinessData, HealthReadinessResponses, LabelsCompleteLabelImageUploadData, LabelsCompleteLabelImageUploadErrors, LabelsCompleteLabelImageUploadResponses, LabelsCreateFertilizerLabelDataData, LabelsCreateFertilizerLabelDataErrors, LabelsCreateFertilizerLabelDataResponses, LabelsCreateLabelData, LabelsCreateLabelDataData, LabelsCreateLabelDataErrors, LabelsCreateLabelDataResponses, LabelsCreateLabelErrors, LabelsCreateLabelImageData, LabelsCreateLabelImageErrors, LabelsCreateLabelImageResponses, LabelsCreateLabelResponses, LabelsDeleteLabelData, LabelsDeleteLabelErrors, LabelsDeleteLabelImageData, LabelsDeleteLabelImageErrors, LabelsDeleteLabelImageResponses, LabelsDeleteLabelResponses, LabelsExtractFertilizerFieldsData, LabelsExtractFertilizerFieldsErrors, LabelsExtractFertilizerFieldsResponses, LabelsGetLabelImagePresignedDownloadUrlData, LabelsGetLabelImagePresignedDownloadUrlErrors, LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedUploadUrlData, LabelsGetLabelImagePresignedUploadUrlErrors, LabelsGetLabelImagePresignedUploadUrlResponses, LabelsReadFertilizerLabelDataData, LabelsReadFertilizerLabelDataErrors, LabelsReadFertilizerLabelDataMetaData, LabelsReadFertilizerLabelDataMetaErrors, LabelsReadFertilizerLabelDataMetaResponses, LabelsReadFertilizerLabelDataResponses, LabelsReadLabelData, LabelsReadLabelDataData, LabelsReadLabelDataErrors, LabelsReadLabelDataMetaData, LabelsReadLabelDataMetaErrors, LabelsReadLabelDataMetaResponses, LabelsReadLabelDataResponses, LabelsReadLabelErrors, LabelsReadLabelImageData, LabelsReadLabelImageErrors, LabelsReadLabelImageResponses, LabelsReadLabelImagesData, LabelsReadLabelImagesErrors, LabelsReadLabelImagesResponses, LabelsReadLabelResponses, LabelsReadLabelsData, LabelsReadLabelsErrors, LabelsReadLabelsResponses, LabelsUpdateFertilizerLabelDataData, LabelsUpdateFertilizerLabelDataErrors, LabelsUpdateFertilizerLabelDataMetaData, LabelsUpdateFertilizerLabelDataMetaErrors, LabelsUpdateFertilizerLabelDataMetaResponses, LabelsUpdateFertilizerLabelDataResponses, LabelsUpdateLabelData, LabelsUpdateLabelDataData, LabelsUpdateLabelDataErrors, LabelsUpdateLabelDataMetaData, LabelsUpdateLabelDataMetaErrors, LabelsUpdateLabelDataMetaResponses, LabelsUpdateLabelDataResponses, LabelsUpdateLabelErrors, LabelsUpdateLabelResponses, LabelsUpdateLabelReviewStatusData, LabelsUpdateLabelReviewStatusErrors, LabelsUpdateLabelReviewStatusResponses, LoginLoginAccessTokenData, LoginLoginAccessTokenErrors, LoginLoginAccessTokenResponses, LoginRecoverPasswordData, LoginRecoverPasswordErrors, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentErrors, LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordResponses, LoginResetPasswordData, LoginResetPasswordErrors, LoginResetPasswordResponses, LoginTestTokenData, LoginTestTokenResponses, PrivateCreateUserNoVerificationData, PrivateCreateUserNoVerificationErrors, PrivateCreateUserNoVerificationResponses, ProductsReadProductsData, ProductsReadProductsErrors, ProductsReadProductsResponses, UsersCreateUserData, UsersCreateUserErrors, UsersCreateUserResponses, UsersDeleteUserData, UsersDeleteUserErrors, UsersDeleteUserMeData, UsersDeleteUserMeResponses, UsersDeleteUserResponses, UsersReadUserByIdData, UsersReadUserByIdErrors, UsersReadUserByIdResponses, UsersReadUserMeData, UsersReadUserMeResponses, UsersReadUsersData, UsersReadUsersErrors, UsersReadUsersResponses, UsersUpdatePasswordMeData, UsersUpdatePasswordMeErrors, UsersUpdatePasswordMeResponses, UsersUpdateUserData, UsersUpdateUserErrors, UsersUpdateUserMeData, UsersUpdateUserMeErrors, UsersUpdateUserMeResponses, UsersUpdateUserResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -329,6 +329,42 @@ export class LabelsService {
     }
 
     /**
+     * Update Label
+     *
+     * Update Label (partial update, excludes review_status).
+     */
+    public static updateLabel<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateLabelResponses, LabelsUpdateLabelErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Update Label Review Status
+     *
+     * Update Label review_status (allowed even when completed).
+     */
+    public static updateLabelReviewStatus<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelReviewStatusData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateLabelReviewStatusResponses, LabelsUpdateLabelReviewStatusErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/review-status',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
      * Read Label Images
      *
      * Get label images (without presigned URLs).
@@ -430,6 +466,188 @@ export class LabelsService {
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url',
             ...options
+        });
+    }
+
+    /**
+     * Read Label Data
+     *
+     * Get LabelData for label.
+     */
+    public static readLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsReadLabelDataResponses, LabelsReadLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/data',
+            ...options
+        });
+    }
+
+    /**
+     * Update Label Data
+     *
+     * Update LabelData (partial update).
+     */
+    public static updateLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateLabelDataResponses, LabelsUpdateLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/data',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Create Label Data
+     *
+     * Create LabelData for label.
+     */
+    public static createLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsCreateLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).post<LabelsCreateLabelDataResponses, LabelsCreateLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/data',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Read Label Data Meta
+     *
+     * Get LabelDataFieldMeta records for label.
+     */
+    public static readLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsReadLabelDataMetaResponses, LabelsReadLabelDataMetaErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/data/meta',
+            ...options
+        });
+    }
+
+    /**
+     * Update Label Data Meta
+     *
+     * Update LabelDataFieldMeta (upsert).
+     */
+    public static updateLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateLabelDataMetaResponses, LabelsUpdateLabelDataMetaErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/data/meta',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Read Fertilizer Label Data
+     *
+     * Get FertilizerLabelData for label.
+     */
+    public static readFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsReadFertilizerLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsReadFertilizerLabelDataResponses, LabelsReadFertilizerLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-data',
+            ...options
+        });
+    }
+
+    /**
+     * Update Fertilizer Label Data
+     *
+     * Update FertilizerLabelData (partial update).
+     */
+    public static updateFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateFertilizerLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateFertilizerLabelDataResponses, LabelsUpdateFertilizerLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-data',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Create Fertilizer Label Data
+     *
+     * Create FertilizerLabelData for label.
+     */
+    public static createFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsCreateFertilizerLabelDataData, ThrowOnError>) {
+        return (options.client ?? client).post<LabelsCreateFertilizerLabelDataResponses, LabelsCreateFertilizerLabelDataErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-data',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Read Fertilizer Label Data Meta
+     *
+     * Get FertilizerLabelDataMeta records for label.
+     */
+    public static readFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsReadFertilizerLabelDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).get<LabelsReadFertilizerLabelDataMetaResponses, LabelsReadFertilizerLabelDataMetaErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-data/meta',
+            ...options
+        });
+    }
+
+    /**
+     * Update Fertilizer Label Data Meta
+     *
+     * Update FertilizerLabelDataMeta (upsert).
+     */
+    public static updateFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateFertilizerLabelDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).patch<LabelsUpdateFertilizerLabelDataMetaResponses, LabelsUpdateFertilizerLabelDataMetaErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-data/meta',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Extract Fertilizer Fields
+     *
+     * Extract specified fields (or all fields if none specified) for fertilizer labels.
+     */
+    public static extractFertilizerFields<ThrowOnError extends boolean = false>(options: Options<LabelsExtractFertilizerFieldsData, ThrowOnError>) {
+        return (options.client ?? client).post<LabelsExtractFertilizerFieldsResponses, LabelsExtractFertilizerFieldsErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/labels/{label_id}/fertilizer-extract',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
         });
     }
 }

@@ -1,7 +1,8 @@
 import DeleteIcon from "@mui/icons-material/Delete"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
+import FactCheckIcon from "@mui/icons-material/FactCheck"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -9,44 +10,39 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
+  Tooltip,
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import type { ReviewStatus } from "@/api"
 import { useSnackbar } from "@/components/SnackbarProvider"
 
 interface LabelRowActionsProps {
-  labelId: string
+  reviewStatus: ReviewStatus | null
   onViewDetails: () => void
+  onReview: () => void
   onDelete: () => void
 }
 
 export default function LabelRowActions({
-  labelId,
+  reviewStatus,
   onViewDetails,
+  onReview,
   onDelete,
 }: LabelRowActionsProps) {
   const { t } = useTranslation(["labels", "common"])
   const { showErrorToast } = useSnackbar()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleViewDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-  const handleViewDetails = () => {
-    handleClose()
     onViewDetails()
   }
-  const handleDeleteClick = () => {
-    handleClose()
+  const handleReview = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    onReview()
+  }
+  const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     setDeleteDialogOpen(true)
   }
   const handleDeleteConfirm = () => {
@@ -57,45 +53,42 @@ export default function LabelRowActions({
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
   }
+  const reviewTooltip =
+    reviewStatus === "not_started"
+      ? t("labels.rowActions.startReview")
+      : t("labels.rowActions.continueReview")
   return (
     <>
-      <IconButton
-        onClick={handleClick}
-        size="small"
-        aria-label={t("labels.rowActions.actionsForLabel", { id: labelId })}
-        aria-controls={open ? `label-menu-${labelId}` : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id={`label-menu-${labelId}`}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <MenuItem onClick={handleViewDetails}>
-          <ListItemIcon>
+      <Box sx={{ display: "flex", gap: 0.5 }}>
+        <Tooltip title={reviewTooltip}>
+          <IconButton
+            onClick={handleReview}
+            size="small"
+            aria-label={reviewTooltip}
+          >
+            <FactCheckIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={t("labels.rowActions.viewDetails")}>
+          <IconButton
+            onClick={handleViewDetails}
+            size="small"
+            aria-label={t("labels.rowActions.viewDetails")}
+          >
             <VisibilityIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>{t("labels.rowActions.viewDetails")}</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleDeleteClick}>
-          <ListItemIcon>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={t("labels.rowActions.delete")}>
+          <IconButton
+            onClick={handleDeleteClick}
+            size="small"
+            aria-label={t("labels.rowActions.delete")}
+            color="error"
+          >
             <DeleteIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>{t("labels.rowActions.delete")}</ListItemText>
-        </MenuItem>
-      </Menu>
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Dialog
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}

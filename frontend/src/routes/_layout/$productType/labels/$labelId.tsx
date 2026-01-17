@@ -1,4 +1,3 @@
-import { Container } from "@mui/material"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_layout/$productType/labels/$labelId")({
@@ -6,9 +5,5 @@ export const Route = createFileRoute("/_layout/$productType/labels/$labelId")({
 })
 
 function LabelDetail() {
-  return (
-    <Container maxWidth="xl">
-      <Outlet />
-    </Container>
-  )
+  return <Outlet />
 }

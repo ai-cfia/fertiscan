@@ -1,9 +1,9 @@
 """Health check schemas."""
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class Health(SQLModel):
+class Health(BaseModel):
     status: str
 
 

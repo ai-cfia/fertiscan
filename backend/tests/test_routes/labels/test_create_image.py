@@ -222,3 +222,27 @@ class TestCreateLabelImage:
         assert response.status_code == 400
         assert "Maximum" in response.json()["detail"]
         assert "5" in response.json()["detail"]
+
+    def test_create_label_image_completed_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test creating label image for completed label returns 400."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product, completed=True)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.post(
+            f"{settings.API_V1_STR}/labels/{label.id}/images",
+            headers=headers,
+            json={
+                "display_filename": "test.png",
+                "content_type": "image/png",
+                "sequence_order": 1,
+            },
+        )
+        assert response.status_code == 400
+        assert "completed" in response.json()["detail"].lower()

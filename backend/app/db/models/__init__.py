@@ -5,7 +5,7 @@ from app.db.models.fertilizer_label_data_meta import (
 )
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
-from app.db.models.label_data_meta import LabelDataFieldName, LabelDataMeta
+from app.db.models.label_data_field_meta import LabelDataFieldMeta, LabelDataFieldName
 from app.db.models.label_image import LabelImage
 from app.db.models.product import Product
 from app.db.models.product_type import ProductType
@@ -18,7 +18,7 @@ __all__ = [
     "Label",
     "LabelData",
     "LabelDataFieldName",
-    "LabelDataMeta",
+    "LabelDataFieldMeta",
     "LabelImage",
     "Product",
     "ProductType",

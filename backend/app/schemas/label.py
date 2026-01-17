@@ -5,17 +5,17 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import computed_field
-from sqlmodel import Field, SQLModel
+from pydantic import BaseModel, Field, computed_field
 
 from app.db.models.label import ReviewStatus
 from app.db.models.label_image import UploadStatus
-from app.schemas.product import ProductPublic
 from app.schemas.product_type import ProductTypePublic
 from app.schemas.user import UserPublic
 
+# ============================== Presigned URLs ==============================
 
-class PresignedUrlRequest(SQLModel):
+
+class PresignedUrlRequest(BaseModel):
     """Request schema for individual presigned URL generation."""
 
     display_filename: str
@@ -31,47 +31,80 @@ class PresignedUrlRequest(SQLModel):
         return ext.lstrip(".")
 
 
-class UploadCompletionRequest(SQLModel):
-    """Request schema for upload completion notification."""
-
-    storage_file_path: str
-
-
-class PresignedUploadUrlResponse(SQLModel):
+class PresignedUploadUrlResponse(BaseModel):
     """Response schema for presigned upload URL request."""
 
     url: str
     expires_at: datetime
 
 
-class PresignedDownloadUrlResponse(SQLModel):
+class PresignedDownloadUrlResponse(BaseModel):
     """Response schema for presigned download URL request."""
 
     presigned_url: str
 
 
-class LabelCreate(SQLModel):
+class UploadCompletionRequest(BaseModel):
+    """Request schema for upload completion notification."""
+
+    storage_file_path: str
+
+
+# ============================== Label Schemas ==============================
+
+
+class LabelDataLite(BaseModel):
+    brand_name_en: str | None = None
+    brand_name_fr: str | None = None
+    product_name_en: str | None = None
+    product_name_fr: str | None = None
+
+
+class LabelCreate(BaseModel):
     product_type: str
     product_id: UUID | None = None
 
 
-class LabelCreated(SQLModel):
+class LabelCreated(BaseModel):
     """Response schema for label creation."""
 
     id: UUID
 
 
-class LabelListItem(SQLModel):
+class LabelListItem(BaseModel):
     """Schema for label list items."""
 
     id: UUID
     review_status: ReviewStatus
     created_at: datetime
     updated_at: datetime
-    product: ProductPublic | None = None
+    label_data: LabelDataLite | None = None
 
 
-class LabelImageDetail(SQLModel):
+class LabelDetail(BaseModel):
+    id: UUID
+    product_id: UUID | None = None
+    created_by_id: UUID
+    review_status: ReviewStatus
+    created_at: datetime
+    updated_at: datetime
+    product_type: ProductTypePublic
+    created_by: UserPublic
+    images: list["LabelImageDetail"] = Field(default_factory=list)
+
+
+class LabelUpdate(BaseModel):
+    product_id: UUID | None = None
+
+
+class LabelReviewStatusUpdate(BaseModel):
+    review_status: ReviewStatus
+
+
+# ============================== LabelImage Schemas ==============================
+
+
+class LabelImageDetail(BaseModel):
     id: UUID
     label_id: UUID
     display_filename: str
@@ -81,15 +114,3 @@ class LabelImageDetail(SQLModel):
     created_at: datetime
     updated_at: datetime
     current_image_count: int | None = None
-
-
-class LabelDetail(SQLModel):
-    id: UUID
-    product_id: UUID | None = None
-    created_by_id: UUID
-    review_status: ReviewStatus
-    created_at: datetime
-    updated_at: datetime
-    product_type: ProductTypePublic
-    created_by: UserPublic
-    images: list[LabelImageDetail] = Field(default_factory=list)

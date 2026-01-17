@@ -2,16 +2,16 @@
 
 from uuid import UUID
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class ProductPublic(SQLModel):
+class ProductPublic(BaseModel):
     id: UUID
     name_en: str | None = None
     name_fr: str | None = None
     registration_number: str
 
 
-class ProductsPublic(SQLModel):
+class ProductsPublic(BaseModel):
     data: list[ProductPublic]
     count: int

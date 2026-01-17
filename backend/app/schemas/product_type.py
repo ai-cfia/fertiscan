@@ -3,11 +3,11 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlmodel import Field, SQLModel
+from pydantic import BaseModel, Field
 
 
-class ProductTypeBase(SQLModel):
-    code: str = Field(unique=True, index=True, max_length=255)
+class ProductTypeBase(BaseModel):
+    code: str = Field(max_length=255)
     name_en: str | None = Field(default=None, max_length=255)
     name_fr: str | None = Field(default=None, max_length=255)
     is_active: bool = True
@@ -17,7 +17,7 @@ class ProductTypeCreate(ProductTypeBase):
     pass
 
 
-class ProductTypeUpdate(SQLModel):
+class ProductTypeUpdate(BaseModel):
     code: str | None = Field(default=None, max_length=255)
     name_en: str | None = Field(default=None, max_length=255)
     name_fr: str | None = Field(default=None, max_length=255)

@@ -68,3 +68,23 @@ async def delete_files(
             logger.warning(
                 f"Failed to delete file {file_path} during batch deletion: {result}"
             )
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def download_file(
+    client: AioBaseClient,
+    file_path: str,
+) -> bytes:
+    """Download file from storage as bytes."""
+    try:
+        response = await client.get_object(
+            Bucket=settings.STORAGE_BUCKET_NAME,
+            Key=file_path,
+        )
+        async with response["Body"] as stream:
+            data: bytes = await stream.read()
+        logger.debug(f"Downloaded file from storage: {file_path}")
+        return data
+    except ClientError as e:
+        logger.error(f"Failed to download file from storage {file_path}: {e}")
+        raise

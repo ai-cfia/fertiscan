@@ -199,25 +199,34 @@ class TestFertilizerLabelDataRelationships:
         """Test JSONB ingredients field can store and retrieve data."""
         ingredients = [
             {
-                "name": "Urea",
+                "name_en": "Urea",
+                "name_fr": "Urée",
                 "value": 46.0,
                 "unit": "%",
             }
         ]
-        fertilizer_data = FertilizerLabelDataFactory(ingredients_en=ingredients)
-        assert fertilizer_data.ingredients_en == ingredients
-        assert fertilizer_data.ingredients_en[0]["name"] == "Urea"
+        fertilizer_data = FertilizerLabelDataFactory(ingredients=ingredients)
+        assert fertilizer_data.ingredients == ingredients
+        assert fertilizer_data.ingredients[0]["name_en"] == "Urea"
 
     def test_jsonb_guaranteed_analysis_field(self, db: Session) -> None:
         """Test JSONB guaranteed_analysis field can store and retrieve data."""
         analysis = {
-            "title": "Minimum Guaranteed Analysis",
+            "title_en": "Minimum Guaranteed Analysis",
+            "title_fr": "Analyse Garantie Minimale",
             "is_minimum": True,
-            "nutrients": [{"name": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}],
+            "nutrients": [
+                {
+                    "name_en": "Total Nitrogen (N)",
+                    "name_fr": "Azote Total (N)",
+                    "value": 10.0,
+                    "unit": "%",
+                }
+            ],
         }
-        fertilizer_data = FertilizerLabelDataFactory(guaranteed_analysis_en=analysis)
-        assert fertilizer_data.guaranteed_analysis_en == analysis
+        fertilizer_data = FertilizerLabelDataFactory(guaranteed_analysis=analysis)
+        assert fertilizer_data.guaranteed_analysis == analysis
         assert (
-            fertilizer_data.guaranteed_analysis_en["title"]
+            fertilizer_data.guaranteed_analysis["title_en"]
             == "Minimum Guaranteed Analysis"
         )

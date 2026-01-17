@@ -3,23 +3,19 @@ import CheckIcon from "@mui/icons-material/Check"
 import { Chip } from "@mui/material"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import type { ExtractionStatus, VerificationStatus } from "@/api"
+import type { ReviewStatus } from "@/api"
 
 interface LabelFilterChipsProps {
-  extractionStatus?: ExtractionStatus
-  verificationStatus?: VerificationStatus
+  reviewStatus?: ReviewStatus
   unlinked?: boolean
-  onExtractionStatusRemove: () => void
-  onVerificationStatusRemove: () => void
+  onReviewStatusRemove: () => void
   onUnlinkedRemove: () => void
 }
 
 export default function LabelFilterChips({
-  extractionStatus,
-  verificationStatus,
+  reviewStatus,
   unlinked,
-  onExtractionStatusRemove,
-  onVerificationStatusRemove,
+  onReviewStatusRemove,
   onUnlinkedRemove,
 }: LabelFilterChipsProps) {
   const { t } = useTranslation("labels")
@@ -29,29 +25,16 @@ export default function LabelFilterChips({
       label: string
       onDelete: () => void
     }> = []
-    const extractionStatusLabelMap: Record<ExtractionStatus, string> = {
-      pending: t("filter.pending"),
-      in_progress: t("filter.inProgress"),
-      completed: t("filter.completed"),
-      failed: t("filter.failed"),
-    }
-    const verificationStatusLabelMap: Record<VerificationStatus, string> = {
+    const reviewStatusLabelMap: Record<ReviewStatus, string> = {
       not_started: t("filter.notStarted"),
       in_progress: t("filter.inProgress"),
       completed: t("filter.completed"),
     }
-    if (extractionStatus) {
+    if (reviewStatus) {
       filters.push({
-        key: "extraction_status",
-        label: `${t("filter.extractionStatus")}: ${extractionStatusLabelMap[extractionStatus]}`,
-        onDelete: onExtractionStatusRemove,
-      })
-    }
-    if (verificationStatus) {
-      filters.push({
-        key: "verification_status",
-        label: `${t("filter.verificationStatus")}: ${verificationStatusLabelMap[verificationStatus]}`,
-        onDelete: onVerificationStatusRemove,
+        key: "review_status",
+        label: `${t("filter.reviewStatus")}: ${reviewStatusLabelMap[reviewStatus]}`,
+        onDelete: onReviewStatusRemove,
       })
     }
     if (unlinked === true) {
@@ -62,15 +45,7 @@ export default function LabelFilterChips({
       })
     }
     return filters
-  }, [
-    extractionStatus,
-    verificationStatus,
-    unlinked,
-    onExtractionStatusRemove,
-    onVerificationStatusRemove,
-    onUnlinkedRemove,
-    t,
-  ])
+  }, [reviewStatus, unlinked, onReviewStatusRemove, onUnlinkedRemove, t])
   if (activeFilters.length === 0) {
     return null
   }

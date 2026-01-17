@@ -30,16 +30,13 @@ function Dashboard() {
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   })
-  const {
-    data: labelsPendingVerification,
-    isLoading: isLoadingPendingVerification,
-  } = useQuery({
-    queryKey: ["labels", "pending-verification", productType],
+  const { data: labelsNotStarted, isLoading: isLoadingNotStarted } = useQuery({
+    queryKey: ["labels", "not-started", productType],
     queryFn: async () => {
       const response = await LabelsService.readLabels({
         query: {
           product_type: productType,
-          verification_status: "not_started",
+          review_status: "not_started",
           limit: 1,
         },
       })
@@ -48,13 +45,13 @@ function Dashboard() {
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   })
-  const { data: labelsExtracting, isLoading: isLoadingExtracting } = useQuery({
+  const { data: labelsInProgress, isLoading: isLoadingInProgress } = useQuery({
     queryKey: ["labels", "in-progress", productType],
     queryFn: async () => {
       const response = await LabelsService.readLabels({
         query: {
           product_type: productType,
-          extraction_status: "in_progress",
+          review_status: "in_progress",
           limit: 1,
         },
       })
@@ -63,22 +60,21 @@ function Dashboard() {
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   })
-  const { data: labelsFailedExtraction, isLoading: isLoadingFailedExtraction } =
-    useQuery({
-      queryKey: ["labels", "failed-extraction", productType],
-      queryFn: async () => {
-        const response = await LabelsService.readLabels({
-          query: {
-            product_type: productType,
-            extraction_status: "failed",
-            limit: 1,
-          },
-        })
-        return response.data
-      },
-      refetchInterval: 5000,
-      refetchIntervalInBackground: false,
-    })
+  const { data: labelsCompleted, isLoading: isLoadingCompleted } = useQuery({
+    queryKey: ["labels", "completed", productType],
+    queryFn: async () => {
+      const response = await LabelsService.readLabels({
+        query: {
+          product_type: productType,
+          review_status: "completed",
+          limit: 1,
+        },
+      })
+      return response.data
+    },
+    refetchInterval: 5000,
+    refetchIntervalInBackground: false,
+  })
   const { data: totalProducts, isLoading: isLoadingTotalProducts } = useQuery({
     queryKey: ["products", "total", productType],
     queryFn: async () => {
@@ -134,9 +130,9 @@ function Dashboard() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label={t("dashboard.pendingVerification")}
-                  value={labelsPendingVerification?.total ?? 0}
-                  isLoading={isLoadingPendingVerification}
+                  label={t("dashboard.notStarted")}
+                  value={labelsNotStarted?.total ?? 0}
+                  isLoading={isLoadingNotStarted}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
@@ -144,7 +140,7 @@ function Dashboard() {
                       search: {
                         page: 0,
                         per_page: 10,
-                        verification_status: "not_started",
+                        review_status: "not_started",
                       },
                     })
                   }}
@@ -152,9 +148,9 @@ function Dashboard() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label={t("dashboard.extracting")}
-                  value={labelsExtracting?.total ?? 0}
-                  isLoading={isLoadingExtracting}
+                  label={t("dashboard.inProgress")}
+                  value={labelsInProgress?.total ?? 0}
+                  isLoading={isLoadingInProgress}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
@@ -162,7 +158,7 @@ function Dashboard() {
                       search: {
                         page: 0,
                         per_page: 10,
-                        extraction_status: "in_progress",
+                        review_status: "in_progress",
                       },
                     })
                   }}
@@ -170,9 +166,9 @@ function Dashboard() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
-                  label={t("dashboard.failedExtractions")}
-                  value={labelsFailedExtraction?.total ?? 0}
-                  isLoading={isLoadingFailedExtraction}
+                  label={t("dashboard.completed")}
+                  value={labelsCompleted?.total ?? 0}
+                  isLoading={isLoadingCompleted}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
@@ -180,7 +176,7 @@ function Dashboard() {
                       search: {
                         page: 0,
                         per_page: 10,
-                        extraction_status: "failed",
+                        review_status: "completed",
                       },
                     })
                   }}

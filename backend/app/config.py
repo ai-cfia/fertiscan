@@ -68,6 +68,10 @@ class Settings(BaseSettings):
     PRESIGNED_UPLOAD_URL_EXPIRY_MINUTES: int = 10
     PRESIGNED_DOWNLOAD_URL_EXPIRY_MINUTES: int = 20
     MAX_IMAGES_PER_LABEL: int = 5
+    AZURE_OPENAI_ENDPOINT: str | None = None
+    AZURE_OPENAI_API_KEY: SecretStr | None = None
+    AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
+    AZURE_OPENAI_MODEL: str = "gpt-4o"
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
