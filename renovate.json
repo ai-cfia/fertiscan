@@ -3,9 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "ignorePaths": [
-    "backend/legacy/**"
-  ],
+  "ignorePaths": [],
   "packageRules": [
     {
       "matchDatasources": ["github-releases"],

@@ -23,6 +23,9 @@ experiments/
 # Upload folder
 uploads/
 
+# Labels folder
+labels/
+
 # C extensions
 *.so
 

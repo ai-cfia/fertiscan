@@ -132,7 +132,7 @@ export interface FileRoutesByFullPath {
   '/$productType/': typeof LayoutProductTypeIndexRoute
   '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
-  '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
+  '/$productType/labels/': typeof LayoutProductTypeLabelsIndexRoute
   '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
   '/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
@@ -189,7 +189,7 @@ export interface FileRouteTypes {
     | '/$productType/'
     | '/$productType/labels/$labelId'
     | '/$productType/labels/new'
-    | '/$productType/labels'
+    | '/$productType/labels/'
     | '/$productType/labels/$labelId/files'
     | '/$productType/labels/$labelId/review'
   fileRoutesByTo: FileRoutesByTo
@@ -272,7 +272,7 @@ declare module '@tanstack/react-router' {
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -328,7 +328,7 @@ declare module '@tanstack/react-router' {
     '/_layout/$productType/labels/': {
       id: '/_layout/$productType/labels/'
       path: '/labels'
-      fullPath: '/$productType/labels'
+      fullPath: '/$productType/labels/'
       preLoaderRoute: typeof LayoutProductTypeLabelsIndexRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }

@@ -39,12 +39,12 @@ The main user role - responsible for:
 
 ### Product Management
 
-#### User Story
+#### User Story - Product Management
 
 As an inspector, I want to manage products (create, read, update, delete), so
 that I can maintain accurate product records.
 
-#### Requirements
+#### Requirements - Product Management
 
 - Can create products with required fields:
   - Registration number (unique identifier)
@@ -75,7 +75,7 @@ that I can maintain accurate product records.
 - As an inspector, I want to scan a label for a pre-selected product, so that I
   can add a new label version to an existing product.
 
-#### Requirements
+#### Requirements - Label Scanning
 
 - Requires at least 1 image to create a label (0 images no longer allowed).
 - Requires at least 1 image to initiate extraction.
@@ -154,12 +154,12 @@ The label creation process follows a clear step-by-step workflow:
 
 ### File Upload
 
-#### User Story
+#### User Story - File Upload
 
 As an inspector, I want to upload label images, so that I can create a new label
 and prepare it for extraction.
 
-#### Requirements
+#### Requirements - File Upload
 
 - Can upload 1 to 5 images per label.
 - Supports drag-and-drop file upload.
@@ -213,12 +213,12 @@ and prepare it for extraction.
 
 ### Label Management
 
-#### User Story
+#### User Story - Label Management
 
 As an inspector, I want to view and manage labels to track progress and resume
 work, so that I can efficiently process multiple labels.
 
-#### Requirements
+#### Requirements - Label Management
 
 - Can view all labels.
 - Can filter/search labels by:
@@ -254,12 +254,12 @@ work, so that I can efficiently process multiple labels.
 
 ### Label Review
 
-#### User Story
+#### User Story - Label Review
 
 As an inspector, I want to review and correct label data, so that I can ensure
 accuracy before saving and updating product records.
 
-#### Requirements
+#### Requirements - Label Review
 
 - Can view data for labels ready for review.
 - Can review/correct fields one by one:

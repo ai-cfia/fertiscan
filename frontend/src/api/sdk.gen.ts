@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { HealthLivenessData, HealthLivenessResponses, HealthReadinessData, HealthReadinessResponses, LabelsCompleteLabelImageUploadData, LabelsCompleteLabelImageUploadErrors, LabelsCompleteLabelImageUploadResponses, LabelsCreateFertilizerLabelDataData, LabelsCreateFertilizerLabelDataErrors, LabelsCreateFertilizerLabelDataResponses, LabelsCreateLabelData, LabelsCreateLabelDataData, LabelsCreateLabelDataErrors, LabelsCreateLabelDataResponses, LabelsCreateLabelErrors, LabelsCreateLabelImageData, LabelsCreateLabelImageErrors, LabelsCreateLabelImageResponses, LabelsCreateLabelResponses, LabelsDeleteLabelData, LabelsDeleteLabelErrors, LabelsDeleteLabelImageData, LabelsDeleteLabelImageErrors, LabelsDeleteLabelImageResponses, LabelsDeleteLabelResponses, LabelsExtractFertilizerFieldsData, LabelsExtractFertilizerFieldsErrors, LabelsExtractFertilizerFieldsResponses, LabelsGetLabelImagePresignedDownloadUrlData, LabelsGetLabelImagePresignedDownloadUrlErrors, LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedUploadUrlData, LabelsGetLabelImagePresignedUploadUrlErrors, LabelsGetLabelImagePresignedUploadUrlResponses, LabelsReadFertilizerLabelDataData, LabelsReadFertilizerLabelDataErrors, LabelsReadFertilizerLabelDataMetaData, LabelsReadFertilizerLabelDataMetaErrors, LabelsReadFertilizerLabelDataMetaResponses, LabelsReadFertilizerLabelDataResponses, LabelsReadLabelData, LabelsReadLabelDataData, LabelsReadLabelDataErrors, LabelsReadLabelDataMetaData, LabelsReadLabelDataMetaErrors, LabelsReadLabelDataMetaResponses, LabelsReadLabelDataResponses, LabelsReadLabelErrors, LabelsReadLabelImageData, LabelsReadLabelImageErrors, LabelsReadLabelImageResponses, LabelsReadLabelImagesData, LabelsReadLabelImagesErrors, LabelsReadLabelImagesResponses, LabelsReadLabelResponses, LabelsReadLabelsData, LabelsReadLabelsErrors, LabelsReadLabelsResponses, LabelsUpdateFertilizerLabelDataData, LabelsUpdateFertilizerLabelDataErrors, LabelsUpdateFertilizerLabelDataMetaData, LabelsUpdateFertilizerLabelDataMetaErrors, LabelsUpdateFertilizerLabelDataMetaResponses, LabelsUpdateFertilizerLabelDataResponses, LabelsUpdateLabelData, LabelsUpdateLabelDataData, LabelsUpdateLabelDataErrors, LabelsUpdateLabelDataMetaData, LabelsUpdateLabelDataMetaErrors, LabelsUpdateLabelDataMetaResponses, LabelsUpdateLabelDataResponses, LabelsUpdateLabelErrors, LabelsUpdateLabelResponses, LabelsUpdateLabelReviewStatusData, LabelsUpdateLabelReviewStatusErrors, LabelsUpdateLabelReviewStatusResponses, LoginLoginAccessTokenData, LoginLoginAccessTokenErrors, LoginLoginAccessTokenResponses, LoginRecoverPasswordData, LoginRecoverPasswordErrors, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentErrors, LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordResponses, LoginResetPasswordData, LoginResetPasswordErrors, LoginResetPasswordResponses, LoginTestTokenData, LoginTestTokenResponses, PrivateCreateUserNoVerificationData, PrivateCreateUserNoVerificationErrors, PrivateCreateUserNoVerificationResponses, ProductsReadProductsData, ProductsReadProductsErrors, ProductsReadProductsResponses, UsersCreateUserData, UsersCreateUserErrors, UsersCreateUserResponses, UsersDeleteUserData, UsersDeleteUserErrors, UsersDeleteUserMeData, UsersDeleteUserMeResponses, UsersDeleteUserResponses, UsersReadUserByIdData, UsersReadUserByIdErrors, UsersReadUserByIdResponses, UsersReadUserMeData, UsersReadUserMeResponses, UsersReadUsersData, UsersReadUsersErrors, UsersReadUsersResponses, UsersUpdatePasswordMeData, UsersUpdatePasswordMeErrors, UsersUpdatePasswordMeResponses, UsersUpdateUserData, UsersUpdateUserErrors, UsersUpdateUserMeData, UsersUpdateUserMeErrors, UsersUpdateUserMeResponses, UsersUpdateUserResponses } from './types.gen';
+import type { DeleteApiV1LabelsByLabelIdData, DeleteApiV1LabelsByLabelIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdData, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1UsersByUserIdData, DeleteApiV1UsersByUserIdErrors, DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersMeData, DeleteApiV1UsersMeResponses, GetApiV1LabelsByLabelIdData, GetApiV1LabelsByLabelIdDataData, GetApiV1LabelsByLabelIdDataErrors, GetApiV1LabelsByLabelIdDataMetaData, GetApiV1LabelsByLabelIdDataMetaErrors, GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdErrors, GetApiV1LabelsByLabelIdFertilizerDataData, GetApiV1LabelsByLabelIdFertilizerDataErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaData, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdImagesByImageIdData, GetApiV1LabelsByLabelIdImagesByImageIdErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesData, GetApiV1LabelsByLabelIdImagesErrors, GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsData, GetApiV1LabelsErrors, GetApiV1LabelsResponses, GetApiV1ProductsData, GetApiV1ProductsErrors, GetApiV1ProductsResponses, GetApiV1UsersByUserIdData, GetApiV1UsersByUserIdErrors, GetApiV1UsersByUserIdResponses, GetApiV1UsersData, GetApiV1UsersErrors, GetApiV1UsersMeData, GetApiV1UsersMeResponses, GetApiV1UsersResponses, GetHealthzData, GetHealthzResponses, GetReadyzData, GetReadyzResponses, PatchApiV1LabelsByLabelIdData, PatchApiV1LabelsByLabelIdDataData, PatchApiV1LabelsByLabelIdDataErrors, PatchApiV1LabelsByLabelIdDataMetaData, PatchApiV1LabelsByLabelIdDataMetaErrors, PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdErrors, PatchApiV1LabelsByLabelIdFertilizerDataData, PatchApiV1LabelsByLabelIdFertilizerDataErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaData, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdReviewStatusData, PatchApiV1LabelsByLabelIdReviewStatusErrors, PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1UsersByUserIdData, PatchApiV1UsersByUserIdErrors, PatchApiV1UsersByUserIdResponses, PatchApiV1UsersMeData, PatchApiV1UsersMeErrors, PatchApiV1UsersMePasswordData, PatchApiV1UsersMePasswordErrors, PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMeResponses, PostApiV1LabelsByLabelIdDataData, PostApiV1LabelsByLabelIdDataErrors, PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdFertilizerDataData, PostApiV1LabelsByLabelIdFertilizerDataErrors, PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerExtractData, PostApiV1LabelsByLabelIdFertilizerExtractErrors, PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdImagesCompleteData, PostApiV1LabelsByLabelIdImagesCompleteErrors, PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesData, PostApiV1LabelsByLabelIdImagesErrors, PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsData, PostApiV1LabelsErrors, PostApiV1LabelsResponses, PostApiV1LoginAccessTokenData, PostApiV1LoginAccessTokenErrors, PostApiV1LoginAccessTokenResponses, PostApiV1LoginTestTokenData, PostApiV1LoginTestTokenResponses, PostApiV1PasswordRecoveryByEmailData, PostApiV1PasswordRecoveryByEmailErrors, PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailData, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PrivateUsersData, PostApiV1PrivateUsersErrors, PostApiV1PrivateUsersResponses, PostApiV1ResetPasswordData, PostApiV1ResetPasswordErrors, PostApiV1ResetPasswordResponses, PostApiV1UsersData, PostApiV1UsersErrors, PostApiV1UsersResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -24,12 +24,8 @@ export class HealthService {
      *
      * Liveness probe - is the application running?
      */
-    public static liveness<ThrowOnError extends boolean = false>(options?: Options<HealthLivenessData, ThrowOnError>) {
-        return (options?.client ?? client).get<HealthLivenessResponses, unknown, ThrowOnError>({
-            responseType: 'json',
-            url: '/healthz',
-            ...options
-        });
+    public static liveness<ThrowOnError extends boolean = false>(options?: Options<GetHealthzData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetHealthzResponses, unknown, ThrowOnError>({ url: '/healthz', ...options });
     }
 
     /**
@@ -37,12 +33,8 @@ export class HealthService {
      *
      * Readiness probe - can the application handle requests?
      */
-    public static readiness<ThrowOnError extends boolean = false>(options?: Options<HealthReadinessData, ThrowOnError>) {
-        return (options?.client ?? client).get<HealthReadinessResponses, unknown, ThrowOnError>({
-            responseType: 'json',
-            url: '/readyz',
-            ...options
-        });
+    public static readiness<ThrowOnError extends boolean = false>(options?: Options<GetReadyzData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetReadyzResponses, unknown, ThrowOnError>({ url: '/readyz', ...options });
     }
 }
 
@@ -52,10 +44,9 @@ export class LoginService {
      *
      * OAuth2 compatible token login, get an access token for future requests.
      */
-    public static loginAccessToken<ThrowOnError extends boolean = false>(options: Options<LoginLoginAccessTokenData, ThrowOnError>) {
-        return (options.client ?? client).post<LoginLoginAccessTokenResponses, LoginLoginAccessTokenErrors, ThrowOnError>({
+    public static loginAccessToken<ThrowOnError extends boolean = false>(options: Options<PostApiV1LoginAccessTokenData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LoginAccessTokenResponses, PostApiV1LoginAccessTokenErrors, ThrowOnError>({
             ...urlSearchParamsBodySerializer,
-            responseType: 'json',
             url: '/api/v1/login/access-token',
             ...options,
             headers: {
@@ -70,9 +61,8 @@ export class LoginService {
      *
      * Test access token.
      */
-    public static testToken<ThrowOnError extends boolean = false>(options?: Options<LoginTestTokenData, ThrowOnError>) {
-        return (options?.client ?? client).post<LoginTestTokenResponses, unknown, ThrowOnError>({
-            responseType: 'json',
+    public static testToken<ThrowOnError extends boolean = false>(options?: Options<PostApiV1LoginTestTokenData, ThrowOnError>) {
+        return (options?.client ?? client).post<PostApiV1LoginTestTokenResponses, unknown, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/login/test-token',
             ...options
@@ -84,12 +74,8 @@ export class LoginService {
      *
      * Password Recovery.
      */
-    public static recoverPassword<ThrowOnError extends boolean = false>(options: Options<LoginRecoverPasswordData, ThrowOnError>) {
-        return (options.client ?? client).post<LoginRecoverPasswordResponses, LoginRecoverPasswordErrors, ThrowOnError>({
-            responseType: 'json',
-            url: '/api/v1/password-recovery/{email}',
-            ...options
-        });
+    public static recoverPassword<ThrowOnError extends boolean = false>(options: Options<PostApiV1PasswordRecoveryByEmailData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryByEmailErrors, ThrowOnError>({ url: '/api/v1/password-recovery/{email}', ...options });
     }
 
     /**
@@ -97,9 +83,8 @@ export class LoginService {
      *
      * Reset password.
      */
-    public static resetPassword<ThrowOnError extends boolean = false>(options: Options<LoginResetPasswordData, ThrowOnError>) {
-        return (options.client ?? client).post<LoginResetPasswordResponses, LoginResetPasswordErrors, ThrowOnError>({
-            responseType: 'json',
+    public static resetPassword<ThrowOnError extends boolean = false>(options: Options<PostApiV1ResetPasswordData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1ResetPasswordResponses, PostApiV1ResetPasswordErrors, ThrowOnError>({
             url: '/api/v1/reset-password/',
             ...options,
             headers: {
@@ -114,9 +99,8 @@ export class LoginService {
      *
      * HTML Content for Password Recovery (dev/testing only).
      */
-    public static recoverPasswordHtmlContent<ThrowOnError extends boolean = false>(options: Options<LoginRecoverPasswordHtmlContentData, ThrowOnError>) {
-        return (options.client ?? client).post<LoginRecoverPasswordHtmlContentResponses, LoginRecoverPasswordHtmlContentErrors, ThrowOnError>({
-            responseType: 'text',
+    public static recoverPasswordHtmlContent<ThrowOnError extends boolean = false>(options: Options<PostApiV1PasswordRecoveryHtmlContentByEmailData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/password-recovery-html-content/{email}',
             ...options
@@ -130,9 +114,8 @@ export class UsersService {
      *
      * List all users (superuser only).
      */
-    public static readUsers<ThrowOnError extends boolean = false>(options?: Options<UsersReadUsersData, ThrowOnError>) {
-        return (options?.client ?? client).get<UsersReadUsersResponses, UsersReadUsersErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readUsers<ThrowOnError extends boolean = false>(options?: Options<GetApiV1UsersData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetApiV1UsersResponses, GetApiV1UsersErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users',
             ...options
@@ -144,9 +127,8 @@ export class UsersService {
      *
      * Create new user (superuser only).
      */
-    public static createUser<ThrowOnError extends boolean = false>(options: Options<UsersCreateUserData, ThrowOnError>) {
-        return (options.client ?? client).post<UsersCreateUserResponses, UsersCreateUserErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createUser<ThrowOnError extends boolean = false>(options: Options<PostApiV1UsersData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1UsersResponses, PostApiV1UsersErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users',
             ...options,
@@ -162,9 +144,8 @@ export class UsersService {
      *
      * Delete current user.
      */
-    public static deleteUserMe<ThrowOnError extends boolean = false>(options?: Options<UsersDeleteUserMeData, ThrowOnError>) {
-        return (options?.client ?? client).delete<UsersDeleteUserMeResponses, unknown, ThrowOnError>({
-            responseType: 'json',
+    public static deleteUserMe<ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1UsersMeData, ThrowOnError>) {
+        return (options?.client ?? client).delete<DeleteApiV1UsersMeResponses, unknown, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/me',
             ...options
@@ -176,9 +157,8 @@ export class UsersService {
      *
      * Get current user.
      */
-    public static readUserMe<ThrowOnError extends boolean = false>(options?: Options<UsersReadUserMeData, ThrowOnError>) {
-        return (options?.client ?? client).get<UsersReadUserMeResponses, unknown, ThrowOnError>({
-            responseType: 'json',
+    public static readUserMe<ThrowOnError extends boolean = false>(options?: Options<GetApiV1UsersMeData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetApiV1UsersMeResponses, unknown, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/me',
             ...options
@@ -190,9 +170,8 @@ export class UsersService {
      *
      * Update current user.
      */
-    public static updateUserMe<ThrowOnError extends boolean = false>(options: Options<UsersUpdateUserMeData, ThrowOnError>) {
-        return (options.client ?? client).patch<UsersUpdateUserMeResponses, UsersUpdateUserMeErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateUserMe<ThrowOnError extends boolean = false>(options: Options<PatchApiV1UsersMeData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1UsersMeResponses, PatchApiV1UsersMeErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/me',
             ...options,
@@ -208,9 +187,8 @@ export class UsersService {
      *
      * Update current user password.
      */
-    public static updatePasswordMe<ThrowOnError extends boolean = false>(options: Options<UsersUpdatePasswordMeData, ThrowOnError>) {
-        return (options.client ?? client).patch<UsersUpdatePasswordMeResponses, UsersUpdatePasswordMeErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updatePasswordMe<ThrowOnError extends boolean = false>(options: Options<PatchApiV1UsersMePasswordData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMePasswordErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/me/password',
             ...options,
@@ -226,9 +204,8 @@ export class UsersService {
      *
      * Delete user (superuser only).
      */
-    public static deleteUser<ThrowOnError extends boolean = false>(options: Options<UsersDeleteUserData, ThrowOnError>) {
-        return (options.client ?? client).delete<UsersDeleteUserResponses, UsersDeleteUserErrors, ThrowOnError>({
-            responseType: 'json',
+    public static deleteUser<ThrowOnError extends boolean = false>(options: Options<DeleteApiV1UsersByUserIdData, ThrowOnError>) {
+        return (options.client ?? client).delete<DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersByUserIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/{user_id}',
             ...options
@@ -240,9 +217,8 @@ export class UsersService {
      *
      * Get user by ID (superuser only).
      */
-    public static readUserById<ThrowOnError extends boolean = false>(options: Options<UsersReadUserByIdData, ThrowOnError>) {
-        return (options.client ?? client).get<UsersReadUserByIdResponses, UsersReadUserByIdErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readUserById<ThrowOnError extends boolean = false>(options: Options<GetApiV1UsersByUserIdData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1UsersByUserIdResponses, GetApiV1UsersByUserIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/{user_id}',
             ...options
@@ -254,9 +230,8 @@ export class UsersService {
      *
      * Update user (superuser only).
      */
-    public static updateUser<ThrowOnError extends boolean = false>(options: Options<UsersUpdateUserData, ThrowOnError>) {
-        return (options.client ?? client).patch<UsersUpdateUserResponses, UsersUpdateUserErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateUser<ThrowOnError extends boolean = false>(options: Options<PatchApiV1UsersByUserIdData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1UsersByUserIdResponses, PatchApiV1UsersByUserIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/users/{user_id}',
             ...options,
@@ -274,9 +249,8 @@ export class LabelsService {
      *
      * List labels with optional filters and sorting.
      */
-    public static readLabels<ThrowOnError extends boolean = false>(options?: Options<LabelsReadLabelsData, ThrowOnError>) {
-        return (options?.client ?? client).get<LabelsReadLabelsResponses, LabelsReadLabelsErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabels<ThrowOnError extends boolean = false>(options?: Options<GetApiV1LabelsData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetApiV1LabelsResponses, GetApiV1LabelsErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels',
             ...options
@@ -288,9 +262,8 @@ export class LabelsService {
      *
      * Create a new label.
      */
-    public static createLabel<ThrowOnError extends boolean = false>(options: Options<LabelsCreateLabelData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsCreateLabelResponses, LabelsCreateLabelErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createLabel<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsResponses, PostApiV1LabelsErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels',
             ...options,
@@ -306,8 +279,8 @@ export class LabelsService {
      *
      * Delete a label and its associated storage files.
      */
-    public static deleteLabel<ThrowOnError extends boolean = false>(options: Options<LabelsDeleteLabelData, ThrowOnError>) {
-        return (options.client ?? client).delete<LabelsDeleteLabelResponses, LabelsDeleteLabelErrors, ThrowOnError>({
+    public static deleteLabel<ThrowOnError extends boolean = false>(options: Options<DeleteApiV1LabelsByLabelIdData, ThrowOnError>) {
+        return (options.client ?? client).delete<DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1LabelsByLabelIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}',
             ...options
@@ -319,9 +292,8 @@ export class LabelsService {
      *
      * Get label detail with images (without presigned URLs).
      */
-    public static readLabel<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelResponses, LabelsReadLabelErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabel<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsByLabelIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}',
             ...options
@@ -333,9 +305,8 @@ export class LabelsService {
      *
      * Update Label (partial update, excludes review_status).
      */
-    public static updateLabel<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateLabelResponses, LabelsUpdateLabelErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateLabel<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}',
             ...options,
@@ -351,9 +322,8 @@ export class LabelsService {
      *
      * Update Label review_status (allowed even when completed).
      */
-    public static updateLabelReviewStatus<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelReviewStatusData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateLabelReviewStatusResponses, LabelsUpdateLabelReviewStatusErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateLabelReviewStatus<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdReviewStatusData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1LabelsByLabelIdReviewStatusErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/review-status',
             ...options,
@@ -369,9 +339,8 @@ export class LabelsService {
      *
      * Get label images (without presigned URLs).
      */
-    public static readLabelImages<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelImagesData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelImagesResponses, LabelsReadLabelImagesErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabelImages<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdImagesData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdImagesErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images',
             ...options
@@ -383,9 +352,8 @@ export class LabelsService {
      *
      * Create pending LabelImage record.
      */
-    public static createLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsCreateLabelImageData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsCreateLabelImageResponses, LabelsCreateLabelImageErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createLabelImage<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsByLabelIdImagesData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsByLabelIdImagesErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images',
             ...options,
@@ -401,8 +369,8 @@ export class LabelsService {
      *
      * Delete a label image, its storage file, and renumber remaining images.
      */
-    public static deleteLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsDeleteLabelImageData, ThrowOnError>) {
-        return (options.client ?? client).delete<LabelsDeleteLabelImageResponses, LabelsDeleteLabelImageErrors, ThrowOnError>({
+    public static deleteLabelImage<ThrowOnError extends boolean = false>(options: Options<DeleteApiV1LabelsByLabelIdImagesByImageIdData, ThrowOnError>) {
+        return (options.client ?? client).delete<DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/{image_id}',
             ...options
@@ -414,9 +382,8 @@ export class LabelsService {
      *
      * Get single label image (without presigned URL).
      */
-    public static readLabelImage<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelImageData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelImageResponses, LabelsReadLabelImageErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabelImage<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdImagesByImageIdData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesByImageIdErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/{image_id}',
             ...options
@@ -428,9 +395,8 @@ export class LabelsService {
      *
      * Complete upload by updating LabelImage status from pending to completed.
      */
-    public static completeLabelImageUpload<ThrowOnError extends boolean = false>(options: Options<LabelsCompleteLabelImageUploadData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsCompleteLabelImageUploadResponses, LabelsCompleteLabelImageUploadErrors, ThrowOnError>({
-            responseType: 'json',
+    public static completeLabelImageUpload<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsByLabelIdImagesCompleteData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesCompleteErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/complete',
             ...options,
@@ -446,9 +412,8 @@ export class LabelsService {
      *
      * Get presigned upload URL for a pending label image.
      */
-    public static getLabelImagePresignedUploadUrl<ThrowOnError extends boolean = false>(options: Options<LabelsGetLabelImagePresignedUploadUrlData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsGetLabelImagePresignedUploadUrlResponses, LabelsGetLabelImagePresignedUploadUrlErrors, ThrowOnError>({
-            responseType: 'json',
+    public static getLabelImagePresignedUploadUrl<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-upload-url',
             ...options
@@ -460,9 +425,8 @@ export class LabelsService {
      *
      * Get presigned download URL for a completed label image.
      */
-    public static getLabelImagePresignedDownloadUrl<ThrowOnError extends boolean = false>(options: Options<LabelsGetLabelImagePresignedDownloadUrlData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsGetLabelImagePresignedDownloadUrlResponses, LabelsGetLabelImagePresignedDownloadUrlErrors, ThrowOnError>({
-            responseType: 'json',
+    public static getLabelImagePresignedDownloadUrl<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url',
             ...options
@@ -474,9 +438,8 @@ export class LabelsService {
      *
      * Get LabelData for label.
      */
-    public static readLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelDataResponses, LabelsReadLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabelData<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdDataData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/data',
             ...options
@@ -488,9 +451,8 @@ export class LabelsService {
      *
      * Update LabelData (partial update).
      */
-    public static updateLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateLabelDataResponses, LabelsUpdateLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateLabelData<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdDataData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/data',
             ...options,
@@ -506,9 +468,8 @@ export class LabelsService {
      *
      * Create LabelData for label.
      */
-    public static createLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsCreateLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsCreateLabelDataResponses, LabelsCreateLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createLabelData<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsByLabelIdDataData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/data',
             ...options,
@@ -524,9 +485,8 @@ export class LabelsService {
      *
      * Get LabelDataFieldMeta records for label.
      */
-    public static readLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsReadLabelDataMetaData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadLabelDataMetaResponses, LabelsReadLabelDataMetaErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataMetaErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/data/meta',
             ...options
@@ -538,9 +498,8 @@ export class LabelsService {
      *
      * Update LabelDataFieldMeta (upsert).
      */
-    public static updateLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateLabelDataMetaData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateLabelDataMetaResponses, LabelsUpdateLabelDataMetaErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataMetaErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/data/meta',
             ...options,
@@ -556,9 +515,8 @@ export class LabelsService {
      *
      * Get FertilizerLabelData for label.
      */
-    public static readFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsReadFertilizerLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadFertilizerLabelDataResponses, LabelsReadFertilizerLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdFertilizerDataData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdFertilizerDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-data',
             ...options
@@ -570,9 +528,8 @@ export class LabelsService {
      *
      * Update FertilizerLabelData (partial update).
      */
-    public static updateFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateFertilizerLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateFertilizerLabelDataResponses, LabelsUpdateFertilizerLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdFertilizerDataData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdFertilizerDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-data',
             ...options,
@@ -588,9 +545,8 @@ export class LabelsService {
      *
      * Create FertilizerLabelData for label.
      */
-    public static createFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<LabelsCreateFertilizerLabelDataData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsCreateFertilizerLabelDataResponses, LabelsCreateFertilizerLabelDataErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createFertilizerLabelData<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsByLabelIdFertilizerDataData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerDataErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-data',
             ...options,
@@ -606,9 +562,8 @@ export class LabelsService {
      *
      * Get FertilizerLabelDataMeta records for label.
      */
-    public static readFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsReadFertilizerLabelDataMetaData, ThrowOnError>) {
-        return (options.client ?? client).get<LabelsReadFertilizerLabelDataMetaResponses, LabelsReadFertilizerLabelDataMetaErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdFertilizerDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-data/meta',
             ...options
@@ -620,9 +575,8 @@ export class LabelsService {
      *
      * Update FertilizerLabelDataMeta (upsert).
      */
-    public static updateFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<LabelsUpdateFertilizerLabelDataMetaData, ThrowOnError>) {
-        return (options.client ?? client).patch<LabelsUpdateFertilizerLabelDataMetaResponses, LabelsUpdateFertilizerLabelDataMetaErrors, ThrowOnError>({
-            responseType: 'json',
+    public static updateFertilizerLabelDataMeta<ThrowOnError extends boolean = false>(options: Options<PatchApiV1LabelsByLabelIdFertilizerDataMetaData, ThrowOnError>) {
+        return (options.client ?? client).patch<PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-data/meta',
             ...options,
@@ -638,9 +592,8 @@ export class LabelsService {
      *
      * Extract specified fields (or all fields if none specified) for fertilizer labels.
      */
-    public static extractFertilizerFields<ThrowOnError extends boolean = false>(options: Options<LabelsExtractFertilizerFieldsData, ThrowOnError>) {
-        return (options.client ?? client).post<LabelsExtractFertilizerFieldsResponses, LabelsExtractFertilizerFieldsErrors, ThrowOnError>({
-            responseType: 'json',
+    public static extractFertilizerFields<ThrowOnError extends boolean = false>(options: Options<PostApiV1LabelsByLabelIdFertilizerExtractData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdFertilizerExtractErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/labels/{label_id}/fertilizer-extract',
             ...options,
@@ -658,9 +611,8 @@ export class ProductsService {
      *
      * List products with optional filters.
      */
-    public static readProducts<ThrowOnError extends boolean = false>(options?: Options<ProductsReadProductsData, ThrowOnError>) {
-        return (options?.client ?? client).get<ProductsReadProductsResponses, ProductsReadProductsErrors, ThrowOnError>({
-            responseType: 'json',
+    public static readProducts<ThrowOnError extends boolean = false>(options?: Options<GetApiV1ProductsData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetApiV1ProductsResponses, GetApiV1ProductsErrors, ThrowOnError>({
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/products',
             ...options
@@ -674,9 +626,8 @@ export class PrivateService {
      *
      * Create user without email verification - for testing only.
      */
-    public static createUserNoVerification<ThrowOnError extends boolean = false>(options: Options<PrivateCreateUserNoVerificationData, ThrowOnError>) {
-        return (options.client ?? client).post<PrivateCreateUserNoVerificationResponses, PrivateCreateUserNoVerificationErrors, ThrowOnError>({
-            responseType: 'json',
+    public static createUserNoVerification<ThrowOnError extends boolean = false>(options: Options<PostApiV1PrivateUsersData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1PrivateUsersResponses, PostApiV1PrivateUsersErrors, ThrowOnError>({
             url: '/api/v1/private/users/',
             ...options,
             headers: {

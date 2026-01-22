@@ -1,4 +1,3 @@
-import type { AxiosError, AxiosResponse } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { client as apiClient } from "@/api/client.gen"
 import { useBackendStatus } from "@/stores/useBackendStatus"
@@ -27,38 +26,31 @@ export const setupBackendStatusInterceptor = (() => {
       return
     }
 
-    const axiosInstance = apiClient.instance
+    interceptorId = apiClient.interceptors.response.use((response) => {
+      // Mark backend as ready on successful requests (handles recovery from
+      // transient errors)
+      const store = useBackendStatus.getState()
+      if (!store.ready) {
+        store.setReady()
+      }
+      return response
+    })
 
-    if (!axiosInstance) {
-      console.warn("Could not find axios instance for interceptor setup")
-      return
-    }
+    apiClient.interceptors.error.use((error, response) => {
+      // Mark backend as unavailable only for specific errors (not 500 which
+      // is an app error)
+      const store = useBackendStatus.getState()
 
-    interceptorId = axiosInstance.interceptors.response.use(
-      (response: AxiosResponse) => {
-        // Mark backend as ready on successful requests (handles recovery from
-        // transient errors)
-        const store = useBackendStatus.getState()
-        if (!store.ready) {
-          store.setReady()
-        }
-        return response
-      },
-      (error: AxiosError) => {
-        // Mark backend as unavailable only for specific errors (not 500 which
-        // is an app error)
-        const store = useBackendStatus.getState()
+      if (
+        (response instanceof Response &&
+          BACKEND_UNAVAILABLE_STATUS.includes(response.status)) ||
+        (error instanceof Error &&
+          NETWORK_ERROR_CODES.some((code) => error.message.includes(code)))
+      ) {
+        store.setNotReady()
+      }
 
-        if (
-          (error.response?.status &&
-            BACKEND_UNAVAILABLE_STATUS.includes(error.response.status)) ||
-          (error.code && NETWORK_ERROR_CODES.includes(error.code))
-        ) {
-          store.setNotReady()
-        }
-
-        return Promise.reject(error)
-      },
-    )
+      return error
+    })
   }
 })()

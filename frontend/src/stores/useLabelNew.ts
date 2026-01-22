@@ -73,7 +73,7 @@ async function createLabel(productType: string): Promise<{ id: string }> {
   const response = await LabelsService.createLabel({
     body: { product_type: productType },
   })
-  if (response.status !== 201 || !response.data) {
+  if (response.response.status !== 201 || !response.data) {
     throw new Error("Failed to create label")
   }
   return { id: response.data.id }
@@ -95,7 +95,7 @@ function requestPresignedUrl(
     },
   })
     .then((createResponse) => {
-      if (createResponse.status !== 201 || !createResponse.data) {
+      if (createResponse.response.status !== 201 || !createResponse.data) {
         throw new Error("Failed to create label image")
       }
       return createResponse.data
@@ -106,7 +106,10 @@ function requestPresignedUrl(
         path: { label_id: labelId, image_id: imageDetail.id },
         query: { content_type: contentType },
       }).then((presignedResponse) => {
-        if (presignedResponse.status !== 200 || !presignedResponse.data) {
+        if (
+          presignedResponse.response.status !== 200 ||
+          !presignedResponse.data
+        ) {
           throw new Error("Failed to get presigned URL")
         }
         return {
@@ -168,7 +171,7 @@ async function completeUpload(
     body: { storage_file_path: storageFilePath },
   })
     .then((response) => {
-      if (response.status !== 200 || !response.data) {
+      if (response.response.status !== 200 || !response.data) {
         throw new Error("Failed to complete upload")
       }
       return response.data
