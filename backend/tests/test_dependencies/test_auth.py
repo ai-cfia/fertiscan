@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.core import security
-from app.dependencies import get_current_active_superuser, get_current_user
+from app.dependencies.auth import get_current_active_superuser, get_current_user
 from tests.factories.user import UserFactory
 
 
@@ -81,7 +81,11 @@ class TestGetCurrentUser:
         to_encode = {"exp": expire}
         token = cast(
             str,
-            jwt.encode(to_encode, settings.SECRET_KEY, algorithm=security.ALGORITHM),
+            jwt.encode(
+                to_encode,
+                settings.SECRET_KEY.get_secret_value(),
+                algorithm=security.ALGORITHM,
+            ),
         )
         with pytest.raises(HTTPException) as exc_info:
             get_current_user(session=db, token=token)

@@ -1,0 +1,157 @@
+"""Tests for label update endpoint."""
+
+from uuid import uuid4
+
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
+
+from app.config import settings
+from app.db.models.label import ReviewStatus
+from tests.factories.label import LabelFactory
+from tests.factories.product import ProductFactory
+from tests.factories.user import UserFactory
+from tests.utils.user import authentication_token_from_email
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestUpdateLabel:
+    """Tests for updating Label via PATCH /labels/{id}."""
+
+    def test_update_label_product_id(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test updating label product_id."""
+        user = UserFactory()
+        product1 = ProductFactory(created_by=user)
+        product2 = ProductFactory(created_by=user)
+        label = LabelFactory(
+            created_by=user, product=product1, review_status=ReviewStatus.not_started
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"product_id": str(product2.id)}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["product_id"] == str(product2.id)
+        assert data["id"] == str(label.id)
+
+    def test_update_label_empty_update(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test updating label with empty update data returns original."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(
+            created_by=user, product=product, review_status=ReviewStatus.not_started
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}",
+            json={},
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["review_status"] == "not_started"
+        assert data["id"] == str(label.id)
+
+    def test_update_label_not_found(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test updating non-existent label returns 404."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        invalid_id = uuid4()
+        update_data = {"product_id": str(product.id)}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{invalid_id}",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 404
+
+    def test_update_label_requires_authentication(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that updating label requires authentication."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        update_data = {"product_id": str(product.id)}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}",
+            json=update_data,
+        )
+        assert response.status_code == 401
+
+    def test_update_label_completed_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test updating completed label via PATCH /labels/{id} returns 400."""
+        user = UserFactory()
+        product1 = ProductFactory(created_by=user)
+        product2 = ProductFactory(created_by=user)
+        label = LabelFactory(
+            created_by=user, product=product1, review_status=ReviewStatus.completed
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"product_id": str(product2.id)}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 400
+        assert "completed" in response.json()["detail"].lower()
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestUpdateLabelReviewStatus:
+    """Tests for updating Label review_status via PATCH /labels/{id}/review-status."""
+
+    def test_update_label_review_status(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test updating label review_status."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["review_status"] == "completed"
+        assert data["id"] == str(label.id)

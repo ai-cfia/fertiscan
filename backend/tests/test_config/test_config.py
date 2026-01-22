@@ -107,6 +107,10 @@ class TestCheckDefaultSecret:
                 "POSTGRES_PASSWORD": "testpassword",
                 "FIRST_SUPERUSER": "admin@test.com",
                 "FIRST_SUPERUSER_PASSWORD": "adminpass",
+                "STORAGE_ENDPOINT": "localhost:9000",
+                "STORAGE_BUCKET_NAME": "testbucket",
+                "MINIO_ROOT_USER": "testuser",
+                "MINIO_ROOT_PASSWORD": "testpassword",
             },
         ):
             settings = Settings()  # type: ignore[call-arg]

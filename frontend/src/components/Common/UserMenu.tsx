@@ -10,9 +10,11 @@ import {
 } from "@mui/material"
 import { Link } from "@tanstack/react-router"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import useAuth from "@/hooks/useAuth"
 
 const UserMenu = () => {
+  const { t } = useTranslation("auth")
   const { user, logout } = useAuth()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -35,7 +37,8 @@ const UserMenu = () => {
       <Button
         onClick={handleClick}
         startIcon={<AccountCircleIcon />}
-        sx={{ color: "inherit" }}
+        color="primary"
+        variant="contained"
       >
         {displayName}
       </Button>
@@ -44,13 +47,13 @@ const UserMenu = () => {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText>My Profile</ListItemText>
+          <ListItemText>{t("userMenu.myProfile")}</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText>Log Out</ListItemText>
+          <ListItemText>{t("userMenu.logOut")}</ListItemText>
         </MenuItem>
       </Menu>
     </>

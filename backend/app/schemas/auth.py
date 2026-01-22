@@ -2,18 +2,18 @@
 
 from uuid import UUID
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class TokenPayload(SQLModel):
+class TokenPayload(BaseModel):
     sub: UUID | None = None
 
 
-class Token(SQLModel):
+class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
 
-class NewPassword(SQLModel):
+class NewPassword(BaseModel):
     token: str
     new_password: str

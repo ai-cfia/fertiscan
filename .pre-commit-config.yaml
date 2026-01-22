@@ -8,22 +8,18 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: backend/app/email-templates/build/.*
+        exclude: |
+          (?x)^(
+            backend/app/email-templates/build/.*|
+            frontend/sbom\.json|
+            backend/sbom\.json
+          )$
       - id: trailing-whitespace
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.2.2
-    hooks:
-      - id: ruff
-        args:
-          - --fix
-        files: ^backend/
-      - id: ruff-format
-        files: ^backend/
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.18.2
     hooks:
       - id: mypy
-        exclude: ^backend/(legacy|template|alembic)/
+        exclude: ^backend/(template|alembic)/
         files: ^backend/
         additional_dependencies:
           - types-passlib
@@ -38,8 +34,15 @@ repos:
           - jinja2
           - tenacity
           - aiosmtplib
+          - boto3-stubs[s3]
   - repo: local
     hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: bash -c 'cd backend && bash scripts/format.sh'
+        language: system
+        files: ^backend/.*\.py$
+        pass_filenames: false
       - id: alembic-check
         name: Alembic check
         entry: bash -c 'cd backend && uv run alembic check'

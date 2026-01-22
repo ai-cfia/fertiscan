@@ -1,6 +1,6 @@
 import factory
 
-from app.db.models.label import ExtractionStatus, Label, VerificationStatus
+from app.db.models.label import Label, ReviewStatus
 from tests.factories import BaseFactory
 
 
@@ -10,11 +10,15 @@ class LabelFactory(BaseFactory):
 
     product = factory.SubFactory("tests.factories.product.ProductFactory")
     created_by = factory.SubFactory("tests.factories.user.UserFactory")
-    extraction_status = ExtractionStatus.pending
-    verification_status = VerificationStatus.not_started
-    extraction_error_message = None
+    product_type = factory.SubFactory("tests.factories.product_type.ProductTypeFactory")
+    product_id = factory.LazyAttribute(
+        lambda obj: obj.product.id if obj.product else None
+    )
+    created_by_id = factory.LazyAttribute(lambda obj: obj.created_by.id)
+    product_type_id = factory.LazyAttribute(lambda obj: obj.product_type.id)
+    review_status = ReviewStatus.not_started
 
     class Params:
-        standalone = factory.Trait(product=None)
-        extracted = factory.Trait(extraction_status=ExtractionStatus.completed)
-        verified = factory.Trait(verification_status=VerificationStatus.completed)
+        standalone = factory.Trait(product=None, product_id=None)
+        in_progress = factory.Trait(review_status=ReviewStatus.in_progress)
+        completed = factory.Trait(review_status=ReviewStatus.completed)

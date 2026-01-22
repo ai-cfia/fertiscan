@@ -1,0 +1,90 @@
+{
+  "admin": {
+    "addUser": "Ajouter un utilisateur",
+    "pageTitle": "Administration - Inspection d'étiquettes",
+    "pagination": {
+      "loading": "Chargement...",
+      "page": "Page {{current}} sur {{total}}"
+    },
+    "table": {
+      "actions": "Actions",
+      "active": "Actif",
+      "email": "Courriel",
+      "fullName": "Nom complet",
+      "inactive": "Inactif",
+      "notAvailable": "N/D",
+      "role": "Rôle",
+      "status": "Statut",
+      "superuser": "Superutilisateur",
+      "user": "Utilisateur",
+      "you": "Vous"
+    },
+    "usersManagement": "Gestion des utilisateurs"
+  },
+  "app": {
+    "title": "Inspection d'étiquettes"
+  },
+  "aria": {
+    "navigation": "navigation",
+    "openDrawer": "ouvrir le tiroir"
+  },
+  "backend": {
+    "unavailable": "Serveur indisponible. Certaines fonctionnalités peuvent ne pas fonctionner. Veuillez réessayer plus tard."
+  },
+  "button": {
+    "clearAll": "Tout effacer",
+    "dismiss": "Ignorer",
+    "goBack": "Retour",
+    "label": "Étiquette",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "retry": "Réessayer",
+    "upload": "Téléverser des fichiers",
+    "uploading": "Téléversement en cours...",
+    "viewAll": "Voir tout"
+  },
+  "language": {
+    "en": {
+      "ariaLabel": "Passer à l'anglais"
+    },
+    "fr": {
+      "ariaLabel": "Passer au français"
+    },
+    "switcher": {
+      "ariaLabel": "Sélecteur de langue"
+    }
+  },
+  "notFound": {
+    "message": "La page que vous recherchez est introuvable.",
+    "title": "Oups !"
+  },
+  "products": {
+    "pageTitle": "Produits - Inspection d'étiquettes",
+    "title": "Produits"
+  },
+  "settings": {
+    "pageTitle": "Paramètres - Inspection d'étiquettes",
+    "sections": {
+      "appearance": "Apparence",
+      "changePassword": "Changer le mot de passe",
+      "deleteAccount": "Supprimer le compte",
+      "userInformation": "Informations utilisateur"
+    },
+    "tabs": {
+      "appearance": "Apparence",
+      "dangerZone": "Zone de danger",
+      "myProfile": "Mon profil",
+      "password": "Mot de passe"
+    },
+    "title": "Paramètres utilisateur"
+  },
+  "sidebar": {
+    "admin": "Administration",
+    "dashboard": "Tableau de bord",
+    "labels": "Étiquettes",
+    "loggedInAs": "Connecté en tant que : {{email}}",
+    "logOut": "Se déconnecter",
+    "products": "Produits",
+    "userSettings": "Paramètres utilisateur"
+  }
+}

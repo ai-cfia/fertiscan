@@ -30,7 +30,9 @@ async def send_email(email_to: EmailStr, email_data: EmailData) -> None:
         hostname=settings.SMTP_HOST,
         port=settings.SMTP_PORT,
         username=settings.SMTP_USER,
-        password=settings.SMTP_PASSWORD,
+        password=settings.SMTP_PASSWORD.get_secret_value()
+        if settings.SMTP_PASSWORD
+        else None,
         use_tls=settings.SMTP_SSL,
         start_tls=settings.SMTP_TLS and not settings.SMTP_SSL,
     )

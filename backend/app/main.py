@@ -4,9 +4,11 @@ import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
+from botocore.exceptions import ClientError
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
+from fastapi_pagination import add_pagination
 from sqlalchemy.exc import (
     DatabaseError,
     DataError,
@@ -24,6 +26,7 @@ from app.db.errors import (
     programming_error_handler,
 )
 from app.routes import api_router, health
+from app.storage.errors import storage_error_handler
 
 logging.basicConfig(
     level=settings.LOG_LEVEL,
@@ -66,5 +69,7 @@ app.add_exception_handler(OperationalError, operational_error_handler)
 app.add_exception_handler(ProgrammingError, programming_error_handler)
 app.add_exception_handler(DataError, data_error_handler)
 app.add_exception_handler(DatabaseError, database_error_handler)
+app.add_exception_handler(ClientError, storage_error_handler)
 app.include_router(health.router)
 app.include_router(api_router, prefix=settings.API_V1_STR)
+add_pagination(app)

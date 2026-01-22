@@ -14,10 +14,18 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
-import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
-import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutProductTypeRouteImport } from './routes/_layout/$productType'
+import { Route as LayoutProductTypeIndexRouteImport } from './routes/_layout/$productType/index'
+import { Route as LayoutProductTypeVerifyRouteImport } from './routes/_layout/$productType/verify'
+import { Route as LayoutProductTypeProductsRouteImport } from './routes/_layout/$productType/products'
+import { Route as LayoutProductTypeLabelsIndexRouteImport } from './routes/_layout/$productType/labels/index'
+import { Route as LayoutProductTypeLabelsNewRouteImport } from './routes/_layout/$productType/labels/new'
+import { Route as LayoutProductTypeLabelsLabelIdRouteImport } from './routes/_layout/$productType/labels/$labelId'
+import { Route as LayoutProductTypeLabelsLabelIdReviewRouteImport } from './routes/_layout/$productType/labels/$labelId/review'
+import { Route as LayoutProductTypeLabelsLabelIdFilesRouteImport } from './routes/_layout/$productType/labels/$labelId/files'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -43,19 +51,14 @@ const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutIndexRoute = LayoutIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutItemsRoute = LayoutItemsRouteImport.update({
-  id: '/items',
-  path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutAdminRoute = LayoutAdminRouteImport.update({
@@ -63,74 +66,172 @@ const LayoutAdminRoute = LayoutAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutProductTypeRoute = LayoutProductTypeRouteImport.update({
+  id: '/$productType',
+  path: '/$productType',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutProductTypeIndexRoute = LayoutProductTypeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
+const LayoutProductTypeVerifyRoute = LayoutProductTypeVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => LayoutProductTypeRoute,
+} as any)
+const LayoutProductTypeProductsRoute =
+  LayoutProductTypeProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsIndexRoute =
+  LayoutProductTypeLabelsIndexRouteImport.update({
+    id: '/labels/',
+    path: '/labels/',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsNewRoute =
+  LayoutProductTypeLabelsNewRouteImport.update({
+    id: '/labels/new',
+    path: '/labels/new',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdRoute =
+  LayoutProductTypeLabelsLabelIdRouteImport.update({
+    id: '/labels/$labelId',
+    path: '/labels/$labelId',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdReviewRoute =
+  LayoutProductTypeLabelsLabelIdReviewRouteImport.update({
+    id: '/review',
+    path: '/review',
+    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdFilesRoute =
+  LayoutProductTypeLabelsLabelIdFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
+    getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/$productType': typeof LayoutProductTypeRouteWithChildren
   '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  '/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/$productType/': typeof LayoutProductTypeIndexRoute
+  '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/$productType/labels/': typeof LayoutProductTypeLabelsIndexRoute
+  '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
-  '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
+  '/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/$productType': typeof LayoutProductTypeIndexRoute
+  '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/$productType/labels': typeof LayoutProductTypeLabelsIndexRoute
+  '/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/_layout/$productType': typeof LayoutProductTypeRouteWithChildren
   '/_layout/admin': typeof LayoutAdminRoute
-  '/_layout/items': typeof LayoutItemsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/$productType/products': typeof LayoutProductTypeProductsRoute
+  '/_layout/$productType/verify': typeof LayoutProductTypeVerifyRoute
+  '/_layout/$productType/': typeof LayoutProductTypeIndexRoute
+  '/_layout/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  '/_layout/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
+  '/_layout/$productType/labels/': typeof LayoutProductTypeLabelsIndexRoute
+  '/_layout/$productType/labels/$labelId/files': typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  '/_layout/$productType/labels/$labelId/review': typeof LayoutProductTypeLabelsLabelIdReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/$productType'
     | '/admin'
-    | '/items'
     | '/settings'
-    | '/'
+    | '/$productType/products'
+    | '/$productType/verify'
+    | '/$productType/'
+    | '/$productType/labels/$labelId'
+    | '/$productType/labels/new'
+    | '/$productType/labels/'
+    | '/$productType/labels/$labelId/files'
+    | '/$productType/labels/$labelId/review'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
     | '/admin'
-    | '/items'
     | '/settings'
-    | '/'
+    | '/$productType/products'
+    | '/$productType/verify'
+    | '/$productType'
+    | '/$productType/labels/$labelId'
+    | '/$productType/labels/new'
+    | '/$productType/labels'
+    | '/$productType/labels/$labelId/files'
+    | '/$productType/labels/$labelId/review'
   id:
     | '__root__'
+    | '/'
     | '/_layout'
     | '/login'
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/_layout/$productType'
     | '/_layout/admin'
-    | '/_layout/items'
     | '/_layout/settings'
-    | '/_layout/'
+    | '/_layout/$productType/products'
+    | '/_layout/$productType/verify'
+    | '/_layout/$productType/'
+    | '/_layout/$productType/labels/$labelId'
+    | '/_layout/$productType/labels/new'
+    | '/_layout/$productType/labels/'
+    | '/_layout/$productType/labels/$labelId/files'
+    | '/_layout/$productType/labels/$labelId/review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
@@ -171,29 +272,22 @@ declare module '@tanstack/react-router' {
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/': {
-      id: '/_layout/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_layout/settings': {
       id: '/_layout/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof LayoutSettingsRouteImport
-      parentRoute: typeof LayoutRoute
-    }
-    '/_layout/items': {
-      id: '/_layout/items'
-      path: '/items'
-      fullPath: '/items'
-      preLoaderRoute: typeof LayoutItemsRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/admin': {
@@ -203,27 +297,129 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/$productType': {
+      id: '/_layout/$productType'
+      path: '/$productType'
+      fullPath: '/$productType'
+      preLoaderRoute: typeof LayoutProductTypeRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/$productType/': {
+      id: '/_layout/$productType/'
+      path: '/'
+      fullPath: '/$productType/'
+      preLoaderRoute: typeof LayoutProductTypeIndexRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/verify': {
+      id: '/_layout/$productType/verify'
+      path: '/verify'
+      fullPath: '/$productType/verify'
+      preLoaderRoute: typeof LayoutProductTypeVerifyRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/products': {
+      id: '/_layout/$productType/products'
+      path: '/products'
+      fullPath: '/$productType/products'
+      preLoaderRoute: typeof LayoutProductTypeProductsRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/': {
+      id: '/_layout/$productType/labels/'
+      path: '/labels'
+      fullPath: '/$productType/labels/'
+      preLoaderRoute: typeof LayoutProductTypeLabelsIndexRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/new': {
+      id: '/_layout/$productType/labels/new'
+      path: '/labels/new'
+      fullPath: '/$productType/labels/new'
+      preLoaderRoute: typeof LayoutProductTypeLabelsNewRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/$labelId': {
+      id: '/_layout/$productType/labels/$labelId'
+      path: '/labels/$labelId'
+      fullPath: '/$productType/labels/$labelId'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/$labelId/review': {
+      id: '/_layout/$productType/labels/$labelId/review'
+      path: '/review'
+      fullPath: '/$productType/labels/$labelId/review'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdReviewRouteImport
+      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
+    }
+    '/_layout/$productType/labels/$labelId/files': {
+      id: '/_layout/$productType/labels/$labelId/files'
+      path: '/files'
+      fullPath: '/$productType/labels/$labelId/files'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdFilesRouteImport
+      parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
+    }
   }
 }
 
+interface LayoutProductTypeLabelsLabelIdRouteChildren {
+  LayoutProductTypeLabelsLabelIdFilesRoute: typeof LayoutProductTypeLabelsLabelIdFilesRoute
+  LayoutProductTypeLabelsLabelIdReviewRoute: typeof LayoutProductTypeLabelsLabelIdReviewRoute
+}
+
+const LayoutProductTypeLabelsLabelIdRouteChildren: LayoutProductTypeLabelsLabelIdRouteChildren =
+  {
+    LayoutProductTypeLabelsLabelIdFilesRoute:
+      LayoutProductTypeLabelsLabelIdFilesRoute,
+    LayoutProductTypeLabelsLabelIdReviewRoute:
+      LayoutProductTypeLabelsLabelIdReviewRoute,
+  }
+
+const LayoutProductTypeLabelsLabelIdRouteWithChildren =
+  LayoutProductTypeLabelsLabelIdRoute._addFileChildren(
+    LayoutProductTypeLabelsLabelIdRouteChildren,
+  )
+
+interface LayoutProductTypeRouteChildren {
+  LayoutProductTypeProductsRoute: typeof LayoutProductTypeProductsRoute
+  LayoutProductTypeVerifyRoute: typeof LayoutProductTypeVerifyRoute
+  LayoutProductTypeIndexRoute: typeof LayoutProductTypeIndexRoute
+  LayoutProductTypeLabelsLabelIdRoute: typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
+  LayoutProductTypeLabelsNewRoute: typeof LayoutProductTypeLabelsNewRoute
+  LayoutProductTypeLabelsIndexRoute: typeof LayoutProductTypeLabelsIndexRoute
+}
+
+const LayoutProductTypeRouteChildren: LayoutProductTypeRouteChildren = {
+  LayoutProductTypeProductsRoute: LayoutProductTypeProductsRoute,
+  LayoutProductTypeVerifyRoute: LayoutProductTypeVerifyRoute,
+  LayoutProductTypeIndexRoute: LayoutProductTypeIndexRoute,
+  LayoutProductTypeLabelsLabelIdRoute:
+    LayoutProductTypeLabelsLabelIdRouteWithChildren,
+  LayoutProductTypeLabelsNewRoute: LayoutProductTypeLabelsNewRoute,
+  LayoutProductTypeLabelsIndexRoute: LayoutProductTypeLabelsIndexRoute,
+}
+
+const LayoutProductTypeRouteWithChildren =
+  LayoutProductTypeRoute._addFileChildren(LayoutProductTypeRouteChildren)
+
 interface LayoutRouteChildren {
+  LayoutProductTypeRoute: typeof LayoutProductTypeRouteWithChildren
   LayoutAdminRoute: typeof LayoutAdminRoute
-  LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
-  LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutProductTypeRoute: LayoutProductTypeRouteWithChildren,
   LayoutAdminRoute: LayoutAdminRoute,
-  LayoutItemsRoute: LayoutItemsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
-  LayoutIndexRoute: LayoutIndexRoute,
 }
 
 const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   LoginRoute: LoginRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,

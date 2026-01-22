@@ -1,0 +1,90 @@
+{
+  "admin": {
+    "addUser": "Add User",
+    "pageTitle": "Admin - Label Inspection",
+    "pagination": {
+      "loading": "Loading...",
+      "page": "Page {{current}} of {{total}}"
+    },
+    "table": {
+      "actions": "Actions",
+      "active": "Active",
+      "email": "Email",
+      "fullName": "Full name",
+      "inactive": "Inactive",
+      "notAvailable": "N/A",
+      "role": "Role",
+      "status": "Status",
+      "superuser": "Superuser",
+      "user": "User",
+      "you": "You"
+    },
+    "usersManagement": "Users Management"
+  },
+  "app": {
+    "title": "Label Inspection"
+  },
+  "aria": {
+    "navigation": "navigation",
+    "openDrawer": "open drawer"
+  },
+  "backend": {
+    "unavailable": "Backend unavailable. Some features may not work. Please try again later."
+  },
+  "button": {
+    "clearAll": "Clear All",
+    "dismiss": "Dismiss",
+    "goBack": "Go Back",
+    "label": "Label",
+    "next": "Next",
+    "previous": "Previous",
+    "retry": "Retry",
+    "upload": "Upload Files",
+    "uploading": "Uploading...",
+    "viewAll": "View All"
+  },
+  "language": {
+    "en": {
+      "ariaLabel": "Switch to English"
+    },
+    "fr": {
+      "ariaLabel": "Switch to French"
+    },
+    "switcher": {
+      "ariaLabel": "Language switcher"
+    }
+  },
+  "notFound": {
+    "message": "The page you are looking for was not found.",
+    "title": "Oops!"
+  },
+  "products": {
+    "pageTitle": "Products - Label Inspection",
+    "title": "Products"
+  },
+  "settings": {
+    "pageTitle": "Settings - Label Inspection",
+    "sections": {
+      "appearance": "Appearance",
+      "changePassword": "Change Password",
+      "deleteAccount": "Delete Account",
+      "userInformation": "User Information"
+    },
+    "tabs": {
+      "appearance": "Appearance",
+      "dangerZone": "Danger zone",
+      "myProfile": "My profile",
+      "password": "Password"
+    },
+    "title": "User Settings"
+  },
+  "sidebar": {
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "labels": "Labels",
+    "loggedInAs": "Logged in as: {{email}}",
+    "logOut": "Log Out",
+    "products": "Products",
+    "userSettings": "User Settings"
+  }
+}

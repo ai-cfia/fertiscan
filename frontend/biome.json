@@ -7,9 +7,10 @@
       "!**/dist/**/*",
       "!**/node_modules/**/*",
       "!**/src/routeTree.gen.ts",
-      "!**/src/client/**/*",
+      "!**/src/api/**/*",
       "!**/playwright-report",
-      "!**/playwright.config.ts"
+      "!**/playwright.config.ts",
+      "!**/sbom.json"
     ]
   },
   "linter": {

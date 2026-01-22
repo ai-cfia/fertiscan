@@ -29,7 +29,7 @@ class TestProductLabelCascadeDelete:
         label2_id = label2.id
 
         db.delete(product)
-        db.commit()
+        db.flush()
 
         assert db.get(Product, product.id) is None
         assert db.get(Label, label1_id) is None
@@ -49,7 +49,7 @@ class TestProductLabelCascadeDelete:
         db.flush()
 
         db.delete(product)
-        db.commit()
+        db.flush()
 
         assert db.get(Product, product.id) is None
         label1_refreshed = db.get(Label, label1_id)
@@ -73,7 +73,7 @@ class TestLabelLabelImageCascadeDelete:
         image2_id = image2.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelImage, image1_id) is None
@@ -87,7 +87,7 @@ class TestLabelLabelImageCascadeDelete:
         label_data_id = label_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelData, label_data_id) is None
@@ -100,7 +100,7 @@ class TestLabelLabelImageCascadeDelete:
         fertilizer_data_id = fertilizer_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(FertilizerLabelData, fertilizer_data_id) is None
@@ -117,7 +117,7 @@ class TestLabelLabelImageCascadeDelete:
         fertilizer_data_id = fertilizer_data.id
 
         db.delete(label)
-        db.commit()
+        db.flush()
 
         assert db.get(Label, label.id) is None
         assert db.get(LabelImage, image1_id) is None
@@ -135,7 +135,7 @@ class TestLabelDataRelationships:
         db.flush()
         with pytest.raises(IntegrityError):
             LabelDataFactory(label=label)
-            db.commit()
+            db.flush()
 
     def test_label_data_relationship(self, db: Session) -> None:
         """Test Label-LabelData relationship works."""
@@ -156,9 +156,9 @@ class TestLabelDataRelationships:
                 "phone": "1-800-123-4567",
             }
         ]
-        label_data = LabelDataFactory(contacts_extracted=contacts)
-        assert label_data.contacts_extracted == contacts
-        assert label_data.contacts_extracted[0]["type"] == "manufacturer"
+        label_data = LabelDataFactory(contacts=contacts)
+        assert label_data.contacts == contacts
+        assert label_data.contacts[0]["type"] == "manufacturer"
 
 
 class TestFertilizerLabelDataRelationships:
@@ -171,7 +171,7 @@ class TestFertilizerLabelDataRelationships:
         db.flush()
         with pytest.raises(IntegrityError):
             FertilizerLabelDataFactory(label=label)
-            db.commit()
+            db.flush()
 
     def test_label_fertilizer_label_data_relationship(self, db: Session) -> None:
         """Test Label-FertilizerLabelData relationship works."""
@@ -187,41 +187,46 @@ class TestFertilizerLabelDataRelationships:
         from decimal import Decimal
 
         fertilizer_data = FertilizerLabelDataFactory(
-            n_extracted=Decimal("10.5"),
-            p_extracted=Decimal("20.75"),
-            k_extracted=Decimal("5.25"),
+            n=Decimal("10.5"),
+            p=Decimal("20.75"),
+            k=Decimal("5.25"),
         )
-        assert fertilizer_data.n_extracted == Decimal("10.5")
-        assert fertilizer_data.p_extracted == Decimal("20.75")
-        assert fertilizer_data.k_extracted == Decimal("5.25")
+        assert fertilizer_data.n == Decimal("10.5")
+        assert fertilizer_data.p == Decimal("20.75")
+        assert fertilizer_data.k == Decimal("5.25")
 
     def test_jsonb_ingredients_field(self, db: Session) -> None:
         """Test JSONB ingredients field can store and retrieve data."""
         ingredients = [
             {
-                "name": "Urea",
+                "name_en": "Urea",
+                "name_fr": "Urée",
                 "value": 46.0,
                 "unit": "%",
             }
         ]
-        fertilizer_data = FertilizerLabelDataFactory(
-            ingredients_en_extracted=ingredients
-        )
-        assert fertilizer_data.ingredients_en_extracted == ingredients
-        assert fertilizer_data.ingredients_en_extracted[0]["name"] == "Urea"
+        fertilizer_data = FertilizerLabelDataFactory(ingredients=ingredients)
+        assert fertilizer_data.ingredients == ingredients
+        assert fertilizer_data.ingredients[0]["name_en"] == "Urea"
 
     def test_jsonb_guaranteed_analysis_field(self, db: Session) -> None:
         """Test JSONB guaranteed_analysis field can store and retrieve data."""
         analysis = {
-            "title": "Minimum Guaranteed Analysis",
+            "title_en": "Minimum Guaranteed Analysis",
+            "title_fr": "Analyse Garantie Minimale",
             "is_minimum": True,
-            "nutrients": [{"name": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}],
+            "nutrients": [
+                {
+                    "name_en": "Total Nitrogen (N)",
+                    "name_fr": "Azote Total (N)",
+                    "value": 10.0,
+                    "unit": "%",
+                }
+            ],
         }
-        fertilizer_data = FertilizerLabelDataFactory(
-            guaranteed_analysis_en_extracted=analysis
-        )
-        assert fertilizer_data.guaranteed_analysis_en_extracted == analysis
+        fertilizer_data = FertilizerLabelDataFactory(guaranteed_analysis=analysis)
+        assert fertilizer_data.guaranteed_analysis == analysis
         assert (
-            fertilizer_data.guaranteed_analysis_en_extracted["title"]
+            fertilizer_data.guaranteed_analysis["title_en"]
             == "Minimum Guaranteed Analysis"
         )

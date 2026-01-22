@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-seed db-shell build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-seed backend-db-shell frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -42,6 +42,13 @@ help:
 	@echo "  db-reset                 - Reset database (drop schema and recreate)"
 	@echo "  db-seed                  - Seed database with initial data"
 	@echo "  db-shell                 - Open database shell (psql)"
+	@echo ""
+	@echo "Storage commands:"
+	@echo "  minio-start              - Start MinIO service (Docker Compose)"
+	@echo "  minio-stop               - Stop MinIO service"
+	@echo "  minio-status             - Check MinIO connection status"
+	@echo "  minio-reset              - Reset MinIO (remove volume and restart)"
+	@echo "  minio-console            - Open MinIO web console in browser"
 	@echo ""
 	@echo "Development tools:"
 	@echo "  generate-openapi-client  - Generate OpenAPI client from backend spec"
@@ -104,6 +111,20 @@ backend-alembic-check:
 	@$(MAKE) -C backend alembic-check
 backend-generate-sbom:
 	@$(MAKE) -C backend generate-sbom
+backend-db-start:
+	@$(MAKE) -C backend db-start
+backend-db-stop:
+	@$(MAKE) -C backend db-stop
+backend-db-status:
+	@$(MAKE) -C backend db-status
+backend-db-migrate:
+	@$(MAKE) -C backend db-migrate
+backend-db-reset:
+	@$(MAKE) -C backend db-reset
+backend-db-seed:
+	@$(MAKE) -C backend db-seed
+backend-db-shell:
+	@$(MAKE) -C backend db-shell
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
@@ -140,6 +161,7 @@ docker-up:
 	@echo "Starting all services with Docker Compose..."
 	@echo "Access the API at http://localhost:8000"
 	@echo "Access pgAdmin at http://localhost:5050"
+	@echo "Access MinIO console at http://localhost:9001"
 	@docker compose up --build
 
 docker-up-d:
@@ -167,35 +189,57 @@ docker-ps:
 	@docker compose ps
 
 db-start:
-	@echo "Starting database service..."
-	@docker compose up -d db
-	@echo "Waiting for database to be ready..."
-	@timeout 30 bash -c 'until docker compose exec -T db pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} > /dev/null 2>&1; do sleep 1; done' || true
-	@echo "Database is ready"
+	@$(MAKE) backend-db-start
 
 db-stop:
-	@echo "Stopping database service..."
-	@docker compose stop db
+	@$(MAKE) backend-db-stop
 
 db-status:
-	@echo "Checking database connection..."
-	@cd backend && uv run python -c "from app.db.session import get_engine; from sqlalchemy import text; engine = get_engine(); conn = engine.connect(); conn.execute(text('SELECT 1')); conn.close(); print('✓ Database connection successful')" || echo "✗ Database connection failed"
+	@$(MAKE) backend-db-status
 
 db-migrate:
-	@echo "Running database migrations..."
-	@$(MAKE) -C backend alembic-upgrade
+	@$(MAKE) backend-db-migrate
 
 db-reset:
-	@echo "Resetting database..."
-	@docker compose exec db sh -c 'psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+	@$(MAKE) backend-db-reset
 
 db-seed:
-	@echo "Seeding database with initial data..."
-	@cd backend && uv run python -m app.initial_data
+	@$(MAKE) backend-db-seed
 
 db-shell:
-	@echo "Opening database shell..."
-	@docker compose exec db psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb}
+	@$(MAKE) backend-db-shell
+
+minio-start:
+	@echo "Starting MinIO service..."
+	@docker compose up -d minio
+	@echo "Waiting for MinIO to be ready..."
+	@timeout 30 bash -c 'until docker compose exec -T minio curl -f http://localhost:9000/minio/health/live > /dev/null 2>&1; do sleep 1; done' || true
+	@echo "MinIO is ready"
+	@echo "Access MinIO console at http://localhost:9001"
+
+minio-stop:
+	@echo "Stopping MinIO service..."
+	@docker compose stop minio
+
+minio-status:
+	@echo "Checking MinIO connection..."
+	@docker compose exec -T minio curl -f http://localhost:9000/minio/health/live > /dev/null 2>&1 && echo "✓ MinIO connection successful" || echo "✗ MinIO connection failed"
+
+minio-reset:
+	@echo "Resetting MinIO..."
+	@docker compose stop minio
+	@docker compose rm -f minio
+	@docker volume rm fertiscan_minio-data 2>/dev/null || true
+	@docker compose up -d minio
+	@echo "Waiting for MinIO to be ready..."
+	@timeout 30 bash -c 'until docker compose exec -T minio curl -f http://localhost:9000/minio/health/live > /dev/null 2>&1; do sleep 1; done' || true
+	@echo "MinIO reset complete"
+
+minio-console:
+	@echo "Opening MinIO console in browser..."
+	@echo "Console URL: http://localhost:9001"
+	@echo "Login with credentials from backend/.env (STORAGE_ACCESS_KEY / STORAGE_SECRET_KEY)"
+	@command -v open > /dev/null && open http://localhost:9001 || command -v xdg-open > /dev/null && xdg-open http://localhost:9001 || echo "Please open http://localhost:9001 in your browser"
 
 build-all: build-backend build-frontend
 

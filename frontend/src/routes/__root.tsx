@@ -1,6 +1,7 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import React, { Suspense } from "react"
 import NotFound from "@/components/Common/NotFound"
+import { useBackendHealthCheck } from "@/hooks/useBackendHealthCheck"
 
 const loadDevtools = () =>
   Promise.all([
@@ -22,13 +23,17 @@ const TanStackDevtools = import.meta.env.PROD
   : React.lazy(loadDevtools)
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <Suspense>
-        <TanStackDevtools />
-      </Suspense>
-    </>
-  ),
+  component: () => {
+    useBackendHealthCheck()
+
+    return (
+      <>
+        <Outlet />
+        <Suspense>
+          <TanStackDevtools />
+        </Suspense>
+      </>
+    )
+  },
   notFoundComponent: () => <NotFound />,
 })

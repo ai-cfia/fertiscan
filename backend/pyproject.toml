@@ -15,6 +15,10 @@ dependencies = [
     "aiosmtplib",
     "tenacity",
     "psycopg[binary]",
+    "fastapi-pagination>=0.15.5",
+    "aioboto3",
+    "openai",
+    "instructor",
 ]
 
 [dependency-groups]
@@ -31,6 +35,8 @@ dev = [
     "pre-commit>=3.6.0",
     "types-jinja2>=2.11.0",
     "types-PyJWT>=1.7.1",
+    "boto3-stubs[s3]>=1.42.25",
+    "aiomoto[s3]>=0.1.0",
 ]
 sbom = [
     "cyclonedx-bom>=7.2.1",
@@ -45,7 +51,7 @@ packages = ["app"]
 
 [tool.ruff]
 target-version = "py312"
-exclude = ["alembic", "legacy"]
+exclude = ["alembic"]
 
 [tool.ruff.lint]
 select = [
@@ -72,7 +78,7 @@ keep-runtime-typing = true
 
 [tool.mypy]
 strict = true
-exclude = ["venv", ".venv", "alembic", "legacy"]
+exclude = ["venv", ".venv", "alembic"]
 plugins = ["sqlalchemy.ext.mypy.plugin"]
 
 [tool.coverage.run]
@@ -87,3 +93,4 @@ show_contexts = true
 
 [tool.pytest.ini_options]
 addopts = "-n auto --dist=loadfile"
+asyncio_mode = "auto"

@@ -78,8 +78,8 @@ separately or other options.
 
 ## Development Workflows
 
-Run backend and frontend separately when you need more control, want to
-debug specific services, or prefer running them outside Docker.
+Run backend and frontend separately when you need more control, want to debug
+specific services, or prefer running them outside Docker.
 
 ### Running Backend
 
@@ -204,7 +204,8 @@ cd ../frontend && npm run lint
 
 # Check formatting without changes
 cd backend && uv run ruff format app tests scripts --check
-cd ../frontend && npx biome check --no-errors-on-unmatched --files-ignore-unknown=true ./
+cd ../frontend && npx biome check --no-errors-on-unmatched \
+  --files-ignore-unknown=true ./
 ```
 
 ```bash

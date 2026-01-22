@@ -9,6 +9,7 @@ from sqlalchemy import Column, DateTime
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base
+from app.db.models.product_type import ProductType
 from app.db.models.user import User
 
 if TYPE_CHECKING:
@@ -18,14 +19,7 @@ if TYPE_CHECKING:
     from app.db.models.product import Product
 
 
-class ExtractionStatus(str, Enum):
-    pending = "pending"
-    in_progress = "in_progress"
-    completed = "completed"
-    failed = "failed"
-
-
-class VerificationStatus(str, Enum):
+class ReviewStatus(str, Enum):
     not_started = "not_started"
     in_progress = "in_progress"
     completed = "completed"
@@ -36,18 +30,18 @@ class Label(Base, table=True):
     product_id: UUID | None = Field(
         foreign_key="product.id", default=None, nullable=True, index=True
     )
+    product_type_id: UUID = Field(
+        foreign_key="producttype.id", nullable=False, index=True
+    )
     created_by_id: UUID = Field(foreign_key="user.id", nullable=False, index=True)
-    extraction_status: ExtractionStatus = Field(
-        default=ExtractionStatus.pending, index=True
-    )
-    verification_status: VerificationStatus = Field(
-        default=VerificationStatus.not_started, index=True
-    )
-    extraction_error_message: str | None = Field(default=None)
+    review_status: ReviewStatus = Field(default=ReviewStatus.not_started, index=True)
     product: Optional["Product"] = Relationship(back_populates="labels")
+    product_type: "ProductType" = Relationship(back_populates="labels")
     created_by: User = Relationship(back_populates="labels")
     images: list["LabelImage"] = Relationship(
-        back_populates="label", cascade_delete=True
+        back_populates="label",
+        cascade_delete=True,
+        sa_relationship_kwargs={"order_by": "LabelImage.sequence_order"},
     )
     label_data: Optional["LabelData"] = Relationship(
         back_populates="label", cascade_delete=True

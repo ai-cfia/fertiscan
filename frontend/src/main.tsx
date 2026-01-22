@@ -6,24 +6,38 @@ import {
 } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { AxiosError } from "axios"
+import { StatusCodes } from "http-status-codes"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { client } from "@/client/client.gen"
+import { client as apiClient } from "@/api/client.gen"
 import { SnackbarProvider } from "@/components/SnackbarProvider"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import { useConfig } from "@/stores/useConfig"
+import { setupBackendStatusInterceptor } from "@/utils/axiosInterceptors"
+import "./i18n" // Initialize i18next before React render
 import "./index.css"
 import { routeTree } from "./routeTree.gen"
 
-client.setConfig({
-  baseURL: import.meta.env.VITE_API_URL || "",
+// Initialize language store after i18next is initialized
+// Import the store to ensure it's initialized and synced with i18next
+import("@/stores/useLanguage")
+
+const { apiUrl } = useConfig.getState()
+apiClient.setConfig({
+  baseUrl: apiUrl,
   auth: () => localStorage.getItem("access_token") || "",
+  throwOnError: true,
 })
+
+setupBackendStatusInterceptor()
 
 const handleApiError = (error: Error) => {
   if (
     error instanceof AxiosError &&
     error.response &&
-    [401, 403].includes(error.response.status)
+    [StatusCodes.UNAUTHORIZED, StatusCodes.FORBIDDEN].includes(
+      error.response.status,
+    )
   ) {
     localStorage.removeItem("access_token")
     window.location.href = "/login"
@@ -31,7 +45,7 @@ const handleApiError = (error: Error) => {
   console.error("API error:", error)
 }
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: handleApiError,
   }),

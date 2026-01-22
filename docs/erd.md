@@ -4,16 +4,31 @@
 
 ```mermaid
 erDiagram
+    ProductType ||--o{ Product : "has"
+    ProductType ||--o{ Label : "has"
     Product ||--o{ Label : "has"
     Label ||--o{ LabelImage : "has"
     Label ||--o| LabelData : "has"
     Label ||--o| FertilizerLabelData : "has"
+    LabelData ||--o{ LabelDataFieldMeta : "has"
+    FertilizerLabelData ||--o{ FertilizerLabelDataMeta : "has"
     User ||--o{ Label : "creates"
     User ||--o{ Product : "creates"
+
+    ProductType {
+        uuid id PK
+        string code UK
+        string name_en "nullable"
+        string name_fr "nullable"
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
 
     Product {
         uuid id PK
         uuid created_by_id FK
+        uuid product_type_id FK
         string brand_name_en "nullable"
         string brand_name_fr "nullable"
         string registration_number UK
@@ -26,10 +41,9 @@ erDiagram
     Label {
         uuid id PK
         uuid product_id FK "nullable"
+        uuid product_type_id FK
         uuid created_by_id FK
-        string extraction_status
-        string verification_status
-        string extraction_error_message "nullable"
+        string review_status
         timestamp created_at
         timestamp updated_at
     }
@@ -38,58 +52,65 @@ erDiagram
         uuid id PK
         uuid label_id FK
         string file_path
+        string display_filename
         int sequence_order
+        string status
         timestamp created_at
+        timestamp updated_at
     }
 
     LabelData {
         uuid id PK
+        uuid label_id FK "unique"
+        string brand_name_en "nullable"
+        string brand_name_fr "nullable"
+        string product_name_en "nullable"
+        string product_name_fr "nullable"
+        jsonb contacts "nullable"
+        string registration_number "nullable"
+        string lot_number "nullable"
+        string net_weight "nullable"
+        string volume "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    LabelDataFieldMeta {
+        uuid id PK
         uuid label_id FK
-        string brand_name_en_extracted "nullable"
-        string brand_name_en_verified "nullable"
-        string brand_name_fr_extracted "nullable"
-        string brand_name_fr_verified "nullable"
-        string product_name_en_extracted "nullable"
-        string product_name_en_verified "nullable"
-        string product_name_fr_extracted "nullable"
-        string product_name_fr_verified "nullable"
-        jsonb contacts_extracted "nullable"
-        jsonb contacts_verified "nullable"
-        string registration_number_extracted "nullable"
-        string registration_number_verified "nullable"
-        string lot_number_extracted "nullable"
-        string lot_number_verified "nullable"
-        string net_weight_extracted "nullable"
-        string net_weight_verified "nullable"
-        string volume_extracted "nullable"
-        string volume_verified "nullable"
+        string field_name
+        boolean needs_review
+        string note "nullable"
+        boolean ai_generated
+        timestamp created_at
+        timestamp updated_at
     }
 
     FertilizerLabelData {
         uuid id PK
+        uuid label_id FK "unique"
+        decimal n "nullable"
+        decimal p "nullable"
+        decimal k "nullable"
+        jsonb ingredients "nullable"
+        jsonb guaranteed_analysis "nullable"
+        string caution_en "nullable"
+        string caution_fr "nullable"
+        string instructions_en "nullable"
+        string instructions_fr "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    FertilizerLabelDataMeta {
+        uuid id PK
         uuid label_id FK
-        decimal n_extracted "nullable"
-        decimal n_verified "nullable"
-        decimal p_extracted "nullable"
-        decimal p_verified "nullable"
-        decimal k_extracted "nullable"
-        decimal k_verified "nullable"
-        jsonb ingredients_en_extracted "nullable"
-        jsonb ingredients_en_verified "nullable"
-        jsonb ingredients_fr_extracted "nullable"
-        jsonb ingredients_fr_verified "nullable"
-        jsonb guaranteed_analysis_en_extracted "nullable"
-        jsonb guaranteed_analysis_en_verified "nullable"
-        jsonb guaranteed_analysis_fr_extracted "nullable"
-        jsonb guaranteed_analysis_fr_verified "nullable"
-        string caution_en_extracted "nullable"
-        string caution_en_verified "nullable"
-        string caution_fr_extracted "nullable"
-        string caution_fr_verified "nullable"
-        string instructions_en_extracted "nullable"
-        string instructions_en_verified "nullable"
-        string instructions_fr_extracted "nullable"
-        string instructions_fr_verified "nullable"
+        string field_name
+        boolean needs_review
+        string note "nullable"
+        boolean ai_generated
+        timestamp created_at
+        timestamp updated_at
     }
 
     User {
@@ -99,6 +120,8 @@ erDiagram
         string last_name "nullable"
         boolean is_active
         boolean is_superuser
+        string hashed_password "nullable"
+        string external_id UK "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -106,40 +129,27 @@ erDiagram
 
 ## Label Status State Machine
 
-Labels track state through two status fields (one per major step):
+Labels track state through a single review status field:
 
-### Extraction Status (`extraction_status`)
+### Review Status (`review_status`)
 
-- **`pending`**: Extraction not started
-- **`in_progress`**: Extraction running
-- **`completed`**: Extraction finished successfully
-- **`failed`**: Extraction failed
-
-**Transitions:** `pending` → `in_progress` → `completed` / `failed` → `pending`
-(retry)
-
-**Business Rules**:
-
-- Requires at least 1 image to initiate extraction
-- Supports manual data entry without extraction (0 images)
-- Partial extraction results are supported
-- Extraction error details stored in `extraction_error_message` when failed
-
-### Verification Status (`verification_status`)
-
-- **`not_started`**: Verification not begun
-- **`in_progress`**: User verifying/correcting data
-- **`completed`**: All fields verified
+- **`not_started`**: Review/editing workflow not begun
+- **`in_progress`**: User reviewing/editing data
+- **`completed`**: Review/editing workflow completed
 
 **Transitions:** `not_started` → `in_progress` → `completed` → `in_progress`
 (reversal)
 
 **Business Rules**:
 
-- Can start with extracted data OR manual entry
-- Field-level verification (incremental, persisted)
-- Completion requires all fields verified
-- Product update prompt after completion (optional)
+- Represents the review/editing workflow, not verification of extracted vs
+  verified values
+- Extraction is a user-initiated tool, not a workflow state
+- Data values are what matter, not extraction vs verification separation
+- Field-level review flags and notes available for user workflow
+  (indication/warning, don't block completion)
+- Can start with AI-extracted data OR manual entry
+- Manual entry allowed at any time
 
 ## Key Design Decisions
 
@@ -151,33 +161,51 @@ Labels track state through two status fields (one per major step):
 - **`FertilizerLabelData`**: Optional, only created for fertilizer labels
 - **`FertilizerLabelData` fields**: All nullable to support partial extraction
   and manual entry
-- **`Label.extraction_error_message`**: Nullable, only populated when extraction
-  fails
 
 ### Status Tracking
 
-- **Two status fields on Label**: `extraction_status`, `verification_status`
-- **LabelData creation**: Created lazily when extraction completes or when user
-  starts manual entry (not always present)
+- **Single status field on Label**: `review_status` (tracks review/editing
+  workflow)
+- **LabelData creation**: Created lazily when data is entered (via extraction or
+  manual entry)
 - **FertilizerLabelData creation**: Created lazily for fertilizer labels when
-  extraction completes or when user starts manual entry (optional, only for
-  fertilizer labels)
+  data is entered (optional, only for fertilizer labels)
 
-### Field Verification
+### Field-Level Metadata and Review
 
-- Verification means copying values from `*_extracted` fields to `*_verified`
-  fields
-- A field is considered verified when its `*_verified` field has a value
-  (non-null)
-- Users can verify fields individually, and verification state is saved
-  incrementally
-- Manual entry allowed at any time (regardless of extraction status)
+- **Metadata tables**: `LabelDataFieldMeta` and `FertilizerLabelDataMeta`
+  provide field-level metadata
+  - One row per field per label data record
+  - Fields: `needs_review` (bool), `note` (string, nullable), `ai_generated`
+    (bool)
+  - Unique constraint on `(label_id, field_name)`
+  - `LabelDataFieldMeta.label_id` references `LabelData.id`
+  - `FertilizerLabelDataMeta.label_id` references `FertilizerLabelData.id`
+- **Lazy creation**: Meta rows are created when `needs_review=True`, `note` is
+  added, or `ai_generated=True`
+- **Lazy deletion**: Meta rows are deleted when `needs_review=False`,
+  `note=None`, and `ai_generated=False`
+- **Default behavior**: If no meta row exists, treat as `needs_review=False`,
+  `note=None`, `ai_generated=False`
+- **Field values**: Single value fields (no `*_extracted`/`*_verified` pairs)
+- **Review flags**: Field-level review flags and notes for user workflow
+  (indication/warning, don't block completion)
+- **Manual entry**: Allowed at any time
 
 ### Image Management
 
 - Images stored in separate `LabelImage` entity with sequence order
+- Sequence order is 1-indexed (starts at 1, not 0)
 - Sequence order matters for extraction processing
-- Image changes cascade invalidate extraction and verification results
+- `display_filename`: Original filename from upload (for user display)
+- `status`: Upload status enum (`pending`, `completed`)
+- When an individual image is deleted, remaining images are renumbered to
+  maintain consecutive sequence order (1, 2, 3...)
+- Storage path structure: `{app_prefix}/labels/{label_id}/{uuid}.{ext}` where
+  app_prefix is configurable (e.g., "fertiscan") and UUID is the storage
+  filename
+- When a label is deleted, all associated storage files are also deleted
+  synchronously
 
 ### Product-Label Relationship
 
@@ -192,14 +220,29 @@ Labels track state through two status fields (one per major step):
   columns for English (`_en`) and French (`_fr`) to comply with Canadian
   labeling requirements
 - **Product entity**: `brand_name_en`, `brand_name_fr`, `name_en`, `name_fr`
-- **LabelData entity**: `brand_name_en_extracted/verified`,
-  `brand_name_fr_extracted/verified`, `product_name_en_extracted/verified`,
-  `product_name_fr_extracted/verified`
-- **FertilizerLabelData entity**: `caution_en_extracted/verified`,
-  `caution_fr_extracted/verified`, `instructions_en_extracted/verified`,
-  `instructions_fr_extracted/verified`
-- **French fields nullable**: French versions are nullable as not all products may
-  have French labels, but English is typically required
+- **LabelData entity**: `brand_name_en`, `brand_name_fr`, `product_name_en`,
+  `product_name_fr`
+- **FertilizerLabelData entity**: `caution_en`, `caution_fr`, `instructions_en`,
+  `instructions_fr`
+- **JSONB fields**: `ingredients` and `guaranteed_analysis` are single JSONB
+  fields (not separate `_en`/`_fr` versions)
+- **French fields nullable**: French versions are nullable as not all products
+  may have French labels, but English is typically required
+
+### Product Type Management
+
+- **ProductType table**: Central registry of product types (fertilizer,
+  pesticide, etc.)
+  - `code`: Unique identifier (e.g., "fertilizer", "pesticide")
+  - `name_en`/`name_fr`: Display names for i18n support (both nullable for
+    flexibility)
+  - `is_active`: Allows disabling types without deleting data
+- **Product.product_type_id**: Foreign key to ProductType (required)
+- **Label.product_type_id**: Foreign key to ProductType (required, even for
+  standalone labels)
+  - Labels always have an explicit product type, even when not linked to a
+    product
+  - Enables efficient filtering and querying by product type
 
 ### Product Type Separation
 
@@ -207,12 +250,23 @@ Labels track state through two status fields (one per major step):
   (brand_name_en/fr, product_name_en/fr, registration_number, lot_number,
   contacts, net_weight, volume)
 - **Fertilizer-specific fields in FertilizerLabelData**: NPK values (n, p, k),
-  ingredients_en/fr, guaranteed_analysis_en/fr, caution_en/fr, and
+  ingredients (JSONB), guaranteed_analysis (JSONB), caution_en/fr, and
   instructions_en/fr specific to fertilizer products
+- **Metadata tables**: Each label data table has a corresponding meta table
+  (`LabelDataFieldMeta`, `FertilizerLabelDataMeta`) for field-level review
+  flags, notes, and AI generation tracking
 - **Extensibility**: Other product types can have their own label data tables
-  (e.g., `PesticideLabelData`) following the same pattern
+  (e.g., `PesticideLabelData`) and corresponding meta tables following the same
+  pattern
 - **Optional relationship**: `FertilizerLabelData` is optional (0..1), only
   created when the label is for a fertilizer product
+- **Type-specific table mapping**: The ProductType table serves as a registry,
+  while type-specific tables (FertilizerLabelData, etc.) are created via code
+  and migrations. This mismatch is acceptable because:
+  - Product types are domain concepts requiring code changes anyway (UI,
+    validation, extraction logic)
+  - Type-specific tables provide queryability and type safety
+  - ProductType table enables efficient filtering without relationship checks
 
 ### Structured Data Fields (JSONB)
 
@@ -221,7 +275,7 @@ in the future for better queryability and structure.
 
 All JSONB fields follow a consistent structure. Expected formats:
 
-#### `contacts_extracted/verified` (in LabelData)
+#### `contacts` (in LabelData)
 
 Array of contact information objects:
 
@@ -253,58 +307,61 @@ Array of contact information objects:
 - `email` (string, optional): Email address
 - `website` (string, optional): Website URL
 
-#### `ingredients_en/fr_extracted/verified` (in FertilizerLabelData)
+#### `ingredients` (in FertilizerLabelData)
 
-Array of ingredient objects with optional nested sub-ingredients:
+Array of ingredient objects:
 
 ```json
 [
   {
-    "name": "Urea",
-    "value": 46.0,
+    "name_en": "Urea",
+    "name_fr": "Urée",
+    "value": "46.0",
     "unit": "%"
   },
   {
-    "name": "Total Nitrogen",
-    "value": 10.0,
-    "unit": "%",
-    "sub_ingredients": [
-      { "name": "Ammoniacal Nitrogen", "value": 5.0, "unit": "%" },
-      { "name": "Urea Nitrogen", "value": 5.0, "unit": "%" }
-    ]
+    "name_en": "Total Nitrogen",
+    "name_fr": "Azote Total",
+    "value": "10.0",
+    "unit": "%"
   }
 ]
 ```
 
 **Fields:**
 
-- `name` (string): Ingredient name
-- `value` (decimal): Ingredient value/percentage
-- `unit` (string): Unit of measurement (typically "%")
-- `sub_ingredients` (array, optional): Nested array of sub-ingredient objects
-  with same structure
+- `name_en` (string): Ingredient name in English as it appears on the label
+- `name_fr` (string, optional): Ingredient name in French as it appears on the
+  label
+- `value` (string): Ingredient percentage or amount
+- `unit` (string): Unit of measurement (typically "%", "ppm", "mg/kg", "g/kg",
+  "mm")
 
-#### `guaranteed_analysis_en/fr_extracted/verified` (in FertilizerLabelData)
+#### `guaranteed_analysis` (in FertilizerLabelData)
 
 Object containing analysis title and nutrients array:
 
 ```json
 {
-  "title": "Minimum Guaranteed Analysis",
+  "title_en": "Minimum Guaranteed Analysis",
+  "title_fr": "Analyse Garantie Minimale",
   "is_minimum": true,
   "nutrients": [
     {
-      "name": "Total Nitrogen (N)",
+      "name_en": "Total Nitrogen (N)",
+      "name_fr": "Azote Total (N)",
       "value": 10.0,
       "unit": "%"
     },
     {
-      "name": "Available Phosphate (P₂O₅)",
+      "name_en": "Available Phosphate (P₂O₅)",
+      "name_fr": "Phosphate Disponible (P₂O₅)",
       "value": 20.0,
       "unit": "%"
     },
     {
-      "name": "Calcium (Ca)",
+      "name_en": "Calcium (Ca)",
+      "name_fr": "Calcium (Ca)",
       "value": 1.0,
       "unit": "%"
     }
@@ -314,13 +371,15 @@ Object containing analysis title and nutrients array:
 
 **Fields:**
 
-- `title` (string): Section title from label ("Minimum Guaranteed Analysis" or
-  "Guaranteed Analysis")
+- `title_en` (string): Section title in English from label ("Minimum Guaranteed
+  Analysis" or "Guaranteed Analysis")
+- `title_fr` (string, optional): Section title in French from label
 - `is_minimum` (boolean): True if title contains "Minimum", false otherwise
 - `nutrients` (array): Array of nutrient objects, each containing:
-  - `name` (string): Nutrient name (e.g., "Total Nitrogen (N)")
+  - `name_en` (string): Nutrient name in English (e.g., "Total Nitrogen (N)")
+  - `name_fr` (string, optional): Nutrient name in French
   - `value` (decimal): Nutrient percentage value
-  - `unit` (string): Unit of measurement (typically "%")
+  - `unit` (string): Unit of measurement (typically "%", "ppm", "mg/kg", "g/kg")
 
 ### Audit Trail
 
@@ -329,303 +388,10 @@ Object containing analysis title and nutrients array:
 - **`Label.created_by_id`**: Tracks who created each label (audit trail)
 - Both fields are non-nullable to ensure complete audit trail
 
-## Example Records
+### User Authentication
 
-The following examples demonstrate realistic data records for each entity,
-showing different states and relationships.
-
-### User Record
-
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "email": "inspector@cfia.gc.ca",
-  "first_name": "Jane",
-  "last_name": "Smith",
-  "is_active": true,
-  "is_superuser": false,
-  "created_at": "2025-01-15T10:30:00Z",
-  "updated_at": "2025-01-15T10:30:00Z"
-}
-```
-
-### Product Record
-
-```json
-{
-  "id": "660e8400-e29b-41d4-a716-446655440001",
-  "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
-  "brand_name_en": "GreenGrow",
-  "brand_name_fr": "CroissanceVerte",
-  "registration_number": "12345-2024",
-  "name_en": "All-Purpose Fertilizer 10-20-10",
-  "name_fr": "Engrais polyvalent 10-20-10",
-  "created_at": "2025-01-20T14:15:00Z",
-  "updated_at": "2025-01-25T09:20:00Z"
-}
-```
-
-### Label Records (Different States)
-
-#### Label 1: Standalone, Extraction Pending
-
-```json
-{
-  "id": "770e8400-e29b-41d4-a716-446655440002",
-  "product_id": null,
-  "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
-  "extraction_status": "pending",
-  "verification_status": "not_started",
-  "extraction_error_message": null,
-  "created_at": "2025-01-27T08:00:00Z",
-  "updated_at": "2025-01-27T08:00:00Z"
-}
-```
-
-#### Label 2: Linked, Extraction Completed, Verification In Progress
-
-```json
-{
-  "id": "880e8400-e29b-41d4-a716-446655440003",
-  "product_id": "660e8400-e29b-41d4-a716-446655440001",
-  "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
-  "extraction_status": "completed",
-  "verification_status": "in_progress",
-  "extraction_error_message": null,
-  "created_at": "2025-01-27T08:05:00Z",
-  "updated_at": "2025-01-27T10:30:00Z"
-}
-```
-
-#### Label 3: Extraction Failed
-
-```json
-{
-  "id": "990e8400-e29b-41d4-a716-446655440004",
-  "product_id": null,
-  "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
-  "extraction_status": "failed",
-  "verification_status": "not_started",
-  "extraction_error_message": "OCR service timeout after 30s",
-  "created_at": "2025-01-27T09:00:00Z",
-  "updated_at": "2025-01-27T09:02:15Z"
-}
-```
-
-### LabelImage Records
-
-Images for Label 2 (linked, extraction completed):
-
-```json
-[
-  {
-    "id": "aa0e8400-e29b-41d4-a716-446655440005",
-    "label_id": "880e8400-e29b-41d4-a716-446655440003",
-    "file_path": "labels/880e8400/label_front.jpg",
-    "sequence_order": 1,
-    "created_at": "2025-01-27T08:05:00Z"
-  },
-  {
-    "id": "bb0e8400-e29b-41d4-a716-446655440006",
-    "label_id": "880e8400-e29b-41d4-a716-446655440003",
-    "file_path": "labels/880e8400/label_back.jpg",
-    "sequence_order": 2,
-    "created_at": "2025-01-27T08:05:00Z"
-  }
-]
-```
-
-### LabelData Record
-
-LabelData for Label 2, showing partial verification (some fields verified,
-others still only extracted):
-
-```json
-{
-  "id": "cc0e8400-e29b-41d4-a716-446655440007",
-  "label_id": "880e8400-e29b-41d4-a716-446655440003",
-  "brand_name_en_extracted": "GreenGrow",
-  "brand_name_en_verified": "GreenGrow",
-  "brand_name_fr_extracted": "CroissanceVerte",
-  "brand_name_fr_verified": "CroissanceVerte",
-  "product_name_en_extracted": "All-Purpose Fertilizer 10-20-10",
-  "product_name_en_verified": "All-Purpose Fertilizer 10-20-10",
-  "product_name_fr_extracted": "Engrais polyvalent 10-20-10",
-  "product_name_fr_verified": "Engrais polyvalent 10-20-10",
-  "contacts_extracted": [
-    {
-      "type": "manufacturer",
-      "name": "GreenGrow Industries Inc.",
-      "address": "123 Farm Road, Ottawa, ON K1A 0B1",
-      "phone": "1-613-555-0123",
-      "email": "info@greengrow.ca",
-      "website": "https://www.greengrow.ca"
-    }
-  ],
-  "contacts_verified": [
-    {
-      "type": "manufacturer",
-      "name": "GreenGrow Industries Inc.",
-      "address": "123 Farm Road, Ottawa, ON K1A 0B1",
-      "phone": "1-613-555-0123",
-      "email": "info@greengrow.ca",
-      "website": "https://www.greengrow.ca"
-    }
-  ],
-  "registration_number_extracted": "12345-2024",
-  "registration_number_verified": "12345-2024",
-  "lot_number_extracted": "LOT-2024-001",
-  "lot_number_verified": null,
-  "net_weight_extracted": "25 kg",
-  "net_weight_verified": null,
-  "volume_extracted": null,
-  "volume_verified": null
-}
-```
-
-### FertilizerLabelData Record
-
-FertilizerLabelData for Label 2, showing extracted values with some verified:
-
-```json
-{
-  "id": "dd0e8400-e29b-41d4-a716-446655440008",
-  "label_id": "880e8400-e29b-41d4-a716-446655440003",
-  "n_extracted": 10.0,
-  "n_verified": 10.0,
-  "p_extracted": 20.0,
-  "p_verified": 20.0,
-  "k_extracted": 10.0,
-  "k_verified": null,
-  "ingredients_en_extracted": [
-    {
-      "name": "Urea",
-      "value": 46.0,
-      "unit": "%"
-    },
-    {
-      "name": "Total Nitrogen",
-      "value": 10.0,
-      "unit": "%",
-      "sub_ingredients": [
-        {
-          "name": "Ammoniacal Nitrogen",
-          "value": 5.0,
-          "unit": "%"
-        },
-        {
-          "name": "Urea Nitrogen",
-          "value": 5.0,
-          "unit": "%"
-        }
-      ]
-    }
-  ],
-  "ingredients_en_verified": [
-    {
-      "name": "Urea",
-      "value": 46.0,
-      "unit": "%"
-    },
-    {
-      "name": "Total Nitrogen",
-      "value": 10.0,
-      "unit": "%",
-      "sub_ingredients": [
-        {
-          "name": "Ammoniacal Nitrogen",
-          "value": 5.0,
-          "unit": "%"
-        },
-        {
-          "name": "Urea Nitrogen",
-          "value": 5.0,
-          "unit": "%"
-        }
-      ]
-    }
-  ],
-  "ingredients_fr_extracted": null,
-  "ingredients_fr_verified": null,
-  "guaranteed_analysis_en_extracted": {
-    "title": "Minimum Guaranteed Analysis",
-    "is_minimum": true,
-    "nutrients": [
-      {
-        "name": "Total Nitrogen (N)",
-        "value": 10.0,
-        "unit": "%"
-      },
-      {
-        "name": "Available Phosphate (P₂O₅)",
-        "value": 20.0,
-        "unit": "%"
-      },
-      {
-        "name": "Soluble Potash (K₂O)",
-        "value": 10.0,
-        "unit": "%"
-      }
-    ]
-  },
-  "guaranteed_analysis_en_verified": {
-    "title": "Minimum Guaranteed Analysis",
-    "is_minimum": true,
-    "nutrients": [
-      {
-        "name": "Total Nitrogen (N)",
-        "value": 10.0,
-        "unit": "%"
-      },
-      {
-        "name": "Available Phosphate (P₂O₅)",
-        "value": 20.0,
-        "unit": "%"
-      },
-      {
-        "name": "Soluble Potash (K₂O)",
-        "value": 10.0,
-        "unit": "%"
-      }
-    ]
-  },
-  "guaranteed_analysis_fr_extracted": null,
-  "guaranteed_analysis_fr_verified": null,
-  "caution_en_extracted": "Keep out of reach of children. Avoid contact with skin and eyes.",
-  "caution_en_verified": "Keep out of reach of children. Avoid contact with skin and eyes.",
-  "caution_fr_extracted": null,
-  "caution_fr_verified": null,
-  "instructions_en_extracted": "Apply evenly to soil surface. Water thoroughly after application.",
-  "instructions_en_verified": null,
-  "instructions_fr_extracted": null,
-  "instructions_fr_verified": null
-}
-```
-
-### Complete Scenario: Product with Multiple Labels
-
-This example shows a Product with two associated Labels at different stages:
-
-- **Product**: `660e8400-e29b-41d4-a716-446655440001` (from Product Record above)
-- **Label A**: `880e8400-e29b-41d4-a716-446655440003` (extraction completed,
-  verification in progress) - linked to Product
-- **Label B**: `ee0e8400-e29b-41d4-a716-446655440009` (extraction completed,
-  verification completed) - also linked to same Product
-
-Label B (completed):
-
-```json
-{
-  "id": "ee0e8400-e29b-41d4-a716-446655440009",
-  "product_id": "660e8400-e29b-41d4-a716-446655440001",
-  "created_by_id": "550e8400-e29b-41d4-a716-446655440000",
-  "extraction_status": "completed",
-  "verification_status": "completed",
-  "extraction_error_message": null,
-  "created_at": "2025-01-26T14:00:00Z",
-  "updated_at": "2025-01-26T16:45:00Z"
-}
-```
-
-This demonstrates that multiple Labels can be linked to the same Product, each
-tracking different label versions or scans independently.
+- **`User.hashed_password`**: Bcrypt hashed password for local authentication
+  (nullable, for external auth users)
+- **`User.external_id`**: External identity provider subject identifier (OIDC
+  sub claim) (nullable, unique, for external auth users)
+- Users can authenticate via local password or external identity provider

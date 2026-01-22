@@ -37,7 +37,11 @@ def create_access_token(subject: str, expires_delta: timedelta) -> str:
     """Create JWT access token."""
     expire = datetime.now(UTC) + expires_delta
     to_encode = {"exp": expire, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(
+        to_encode,
+        settings.SECRET_KEY.get_secret_value(),
+        algorithm=ALGORITHM,
+    )
     return encoded_jwt if isinstance(encoded_jwt, str) else encoded_jwt.decode()
 
 
@@ -50,7 +54,11 @@ def generate_password_reset_token(
         expires_delta = timedelta(minutes=settings.EMAIL_RESET_TOKEN_EXPIRE_MINUTES)
     expire = datetime.now(UTC) + expires_delta
     to_encode = {"exp": expire, "sub": str(email)}
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(
+        to_encode,
+        settings.SECRET_KEY.get_secret_value(),
+        algorithm=ALGORITHM,
+    )
     return encoded_jwt if isinstance(encoded_jwt, str) else encoded_jwt.decode()
 
 
@@ -58,7 +66,11 @@ def generate_password_reset_token(
 def verify_password_reset_token(token: str) -> str | None:
     """Verify password reset token and return email."""
     try:
-        decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+        decoded = jwt.decode(
+            token,
+            settings.SECRET_KEY.get_secret_value(),
+            algorithms=[ALGORITHM],
+        )
         sub = decoded.get("sub")
         return str(sub) if sub is not None else None
     except jwt.InvalidTokenError:

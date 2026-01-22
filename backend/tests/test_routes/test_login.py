@@ -19,7 +19,7 @@ class TestAccessToken:
         """Test successful login with access token."""
         login_data = {
             "username": settings.FIRST_SUPERUSER,
-            "password": settings.FIRST_SUPERUSER_PASSWORD,
+            "password": settings.FIRST_SUPERUSER_PASSWORD.get_secret_value(),
         }
         response = client.post(
             f"{settings.API_V1_STR}/login/access-token", data=login_data

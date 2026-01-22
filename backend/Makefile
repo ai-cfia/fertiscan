@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check
+.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-seed db-shell
 
 help:
 	@echo "Available targets:"
@@ -35,6 +35,15 @@ help:
 	@echo "  alembic-stamp    - Stamp database with current revision (no migration)"
 	@echo "  alembic-heads    - Show all head revisions"
 	@echo "  alembic-check     - Check if migrations are needed"
+	@echo ""
+	@echo "Database Commands:"
+	@echo "  db-start         - Start database service (Docker Compose)"
+	@echo "  db-stop          - Stop database service"
+	@echo "  db-status        - Check database connection status"
+	@echo "  db-migrate       - Run database migrations"
+	@echo "  db-reset         - Reset database (drop schema and recreate)"
+	@echo "  db-seed          - Seed database with initial data"
+	@echo "  db-shell         - Open database shell (psql)"
 
 env:
 	@if [ ! -f .env ]; then \
@@ -55,10 +64,10 @@ start:
 	@echo "Starting application..."
 	$(MAKE) prestart
 	@echo "Launching development server..."
-	uv run fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 8000 --host 0.0.0.0
 
 dev:
-	uv run fastapi dev app/main.py --port 5000
+	uv run fastapi dev app/main.py --port 8000 --host 0.0.0.0
 
 prestart:
 	uv run bash scripts/prestart.sh
@@ -102,6 +111,37 @@ alembic-heads:
 
 alembic-check:
 	uv run alembic check
+
+db-start:
+	@echo "Starting database service..."
+	@docker compose up -d db
+	@echo "Waiting for database to be ready..."
+	@timeout 30 bash -c 'until docker compose exec -T db pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} > /dev/null 2>&1; do sleep 1; done' || true
+	@echo "Database is ready"
+
+db-stop:
+	@echo "Stopping database service..."
+	@docker compose stop db
+
+db-status:
+	@echo "Checking database connection..."
+	@uv run python -c "from app.db.session import get_engine; from sqlalchemy import text; engine = get_engine(); conn = engine.connect(); conn.execute(text('SELECT 1')); conn.close(); print('✓ Database connection successful')" || echo "✗ Database connection failed"
+
+db-migrate:
+	@echo "Running database migrations..."
+	@$(MAKE) alembic-upgrade
+
+db-reset:
+	@echo "Resetting database..."
+	@docker compose exec db sh -c 'psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+
+db-seed:
+	@echo "Seeding database with initial data..."
+	@uv run python -m app.db.init_db
+
+db-shell:
+	@echo "Opening database shell..."
+	@docker compose exec db psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb}
 
 test:
 	uv run bash scripts/test.sh
@@ -158,6 +198,7 @@ docker-test:
 
 generate-sbom:
 	bash scripts/generate-sbom.sh
+	rm -rf .venv && uv sync
 
 clean:
 	rm -rf app/email-templates/build/*.html
