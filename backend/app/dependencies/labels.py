@@ -265,11 +265,13 @@ LabelWithImageLimitEditDep = Annotated[Label, Depends(verify_label_image_limit_e
 
 def verify_label_has_product_for_completion(
     label: LabelDep, status_in: LabelReviewStatusUpdate
-    ) -> Label:
+) -> Label:
     """Verify label has associated product before allowing completion."""
     if status_in.review_status == ReviewStatus.completed and label.product_id is None:
         raise LabelNotLinkedToProduct()
     return label
 
-LabelWithProductForCompletionDep = Annotated[Label, Depends(verify_label_has_product_for_completion)]
 
+LabelWithProductForCompletionDep = Annotated[
+    Label, Depends(verify_label_has_product_for_completion)
+]

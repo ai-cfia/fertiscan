@@ -42,7 +42,29 @@ cd ../frontend && npm install
 make sync-all
 ```
 
-### 3. Set Up Environment
+### 3. Install Pre-commit Hooks
+
+Pre-commit hooks automatically check and format code before commits. Install
+them after dependencies are installed
+
+```bash
+make pre-commit-install
+```
+
+```bash
+# Or manually
+uv run --directory backend pre-commit install
+```
+
+This installs hooks that will run automatically on git commit. To run manually
+on all files:
+
+```bash
+make pre-commit
+# Or: uv run --directory backend pre-commit run --all-files
+```
+
+### 4. Set Up Environment
 
 ```bash
 # Backend: Create .env file manually
@@ -62,7 +84,7 @@ make env
 # Edit backend/.env and frontend/.env with your configuration
 ```
 
-### 4. Start Development Services
+### 5. Start Development Services
 
 ```bash
 docker compose watch
