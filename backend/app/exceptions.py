@@ -117,3 +117,10 @@ class ResourceConflict(HTTPException):
 class LabelCompleted(HTTPException):
     def __init__(self, detail: str = "Label is completed and cannot be edited") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class LabelNotLinkedToProduct(HTTPException):
+    def __init__(
+        self, detail: str = "Label must be associated with a product before completion"
+    ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)

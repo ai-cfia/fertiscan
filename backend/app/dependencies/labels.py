@@ -23,10 +23,11 @@ from app.exceptions import (
     InvalidProductType,
     LabelCompleted,
     LabelNotFound,
+    LabelNotLinkedToProduct,
     ProductTypeNotFound,
     ResourceConflict,
 )
-from app.schemas.label import LabelCreate
+from app.schemas.label import LabelCreate, LabelReviewStatusUpdate
 from app.storage import get_s3_client
 
 # Storage client dependency
@@ -260,3 +261,17 @@ def verify_label_image_limit_edit(
 
 
 LabelWithImageLimitEditDep = Annotated[Label, Depends(verify_label_image_limit_edit)]
+
+
+def verify_label_has_product_for_completion(
+    label: LabelDep, status_in: LabelReviewStatusUpdate
+) -> Label:
+    """Verify label has associated product before allowing completion."""
+    if status_in.review_status == ReviewStatus.completed and label.product_id is None:
+        raise LabelNotLinkedToProduct()
+    return label
+
+
+LabelWithProductForCompletionDep = Annotated[
+    Label, Depends(verify_label_has_product_for_completion)
+]
