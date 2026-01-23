@@ -46,9 +46,12 @@ export default function SafetyInformationSection({
     isFertilizer && hasImages && !disabled ? (
       isExtractingAny ? (
         <IconButton
+          component="div"
           size="small"
           disabled
           onClick={() => onExtractField(safetyFields)}
+          role="button"
+          tabIndex={0}
         >
           <CircularProgress size={16} />
         </IconButton>
@@ -60,9 +63,12 @@ export default function SafetyInformationSection({
           })}
         >
           <IconButton
+            component="div"
             size="small"
             onClick={() => onExtractField(safetyFields)}
             disabled={!hasImages}
+            role="button"
+            tabIndex={0}
           >
             <AutoAwesomeIcon sx={{ fontSize: 18 }} />
           </IconButton>

@@ -1948,6 +1948,1006 @@
     },
     {
       "type": "library",
+      "name": "aix-ppc64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/aix-ppc64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/aix-ppc64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/aix-ppc64/-/aix-ppc64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "1c7079d2976c057ea4e3b4b8bb983f09a2e3a92deac1a39513920bb2aeb88f2ce03212ee0ae67cac6cccf7286c0237e391b8143cccd910f6bb0c0a7bcb3eafb8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/aix-ppc64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "android-arm",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/android-arm@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/android-arm@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/android-arm/-/android-arm-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "905a9aebf51c6936c69bf36770df64cd538e0e38595bc7be1517527b2a567ba8f7de0cdc947b7094036cdba26bba93a7b65716981d2ef3ef07668f2ceed847be"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/android-arm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "android-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/android-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/android-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/android-arm64/-/android-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e397ee2a6009a719d05a2c4e182ad2faba3852f6f845ef7e51389e518d9ff0011cfadedde00699e9e509dc7bdaeddb6bc400161ed94416c5c530080d9c653db9"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/android-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "android-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/android-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/android-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/android-x64/-/android-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "2c11293b3d01b2030478781e9dfe5aaa69ff94b35315755fa16314a31f02b565982bd5f88e64335a3a06a0d6fc9660189a5fed43f62cbe6f2aeecceeec1a3145"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/android-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "darwin-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/darwin-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/darwin-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/darwin-x64/-/darwin-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fb710b77e9d3ce17d66f4ed5a25ec467ee4f4db27fbbbe270ba8afe3f970214f7d229e6eb98e90a087f41e7e26d87a15d2a727462bcddca4aa73e1720878e855"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/darwin-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "freebsd-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/freebsd-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/freebsd-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/freebsd-arm64/-/freebsd-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "ffc45f827b385c3f573925e5cd40dea46f0f5fe015587962625524148dcadc607ab6a6dd8d8a9d85c6f804a45dec2d018594a8682c61bfc913701adc6563fec6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/freebsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "freebsd-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/freebsd-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/freebsd-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/freebsd-x64/-/freebsd-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "1884e90fc74af42fabfb9c914ff50a553dfa87f0d02ce1ddc06570c281e27659c0d7af280f7bb103cefc5e5a1779b2b8525de00c1048bc474bee0a3d802505cd"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/freebsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-arm",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-arm@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-arm@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-arm/-/linux-arm-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "89e3080f4251658fd9782aec150dd8dcd947342a88853a6b25f0e0481dff96fe63259f055f786a3f25d685efa0bd2e4044c049db8d8f33e54dcff72d363fff78"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-arm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5bdfff902ae1ffa8a7f6b58805d29a32db934f3363ea349e1bf85a581003a8b2daf4ff0ee584910f3803e72f500689380189734ba0111e27c06fbe55e86ebbd1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-ia32",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-ia32@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-ia32@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-ia32/-/linux-ia32-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "548515e33f060fcaed49531f023d5a5c56a1b22ffeb5ca175cd6265e0cc848bf8a077f35bdb49335d7991c71c862a1725dca0486ef67e5c4fed39b51bf5deb97"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-ia32"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-loong64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-loong64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-loong64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-loong64/-/linux-loong64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "978adf8a225137bb13348fff7dfeb9cc9f73f14fa4eb37028342c02d4e62116cd8f9ad66559f22582d64e44b0d293859ed7090e985adb19f045989bbaf5504b2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-loong64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-mips64el",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-mips64el@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-mips64el@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-mips64el/-/linux-mips64el-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5346c4b8038bbcefc35857728131d663c0b4ebb157cfe51bcca8316215c2d1f0e27856b490322b6b514086c00045125bbc4caca3c680aaf3dd371cd6b92b419c"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-mips64el"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-ppc64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-ppc64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-ppc64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-ppc64/-/linux-ppc64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "373750fd7c2eeaf3d27ff1a476644db0e7c87921a787b9aeba776c588b6606c56932834f56933ad6a373015637a59d60973cc0c4b478d14c98336dde6830db61"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-ppc64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-riscv64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-riscv64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-riscv64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-riscv64/-/linux-riscv64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "ef3970f29dc802972c37b985c343b56753f2124e8f94a32ed7cae82267e5de24074e7affc807d8bfab388573e275b0e8236434a56fb9c5ea0ce1e4c20b451dad"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-riscv64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-s390x",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-s390x@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-s390x@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-s390x/-/linux-s390x-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7068f9c258be1be9e4550759a37fbb143282db9521e195703802ba034e87b2f82bf16a8106e3b2ff5b3e3d411dffa25efaf8df9bab2d5f492689be5bfced9893"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-s390x"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "linux-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/linux-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/linux-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cf71ff1d823d30cd074efde1419f357fe00a6fec84a0246551bcb517cd2f6d0e5777310cc98ffd88d9409a1aa204ac383095f07e0b21ec444610e86b3359e230"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/linux-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "netbsd-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/netbsd-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/netbsd-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/netbsd-arm64/-/netbsd-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c330b6e03c40be4f049b4d589955f28e5f7a32bf9e7133f23ae00302f8c683e7f20691a6c6672bd84e6db5fec89bc0f4b17662869c733b58acbacf0c7633025d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/netbsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "netbsd-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/netbsd-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/netbsd-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/netbsd-x64/-/netbsd-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d5843cc9b1a2db2217b30bba78dcc9b2b608185a67973116465ea247980c826b2b47415c3685759bd93db1cdcfb8fe6b5012ec84e67295cf67a92832988f9362"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/netbsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openbsd-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/openbsd-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/openbsd-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/openbsd-arm64/-/openbsd-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e59f83ccb0abab9c2653b44368c0ded835573119b6b530ef5f6294d78249541376093feaa2fed7562c7ce50a09a8796da6f00e65401cde7754e7a1d2316aeff2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/openbsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openbsd-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/openbsd-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/openbsd-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/openbsd-x64/-/openbsd-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "43bdc437321d3c5e636a9e30a8bb6c7e1f186d8499f10d309f1a653a56543b2672ec1e19296f035c65a04c266617c5560fb4dc8b0bf917836c45feaf62566daa"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/openbsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openharmony-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/openharmony-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/openharmony-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/openharmony-arm64/-/openharmony-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "6a36c7ac633f5e22beb1733427311b2407a7fb413e24c419da5e11478545c2f57d244111c7ea31b60929a0abf549ebe18dabcadb3d91787937da98f392d59b1a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/openharmony-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "sunos-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/sunos-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/sunos-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/sunos-x64/-/sunos-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "20f516fb2e15223b83567f8e3331dce455781ae6c8c0f9eccfab9b92f37c72e844a87f35368bc1e7721496b94190f3043f1bcd9dfefd306068cfcad9da25bc1c"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/sunos-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "win32-arm64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/win32-arm64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/win32-arm64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/win32-arm64/-/win32-arm64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4485515a2963580e82755bbcce459c46618fee2451208c2f84329e9bc50c0633ea9764d73393e40d5befaf332d8f557e5853c1e0aef390818ced5cd1b4592376"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/win32-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "win32-ia32",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/win32-ia32@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/win32-ia32@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/win32-ia32/-/win32-ia32-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d8147933c08f6e9b42d402b925b253d5f5ab1cbbde8f066274ac7750c485d1e70731afac9a18b5e9dac8ac212082482f881c0b61de67c2b14b4a5e4a868f7a45"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/win32-ia32"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "win32-x64",
+      "group": "@esbuild",
+      "version": "0.27.1",
+      "bom-ref": "frontend@0.0.0|@esbuild/win32-x64@0.27.1",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40esbuild/win32-x64@0.27.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.27.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7795fa44c62fead688ca64a4f0904ffa7c6ff03400318e80e7518f82eb2a2dd2bdc01cf9c16217cb52a34dc93a1e78c4f61a89cc945d93ed69fede6ca126c2b7"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@esbuild/win32-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "eslint-utils",
       "group": "@eslint-community",
       "version": "4.9.1",
@@ -2414,41 +3414,6 @@
     },
     {
       "type": "library",
-      "name": "client-axios",
-      "group": "@hey-api",
-      "version": "0.9.1",
-      "bom-ref": "frontend@0.0.0|@hey-api/client-axios@0.9.1",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/%40hey-api/client-axios@0.9.1",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/@hey-api/client-axios/-/client-axios-0.9.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "7efa4e767133eadbb94f6f8830d656de0f66019c1a5dabeaa6cbed6a911936d631c98b50fa542cf70267fd53e1644bdd5c05eef073d3091a667dad2dd5a4404c"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/@hey-api/client-axios"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "codegen-core",
       "group": "@hey-api",
       "version": "0.5.4",
@@ -2476,6 +3441,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@hey-api/codegen-core"
@@ -2512,6 +3481,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@hey-api/json-schema-ref-parser"
         }
@@ -2547,6 +3520,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@hey-api/openapi-ts"
         }
@@ -2580,6 +3557,10 @@
             }
           ],
           "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
             {
               "name": "cdx:npm:package:path",
               "value": "node_modules/@hey-api/openapi-ts/node_modules/semver"
@@ -2617,6 +3598,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@hey-api/types"
@@ -3689,6 +4674,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@jsdevtools/ono"
@@ -7062,6 +8051,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@types/json-schema"
         }
@@ -8324,6 +9317,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/ansi-colors"
         }
@@ -8549,6 +9546,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/argparse"
@@ -9028,6 +10029,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/bundle-name"
         }
@@ -9061,6 +10066,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/c12"
@@ -9096,6 +10105,10 @@
           ],
           "properties": [
             {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
               "name": "cdx:npm:package:path",
               "value": "node_modules/c12/node_modules/chokidar"
             }
@@ -9129,6 +10142,10 @@
             }
           ],
           "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
             {
               "name": "cdx:npm:package:path",
               "value": "node_modules/c12/node_modules/readdirp"
@@ -9464,6 +10481,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/citty"
         }
@@ -9722,6 +10743,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/color-support"
         }
@@ -9789,6 +10814,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/commander"
@@ -9862,6 +10891,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/confbox"
         }
@@ -9895,6 +10928,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/consola"
@@ -10250,6 +11287,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/default-browser-id"
         }
@@ -10283,6 +11324,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/default-browser"
@@ -10318,6 +11363,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/define-lazy-prop"
         }
@@ -10351,6 +11400,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/defu"
@@ -10419,6 +11472,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/destr"
@@ -10563,6 +11620,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/dotenv"
@@ -11558,6 +12619,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/exsolve"
         }
@@ -12366,6 +13431,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/giget"
@@ -13725,6 +14794,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/is-docker"
         }
@@ -13835,6 +14908,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/is-in-ssh"
         }
@@ -13868,6 +14945,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/is-inside-container"
@@ -14093,6 +15174,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/is-wsl"
         }
@@ -14199,6 +15284,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/jiti"
         }
@@ -14266,6 +15355,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/js-yaml"
@@ -15212,6 +16305,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/lodash"
         }
@@ -15758,6 +16855,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/node-fetch-native"
         }
@@ -15946,6 +17047,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/nypm"
         }
@@ -15979,6 +17084,10 @@
             }
           ],
           "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
             {
               "name": "cdx:npm:package:path",
               "value": "node_modules/nypm/node_modules/citty"
@@ -16088,6 +17197,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/ohash"
         }
@@ -16159,6 +17272,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/open"
@@ -16788,6 +17905,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/pathe"
         }
@@ -16821,6 +17942,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/perfect-debounce"
@@ -16927,6 +18052,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/pkg-types"
@@ -17116,6 +18245,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/powershell-utils"
@@ -17406,6 +18539,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/rc9"
@@ -18126,6 +19263,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/run-applescript"
@@ -19265,6 +20406,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/tinyexec"
         }
@@ -19500,166 +20645,6 @@
       "components": [
         {
           "type": "library",
-          "name": "aix-ppc64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/aix-ppc64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/aix-ppc64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/aix-ppc64/-/aix-ppc64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "1c7079d2976c057ea4e3b4b8bb983f09a2e3a92deac1a39513920bb2aeb88f2ce03212ee0ae67cac6cccf7286c0237e391b8143cccd910f6bb0c0a7bcb3eafb8"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/aix-ppc64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "android-arm",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/android-arm@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/android-arm/-/android-arm-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "905a9aebf51c6936c69bf36770df64cd538e0e38595bc7be1517527b2a567ba8f7de0cdc947b7094036cdba26bba93a7b65716981d2ef3ef07668f2ceed847be"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/android-arm"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "android-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/android-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/android-arm64/-/android-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "e397ee2a6009a719d05a2c4e182ad2faba3852f6f845ef7e51389e518d9ff0011cfadedde00699e9e509dc7bdaeddb6bc400161ed94416c5c530080d9c653db9"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/android-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "android-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/android-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/android-x64/-/android-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "2c11293b3d01b2030478781e9dfe5aaa69ff94b35315755fa16314a31f02b565982bd5f88e64335a3a06a0d6fc9660189a5fed43f62cbe6f2aeecceeec1a3145"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/android-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
           "name": "darwin-arm64",
           "group": "@esbuild",
           "version": "0.27.1",
@@ -19695,846 +20680,6 @@
             {
               "name": "cdx:npm:package:path",
               "value": "node_modules/tsx/node_modules/@esbuild/darwin-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "darwin-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/darwin-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/darwin-x64/-/darwin-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "fb710b77e9d3ce17d66f4ed5a25ec467ee4f4db27fbbbe270ba8afe3f970214f7d229e6eb98e90a087f41e7e26d87a15d2a727462bcddca4aa73e1720878e855"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/darwin-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "freebsd-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/freebsd-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/freebsd-arm64/-/freebsd-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "ffc45f827b385c3f573925e5cd40dea46f0f5fe015587962625524148dcadc607ab6a6dd8d8a9d85c6f804a45dec2d018594a8682c61bfc913701adc6563fec6"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/freebsd-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "freebsd-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/freebsd-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/freebsd-x64/-/freebsd-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "1884e90fc74af42fabfb9c914ff50a553dfa87f0d02ce1ddc06570c281e27659c0d7af280f7bb103cefc5e5a1779b2b8525de00c1048bc474bee0a3d802505cd"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/freebsd-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-arm",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-arm@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-arm/-/linux-arm-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "89e3080f4251658fd9782aec150dd8dcd947342a88853a6b25f0e0481dff96fe63259f055f786a3f25d685efa0bd2e4044c049db8d8f33e54dcff72d363fff78"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-arm"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "5bdfff902ae1ffa8a7f6b58805d29a32db934f3363ea349e1bf85a581003a8b2daf4ff0ee584910f3803e72f500689380189734ba0111e27c06fbe55e86ebbd1"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-ia32",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ia32@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-ia32@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-ia32/-/linux-ia32-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "548515e33f060fcaed49531f023d5a5c56a1b22ffeb5ca175cd6265e0cc848bf8a077f35bdb49335d7991c71c862a1725dca0486ef67e5c4fed39b51bf5deb97"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-ia32"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-loong64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-loong64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-loong64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-loong64/-/linux-loong64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "978adf8a225137bb13348fff7dfeb9cc9f73f14fa4eb37028342c02d4e62116cd8f9ad66559f22582d64e44b0d293859ed7090e985adb19f045989bbaf5504b2"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-loong64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-mips64el",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-mips64el@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-mips64el@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-mips64el/-/linux-mips64el-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "5346c4b8038bbcefc35857728131d663c0b4ebb157cfe51bcca8316215c2d1f0e27856b490322b6b514086c00045125bbc4caca3c680aaf3dd371cd6b92b419c"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-mips64el"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-ppc64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ppc64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-ppc64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-ppc64/-/linux-ppc64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "373750fd7c2eeaf3d27ff1a476644db0e7c87921a787b9aeba776c588b6606c56932834f56933ad6a373015637a59d60973cc0c4b478d14c98336dde6830db61"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-ppc64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-riscv64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-riscv64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-riscv64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-riscv64/-/linux-riscv64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "ef3970f29dc802972c37b985c343b56753f2124e8f94a32ed7cae82267e5de24074e7affc807d8bfab388573e275b0e8236434a56fb9c5ea0ce1e4c20b451dad"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-riscv64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-s390x",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-s390x@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-s390x@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-s390x/-/linux-s390x-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "7068f9c258be1be9e4550759a37fbb143282db9521e195703802ba034e87b2f82bf16a8106e3b2ff5b3e3d411dffa25efaf8df9bab2d5f492689be5bfced9893"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-s390x"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "linux-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/linux-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "cf71ff1d823d30cd074efde1419f357fe00a6fec84a0246551bcb517cd2f6d0e5777310cc98ffd88d9409a1aa204ac383095f07e0b21ec444610e86b3359e230"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/linux-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "netbsd-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/netbsd-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/netbsd-arm64/-/netbsd-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "c330b6e03c40be4f049b4d589955f28e5f7a32bf9e7133f23ae00302f8c683e7f20691a6c6672bd84e6db5fec89bc0f4b17662869c733b58acbacf0c7633025d"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/netbsd-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "netbsd-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/netbsd-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/netbsd-x64/-/netbsd-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "d5843cc9b1a2db2217b30bba78dcc9b2b608185a67973116465ea247980c826b2b47415c3685759bd93db1cdcfb8fe6b5012ec84e67295cf67a92832988f9362"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/netbsd-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "openbsd-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/openbsd-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/openbsd-arm64/-/openbsd-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "e59f83ccb0abab9c2653b44368c0ded835573119b6b530ef5f6294d78249541376093feaa2fed7562c7ce50a09a8796da6f00e65401cde7754e7a1d2316aeff2"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/openbsd-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "openbsd-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/openbsd-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/openbsd-x64/-/openbsd-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "43bdc437321d3c5e636a9e30a8bb6c7e1f186d8499f10d309f1a653a56543b2672ec1e19296f035c65a04c266617c5560fb4dc8b0bf917836c45feaf62566daa"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/openbsd-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "openharmony-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openharmony-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/openharmony-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/openharmony-arm64/-/openharmony-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "6a36c7ac633f5e22beb1733427311b2407a7fb413e24c419da5e11478545c2f57d244111c7ea31b60929a0abf549ebe18dabcadb3d91787937da98f392d59b1a"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/openharmony-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "sunos-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/sunos-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/sunos-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/sunos-x64/-/sunos-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "20f516fb2e15223b83567f8e3331dce455781ae6c8c0f9eccfab9b92f37c72e844a87f35368bc1e7721496b94190f3043f1bcd9dfefd306068cfcad9da25bc1c"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/sunos-x64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "win32-arm64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-arm64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/win32-arm64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/win32-arm64/-/win32-arm64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "4485515a2963580e82755bbcce459c46618fee2451208c2f84329e9bc50c0633ea9764d73393e40d5befaf332d8f557e5853c1e0aef390818ced5cd1b4592376"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/win32-arm64"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "win32-ia32",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-ia32@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/win32-ia32@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/win32-ia32/-/win32-ia32-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "d8147933c08f6e9b42d402b925b253d5f5ab1cbbde8f066274ac7750c485d1e70731afac9a18b5e9dac8ac212082482f881c0b61de67c2b14b4a5e4a868f7a45"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/win32-ia32"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "win32-x64",
-          "group": "@esbuild",
-          "version": "0.27.1",
-          "bom-ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-x64@0.27.1",
-          "scope": "optional",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40esbuild/win32-x64@0.27.1",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.27.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "7795fa44c62fead688ca64a4f0904ffa7c6ff03400318e80e7518f82eb2a2dd2bdc01cf9c16217cb52a34dc93a1e78c4f61a89cc945d93ed69fede6ca126c2b7"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/tsx/node_modules/@esbuild/win32-x64"
             }
           ]
         },
@@ -20682,6 +20827,10 @@
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/typescript"
@@ -21281,6 +21430,10 @@
       ],
       "properties": [
         {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
           "name": "cdx:npm:package:path",
           "value": "node_modules/wsl-utils"
         }
@@ -21554,7 +21707,6 @@
         "frontend@0.0.0|@emotion/styled@11.14.1",
         "frontend@0.0.0|@eslint/js@9.39.2",
         "frontend@0.0.0|@fontsource/roboto@5.2.9",
-        "frontend@0.0.0|@hey-api/client-axios@0.9.1",
         "frontend@0.0.0|@hey-api/openapi-ts@0.90.8",
         "frontend@0.0.0|@mui/icons-material@7.3.7",
         "frontend@0.0.0|@mui/material@7.3.7",
@@ -21912,6 +22064,81 @@
       "ref": "frontend@0.0.0|@emotion/weak-memoize@0.4.0"
     },
     {
+      "ref": "frontend@0.0.0|@esbuild/aix-ppc64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/android-arm@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/android-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/android-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/darwin-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/freebsd-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/freebsd-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-arm@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-ia32@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-loong64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-mips64el@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-ppc64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-riscv64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-s390x@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/linux-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/netbsd-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/netbsd-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/openbsd-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/openbsd-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/openharmony-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/sunos-x64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/win32-arm64@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/win32-ia32@0.27.1"
+    },
+    {
+      "ref": "frontend@0.0.0|@esbuild/win32-x64@0.27.1"
+    },
+    {
       "ref": "frontend@0.0.0|@eslint-community/eslint-utils@4.9.1",
       "dependsOn": [
         "frontend@0.0.0|@eslint-community/eslint-utils@4.9.1|eslint-visitor-keys@3.4.3",
@@ -21976,13 +22203,6 @@
     },
     {
       "ref": "frontend@0.0.0|@fontsource/roboto@5.2.9"
-    },
-    {
-      "ref": "frontend@0.0.0|@hey-api/client-axios@0.9.1",
-      "dependsOn": [
-        "frontend@0.0.0|@hey-api/openapi-ts@0.90.8",
-        "frontend@0.0.0|axios@1.13.2"
-      ]
     },
     {
       "ref": "frontend@0.0.0|@hey-api/codegen-core@0.5.4",
@@ -24526,112 +24746,37 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/aix-ppc64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/android-x64@0.27.1"
-    },
-    {
       "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ia32@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-loong64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-mips64el@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ppc64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-riscv64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-s390x@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/openharmony-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/sunos-x64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-arm64@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-ia32@0.27.1"
-    },
-    {
-      "ref": "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-x64@0.27.1"
     },
     {
       "ref": "frontend@0.0.0|tsx@4.21.0|esbuild@0.27.1",
       "dependsOn": [
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/aix-ppc64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/android-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/android-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/freebsd-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ia32@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-loong64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-mips64el@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-ppc64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-riscv64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-s390x@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/linux-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/netbsd-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/openbsd-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/openharmony-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/sunos-x64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-arm64@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-ia32@0.27.1",
-        "frontend@0.0.0|tsx@4.21.0|@esbuild/win32-x64@0.27.1"
+        "frontend@0.0.0|@esbuild/aix-ppc64@0.27.1",
+        "frontend@0.0.0|@esbuild/android-arm@0.27.1",
+        "frontend@0.0.0|@esbuild/android-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/android-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/darwin-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/freebsd-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/freebsd-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-arm@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-ia32@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-loong64@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-mips64el@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-ppc64@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-riscv64@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-s390x@0.27.1",
+        "frontend@0.0.0|@esbuild/linux-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/netbsd-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/netbsd-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/openbsd-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/openbsd-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/openharmony-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/sunos-x64@0.27.1",
+        "frontend@0.0.0|@esbuild/win32-arm64@0.27.1",
+        "frontend@0.0.0|@esbuild/win32-ia32@0.27.1",
+        "frontend@0.0.0|@esbuild/win32-x64@0.27.1",
+        "frontend@0.0.0|tsx@4.21.0|@esbuild/darwin-arm64@0.27.1"
       ]
     },
     {

@@ -107,7 +107,7 @@ export default function LabelDataNameValueList<
       name_en: "",
       name_fr: "",
       value: "",
-      unit: "%",
+      unit: "",
     } as Parameters<typeof append>[0])
   }
   return (
