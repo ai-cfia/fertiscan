@@ -24,7 +24,7 @@ import("@/stores/useLanguage")
 
 const { apiUrl } = useConfig.getState()
 apiClient.setConfig({
-  baseUrl: apiUrl,
+  baseURL: apiUrl,
   auth: () => localStorage.getItem("access_token") || "",
   throwOnError: true,
 })

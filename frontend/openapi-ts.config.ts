@@ -29,5 +29,6 @@ export default defineConfig({
       name: "@hey-api/schemas",
       type: "json",
     },
+    "@hey-api/client-axios",
   ],
 })

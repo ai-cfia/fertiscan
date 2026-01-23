@@ -15,7 +15,9 @@ import {
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router"
 import { AxiosError } from "axios"
+import { StatusCodes } from "http-status-codes"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { LabelsService } from "@/api"
 import ImageCarousel from "@/components/Common/ImageCarousel"
@@ -25,16 +27,17 @@ import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysis
 import IngredientsSection from "@/components/LabelData/IngredientsSection"
 import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
 import SafetyInformationSection from "@/components/LabelData/SafetyInformationSection"
-import { useLabelDataEffects } from "@/hooks/useLabelDataEffects"
-import { useLabelDataForm } from "@/hooks/useLabelDataForm"
-import { useLabelDataMutations } from "@/hooks/useLabelDataMutations"
 import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useLabelDataStore } from "@/stores/useLabelData"
-import { getErrorMessage } from "@/utils/labelDataErrors"
+import {
+  getErrorMessage,
+  isAxiosErrorWithStatus,
+} from "@/utils/labelDataErrors"
 import {
   getFieldMeta,
   isCommonFieldForReview,
+  transformBackendDataToFormValues,
   useHasImages,
   useLabelDataMetaMap,
 } from "@/utils/labelDataHelpers"
@@ -93,34 +96,50 @@ function LabelData() {
   const {
     isExtracting: getIsExtracting,
     isFieldExtracting: getIsFieldExtracting,
+    getAccordionState,
+    setAccordionExpanded,
   } = useLabelDataStore()
-  const queries = useLabelDataQueries(labelId, isFertilizer)
+  const { clearActions } = useAppBarActionsStore()
+  const [loadError, setLoadError] = useState<Error | null>(null)
+  const form = useForm({
+    defaultValues: transformBackendDataToFormValues(undefined, undefined),
+  })
   const {
     label,
-    isLoadingLabel,
-    labelData: _labelData,
-    isLoadingData,
-    isLabelDataError,
-    labelDataError,
-    fertilizerData: _fertilizerData,
-    isLoadingFertilizerData,
-    isFertilizerDataError,
-    fertilizerDataError,
-    labelDataMeta: _labelDataMeta,
-    isLoadingMeta,
-    isLabelDataMetaError,
-    labelDataMetaError,
-    fertilizerDataMeta: _fertilizerDataMeta,
-    isLoadingFertilizerMeta,
-    isFertilizerDataMetaError,
-    fertilizerDataMetaError,
-  } = queries
-  const labelData = _labelData || {}
-  const fertilizerData = _fertilizerData || {}
-  const { form } = useLabelDataForm(labelData, fertilizerData)
+    labelDataMeta,
+    fertilizerDataMeta,
+    isLoading: isLoadingAll,
+    isError: hasQueryError,
+    error: queryError,
+    createLabelDataMutation,
+    createFertilizerDataMutation,
+    updateReviewStatusMutation,
+    extractFieldMutation,
+    toggleReviewMutation,
+    handleSave,
+    isSaving,
+  } = useLabelDataQueries(labelId, isFertilizer, form)
+  useEffect(() => {
+    document.title = t("data.pageTitle")
+  }, [t])
+  useEffect(() => {
+    return () => {
+      clearActions()
+    }
+  }, [clearActions])
+  useEffect(() => {
+    if (
+      hasQueryError &&
+      !isAxiosErrorWithStatus(queryError, StatusCodes.NOT_FOUND)
+    ) {
+      setLoadError(queryError as Error)
+    } else {
+      setLoadError(null)
+    }
+  }, [hasQueryError, queryError])
   const labelDataMetaMap = useLabelDataMetaMap(
-    _labelDataMeta,
-    _fertilizerDataMeta,
+    labelDataMeta,
+    fertilizerDataMeta,
   )
   const hasImages = useHasImages(label)
   const { data: labelImages = [], isLoading: isLoadingImages } = useQuery({
@@ -171,51 +190,11 @@ function LabelData() {
     [imageUrlQueries],
   )
   const isLoadingImageUrls = imageUrlQueries.some((query) => query.isLoading)
-  const mutations = useLabelDataMutations(
-    labelId,
-    isFertilizer,
-    form,
-    _labelDataMeta,
-    _fertilizerDataMeta,
-    hasImages,
-  )
-  const {
-    createLabelDataMutation,
-    createFertilizerDataMutation,
-    updateReviewStatusMutation,
-    extractFieldMutation,
-    toggleReviewMutation,
-    handleSave,
-    isSaving,
-  } = mutations
-  const { loadError, setLoadError } = useLabelDataEffects(
-    labelId,
-    isFertilizer,
-    isLoadingData,
-    isLabelDataError,
-    labelDataError,
-    isLoadingFertilizerData,
-    isFertilizerDataError,
-    fertilizerDataError,
-    isLabelDataMetaError,
-    labelDataMetaError,
-    isFertilizerDataMetaError,
-    fertilizerDataMetaError,
-    _labelData,
-    _fertilizerData,
-    createLabelDataMutation,
-    createFertilizerDataMutation,
-  )
   const isLoading =
-    isLoadingLabel ||
-    isLoadingData ||
-    isLoadingMeta ||
-    (isFertilizer && (isLoadingFertilizerData || isLoadingFertilizerMeta)) ||
+    isLoadingAll ||
     createLabelDataMutation.isPending ||
     createFertilizerDataMutation.isPending
   const isExtracting = getIsExtracting(labelId)
-  const { getAccordionState, setAccordionExpanded } = useLabelDataStore()
-  const { clearActions } = useAppBarActionsStore()
   const accordionState = getAccordionState(labelId)
   const getFieldMetaFn = (fieldName: string) =>
     getFieldMeta(labelDataMetaMap, fieldName)
@@ -238,16 +217,7 @@ function LabelData() {
   const handleRetry = () => {
     setLoadError(null)
     setDismissed(false)
-    queryClient.invalidateQueries({ queryKey: ["labelData", labelId] })
-    queryClient.invalidateQueries({ queryKey: ["labelDataMeta", labelId] })
-    if (isFertilizer) {
-      queryClient.invalidateQueries({
-        queryKey: ["fertilizerLabelData", labelId],
-      })
-      queryClient.invalidateQueries({
-        queryKey: ["fertilizerLabelDataMeta", labelId],
-      })
-    }
+    queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
   }
   const isDirty = form.formState.isDirty
   const isCompleted = label?.review_status === "completed"
@@ -257,14 +227,6 @@ function LabelData() {
   handleSaveRef.current = handleSave
   extractFieldMutationRef.current = extractFieldMutation
   updateReviewStatusMutationRef.current = updateReviewStatusMutation
-  useEffect(() => {
-    document.title = t("data.pageTitle")
-  }, [t])
-  useEffect(() => {
-    return () => {
-      clearActions()
-    }
-  }, [clearActions])
   if (isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>

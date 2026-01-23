@@ -1,7 +1,19 @@
 import { AxiosError } from "axios"
+import type { StatusCodes } from "http-status-codes"
 import type { TFunction } from "i18next"
 
 // ============================== Error Handling ==============================
+export function isAxiosErrorWithStatus(
+  error: unknown,
+  status: StatusCodes | StatusCodes[],
+): error is AxiosError {
+  if (!(error instanceof AxiosError)) return false
+  const errorStatus = error.response?.status
+  if (!errorStatus) return false
+  return Array.isArray(status)
+    ? status.includes(errorStatus)
+    : errorStatus === status
+}
 export function getErrorMessage(error: unknown, t: TFunction): string {
   if (error instanceof AxiosError) {
     const detail = error.response?.data as any
