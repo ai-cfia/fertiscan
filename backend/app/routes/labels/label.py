@@ -10,6 +10,7 @@ from app.dependencies import (
     CurrentUser,
     LabelDep,
     LabelNotCompletedDep,
+    LabelWithProductForCompletionDep,
     ProductTypeDep,
     S3ClientDep,
     SessionDep,
@@ -107,7 +108,7 @@ async def update_label(
 async def update_label_review_status(
     session: SessionDep,
     _: CurrentUser,
-    label: LabelDep,
+    label:  LabelWithProductForCompletionDep ,
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""

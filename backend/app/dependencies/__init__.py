@@ -30,6 +30,7 @@ from app.dependencies.labels import (
     LabelWithImageLimitDep,
     LabelWithImageLimitEditDep,
     LabelWithImagesAndProductTypeDep,
+    LabelWithProductForCompletionDep,
     ProductTypeDep,
     S3ClientDep,
 )
@@ -62,4 +63,5 @@ __all__ = [
     "SessionDep",
     "TokenDep",
     "VerifiedLabelImageDep",
+    "LabelWithProductForCompletionDep",
 ]
