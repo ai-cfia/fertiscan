@@ -9,12 +9,12 @@ import {
   CardContent,
   Container,
   Grid,
+  Toolbar,
   Typography,
 } from "@mui/material"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useConfig } from "@/stores/useConfig"
 import { useLabelNew } from "@/stores/useLabelNew"
 
@@ -41,7 +41,6 @@ function NewLabel() {
     process,
   } = useLabelNew()
   const { maxImagesPerLabel } = useConfig()
-  const { setActions, clearActions } = useAppBarActionsStore()
   // ============================== State ==============================
   const [isDragging, setIsDragging] = useState(false)
   // ============================== Effects ==============================
@@ -52,57 +51,6 @@ function NewLabel() {
       clearAll()
     }
   }, [clearAll, isProcessing, t])
-  useEffect(() => {
-    const actions = (
-      <>
-        {uploadedFiles.length > 0 && (
-          <Button
-            variant="outlined"
-            color="inherit"
-            onClick={clearAll}
-            disabled={isProcessing}
-            sx={{ mr: 2 }}
-          >
-            {t("button.clearAll", { ns: "common" })}
-          </Button>
-        )}
-        <Button
-          variant="contained"
-          color="inherit"
-          onClick={() =>
-            process(productType, (to: string) => {
-              navigate({ to })
-            })
-          }
-          disabled={
-            isProcessing ||
-            uploadedFiles.length === 0 ||
-            uploadedFiles.length > 5
-          }
-          startIcon={<CloudUploadIcon />}
-          sx={{ mr: 2 }}
-        >
-          {isProcessing
-            ? t("button.uploading", { ns: "common" })
-            : t("button.upload", { ns: "common" })}
-        </Button>
-      </>
-    )
-    setActions(actions)
-    return () => {
-      clearActions()
-    }
-  }, [
-    uploadedFiles.length,
-    isProcessing,
-    productType,
-    process,
-    navigate,
-    clearAll,
-    t,
-    setActions,
-    clearActions,
-  ])
   // ============================== Handlers ==============================
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return
@@ -156,10 +104,6 @@ function NewLabel() {
           </Box>
           {/* ============================== Selected Files ============================== */}
           <Box component="section">
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              {t("labels.create.selectedFiles")} ({uploadedFiles.length}{" "}
-              {t("labels.create.of")} {maxImagesPerLabel})
-            </Typography>
             {uploadedFiles.length > maxImagesPerLabel && (
               <Alert variant="outlined" severity="warning" sx={{ mb: 2 }}>
                 {t("labels.create.maxFilesWarning", {
@@ -168,6 +112,52 @@ function NewLabel() {
                 })}
               </Alert>
             )}
+            {/* ============================== Toolbar ============================== */}
+            <Toolbar
+              sx={{
+                minHeight: "48px !important",
+                px: 1,
+                justifyContent: "space-between",
+                gap: 1,
+                mb: 0,
+              }}
+            >
+              <Typography variant="h6" sx={{ flexGrow: 0 }}>
+                {t("labels.create.selectedFiles")} ({uploadedFiles.length}{" "}
+                {t("labels.create.of")} {maxImagesPerLabel})
+              </Typography>
+              <Box sx={{ display: "flex", gap: 1 }}>
+                {uploadedFiles.length > 0 && (
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    onClick={clearAll}
+                    disabled={isProcessing}
+                  >
+                    {t("button.clearAll", { ns: "common" })}
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  onClick={() =>
+                    process(productType, (to: string) => {
+                      navigate({ to })
+                    })
+                  }
+                  disabled={
+                    isProcessing ||
+                    uploadedFiles.length === 0 ||
+                    uploadedFiles.length > 5
+                  }
+                  startIcon={<CloudUploadIcon />}
+                >
+                  {isProcessing
+                    ? t("button.uploading", { ns: "common" })
+                    : t("button.upload", { ns: "common" })}
+                </Button>
+              </Box>
+            </Toolbar>
             <Box
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

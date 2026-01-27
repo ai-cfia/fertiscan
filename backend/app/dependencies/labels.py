@@ -10,12 +10,10 @@ from sqlmodel import select
 
 from app.config import settings
 from app.controllers import labels as label_controller
-from app.controllers.product_types import get_product_type_by_code
 from app.db.models.fertilizer_label_data import FertilizerLabelData
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.label_image import UploadStatus
-from app.db.models.product_type import ProductType
 from app.dependencies.auth import SessionDep
 from app.exceptions import (
     ImageCountLimitExceeded,
@@ -24,10 +22,9 @@ from app.exceptions import (
     LabelCompleted,
     LabelNotFound,
     LabelNotLinkedToProduct,
-    ProductTypeNotFound,
     ResourceConflict,
 )
-from app.schemas.label import LabelCreate, LabelReviewStatusUpdate
+from app.schemas.label import LabelReviewStatusUpdate
 from app.storage import get_s3_client
 
 # Storage client dependency
@@ -84,16 +81,6 @@ def get_label_by_id(session: SessionDep, label_id: UUID) -> Label:
 
 
 LabelDep = Annotated[Label, Depends(get_label_by_id)]
-
-
-def get_product_type(session: SessionDep, label_in: LabelCreate) -> ProductType:
-    """Get product type from label create request or raise 400."""
-    if not (product_type := get_product_type_by_code(session, label_in.product_type)):
-        raise ProductTypeNotFound(label_in.product_type)
-    return product_type
-
-
-ProductTypeDep = Annotated[ProductType, Depends(get_product_type)]
 
 
 # ============================== Label with Relationships Dependencies ==============================

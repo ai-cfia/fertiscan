@@ -9,16 +9,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
   Link as RouterLink,
   redirect,
 } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type { PrivateUserCreate } from "@/api"
-import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import PageTopBanner from "@/components/Common/PageTopBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
+import { useBackendStatus } from "@/stores/useBackendStatus"
 import { confirmPasswordRules, emailPattern, passwordRules } from "@/utils"
 
 export const Route = createFileRoute("/signup")({
@@ -38,8 +41,21 @@ interface UserRegisterForm extends PrivateUserCreate {
 }
 
 function SignUp() {
-  const { t } = useTranslation("auth")
+  const { t } = useTranslation(["auth", "common"])
   const { signUpMutation } = useAuth()
+  const { ready: backendReady } = useBackendStatus()
+  const queryClient = useQueryClient()
+  const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  useEffect(() => {
+    if (backendReady) {
+      setBackendErrorDismissed(false)
+    }
+  }, [backendReady])
+  const handleBackendRetry = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["backend", "health", "readiness"],
+    })
+  }
   const {
     register,
     handleSubmit,
@@ -62,7 +78,14 @@ function SignUp() {
   }
   return (
     <>
-      <BackendStatusBanner />
+      {!backendReady && !backendErrorDismissed && (
+        <PageTopBanner
+          message={t("backend.unavailable", { ns: "common" })}
+          severity="error"
+          onRetry={handleBackendRetry}
+          onDismiss={() => setBackendErrorDismissed(true)}
+        />
+      )}
       <Container
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -88,7 +111,12 @@ function SignUp() {
           type="text"
           fullWidth
           error={!!errors.first_name}
-          helperText={errors.first_name?.message}
+          helperText={
+            errors.first_name?.message ||
+            t("signup.firstNameHelper", {
+              defaultValue: "Enter your first name",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (
@@ -107,7 +135,10 @@ function SignUp() {
           type="text"
           fullWidth
           error={!!errors.last_name}
-          helperText={errors.last_name?.message}
+          helperText={
+            errors.last_name?.message ||
+            t("signup.lastNameHelper", { defaultValue: "Enter your last name" })
+          }
           slotProps={{
             input: {
               startAdornment: (
@@ -130,7 +161,12 @@ function SignUp() {
           type="email"
           fullWidth
           error={!!errors.email}
-          helperText={errors.email?.message}
+          helperText={
+            errors.email?.message ||
+            t("signup.emailHelper", {
+              defaultValue: "Enter your email address",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (
@@ -153,7 +189,12 @@ function SignUp() {
           type="password"
           fullWidth
           error={!!errors.password}
-          helperText={errors.password?.message}
+          helperText={
+            errors.password?.message ||
+            t("signup.passwordHelper", {
+              defaultValue: "Enter a secure password",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (
@@ -176,7 +217,12 @@ function SignUp() {
           type="password"
           fullWidth
           error={!!errors.confirm_password}
-          helperText={errors.confirm_password?.message}
+          helperText={
+            errors.confirm_password?.message ||
+            t("signup.confirmPasswordHelper", {
+              defaultValue: "Re-enter your password to confirm",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (

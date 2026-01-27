@@ -75,6 +75,14 @@ class ProductTypeNotFound(HTTPException):
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
+class InactiveProductType(HTTPException):
+    def __init__(self, code: str | None = None) -> None:
+        detail = (
+            f"Product type '{code}' is inactive" if code else "Product type is inactive"
+        )
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
 class InvalidProductType(HTTPException):
     def __init__(self, detail: str = "Invalid product type") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
