@@ -7,21 +7,19 @@ from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.product import Product
-from app.db.models.product_type import ProductType
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
 def get_products_query(
-    user_id: UUID,  # noqa: ARG001
-    product_type: str = "fertilizer",
+    _user_id: UUID,
+    product_type_id: UUID,
+    registration_number: str | None = None,
 ) -> SelectOfScalar[Product]:
     """Build products query with optional filters."""
-    stmt = select(Product)
+    stmt = select(Product).where(Product.product_type_id == product_type_id)
 
-    # Filter by product type
-    stmt = stmt.join(ProductType).where(
-        ProductType.code == product_type,
-        ProductType.is_active,
-    )
+    # Filter by registration number
+    if registration_number:
+        stmt = stmt.where(Product.registration_number == registration_number)
 
     return stmt

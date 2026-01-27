@@ -12,7 +12,6 @@ from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
-from app.db.models.product_type import ProductType
 from app.schemas.label import LabelReviewStatusUpdate, LabelUpdate
 from app.storage import delete_files
 
@@ -84,18 +83,14 @@ def create_label(
 @validate_call(config={"arbitrary_types_allowed": True})
 def get_labels_query(
     user_id: UUID,  # noqa: ARG001
-    product_type: str = "fertilizer",
+    product_type_id: UUID,
     review_status: ReviewStatus | None = None,
     unlinked: bool | None = None,
     order_by: str = "created_at",
     order: str = "desc",
 ) -> SelectOfScalar[Label]:
     """Build labels query with optional filters and sorting."""
-    stmt = select(Label)
-    stmt = stmt.join(ProductType).where(
-        ProductType.code == product_type,
-        ProductType.is_active,
-    )
+    stmt = select(Label).where(Label.product_type_id == product_type_id)
     if review_status is not None:
         stmt = stmt.where(Label.review_status == review_status)
     if unlinked is True:
