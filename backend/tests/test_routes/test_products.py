@@ -346,6 +346,15 @@ class TestProductCreate:
         )
         assert response.status_code == 201
 
+        content = response.json()
+
+        assert "id" in content and content["id"]
+        assert content["registration_number"] == data["registration_number"]
+        assert content["brand_name_en"] == data["brand_name_en"]
+        assert content["brand_name_fr"] == data["brand_name_fr"]
+        assert content["name_en"] == data["name_en"]
+        assert content["name_fr"] == data["name_fr"]
+
     def test_existing_registration_code(
         self,
         client: TestClient,
@@ -433,3 +442,70 @@ class TestProductCreate:
             },
         )
         assert response.status_code == 401
+
+    def test_invalid_product_type(self, db: Session, client: TestClient):
+        """Test creating a product with an invalid product type."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data = {
+            "product_type": "nonexistent_type",
+            "registration_number": "REG123456",
+            "brand_name_en": "Test Brand EN",
+            "brand_name_fr": "Test Brand FR",
+            "name_en": "Test Product EN",
+            "name_fr": "Test Product FR",
+        }
+        response = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data,
+        )
+        assert response.status_code == 400
+
+    def test_only_with_required_fields(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test creating products with the same registration number but different product types."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data_fertilizer = {
+            "product_type": "fertilizer",
+            "registration_number": "REG123456",
+        }
+        response1 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data_fertilizer,
+        )
+        assert response1.status_code == 201
+
+    def test_empty_registration_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test creating products with the same registration number but different product types."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data_fertilizer = {
+            "product_type": "fertilizer",
+            "registration_number": "",
+            "brand_name_en": "Fertilizer Brand EN",
+            "brand_name_fr": "Fertilizer Brand FR",
+            "name_en": "Fertilizer Product EN",
+            "name_fr": "Fertilizer Product FR",
+        }
+        response1 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data_fertilizer,
+        )
+        assert response1.status_code == 201
