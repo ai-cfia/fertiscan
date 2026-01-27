@@ -203,6 +203,66 @@ class TestListLabels:
         assert len(content["items"]) == 2
         assert content["total"] == 2
 
+    def test_list_labels_filter_product_type(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering by product type."""
+        user = UserFactory()
+        fertilizer_type = ProductTypeFactory(code="fertilizer")
+        seed_type = ProductTypeFactory(code="seed")
+        LabelFactory.create_batch(2, created_by=user, product_type=fertilizer_type)
+        LabelFactory.create_batch(3, created_by=user, product_type=seed_type)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/labels?product_type=fertilizer",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 2
+        assert content["total"] == 2
+
+    def test_list_labels_filter_product_type_default(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that default product_type filter works."""
+        user = UserFactory()
+        fertilizer_type = ProductTypeFactory(code="fertilizer")
+        LabelFactory.create_batch(3, created_by=user, product_type=fertilizer_type)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/labels",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert content["total"] == 3
+
+    def test_list_labels_invalid_product_type_returns_400(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that invalid product_type returns 400."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/labels?product_type=invalid_type",
+            headers=headers,
+        )
+        assert response.status_code == 400
+        assert "product type" in response.json()["detail"].lower()
+
     def test_list_labels_excludes_inactive_product_types(
         self,
         client: TestClient,
@@ -234,12 +294,12 @@ class TestListLabels:
         assert len(content["items"]) == 2
         assert content["total"] == 2
 
-    def test_list_labels_inactive_product_type_returns_empty(
+    def test_list_labels_inactive_product_type_returns_400(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that fetching inactive product types returns empty results."""
+        """Test that inactive product_type returns 400."""
         user = UserFactory()
         inactive_type = ProductTypeFactory(code="seed", is_active=False)
         inactive_product = ProductFactory(created_by=user, product_type=inactive_type)
@@ -253,10 +313,8 @@ class TestListLabels:
             f"{settings.API_V1_STR}/labels?product_type=seed",
             headers=headers,
         )
-        assert response.status_code == 200
-        content = response.json()
-        assert len(content["items"]) == 0
-        assert content["total"] == 0
+        assert response.status_code == 400
+        assert "product type" in response.json()["detail"].lower()
 
     def test_list_labels_count_only(
         self,

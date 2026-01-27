@@ -118,6 +118,52 @@ interface Resources {
       title: "Oops!"
     }
     products: {
+      create: {
+        form: {
+          brandNameEn: {
+            helperText: "The brand name in English (optional)"
+            label: "Brand Name (EN)"
+            maxLength: "Brand name (EN) must be 100 characters or less"
+          }
+          brandNameFr: {
+            helperText: "The brand name in French (optional)"
+            label: "Brand Name (FR)"
+            maxLength: "Brand name (FR) must be 100 characters or less"
+          }
+          cancel: "Cancel"
+          cancelDialog: {
+            discard: "Discard Changes"
+            keepEditing: "Keep Editing"
+            message: "You have unsaved changes. Are you sure you want to leave this page?"
+            title: "Discard Changes?"
+          }
+          error: "Failed to create product. Please try again."
+          nameEn: {
+            helperText: "The product name in English (optional)"
+            label: "Product Name (EN)"
+            maxLength: "Product name (EN) must be 200 characters or less"
+          }
+          nameFr: {
+            helperText: "The product name in French (optional)"
+            label: "Product Name (FR)"
+            maxLength: "Product name (FR) must be 200 characters or less"
+          }
+          registrationNumber: {
+            checking: "Checking..."
+            duplicate: "A product with this registration number already exists."
+            helperText: "The official registration number assigned to this product"
+            invalidFormat: "Registration number can only contain letters, numbers, spaces, and hyphens"
+            label: "Registration Number"
+            maxLength: "Registration number must be 50 characters or less"
+            required: "Registration number is required"
+          }
+          submit: "Create Product"
+          success: "Product created successfully"
+        }
+        pageTitle: "Create New Product"
+        title: "Create New Product"
+      }
+      createNew: "Create New Product"
       pageTitle: "Products - Label Inspection"
       title: "Products"
     }
@@ -205,8 +251,13 @@ interface Resources {
         }
         website: "Website"
       }
-      continueEditing: "Continue Editing"
+      continueReview: "Continue Review"
+      extractAllBasic: "Extract All Basic Fields"
       extractAllFields: "Extract All Fields"
+      extractAllGuaranteed: "Extract All Guaranteed Analysis"
+      extractAllIngredients: "Extract All Ingredients"
+      extractAllNPK: "Extract All NPK Fields"
+      extractAllSafety: "Extract All Safety Fields"
       extractField: "Extract with AI"
       extractionAllSuccess: "All fields extracted successfully"
       extractionFailed: "Extraction failed. Please try again."
@@ -268,7 +319,6 @@ interface Resources {
       }
       ingredients: {
         addIngredient: "Add Ingredient"
-        ingredientNumber: "Ingredient {{number}}"
         nameEn: "Name (English)"
         nameFr: "Name (French)"
         noIngredients: "No ingredients added"
@@ -276,6 +326,7 @@ interface Resources {
         value: "Value"
       }
       markComplete: "Mark Complete"
+      pageTitle: "Label Review - Label Inspection"
       removeReviewFlag: "Remove review flag"
       save: "Save"
       saved: "Changes saved successfully"
@@ -286,6 +337,7 @@ interface Resources {
         npk: "NPK Analysis"
         safety: "Safety Information"
       }
+      title: "Label Review"
     }
     empty: {
       noLabels: "No labels found"
@@ -307,11 +359,18 @@ interface Resources {
       completed: "Completed"
       inProgress: "In Progress"
       notStarted: "Not Started"
-      reviewStatus: "filter.reviewStatus"
+      reviewStatus: "Review Status"
       title: "Filter list"
       unlinked: "Unlinked"
     }
     image: {
+      delete: "Delete"
+      deleteDialog: {
+        description: 'Are you sure you want to delete "{{filename}}"? This action cannot be undone and will permanently delete the image file.'
+        title: "Delete image"
+      }
+      deleteError: "Failed to delete image. Please try again."
+      deleteSuccess: "Image deleted successfully"
       notAvailable: "Image not available"
       sequence: "Sequence: {{order}}"
       slideAlt: "Slide {{number}}"
@@ -344,12 +403,14 @@ interface Resources {
       }
       rowActions: {
         actionsForLabel: "Actions for label {{id}}"
+        continueReview: "Continue review"
         delete: "Delete"
         deleteDialog: {
           description: "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files."
           title: "Delete label"
         }
         deleteNotImplemented: "Delete functionality not yet implemented"
+        startReview: "Start review"
         viewDetails: "View Details"
       }
       upload: {
@@ -363,12 +424,13 @@ interface Resources {
     pageTitle: "Labels - Label Inspection"
     table: {
       actions: "Actions"
+      brand: "Brand"
       copyId: "Copy label ID {{id}}"
       createdAt: "Created At"
       id: "ID"
       idCopied: "Label ID copied to clipboard"
-      productName: "Product Name"
-      reviewStatus: "table.reviewStatus"
+      productName: "Product"
+      reviewStatus: "Review Status"
       selectAll: "select all labels"
       sortedAscending: "sorted ascending"
       sortedDescending: "sorted descending"

@@ -1,7 +1,7 @@
 """Label routes."""
 
-from fastapi import APIRouter, Depends, Query, status
-from fastapi_pagination import LimitOffsetPage, LimitOffsetParams
+from fastapi import APIRouter, Query, status
+from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.controllers import labels as label_controller
@@ -11,7 +11,9 @@ from app.dependencies import (
     LabelDep,
     LabelNotCompletedDep,
     LabelWithProductForCompletionDep,
+    LimitOffsetParamsDep,
     ProductTypeDep,
+    ProductTypeQueryDep,
     S3ClientDep,
     SessionDep,
 )
@@ -52,8 +54,8 @@ def create_label(
 def read_labels(
     session: SessionDep,
     current_user: CurrentUser,
-    params: LimitOffsetParams = Depends(),
-    product_type: str = Query(default="fertilizer", description="Product type"),
+    params: LimitOffsetParamsDep,
+    product_type: ProductTypeQueryDep,
     review_status: ReviewStatus | None = Query(
         default=None, description="Filter by review status"
     ),
@@ -67,7 +69,7 @@ def read_labels(
     """List labels with optional filters and sorting."""
     stmt = label_controller.get_labels_query(
         user_id=current_user.id,
-        product_type=product_type,
+        product_type_id=product_type.id,
         review_status=review_status,
         unlinked=unlinked,
         order_by=order_by,

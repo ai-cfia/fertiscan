@@ -171,12 +171,12 @@ class TestListProducts:
         assert len(content["items"]) == 2
         assert content["total"] == 2
 
-    def test_list_products_inactive_product_type_returns_empty(
+    def test_list_products_inactive_product_type_returns_error(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that fetching inactive product types returns empty results."""
+        """Test that fetching inactive product types returns 400 error."""
         user = UserFactory()
         inactive_type = ProductTypeFactory(code="seed", is_active=False)
         ProductFactory.create_batch(3, created_by=user, product_type=inactive_type)
@@ -187,10 +187,7 @@ class TestListProducts:
             f"{settings.API_V1_STR}/products?product_type=seed",
             headers=headers,
         )
-        assert response.status_code == 200
-        content = response.json()
-        assert len(content["items"]) == 0
-        assert content["total"] == 0
+        assert response.status_code == 400
 
     def test_list_products_count_only(
         self,
@@ -211,6 +208,104 @@ class TestListProducts:
         content = response.json()
         assert len(content["items"]) == 1
         assert content["total"] == 10
+
+    def test_list_products_filter_registration_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering by registration number."""
+        user = UserFactory()
+        product1 = ProductFactory(registration_number="REG-12345", created_by=user)
+        ProductFactory(registration_number="REG-67890", created_by=user)
+        ProductFactory(registration_number="REG-11111", created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?registration_number=REG-12345",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["registration_number"] == "REG-12345"
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_list_products_filter_registration_number_no_match(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering by registration number with no matches."""
+        user = UserFactory()
+        ProductFactory.create_batch(3, created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?registration_number=NONEXISTENT",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 0
+        assert content["total"] == 0
+
+    def test_list_products_filter_registration_number_and_product_type(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering by both registration number and product type."""
+        user = UserFactory()
+        fertilizer_type = ProductTypeFactory(code="fertilizer")
+        seed_type = ProductTypeFactory(code="seed")
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            product_type=fertilizer_type,
+        )
+        ProductFactory(
+            registration_number="REG-12346",
+            created_by=user,
+            product_type=seed_type,
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            product_type=fertilizer_type,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?product_type=fertilizer&registration_number=REG-12345",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["registration_number"] == "REG-12345"
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_list_products_invalid_registration_number_pattern(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that invalid registration number pattern returns validation error."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?registration_number=REG@123",
+            headers=headers,
+        )
+        assert response.status_code == 422
 
     def test_list_products_requires_authentication(
         self,
