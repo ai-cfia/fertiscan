@@ -54,4 +54,4 @@ async def create_product(
     created_product = product_controller.create_product(
         session=session, product=product
     )
-    return ProductPublic.model_validate(created_product)
+    return created_product  # type: ignore[return-value]
