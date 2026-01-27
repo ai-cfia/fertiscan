@@ -36,22 +36,24 @@ async def create_product(
     session: SessionDep,
     current_user: CurrentUser,
     product_in: ProductCreate,
-    product_type: ProductTypeDep,
+    product_type: str = Query(default="fertilizer", description="Product type"),
 ) -> Any:
     """Create a new product."""
     if product_controller.verify_product_registration_number(
-        product_type_id=product_type.id,
+        product_type_id=ProductTypeDep.id,
         registration_number=product_in.registration_number,
+        session=session,
     ):
         raise ResourceConflict(
             f"Product with registration number {product_in.registration_number}"
             + " is already exist on the same product type."
         )
+
     product = product_controller.create_product(
         session=session,
         user=current_user,
+        product_type=product_type,
         registration_number=product_in.registration_number,
-        product_type=product_in.product_type,
         brand_name_en=product_in.brand_name_en,
         brand_name_fr=product_in.brand_name_fr,
         name_en=product_in.name_en,

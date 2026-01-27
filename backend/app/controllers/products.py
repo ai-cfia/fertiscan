@@ -8,7 +8,7 @@ from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.product import Product
 from app.db.models.product_type import ProductType
-from app.dependencies import CurrentUser
+from app.dependencies import CurrentUser, SessionDep
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -30,20 +30,19 @@ def get_products_query(
 
 @validate_call(config={"arbitrary_types_allowed": True})
 def verify_product_registration_number(
-    product_type_id: UUID, registration_number
+    product_type_id: UUID, registration_number, session: SessionDep
 ) -> bool:
     """Verify if a product has the same registration number of the same type."""
     stmt = (
-        select(Product).where(
+        select(Product.id)
+        .where(
             Product.product_type_id == product_type_id,
             Product.registration_number == registration_number,
         )
-    ).exists()
+        .exists()
+    )
 
-    if stmt is not None:
-        return True
-    else:
-        return False
+    return bool(stmt)
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -59,13 +58,13 @@ def create_product(
 ) -> Product:
     """Create a new prroduct."""
     product = Product(
+        product_type=product_type,
         registration_number=registration_number,
         brand_name_en=brand_name_en,
         brand_name_fr=brand_name_fr,
         name_en=name_en,
         name_fr=name_fr,
         created_by=user,
-        product_type=product_type,
     )
     session.add(product)
     session.flush()
