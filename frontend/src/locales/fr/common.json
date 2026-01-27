@@ -59,6 +59,7 @@
     "title": "Oups !"
   },
   "products": {
+    "createNew": "Créer un nouveau produit",
     "pageTitle": "Produits - Inspection d'étiquettes",
     "title": "Produits"
   },
