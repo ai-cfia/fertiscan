@@ -16,6 +16,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import type { ProductPublic } from "@/api"
 import { ProductsService } from "@/api"
@@ -30,38 +31,39 @@ const productTypeParamsSchema = z.object({
 })
 
 // ============================== Schema ==============================
-const productFormSchema = z.object({
-  registration_number: z
-    .string()
-    .min(1, "Registration number is required")
-    .max(50, "Registration number must be 50 characters or less")
-    .regex(
-      /^[a-zA-Z0-9\s-]+$/,
-      "Registration number can only contain letters, numbers, spaces, and hyphens",
-    ),
-  brand_name_en: z
-    .string()
-    .max(100, "Brand name (EN) must be 100 characters or less")
-    .optional()
-    .nullable(),
-  brand_name_fr: z
-    .string()
-    .max(100, "Brand name (FR) must be 100 characters or less")
-    .optional()
-    .nullable(),
-  name_en: z
-    .string()
-    .max(200, "Product name (EN) must be 200 characters or less")
-    .optional()
-    .nullable(),
-  name_fr: z
-    .string()
-    .max(200, "Product name (FR) must be 200 characters or less")
-    .optional()
-    .nullable(),
-})
+const createProductFormSchema = (t: (key: string) => string) =>
+  z.object({
+    registration_number: z
+      .string()
+      .min(1, t("products.create.form.registrationNumber.required"))
+      .max(50, t("products.create.form.registrationNumber.maxLength"))
+      .regex(
+        /^[a-zA-Z0-9\s-]+$/,
+        t("products.create.form.registrationNumber.invalidFormat"),
+      ),
+    brand_name_en: z
+      .string()
+      .max(100, t("products.create.form.brandNameEn.maxLength"))
+      .optional()
+      .nullable(),
+    brand_name_fr: z
+      .string()
+      .max(100, t("products.create.form.brandNameFr.maxLength"))
+      .optional()
+      .nullable(),
+    name_en: z
+      .string()
+      .max(200, t("products.create.form.nameEn.maxLength"))
+      .optional()
+      .nullable(),
+    name_fr: z
+      .string()
+      .max(200, t("products.create.form.nameFr.maxLength"))
+      .optional()
+      .nullable(),
+  })
 
-type ProductFormData = z.infer<typeof productFormSchema>
+type ProductFormData = z.infer<ReturnType<typeof createProductFormSchema>>
 
 // ============================== Route ==============================
 export const Route = createFileRoute("/_layout/$productType/products/new")({
@@ -77,11 +79,13 @@ export const Route = createFileRoute("/_layout/$productType/products/new")({
 // ============================== Component ==============================
 function CreateProduct() {
   // --- Hooks and State ---
+  const { t } = useTranslation("common")
   const { productType } = Route.useParams()
   const navigate = useNavigate()
   const { showSuccessToast } = useSnackbar()
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
+  const productFormSchema = createProductFormSchema(t)
   // --- Form Setup ---
   const {
     control,
@@ -186,8 +190,8 @@ function CreateProduct() {
   }, [registrationNumber])
   // Set page title
   useEffect(() => {
-    document.title = "Create New Product"
-  }, [])
+    document.title = t("products.create.pageTitle")
+  }, [t])
   // Warn user before leaving page if form has unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -213,17 +217,17 @@ function CreateProduct() {
     }
     const duplicateFound = await checkDuplicate()
     if (duplicateFound) {
-      setApiError("A product with this registration number already exists.")
+      setApiError(t("products.create.form.registrationNumber.duplicate"))
       return
     }
     try {
       await createMutation.mutateAsync(trimmedData)
-      showSuccessToast("Product created successfully")
+      showSuccessToast(t("products.create.form.success"))
     } catch (error: any) {
       const errorMessage =
         error?.response?.data?.detail ||
         error?.message ||
-        "Failed to create product. Please try again."
+        t("products.create.form.error")
       setApiError(errorMessage)
     }
   }
@@ -254,7 +258,7 @@ function CreateProduct() {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
-        Create New Product
+        {t("products.create.title")}
       </Typography>
       {apiError && (
         <Alert
@@ -273,17 +277,17 @@ function CreateProduct() {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Registration Number"
+              label={t("products.create.form.registrationNumber.label")}
               required
               fullWidth
               error={!!errors.registration_number || !!isDuplicateError}
               helperText={
                 errors.registration_number?.message ||
                 (isDuplicateError
-                  ? "A product with this registration number already exists."
+                  ? t("products.create.form.registrationNumber.duplicate")
                   : duplicateQuery.isLoading
-                    ? "Checking..."
-                    : "The official registration number assigned to this product")
+                    ? t("products.create.form.registrationNumber.checking")
+                    : t("products.create.form.registrationNumber.helperText"))
               }
               disabled={isFormDisabled}
               sx={{ mb: 2 }}
@@ -300,12 +304,12 @@ function CreateProduct() {
                 <TextField
                   {...field}
                   value={field.value || ""}
-                  label="Brand Name (EN)"
+                  label={t("products.create.form.brandNameEn.label")}
                   fullWidth
                   error={!!errors.brand_name_en}
                   helperText={
                     errors.brand_name_en?.message ||
-                    "The brand name in English (optional)"
+                    t("products.create.form.brandNameEn.helperText")
                   }
                   disabled={isFormDisabled}
                 />
@@ -320,12 +324,12 @@ function CreateProduct() {
                 <TextField
                   {...field}
                   value={field.value || ""}
-                  label="Brand Name (FR)"
+                  label={t("products.create.form.brandNameFr.label")}
                   fullWidth
                   error={!!errors.brand_name_fr}
                   helperText={
                     errors.brand_name_fr?.message ||
-                    "The brand name in French (optional)"
+                    t("products.create.form.brandNameFr.helperText")
                   }
                   disabled={isFormDisabled}
                 />
@@ -343,12 +347,12 @@ function CreateProduct() {
                 <TextField
                   {...field}
                   value={field.value || ""}
-                  label="Product Name (EN)"
+                  label={t("products.create.form.nameEn.label")}
                   fullWidth
                   error={!!errors.name_en}
                   helperText={
                     errors.name_en?.message ||
-                    "The product name in English (optional)"
+                    t("products.create.form.nameEn.helperText")
                   }
                   disabled={isFormDisabled}
                 />
@@ -363,12 +367,12 @@ function CreateProduct() {
                 <TextField
                   {...field}
                   value={field.value || ""}
-                  label="Product Name (FR)"
+                  label={t("products.create.form.nameFr.label")}
                   fullWidth
                   error={!!errors.name_fr}
                   helperText={
                     errors.name_fr?.message ||
-                    "The product name in French (optional)"
+                    t("products.create.form.nameFr.helperText")
                   }
                   disabled={isFormDisabled}
                 />
@@ -383,7 +387,7 @@ function CreateProduct() {
             onClick={handleCancel}
             disabled={isFormDisabled}
           >
-            Cancel
+            {t("products.create.form.cancel")}
           </Button>
           <Button
             type="submit"
@@ -393,7 +397,7 @@ function CreateProduct() {
               isFormDisabled ? <CircularProgress size={20} /> : undefined
             }
           >
-            Create Product
+            {t("products.create.form.submit")}
           </Button>
         </Box>
       </Box>
@@ -404,20 +408,24 @@ function CreateProduct() {
         aria-labelledby="cancel-dialog-title"
         aria-describedby="cancel-dialog-description"
       >
-        <DialogTitle id="cancel-dialog-title">Discard Changes?</DialogTitle>
+        <DialogTitle id="cancel-dialog-title">
+          {t("products.create.form.cancelDialog.title")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="cancel-dialog-description">
-            You have unsaved changes. Are you sure you want to leave this page?
+            {t("products.create.form.cancelDialog.message")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancelCancel}>Keep Editing</Button>
+          <Button onClick={handleCancelCancel}>
+            {t("products.create.form.cancelDialog.keepEditing")}
+          </Button>
           <Button
             onClick={handleCancelConfirm}
             variant="contained"
             color="error"
           >
-            Discard Changes
+            {t("products.create.form.cancelDialog.discard")}
           </Button>
         </DialogActions>
       </Dialog>

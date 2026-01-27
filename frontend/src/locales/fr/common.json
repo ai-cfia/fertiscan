@@ -61,7 +61,52 @@
   "products": {
     "createNew": "Créer un nouveau produit",
     "pageTitle": "Produits - Inspection d'étiquettes",
-    "title": "Produits"
+    "title": "Produits",
+    "create": {
+      "pageTitle": "Créer un nouveau produit",
+      "title": "Créer un nouveau produit",
+      "form": {
+        "registrationNumber": {
+          "label": "Numéro d'enregistrement",
+          "required": "Le numéro d'enregistrement est requis",
+          "maxLength": "Le numéro d'enregistrement doit contenir 50 caractères ou moins",
+          "invalidFormat": "Le numéro d'enregistrement ne peut contenir que des lettres, des chiffres, des espaces et des tirets",
+          "duplicate": "Un produit avec ce numéro d'enregistrement existe déjà.",
+          "checking": "Vérification...",
+          "helperText": "Le numéro d'enregistrement officiel attribué à ce produit"
+        },
+        "brandNameEn": {
+          "label": "Nom de marque (EN)",
+          "maxLength": "Le nom de marque (EN) doit contenir 100 caractères ou moins",
+          "helperText": "Le nom de marque en anglais (optionnel)"
+        },
+        "brandNameFr": {
+          "label": "Nom de marque (FR)",
+          "maxLength": "Le nom de marque (FR) doit contenir 100 caractères ou moins",
+          "helperText": "Le nom de marque en français (optionnel)"
+        },
+        "nameEn": {
+          "label": "Nom du produit (EN)",
+          "maxLength": "Le nom du produit (EN) doit contenir 200 caractères ou moins",
+          "helperText": "Le nom du produit en anglais (optionnel)"
+        },
+        "nameFr": {
+          "label": "Nom du produit (FR)",
+          "maxLength": "Le nom du produit (FR) doit contenir 200 caractères ou moins",
+          "helperText": "Le nom du produit en français (optionnel)"
+        },
+        "cancel": "Annuler",
+        "submit": "Créer le produit",
+        "success": "Produit créé avec succès",
+        "error": "Échec de la création du produit. Veuillez réessayer.",
+        "cancelDialog": {
+          "title": "Ignorer les modifications ?",
+          "message": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter cette page ?",
+          "keepEditing": "Continuer l'édition",
+          "discard": "Ignorer les modifications"
+        }
+      }
+    }
   },
   "settings": {
     "pageTitle": "Paramètres - Inspection d'étiquettes",
