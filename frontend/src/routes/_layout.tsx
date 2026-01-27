@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
   Link,
@@ -17,19 +18,22 @@ import {
   useLocation,
   useParams,
 } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { AxiosError } from "axios"
+import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
 import BreakpointIndicator from "@/components/Common/BreakpointIndicator"
-import LabelListErrorBanner from "@/components/Common/LabelListErrorBanner"
 import LanguageSwitcher from "@/components/Common/LanguageSwitcher"
+import PageTopBanner from "@/components/Common/PageTopBanner"
 import SidebarItems from "@/components/Common/SidebarItems"
 import UploadCompletionSnackbar from "@/components/Common/UploadCompletionSnackbar"
 import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
 import UserMenu from "@/components/Common/UserMenu"
-import ValidationErrorBanner from "@/components/Common/ValidationErrorBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
+import { useBackendStatus } from "@/stores/useBackendStatus"
+import { useBanner } from "@/stores/useBanner"
+import { useLabelList } from "@/stores/useLabelList"
+import { useLabelNew } from "@/stores/useLabelNew"
 
 const drawerWidth = 256
 
@@ -50,18 +54,109 @@ function Layout() {
   const params = useParams({ strict: false })
   const { actions: appBarActions, clearActions } = useAppBarActionsStore()
   const normalizedPath = location.pathname.replace(/\/+$/, "")
-  const isNewLabelPage = /\/labels\/new\/?$/.test(normalizedPath)
   const isDataPage = /\/labels\/[^/]+\/review\/?$/.test(normalizedPath)
   const productType = (params.productType as string) || "fertilizer"
-  const { t } = useTranslation(["common", "labels"])
+  const { t } = useTranslation(["common", "labels", "errors"])
+  const { fileTypeValidationErrors, clearFileTypeValidationErrors } =
+    useLabelNew()
+  const { error: labelListError, setError: setLabelListError } = useLabelList()
+  const { ready: backendReady } = useBackendStatus()
+  const { banners, showBanner, dismissBanner } = useBanner()
+  const queryClient = useQueryClient()
   // ============================== State ==============================
   const [mobileOpen, setMobileOpen] = useState(false)
+  // ============================== Helpers ==============================
+  const isLabelsPage = location.pathname.includes("/labels")
+  const getLabelListErrorMessage = useCallback(
+    (error: unknown): string => {
+      if (error instanceof AxiosError) {
+        const detail = error.response?.data as any
+        if (detail?.detail) {
+          return typeof detail.detail === "string"
+            ? detail.detail
+            : Array.isArray(detail.detail) && detail.detail.length > 0
+              ? detail.detail[0].msg || t("labels.errorOccurred")
+              : t("labels.errorOccurred")
+        }
+        return error.message || t("labels.loadFailed")
+      }
+      return t("labels.loadFailedRetry")
+    },
+    [t],
+  )
+  const handleLabelListRetry = useCallback(() => {
+    setLabelListError(null)
+    queryClient.invalidateQueries({
+      queryKey: ["labels"],
+    })
+  }, [setLabelListError, queryClient])
+  const handleBackendRetry = useCallback(() => {
+    queryClient.invalidateQueries({
+      queryKey: ["backend", "health", "readiness"],
+    })
+  }, [queryClient])
   // ============================== Effects ==============================
   useEffect(() => {
-    if (!isNewLabelPage && !isDataPage) {
+    if (!isDataPage) {
       clearActions()
     }
-  }, [isNewLabelPage, isDataPage, clearActions])
+  }, [isDataPage, clearActions])
+  // ============================== Banner Management ==============================
+  useEffect(() => {
+    if (!backendReady) {
+      showBanner({
+        id: "backend-status",
+        message: t("backend.unavailable", { ns: "common" }),
+        severity: "error",
+        onRetry: handleBackendRetry,
+        onDismiss: () => dismissBanner("backend-status"),
+      })
+    } else {
+      dismissBanner("backend-status")
+    }
+  }, [backendReady, showBanner, dismissBanner, t, handleBackendRetry])
+  useEffect(() => {
+    if (fileTypeValidationErrors.length > 0) {
+      showBanner({
+        id: "file-type-validation",
+        message: t("fileType.invalidTitle", { ns: "errors" }),
+        items: fileTypeValidationErrors,
+        severity: "error",
+        onDismiss: () => {
+          clearFileTypeValidationErrors()
+          dismissBanner("file-type-validation")
+        },
+      })
+    } else {
+      dismissBanner("file-type-validation")
+    }
+  }, [
+    fileTypeValidationErrors,
+    showBanner,
+    dismissBanner,
+    clearFileTypeValidationErrors,
+    t,
+  ])
+  useEffect(() => {
+    if (isLabelsPage && labelListError) {
+      showBanner({
+        id: "label-list-error",
+        message: getLabelListErrorMessage(labelListError),
+        severity: "error",
+        onRetry: handleLabelListRetry,
+        onDismiss: () => dismissBanner("label-list-error"),
+      })
+    } else {
+      dismissBanner("label-list-error")
+    }
+  }, [
+    isLabelsPage,
+    labelListError,
+    showBanner,
+    dismissBanner,
+    getLabelListErrorMessage,
+    handleLabelListRetry,
+  ])
   const [isClosing, setIsClosing] = useState(false)
   const handleDrawerClose = () => {
     setIsClosing(true)
@@ -99,18 +194,16 @@ function Layout() {
             {t("app.title")}
           </Typography>
           {appBarActions}
-          {!isNewLabelPage ? (
-            <Button
-              color="primary"
-              variant="contained"
-              component={Link}
-              to={`/${productType}/labels/new`}
-              startIcon={<AddIcon />}
-              sx={{ mr: 2 }}
-            >
-              {t("button.label")}
-            </Button>
-          ) : null}
+          <Button
+            color="primary"
+            variant="contained"
+            component={Link}
+            to={`/${productType}/labels/new`}
+            startIcon={<AddIcon />}
+            sx={{ mr: 2 }}
+          >
+            {t("button.label")}
+          </Button>
           <Box sx={{ mr: 2 }}>
             <LanguageSwitcher />
           </Box>
@@ -193,10 +286,17 @@ function Layout() {
             overflow: "hidden",
           }}
         >
-          <BackendStatusBanner />
-          <ValidationErrorBanner />
+          {banners.map((banner) => (
+            <PageTopBanner
+              key={banner.id}
+              message={banner.message}
+              items={banner.items}
+              severity={banner.severity}
+              onRetry={banner.onRetry}
+              onDismiss={banner.onDismiss}
+            />
+          ))}
           <UploadProgressBanner />
-          <LabelListErrorBanner />
           <UploadCompletionSnackbar />
           <Box
             sx={{

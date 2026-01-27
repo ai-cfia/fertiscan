@@ -7,15 +7,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
 import type { AxiosError } from "axios"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { LoginService, type NewPassword } from "@/api"
-import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import PageTopBanner from "@/components/Common/PageTopBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
+import { useBackendStatus } from "@/stores/useBackendStatus"
 import { confirmPasswordRules, handleError, passwordRules } from "@/utils"
 
 interface NewPasswordForm extends NewPassword {
@@ -35,7 +37,20 @@ export const Route = createFileRoute("/reset-password")({
 })
 
 function ResetPassword() {
-  const { t } = useTranslation("auth")
+  const { t } = useTranslation(["auth", "common"])
+  const { ready: backendReady } = useBackendStatus()
+  const queryClient = useQueryClient()
+  const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  useEffect(() => {
+    if (backendReady) {
+      setBackendErrorDismissed(false)
+    }
+  }, [backendReady])
+  const handleBackendRetry = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["backend", "health", "readiness"],
+    })
+  }
   const {
     register,
     handleSubmit,
@@ -74,7 +89,14 @@ function ResetPassword() {
   }
   return (
     <>
-      <BackendStatusBanner />
+      {!backendReady && !backendErrorDismissed && (
+        <PageTopBanner
+          message={t("backend.unavailable", { ns: "common" })}
+          severity="error"
+          onRetry={handleBackendRetry}
+          onDismiss={() => setBackendErrorDismissed(true)}
+        />
+      )}
       <Container
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -107,7 +129,12 @@ function ResetPassword() {
           type="password"
           fullWidth
           error={!!errors.new_password}
-          helperText={errors.new_password?.message}
+          helperText={
+            errors.new_password?.message ||
+            t("resetPassword.newPasswordHelper", {
+              defaultValue: "Enter your new password",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (
@@ -130,7 +157,12 @@ function ResetPassword() {
           type="password"
           fullWidth
           error={!!errors.confirm_password}
-          helperText={errors.confirm_password?.message}
+          helperText={
+            errors.confirm_password?.message ||
+            t("resetPassword.confirmPasswordHelper", {
+              defaultValue: "Re-enter your new password to confirm",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (

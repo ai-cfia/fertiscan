@@ -147,6 +147,7 @@
   },
   "files": {
     "pageTitle": "Fichiers d'étiquette - Inspection d'étiquettes",
+    "reviewLabel": "Réviser l'étiquette",
     "title_one": "Image d'étiquette : {{count}} (max {{max}})",
     "title_many": "Images d'étiquette : {{count}} (max {{max}})",
     "title_other": "Images d'étiquette : {{count}} (max {{max}})"

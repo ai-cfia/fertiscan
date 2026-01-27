@@ -147,6 +147,7 @@
   },
   "files": {
     "pageTitle": "Label Files - Label Inspection",
+    "reviewLabel": "Review Label",
     "title_one": "Label Image: {{count}} (max {{max}})",
     "title_other": "Label Images: {{count}} (max {{max}})"
   },

@@ -3,7 +3,6 @@ import LockIcon from "@mui/icons-material/Lock"
 import LockOpenIcon from "@mui/icons-material/LockOpen"
 import SaveIcon from "@mui/icons-material/Save"
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
@@ -16,7 +15,7 @@ import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { LabelsService } from "@/api"
@@ -29,6 +28,7 @@ import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
 import SafetyInformationSection from "@/components/LabelData/SafetyInformationSection"
 import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
+import { useBanner } from "@/stores/useBanner"
 import { useLabelDataStore } from "@/stores/useLabelData"
 import {
   getErrorMessage,
@@ -90,7 +90,6 @@ function LabelData() {
   const { t } = useTranslation(["labels", "errors", "common"])
   const { labelId, productType } = Route.useParams()
   const queryClient = useQueryClient()
-  const [dismissed, setDismissed] = useState(false)
   const paginationRef = useRef<HTMLDivElement>(null)
   const isFertilizer = productType === "fertilizer"
   const {
@@ -100,7 +99,7 @@ function LabelData() {
     setAccordionExpanded,
   } = useLabelDataStore()
   const { clearActions } = useAppBarActionsStore()
-  const [loadError, setLoadError] = useState<Error | null>(null)
+  const { showBanner, dismissBanner } = useBanner()
   const form = useForm({
     defaultValues: transformBackendDataToFormValues(undefined, undefined),
   })
@@ -132,11 +131,29 @@ function LabelData() {
       hasQueryError &&
       !isAxiosErrorWithStatus(queryError, StatusCodes.NOT_FOUND)
     ) {
-      setLoadError(queryError as Error)
+      const error = queryError as Error
+      showBanner({
+        id: `label-review-load-error-${labelId}`,
+        message: getErrorMessage(error, t),
+        severity: "error",
+        onRetry: () => {
+          queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
+          dismissBanner(`label-review-load-error-${labelId}`)
+        },
+        onDismiss: () => dismissBanner(`label-review-load-error-${labelId}`),
+      })
     } else {
-      setLoadError(null)
+      dismissBanner(`label-review-load-error-${labelId}`)
     }
-  }, [hasQueryError, queryError])
+  }, [
+    hasQueryError,
+    queryError,
+    labelId,
+    showBanner,
+    dismissBanner,
+    queryClient,
+    t,
+  ])
   const labelDataMetaMap = useLabelDataMetaMap(
     labelDataMeta,
     fertilizerDataMeta,
@@ -214,11 +231,6 @@ function LabelData() {
       isCommonField,
     })
   }
-  const handleRetry = () => {
-    setLoadError(null)
-    setDismissed(false)
-    queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-  }
   const isDirty = form.formState.isDirty
   const isCompleted = label?.review_status === "completed"
   const handleSaveRef = useRef(handleSave)
@@ -236,32 +248,6 @@ function LabelData() {
   }
   return (
     <Box sx={{ scrollPaddingTop: "120px", width: "100%" }}>
-      {loadError && !dismissed && (
-        <Alert
-          severity="error"
-          sx={{
-            borderRadius: 0,
-            borderBottom: 1,
-            borderColor: "divider",
-          }}
-          action={
-            <>
-              <Button color="inherit" size="small" onClick={handleRetry}>
-                {t("button.retry", { ns: "common" })}
-              </Button>
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => setDismissed(true)}
-              >
-                {t("button.dismiss", { ns: "common" })}
-              </Button>
-            </>
-          }
-        >
-          {getErrorMessage(loadError, t)}
-        </Alert>
-      )}
       <Box
         sx={{
           px: { xs: 2, md: 3 },
