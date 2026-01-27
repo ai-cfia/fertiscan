@@ -7,15 +7,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import type { AxiosError } from "axios"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { LoginService } from "@/api"
-import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import PageTopBanner from "@/components/Common/PageTopBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
+import { useBackendStatus } from "@/stores/useBackendStatus"
 import { emailPattern, handleError } from "@/utils"
 
 interface FormData {
@@ -35,7 +37,20 @@ export const Route = createFileRoute("/recover-password")({
 })
 
 function RecoverPassword() {
-  const { t } = useTranslation("auth")
+  const { t } = useTranslation(["auth", "common"])
+  const { ready: backendReady } = useBackendStatus()
+  const queryClient = useQueryClient()
+  const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  useEffect(() => {
+    if (backendReady) {
+      setBackendErrorDismissed(false)
+    }
+  }, [backendReady])
+  const handleBackendRetry = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["backend", "health", "readiness"],
+    })
+  }
   const {
     register,
     handleSubmit,
@@ -63,7 +78,14 @@ function RecoverPassword() {
   }
   return (
     <>
-      <BackendStatusBanner />
+      {!backendReady && !backendErrorDismissed && (
+        <PageTopBanner
+          message={t("backend.unavailable", { ns: "common" })}
+          severity="error"
+          onRetry={handleBackendRetry}
+          onDismiss={() => setBackendErrorDismissed(true)}
+        />
+      )}
       <Container
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -96,7 +118,13 @@ function RecoverPassword() {
           type="email"
           fullWidth
           error={!!errors.email}
-          helperText={errors.email?.message}
+          helperText={
+            errors.email?.message ||
+            t("recoverPassword.emailHelper", {
+              defaultValue:
+                "Enter your email address to receive a password reset link",
+            })
+          }
           slotProps={{
             input: {
               startAdornment: (
