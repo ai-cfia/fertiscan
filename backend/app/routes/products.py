@@ -1,7 +1,6 @@
 """Product routes."""
 
-from typing import Annotated, Any
-from uuid import uuid4
+from typing import Annotated
 
 from fastapi import APIRouter, Query
 from fastapi_pagination import LimitOffsetPage
@@ -11,10 +10,11 @@ from app.controllers import products as product_controller
 from app.dependencies import (
     CurrentUser,
     LimitOffsetParamsDep,
+    ProductRegistrationNumberUniqueDep,
     ProductTypeQueryDep,
     SessionDep,
 )
-from app.schemas.product import ProductCreate, ProductPublic
+from app.schemas.product import ProductPublic
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -44,17 +44,14 @@ def read_products(
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
 
 
-# TODO: Remove dummy implementation - see #339
 @router.post("", response_model=ProductPublic, status_code=201)
-def create_product(
+async def create_product(
     *,
-    _current_user: CurrentUser,
-    product_in: ProductCreate,
-) -> Any:
-    """Create new product (dummy implementation)."""
-    return ProductPublic(
-        id=uuid4(),
-        registration_number=product_in.registration_number,
-        name_en=product_in.name_en,
-        name_fr=product_in.name_fr,
+    session: SessionDep,
+    product: ProductRegistrationNumberUniqueDep,
+) -> ProductPublic:
+    """Create a new product."""
+    created_product = product_controller.create_product(
+        session=session, product=product
     )
+    return created_product  # type: ignore[return-value]

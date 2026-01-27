@@ -16,6 +16,8 @@ class ProductCreate(BaseModel):
 
 class ProductPublic(BaseModel):
     id: UUID
+    brand_name_en: str | None = None
+    brand_name_fr: str | None = None
     name_en: str | None = None
     name_fr: str | None = None
     registration_number: str

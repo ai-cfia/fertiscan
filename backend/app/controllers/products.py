@@ -3,6 +3,7 @@
 from uuid import UUID
 
 from pydantic import validate_call
+from sqlalchemy.orm import Session
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
@@ -23,3 +24,12 @@ def get_products_query(
         stmt = stmt.where(Product.registration_number == registration_number)
 
     return stmt
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+def create_product(session: Session, product: Product) -> Product:
+    """Create a new product."""
+    session.add(product)
+    session.flush()
+    session.refresh(product)
+    return product

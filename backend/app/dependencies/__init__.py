@@ -34,7 +34,12 @@ from app.dependencies.labels import (
     S3ClientDep,
 )
 from app.dependencies.pagination import LimitOffsetParamsDep
-from app.dependencies.product_types import ProductTypeDep, ProductTypeQueryDep
+from app.dependencies.product_types import (
+    ProductCreateProductTypeDep,
+    ProductTypeDep,
+    ProductTypeQueryDep,
+)
+from app.dependencies.products import ProductRegistrationNumberUniqueDep
 
 __all__ = [
     "CompletedLabelImageDep",
@@ -60,6 +65,8 @@ __all__ = [
     "LabelWithImagesAndProductTypeDep",
     "InstructorDep",
     "LimitOffsetParamsDep",
+    "ProductCreateProductTypeDep",
+    "ProductRegistrationNumberUniqueDep",
     "ProductTypeDep",
     "ProductTypeQueryDep",
     "S3ClientDep",

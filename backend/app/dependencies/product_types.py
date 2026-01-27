@@ -9,6 +9,7 @@ from app.db.models.product_type import ProductType
 from app.dependencies.auth import SessionDep
 from app.exceptions import InactiveProductType, ProductTypeNotFound
 from app.schemas.label import LabelCreate
+from app.schemas.product import ProductCreate
 
 
 def _get_product_type_by_code_or_raise(
@@ -28,6 +29,18 @@ def get_product_type(session: SessionDep, label_in: LabelCreate) -> ProductType:
 
 
 ProductTypeDep = Annotated[ProductType, Depends(get_product_type)]
+
+
+def get_product_type_from_product_create(
+    session: SessionDep, product_in: ProductCreate
+) -> ProductType:
+    """Get product type from product create request or raise 400."""
+    return _get_product_type_by_code_or_raise(session, product_in.product_type)
+
+
+ProductCreateProductTypeDep = Annotated[
+    ProductType, Depends(get_product_type_from_product_create)
+]
 
 
 def get_product_type_from_query(
