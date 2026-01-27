@@ -220,3 +220,121 @@ class TestListProducts:
         """Test that listing products requires authentication."""
         response = client.get(f"{settings.API_V1_STR}/products")
         assert response.status_code == 401
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestProductCreate:
+    """Test for creating products endpoint."""
+
+    def test_create_product_success(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test successful product creation."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data = {
+            "product_type": "fertilizer",
+            "registration_number": "REG123456",
+            "brand_name_en": "Test Brand EN",
+            "brand_name_fr": "Test Brand FR",
+            "name_en": "Test Product EN",
+            "name_fr": "Test Product FR",
+        }
+        response = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data,
+        )
+        assert response.status_code == 201
+
+    def test_existing_registration_code(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test creating a product with an existing registration number."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data = {
+            "product_type": "fertilizer",
+            "registration_number": "REG123456",
+            "brand_name_en": "Test Brand EN",
+            "brand_name_fr": "Test Brand FR",
+            "name_en": "Test Product EN",
+            "name_fr": "Test Product FR",
+        }
+        response1 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data,
+        )
+        assert response1.status_code == 201
+
+        response2 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json=data,
+        )
+        assert response2.status_code == 409
+
+    def test_required_fields_validation(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test required fields validation when creating a product."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response1 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json={
+                "registration_number": "REG123456",
+                "brand_name_en": "Test Brand EN",
+                "brand_name_fr": "Test Brand FR",
+                "name_en": "Test Product EN",
+                "name_fr": "Test Product FR",
+            },
+        )
+        assert response1.status_code == 422
+
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response2 = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers=headers,
+            json={
+                "product_type": "fertilizer",
+                "brand_name_en": "Test Brand EN",
+                "brand_name_fr": "Test Brand FR",
+                "name_en": "Test Product EN",
+                "name_fr": "Test Product FR",
+            },
+        )
+        assert response2.status_code == 422
+
+    def test_auth_required(self, db: Session, client: TestClient) -> None:
+        """Test that authentication is required for creating a product."""
+        response = client.post(
+            f"{settings.API_V1_STR}/products",
+            headers={},
+            json={
+                "registration_number": "REG123456",
+                "brand_name_en": "Test Brand EN",
+                "brand_name_fr": "Test Brand FR",
+                "name_en": "Test Product EN",
+                "name_fr": "Test Product FR",
+            },
+        )
+        assert response.status_code == 401
