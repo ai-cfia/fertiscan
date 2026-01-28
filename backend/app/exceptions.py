@@ -132,3 +132,13 @@ class LabelNotLinkedToProduct(HTTPException):
         self, detail: str = "Label must be associated with a product before completion"
     ) -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class LabelDataNotFound(HTTPException):
+    def __init__(self, detail: str = "Label data not found") -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class RegistrationNumberMissing(HTTPException):
+    def __init__(self, detail: str = "Registration number missing") -> None:
+        super().__init__(status.HTTP_422_UNPROCESSABLE_CONTENT, detail)

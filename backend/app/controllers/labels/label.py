@@ -10,9 +10,19 @@ from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
+from app.controllers.products import create_product
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
+from app.dependencies import CurrentUser
+from app.dependencies.products import (
+    ensure_product_registration_number_unique,
+)
+from app.exceptions import (
+    LabelDataNotFound,
+    RegistrationNumberMissing,
+)
 from app.schemas.label import LabelReviewStatusUpdate, LabelUpdate
+from app.schemas.product import ProductCreate
 from app.storage import delete_files
 
 
@@ -158,8 +168,37 @@ def update_label_review_status(
     session: Session,
     label: Label,
     status_in: LabelReviewStatusUpdate,
+    current_user: CurrentUser,
 ) -> Label:
     """Update Label review_status (allowed even when completed)."""
+
+    stm = select(LabelData).where(LabelData.label_id == label.id)
+    label_data = session.scalar(stm)
+
+    if label_data is None:
+        raise LabelDataNotFound()
+
+    if label_data.registration_number is None:
+        raise RegistrationNumberMissing()
+
+    if label.product_id is None:
+        product_in = ProductCreate(
+            registration_number=label_data.registration_number,
+            product_type=label.product_type.code,
+            brand_name_en=label_data.brand_name_en,
+            brand_name_fr=label_data.brand_name_fr,
+            name_en=label_data.product_name_en,
+            name_fr=label_data.product_name_fr,
+        )
+        product = ensure_product_registration_number_unique(
+            session=session,
+            current_user=current_user,
+            product_in=product_in,
+            product_type=label.product_type,
+        )
+        create_product(session=session, product=product)
+        label.product_id = product.id
+
     label.review_status = status_in.review_status
     session.add(label)
     session.flush()

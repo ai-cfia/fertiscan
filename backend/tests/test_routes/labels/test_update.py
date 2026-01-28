@@ -236,3 +236,97 @@ class TestUpdateLabelReviewStatus:
         assert response.status_code == 200
         content = response.json()
         assert content["review_status"] == "not_started"
+
+    def label_update_create_product(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without product creates product."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["review_status"] == "completed"
+        assert data["id"] == str(label.id)
+        assert data["product_id"] is not None
+
+    def test_missing_data_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without label data returns 400."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data = None
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 400
+
+    def test_missing_registration_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without registration number returns 422."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data.registration_number = None
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 422
+
+    def test_update_two_same_labels_to_completed(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that updating two labels with same registration number to completed fails on second."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        response_fail = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response_fail.status_code == 400
