@@ -17,7 +17,6 @@ from app.dependencies import (
     S3ClientDep,
     SessionDep,
 )
-from app.exceptions import LabelDataNotFound
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
@@ -115,9 +114,6 @@ async def update_label_review_status(
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""
-    if label.label_data is None:
-        raise LabelDataNotFound()
-
     return label_controller.update_label_review_status(  # type: ignore[return-value]
         session=session,
         label=label,

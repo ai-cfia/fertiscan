@@ -133,7 +133,7 @@ class TestUpdateLabel:
 
 @pytest.mark.usefixtures("override_dependencies")
 class TestUpdateLabelReviewStatus:
-    """Tests for updating Label review_status via PATCH /labels/{id}/review-status."""
+    """Tests for updating a label’s review_status and automatically creating a product via PATCH /labels/{id}/review-status."""
 
     def test_update_label_review_status(
         self,
@@ -297,9 +297,10 @@ class TestUpdateLabelReviewStatus:
     ) -> None:
         """Test that completing a label without registration number returns 422."""
         user = UserFactory()
-        label = LabelFactory(created_by=user, standalone=True)
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(label=label)
-        assert label.product_id is None
+        assert label.product_id is not None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -320,9 +321,9 @@ class TestUpdateLabelReviewStatus:
     ) -> None:
         """Test that updating two labels with same registration number to completed fails on second."""
         user = UserFactory()
-        label = LabelFactory(created_by=user, standalone=True)
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(label=label)
-        assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
