@@ -405,14 +405,15 @@ class TestUpdateLabelReviewStatus:
 
         assert response.status_code == 422
 
-    def test_update_two_same_labels_to_completed(
-        self,
-        client: TestClient,
-        db: Session,
-    ) -> None:
-        """Test that updating two labels with same registration number to completed fails on second."""
+        def test_update_two_same_labels_to_completed(
+            self,
+            client: TestClient,
+            db: Session,
+        ) -> None:
+            """Test that updating two labels with same registration number to completed fails on second."""
+
         user = UserFactory()
-        product = ProductFactory(created_by=user)
+        product = ProductFactory(created_by=user, registration_number="reg-12345")
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(label=label, registration_number="reg-12345")
         headers = authentication_token_from_email(
@@ -427,9 +428,8 @@ class TestUpdateLabelReviewStatus:
 
         assert response.status_code == 200
 
-        label2 = LabelFactory(created_by=user, product=product)
+        label2 = LabelFactory(created_by=user, standalone=True)
         assert label2.id != label.id
-        label2.product_id = None
         LabelDataFactory(label=label2, registration_number="reg-12345")
         response_fail = client.patch(
             f"{settings.API_V1_STR}/labels/{label2.id}/review-status",
