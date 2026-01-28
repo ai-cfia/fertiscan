@@ -259,7 +259,7 @@ class TestUpdateLabelReviewStatus:
             "No product should be created when setting status to in_progress"
         )
 
-    def label_update_create_product(
+    def test_label_update_create_product(
         self,
         client: TestClient,
         db: Session,
@@ -267,6 +267,7 @@ class TestUpdateLabelReviewStatus:
         """Test that completing a label without product creates product."""
         user = UserFactory()
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
