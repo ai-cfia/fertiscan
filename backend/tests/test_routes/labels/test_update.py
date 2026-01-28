@@ -411,9 +411,6 @@ class TestUpdateLabelReviewStatus:
         db: Session,
     ) -> None:
         """Test that updating two labels with same registration number to completed fails on second."""
-        # Note: This test is incorrect - it uses one label and calls it twice. After first completion,
-        # label.product_id is set, so second call skips product creation and succeeds (200), not fails (400).
-        # Should test two different labels with same registration_number instead.
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
