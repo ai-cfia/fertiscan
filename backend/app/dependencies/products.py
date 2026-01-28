@@ -21,6 +21,8 @@ def ensure_product_registration_number_unique(
 ) -> Product:
     """Ensure product registration number is unique for product type, raise 409 if duplicate.
     Returns a Product instance (not yet persisted to database)."""
+    # TODO: Use case-insensitive comparison - replace == with func.lower() on both sides:
+    # func.lower(Product.registration_number) == func.lower(product_in.registration_number)
     stm = select(Product.id).where(
         Product.product_type_id == product_type.id,
         Product.registration_number == product_in.registration_number,

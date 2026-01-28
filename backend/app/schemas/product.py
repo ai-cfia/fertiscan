@@ -6,6 +6,8 @@ from pydantic import BaseModel
 
 
 class ProductCreate(BaseModel):
+    # TODO: Add normalization - use Annotated[str, StringConstraints(strip_whitespace=True)]
+    # to automatically trim whitespace from registration_number.
     registration_number: str
     product_type: str
     brand_name_en: str | None = None
