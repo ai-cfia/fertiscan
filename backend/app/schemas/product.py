@@ -1,14 +1,13 @@
 """Product API schemas."""
 
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 
 
 class ProductCreate(BaseModel):
-    # TODO: Add normalization - use Annotated[str, StringConstraints(strip_whitespace=True)]
-    # to automatically trim whitespace from registration_number.
-    registration_number: str
+    registration_number: Annotated[str, StringConstraints(strip_whitespace=True)]
     product_type: str
     brand_name_en: str | None = None
     brand_name_fr: str | None = None

@@ -110,19 +110,17 @@ async def update_label(
 async def update_label_review_status(
     session: SessionDep,
     current_user: CurrentUser,
-    # Note: Using LabelDep instead of LabelWithProductForCompletionDep because the controller
-    # now automatically creates a product when completing a label without one. Removed
-    # LabelWithProductForCompletionDep since nothing else uses it.
     label: LabelDep,
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""
-    # Validation belongs in router layer (HTTP/input validation), not controller (business logic).
     if label.label_data is None:
         raise LabelDataNotFound()
-    # Registration number validation moved here from controller - validation belongs in router
-    # layer (HTTP/input validation), not controller (business logic).
-    if label.label_data.registration_number is None:
+
+    if (
+        label.label_data.registration_number is None
+        or label.label_data.registration_number.strip() == ""
+    ):
         raise RegistrationNumberMissing()
 
     return label_controller.update_label_review_status(  # type: ignore[return-value]

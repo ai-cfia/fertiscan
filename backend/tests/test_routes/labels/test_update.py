@@ -161,10 +161,6 @@ class TestUpdateLabelReviewStatus:
         assert data["review_status"] == "completed"
         assert data["id"] == str(label.id)
 
-    # Removed test_update_review_status_to_completed_without_product: Products are now
-    # auto-created on completion, so this test (expecting 400) is outdated. Behavior
-    # covered by label_update_create_product.
-
     def test_update_review_status_to_completed_with_product(
         self, client: TestClient, db: Session
     ) -> None:
@@ -253,7 +249,7 @@ class TestUpdateLabelReviewStatus:
         assert content["product_id"] is None
         db.refresh(label)
         assert label.product_id is None
-        # Verify no product was created with this label's registration_number
+
         stmt = select(Product).where(
             Product.registration_number == label_data.registration_number,
             Product.product_type_id == label.product_type_id,
@@ -307,7 +303,7 @@ class TestUpdateLabelReviewStatus:
         assert response.status_code == 200
         db.refresh(label)
         assert label.product_id is not None
-        # Verify product was created with trimmed registration_number
+
         product = db.get(Product, label.product_id)
         assert product is not None
         assert product.registration_number == "REG-12345", (
@@ -319,10 +315,10 @@ class TestUpdateLabelReviewStatus:
     ) -> None:
         """Test that duplicate registration_number check is case-insensitive."""
         user = UserFactory()
-        # Create first product with uppercase registration number
+
         ProductFactory(created_by=user, registration_number="REG-12345")
         db.flush()
-        # Create label with lowercase registration number (should be treated as duplicate)
+
         label = LabelFactory(created_by=user, standalone=True)
         LabelDataFactory(label=label, registration_number="reg-12345")
         assert label.product_id is None
@@ -335,7 +331,7 @@ class TestUpdateLabelReviewStatus:
             json=update_data,
             headers=headers,
         )
-        # Should fail with 409 Conflict due to case-insensitive duplicate
+
         assert response.status_code == 409
         assert "registration number" in response.json()["detail"].lower()
 
@@ -385,9 +381,29 @@ class TestUpdateLabelReviewStatus:
 
         assert response.status_code == 422
 
-    # TODO: Add test_empty_string_registration_number_raises_error - test that completing
-    # a label with empty string ("") registration_number returns 422, similar to
-    # test_missing_registration_number but for empty string instead of None.
+    def test_empty_string_registration_number_raises_error(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without registration number returns 422."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
+        assert label.product_id is not None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data.registration_number = ""
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 422
 
     def test_update_two_same_labels_to_completed(
         self,
@@ -401,7 +417,7 @@ class TestUpdateLabelReviewStatus:
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
-        LabelDataFactory(label=label)
+        LabelDataFactory(label=label, registration_number="reg-12345")
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -411,10 +427,16 @@ class TestUpdateLabelReviewStatus:
             json=update_data,
             headers=headers,
         )
+
         assert response.status_code == 200
+
+        label2 = LabelFactory(created_by=user, product=product)
+        assert label2.id != label.id
+        label2.product_id = None
+        LabelDataFactory(label=label2, registration_number="reg-12345")
         response_fail = client.patch(
-            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            f"{settings.API_V1_STR}/labels/{label2.id}/review-status",
             json=update_data,
             headers=headers,
         )
-        assert response_fail.status_code == 400
+        assert response_fail.status_code == 409

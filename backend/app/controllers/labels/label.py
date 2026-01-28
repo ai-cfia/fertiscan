@@ -167,13 +167,13 @@ def update_label_review_status(
     current_user: CurrentUser,
 ) -> Label:
     """Update Label review_status (allowed even when completed)."""
-    # Router already validated label.label_data exists and has registration_number, so we can use it directly.
-    # SQLAlchemy lazy-loads it when accessed, so no need for explicit query or None check.
     label_data = label.label_data
-    assert label_data is not None  # Validated by router layer
-    assert label_data.registration_number is not None  # Validated by router layer
+    assert label_data is not None
+    assert label_data.registration_number is not None
+    assert label_data.registration_number.strip() != ""
+    label.review_status = status_in.review_status
 
-    if label.product_id is None:
+    if label.product_id is None and label.review_status == ReviewStatus.completed:
         product_in = ProductCreate(
             registration_number=label_data.registration_number,
             product_type=label.product_type.code,
@@ -188,12 +188,10 @@ def update_label_review_status(
             product_in=product_in,
             product_type=label.product_type,
         )
-        # Use returned product for explicitness (SQLAlchemy modifies objects in place, so
-        # product.id would work either way, but using return value makes intent clearer).
+
         product = create_product(session=session, product=product)
         label.product_id = product.id
 
-    label.review_status = status_in.review_status
     session.add(label)
     session.flush()
     session.refresh(label)
