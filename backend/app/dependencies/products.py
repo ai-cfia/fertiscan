@@ -3,6 +3,7 @@
 from typing import Annotated
 
 from fastapi import Depends
+from sqlalchemy import func
 from sqlmodel import select
 
 from app.db.models.product import Product
@@ -21,9 +22,11 @@ def ensure_product_registration_number_unique(
 ) -> Product:
     """Ensure product registration number is unique for product type, raise 409 if duplicate.
     Returns a Product instance (not yet persisted to database)."""
+
     stm = select(Product.id).where(
         Product.product_type_id == product_type.id,
-        Product.registration_number == product_in.registration_number,
+        func.lower(Product.registration_number)
+        == func.lower(product_in.registration_number),
     )
     if session.scalar(stm):
         raise ResourceConflict(

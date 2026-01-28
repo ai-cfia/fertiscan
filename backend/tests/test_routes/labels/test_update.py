@@ -5,10 +5,13 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
+from sqlmodel import select
 
 from app.config import settings
 from app.db.models.label import ReviewStatus
+from app.db.models.product import Product
 from tests.factories.label import LabelFactory
+from tests.factories.label_data import LabelDataFactory
 from tests.factories.product import ProductFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import authentication_token_from_email
@@ -30,6 +33,7 @@ class TestUpdateLabel:
         label = LabelFactory(
             created_by=user, product=product1, review_status=ReviewStatus.not_started
         )
+
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -131,7 +135,7 @@ class TestUpdateLabel:
 
 @pytest.mark.usefixtures("override_dependencies")
 class TestUpdateLabelReviewStatus:
-    """Tests for updating Label review_status via PATCH /labels/{id}/review-status."""
+    """Tests for updating a label’s review_status and automatically creating a product via PATCH /labels/{id}/review-status."""
 
     def test_update_label_review_status(
         self,
@@ -142,6 +146,7 @@ class TestUpdateLabelReviewStatus:
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -156,25 +161,6 @@ class TestUpdateLabelReviewStatus:
         assert data["review_status"] == "completed"
         assert data["id"] == str(label.id)
 
-    def test_update_review_status_to_completed_without_product(
-        self, client: TestClient, db: Session
-    ) -> None:
-        """Test that completing a label without product_id returns 400."""
-        user = LabelFactory().created_by
-        label = LabelFactory(created_by=user, standalone=True)
-        assert label.product_id is None
-        headers = authentication_token_from_email(
-            client=client, email=user.email, db=db
-        )
-        data = {"review_status": "completed"}
-        response = client.patch(
-            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
-            headers=headers,
-            json=data,
-        )
-        assert response.status_code == 400
-        assert "product" in response.json()["detail"].lower()
-
     def test_update_review_status_to_completed_with_product(
         self, client: TestClient, db: Session
     ) -> None:
@@ -182,6 +168,7 @@ class TestUpdateLabelReviewStatus:
         user = LabelFactory().created_by
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
         assert label.product_id is not None
         assert label.product_id == product.id
         headers = authentication_token_from_email(
@@ -203,6 +190,7 @@ class TestUpdateLabelReviewStatus:
         """Test that setting status to in_progress without product_id succeeds."""
         user = LabelFactory().created_by
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -223,6 +211,7 @@ class TestUpdateLabelReviewStatus:
         """Test that setting status to not_started without product_id succeeds."""
         user = LabelFactory().created_by
         label = LabelFactory(created_by=user, standalone=True, in_progress=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -236,3 +225,216 @@ class TestUpdateLabelReviewStatus:
         assert response.status_code == 200
         content = response.json()
         assert content["review_status"] == "not_started"
+
+    def test_update_review_status_to_in_progress_does_not_create_product(
+        self, client: TestClient, db: Session
+    ) -> None:
+        """Test that setting status to in_progress without product_id does not create product."""
+        user = LabelFactory().created_by
+        label = LabelFactory(created_by=user, standalone=True)
+        label_data = LabelDataFactory(label=label)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        data = {"review_status": "in_progress"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            headers=headers,
+            json=data,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert content["review_status"] == "in_progress"
+        assert content["product_id"] is None
+        db.refresh(label)
+        assert label.product_id is None
+
+        stmt = select(Product).where(
+            Product.registration_number == label_data.registration_number,
+            Product.product_type_id == label.product_type_id,
+        )
+        created_product = db.scalar(stmt)
+        assert created_product is None, (
+            "No product should be created when setting status to in_progress"
+        )
+
+    def test_label_update_create_product(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without product creates product."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["review_status"] == "completed"
+        assert data["id"] == str(label.id)
+        assert data["product_id"] is not None
+
+    def test_product_creation_normalizes_registration_number_whitespace(
+        self, client: TestClient, db: Session
+    ) -> None:
+        """Test that registration_number with whitespace is trimmed when creating product."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label, registration_number="  REG-12345  ")
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.refresh(label)
+        assert label.product_id is not None
+
+        product = db.get(Product, label.product_id)
+        assert product is not None
+        assert product.registration_number == "REG-12345", (
+            "Registration number should be trimmed of whitespace"
+        )
+
+    def test_product_creation_case_insensitive_duplicate_check(
+        self, client: TestClient, db: Session
+    ) -> None:
+        """Test that duplicate registration_number check is case-insensitive."""
+        user = UserFactory()
+
+        ProductFactory(created_by=user, registration_number="REG-12345")
+        db.flush()
+
+        label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label, registration_number="reg-12345")
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 409
+        assert "registration number" in response.json()["detail"].lower()
+
+    def test_missing_data_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without label data returns 400."""
+        user = UserFactory()
+        label = LabelFactory(created_by=user, standalone=True)
+        assert label.product_id is None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data = None
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 400
+
+    def test_missing_registration_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without registration number returns 422."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
+        assert label.product_id is not None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data.registration_number = None
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 422
+
+    def test_empty_string_registration_number_raises_error(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that completing a label without registration number returns 422."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
+        assert label.product_id is not None
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        label.label_data.registration_number = ""
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 422
+
+        def test_update_two_same_labels_to_completed(
+            self,
+            client: TestClient,
+            db: Session,
+        ) -> None:
+            """Test that updating two labels with same registration number to completed fails on second."""
+
+        user = UserFactory()
+        product = ProductFactory(created_by=user, registration_number="reg-12345")
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label, registration_number="reg-12345")
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+
+        label2 = LabelFactory(created_by=user, standalone=True)
+        assert label2.id != label.id
+        LabelDataFactory(label=label2, registration_number="reg-12345")
+        response_fail = client.patch(
+            f"{settings.API_V1_STR}/labels/{label2.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response_fail.status_code == 409

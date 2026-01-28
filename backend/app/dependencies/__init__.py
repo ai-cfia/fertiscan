@@ -30,7 +30,6 @@ from app.dependencies.labels import (
     LabelWithImageLimitDep,
     LabelWithImageLimitEditDep,
     LabelWithImagesAndProductTypeDep,
-    LabelWithProductForCompletionDep,
     S3ClientDep,
 )
 from app.dependencies.pagination import LimitOffsetParamsDep
@@ -73,5 +72,4 @@ __all__ = [
     "SessionDep",
     "TokenDep",
     "VerifiedLabelImageDep",
-    "LabelWithProductForCompletionDep",
 ]

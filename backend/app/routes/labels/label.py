@@ -10,13 +10,13 @@ from app.dependencies import (
     CurrentUser,
     LabelDep,
     LabelNotCompletedDep,
-    LabelWithProductForCompletionDep,
     LimitOffsetParamsDep,
     ProductTypeDep,
     ProductTypeQueryDep,
     S3ClientDep,
     SessionDep,
 )
+from app.exceptions import LabelDataNotFound, RegistrationNumberMissing
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
@@ -109,15 +109,25 @@ async def update_label(
 @router.patch("/{label_id}/review-status", response_model=LabelDetail)
 async def update_label_review_status(
     session: SessionDep,
-    _: CurrentUser,
-    label:  LabelWithProductForCompletionDep ,
+    current_user: CurrentUser,
+    label: LabelDep,
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""
+    if label.label_data is None:
+        raise LabelDataNotFound()
+
+    if (
+        label.label_data.registration_number is None
+        or label.label_data.registration_number.strip() == ""
+    ):
+        raise RegistrationNumberMissing()
+
     return label_controller.update_label_review_status(  # type: ignore[return-value]
         session=session,
         label=label,
         status_in=status_in,
+        current_user=current_user,
     )
 
 
