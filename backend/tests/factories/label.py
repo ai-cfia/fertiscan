@@ -17,7 +17,6 @@ class LabelFactory(BaseFactory):
     created_by_id = factory.LazyAttribute(lambda obj: obj.created_by.id)
     product_type_id = factory.LazyAttribute(lambda obj: obj.product_type.id)
     review_status = ReviewStatus.not_started
-    label_data = factory.SubFactory("tests.factories.label_data.LabelDataFactory")
 
     class Params:
         standalone = factory.Trait(product=None, product_id=None)

@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.db.models.label import ReviewStatus
 from tests.factories.label import LabelFactory
+from tests.factories.label_data import LabelDataFactory
 from tests.factories.product import ProductFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import authentication_token_from_email
@@ -30,6 +31,7 @@ class TestUpdateLabel:
         label = LabelFactory(
             created_by=user, product=product1, review_status=ReviewStatus.not_started
         )
+
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -142,6 +144,7 @@ class TestUpdateLabelReviewStatus:
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
@@ -162,6 +165,7 @@ class TestUpdateLabelReviewStatus:
         """Test that completing a label without product_id returns 400."""
         user = LabelFactory().created_by
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -182,6 +186,7 @@ class TestUpdateLabelReviewStatus:
         user = LabelFactory().created_by
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(label=label)
         assert label.product_id is not None
         assert label.product_id == product.id
         headers = authentication_token_from_email(
@@ -203,6 +208,7 @@ class TestUpdateLabelReviewStatus:
         """Test that setting status to in_progress without product_id succeeds."""
         user = LabelFactory().created_by
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -223,6 +229,7 @@ class TestUpdateLabelReviewStatus:
         """Test that setting status to not_started without product_id succeeds."""
         user = LabelFactory().created_by
         label = LabelFactory(created_by=user, standalone=True, in_progress=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -291,6 +298,7 @@ class TestUpdateLabelReviewStatus:
         """Test that completing a label without registration number returns 422."""
         user = UserFactory()
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -313,6 +321,7 @@ class TestUpdateLabelReviewStatus:
         """Test that updating two labels with same registration number to completed fails on second."""
         user = UserFactory()
         label = LabelFactory(created_by=user, standalone=True)
+        LabelDataFactory(label=label)
         assert label.product_id is None
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
