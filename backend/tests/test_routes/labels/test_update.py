@@ -1,5 +1,6 @@
 """Tests for label update endpoint."""
 
+import time
 from uuid import uuid4
 
 import pytest
@@ -9,6 +10,7 @@ from sqlmodel import select
 
 from app.config import settings
 from app.db.models.label import ReviewStatus
+from app.db.models.label_data import LabelData
 from app.db.models.product import Product
 from tests.factories.label import LabelFactory
 from tests.factories.label_data import LabelDataFactory
@@ -406,12 +408,12 @@ class TestUpdateLabelReviewStatus:
 
         assert response.status_code == 422
 
-        def test_update_two_same_labels_to_completed(
-            self,
-            client: TestClient,
-            db: Session,
-        ) -> None:
-            """Test that updating two labels with same registration number to completed fails on second."""
+    def test_update_two_same_labels_to_completed(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that updating two labels with same registration number to completed fails on second."""
 
         user = UserFactory()
         product = ProductFactory(created_by=user, registration_number="reg-12345")
@@ -438,3 +440,358 @@ class TestUpdateLabelReviewStatus:
             headers=headers,
         )
         assert response_fail.status_code == 409
+
+    def test_product_update_with_existing_product(
+        self,
+        client: TestClient,
+        db: Session,
+    ):
+        """Test product update when label with existing product is completed"""
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_fr="Ancienne Marque",
+            name_fr="Ancien Nom",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+    def test_product_update_with_existing_product_mapping_completed_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test product fields correctly mapped from label_data (brand_name_en/fr → brand_name_en/fr, product_name_en/fr → name_en/fr)"""
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_fr="Ancienne Marque",
+            name_fr="Ancien Nom",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_fr="Nouvelle Marque",
+            product_name_fr="Nouveau Nom",
+            brand_name_en="New Brand",
+            product_name_en="New Name",
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        db.refresh(product)
+        assert product.brand_name_en == "New Brand"
+        assert product.name_en == "New Name"
+        assert product.brand_name_fr == "Nouvelle Marque"
+        assert product.name_fr == "Nouveau Nom"
+
+    def test_none_empty_label_data_fields_do_not_overwrite_product_fields_with_none_or_empty(
+        self,
+        client: TestClient,
+        db: Session,
+    ):
+        """Test None/empty label_data fields are skipped (preserve existing product values)"""
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_fr="Ancienne Marque",
+            name_fr="Ancien Nom",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_fr=None,
+            product_name_fr="Nouveau Nom",
+            brand_name_en="",
+            product_name_en="New Name",
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        db.refresh(product)
+        assert product.brand_name_en == "Old Brand"
+        assert product.name_en == "New Name"
+        assert product.brand_name_fr == "Ancienne Marque"
+        assert product.name_fr == "Nouveau Nom"
+
+    def test_product_update_skipped_when_label_data_is_missing(
+        self,
+        client: TestClient,
+        db: Session,
+    ):
+        """Test product update skipped if label_data is missing (status change still succeeds)"""
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_fr="Ancienne Marque",
+            name_fr="Ancien Nom",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 400
+
+    def test_product_with_re_completion(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test product update happens on re-completion (completed → in_progress → completed)"""
+
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_fr="Ancienne Marque",
+            name_fr="Ancien Nom",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_fr="Nouvelle Marque",
+            product_name_fr="Nouveau Nom",
+            brand_name_en="New Brand",
+            product_name_en="New Name",
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.flush()
+        db.refresh(product)
+
+        update_data = {"review_status": "in_progress"}
+
+        stmt = select(LabelData).where(LabelData.label_id == label.id)
+        labelData = db.scalar(stmt)
+        assert labelData is not None
+        labelData.brand_name_en = "Bad Brand"
+        labelData.product_name_en = "Bad Name"
+        labelData.brand_name_fr = "Mauvaise Marque"
+        labelData.product_name_fr = "Mauvais Nom"
+        db.add(labelData)
+        db.flush()
+        db.refresh(labelData)
+
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        db.flush()
+        db.refresh(product)
+        assert product.id is not None
+        stmt = select(Product).where(Product.id == product.id)  # type: ignore[assignment]
+        product = db.scalar(stmt)
+        assert response.json()["review_status"] == "in_progress"
+        assert product.brand_name_en == "New Brand"
+        assert product.name_en == "New Name"
+        assert product.brand_name_fr == "Nouvelle Marque"
+        assert product.name_fr == "Nouveau Nom"
+
+        stmt = select(LabelData).where(LabelData.label_id == label.id)
+        labelData = db.scalar(stmt)
+        assert labelData is not None
+        labelData.brand_name_en = "New Brand inc"
+        labelData.brand_name_fr = "Nouvelle Marque inc"
+        labelData.product_name_en = ""
+        labelData.product_name_fr = ""
+        db.add(labelData)
+        db.flush()
+        db.refresh(labelData)
+
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.flush()
+        assert product.id is not None
+        db.refresh(product)
+        stmt = select(Product).where(Product.id == product.id)  # type: ignore[assignment]
+
+        product = db.scalar(stmt)
+        assert product is not None
+        assert product.brand_name_en == "New Brand inc"
+        assert product.name_en == "New Name"
+        assert product.brand_name_fr == "Nouvelle Marque inc"
+        assert product.name_fr == "Nouveau Nom"
+
+    def test_product_update_persists_when_review_completion_reverse(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test product update persists when review completion is reversed"""
+
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_en="New Brand",
+            product_name_en="New Name",
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.refresh(product)
+        stmt = select(Product).where(Product.id == product.id)
+        product = db.scalar(stmt)
+        assert product.brand_name_en == "New Brand"
+        assert product.name_en == "New Name"
+
+        update_data = {"review_status": "in_progress"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.refresh(product)
+        stmt = select(Product).where(Product.id == product.id)
+        product = db.scalar(stmt)
+        assert product.brand_name_en == "New Brand"
+        assert product.name_en == "New Name"
+
+    def test_updated_at_timestamp_updated_on_product(
+        self, client: TestClient, db: Session
+    ) -> None:
+        """Test updated_at timestamp is updated on product
+        (with a time sleep of 2 seconds to ensure timestamp difference)"""
+        user = UserFactory()
+        product = ProductFactory(
+            created_by=user,
+            registration_number="REG-12345",
+            brand_name_en="Old Brand",
+            name_en="Old Name",
+        )
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_en="New Brand",
+            product_name_en="New Name",
+        )
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+        assert response.status_code == 200
+        db.refresh(product)
+        stmt = select(Product).where(Product.id == product.id)
+        product = db.scalar(stmt)
+        assert product is not None
+        original_updated_at = product.updated_at
+        assert original_updated_at is not None
+        time.sleep(2)
+        assert time is not None
+        assert label.id is not None
+        update_data = {"review_status": "completed"}
+        stmt = select(LabelData).where(LabelData.label_id == label.id)  # type: ignore[assignment]
+
+        labelData = db.scalar(stmt)
+        assert labelData is not None
+        labelData.brand_name_en = "New Brand inc"
+        labelData.brand_name_fr = "Nouvelle Marque inc"
+        labelData.product_name_en = ""
+        labelData.product_name_fr = ""
+        db.add(labelData)
+        db.flush()
+        db.refresh(labelData)
+
+        update_data = {"review_status": "completed"}
+        response = client.patch(
+            f"{settings.API_V1_STR}/labels/{label.id}/review-status",
+            json=update_data,
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        db.flush()
+        db.refresh(product)
+        stmt = select(Product).where(Product.id == product.id)
+        product = db.scalar(stmt)
+        assert product.updated_at >= original_updated_at

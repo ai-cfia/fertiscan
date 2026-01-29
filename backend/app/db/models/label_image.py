@@ -5,7 +5,7 @@ from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import CheckConstraint, Column, DateTime, UniqueConstraint
+from sqlalchemy import CheckConstraint, Column, DateTime, UniqueConstraint, func
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base
@@ -38,9 +38,9 @@ class LabelImage(Base, table=True):
     label: "Label" = Relationship(back_populates="images")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True)),
+        sa_column=Column(DateTime(timezone=True), default=func.now()),
     )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True)),
+        sa_column=Column(DateTime(timezone=True), onupdate=func.now()),
     )
