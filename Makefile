@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-seed backend-db-shell frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-reset-local backend-db-seed backend-db-shell frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -40,6 +40,7 @@ help:
 	@echo "  db-status                - Check database connection status"
 	@echo "  db-migrate               - Run database migrations"
 	@echo "  db-reset                 - Reset database (drop schema and recreate)"
+	@echo "  db-reset-local           - Reset local database (drop schema and recreate)"
 	@echo "  db-seed                  - Seed database with initial data"
 	@echo "  db-shell                 - Open database shell (psql)"
 	@echo ""
@@ -121,6 +122,8 @@ backend-db-migrate:
 	@$(MAKE) -C backend db-migrate
 backend-db-reset:
 	@$(MAKE) -C backend db-reset
+backend-db-reset-local:
+	@$(MAKE) -C backend db-reset-local
 backend-db-seed:
 	@$(MAKE) -C backend db-seed
 backend-db-shell:
@@ -202,6 +205,9 @@ db-migrate:
 
 db-reset:
 	@$(MAKE) backend-db-reset
+
+db-reset-local:
+	@$(MAKE) backend-db-reset-local
 
 db-seed:
 	@$(MAKE) backend-db-seed

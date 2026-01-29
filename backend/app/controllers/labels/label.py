@@ -16,6 +16,7 @@ from app.db.models.label_data import LabelData
 from app.dependencies import CurrentUser
 from app.dependencies.products import (
     ensure_product_registration_number_unique,
+    get_product_by_id,
 )
 from app.schemas.label import LabelReviewStatusUpdate, LabelUpdate
 from app.schemas.product import ProductCreate
@@ -191,6 +192,22 @@ def update_label_review_status(
 
         product = create_product(session=session, product=product)
         label.product_id = product.id
+    elif label.review_status == ReviewStatus.completed:
+        assert label.product_id is not None
+        product = get_product_by_id(session=session, product_id=label.product_id)
+        assert product is not None
+        for _field, label_attr, product_attr in [
+            ("brand_name_en", "brand_name_en", "brand_name_en"),
+            ("brand_name_fr", "brand_name_fr", "brand_name_fr"),
+            ("product_name_en", "product_name_en", "name_en"),
+            ("product_name_fr", "product_name_fr", "name_fr"),
+        ]:
+            value = getattr(label_data, label_attr)
+            if value is not None and value.strip():
+                setattr(product, product_attr, value)
+        session.add(product)
+        session.flush()
+        session.refresh(product)
 
     session.add(label)
     session.flush()

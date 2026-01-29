@@ -1,6 +1,7 @@
 """Product dependencies."""
 
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import Depends
 from sqlalchemy import func
@@ -9,7 +10,7 @@ from sqlmodel import select
 from app.db.models.product import Product
 from app.dependencies.auth import CurrentUser, SessionDep
 from app.dependencies.product_types import ProductCreateProductTypeDep
-from app.exceptions import ResourceConflict
+from app.exceptions import ProductNotFound, ResourceConflict
 from app.schemas.product import ProductCreate
 
 
@@ -48,3 +49,17 @@ def ensure_product_registration_number_unique(
 ProductRegistrationNumberUniqueDep = Annotated[
     Product, Depends(ensure_product_registration_number_unique)
 ]
+
+# ============================== Retrieval Dependencies ==============================
+
+
+def get_product_by_id(session: SessionDep, product_id: str | UUID) -> Product:
+    """Get product by ID or raise 404."""
+    stmt = select(Product).where(Product.id == product_id)
+    product = session.scalar(stmt)
+    if not product:
+        raise ProductNotFound(f"product with id {product_id} not found.")
+    return product
+
+
+ProductByIdDep = Annotated[Product, Depends(get_product_by_id)]
