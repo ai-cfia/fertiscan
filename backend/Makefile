@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-seed db-shell
+.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell
 
 help:
 	@echo "Available targets:"
@@ -42,6 +42,7 @@ help:
 	@echo "  db-status        - Check database connection status"
 	@echo "  db-migrate       - Run database migrations"
 	@echo "  db-reset         - Reset database (drop schema and recreate)"
+	@echo "  db-reset-local   - Reset local database (drop schema and recreate)"
 	@echo "  db-seed          - Seed database with initial data"
 	@echo "  db-shell         - Open database shell (psql)"
 
@@ -134,6 +135,10 @@ db-migrate:
 db-reset:
 	@echo "Resetting database..."
 	@docker compose exec db sh -c 'psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+
+db-reset-local:
+	@echo "Resetting local database..."
+	@psql "postgresql://postgres:changethis@localhost:5432/fertiscan" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 db-seed:
 	@echo "Seeding database with initial data..."
