@@ -4451,7 +4451,7 @@
       "version": "1.2.1"
     },
     {
-      "bom-ref": "python-multipart==0.0.21",
+      "bom-ref": "python-multipart==0.0.22",
       "description": "A streaming multipart parser for Python",
       "externalReferences": [
         {
@@ -4484,9 +4484,9 @@
         }
       ],
       "name": "python-multipart",
-      "purl": "pkg:pypi/python-multipart@0.0.21",
+      "purl": "pkg:pypi/python-multipart@0.0.22",
       "type": "library",
-      "version": "0.0.21"
+      "version": "0.0.22"
     },
     {
       "bom-ref": "referencing==0.37.0",
@@ -6386,7 +6386,7 @@
         "pydantic-extra-types==2.11.0",
         "pydantic-settings==2.12.0",
         "pydantic==2.12.5",
-        "python-multipart==0.0.21",
+        "python-multipart==0.0.22",
         "starlette==0.50.0",
         "typing_extensions==4.15.0",
         "uvicorn==0.40.0"
@@ -6791,7 +6791,7 @@
       "ref": "python-dotenv==1.2.1"
     },
     {
-      "ref": "python-multipart==0.0.21"
+      "ref": "python-multipart==0.0.22"
     },
     {
       "dependsOn": [
@@ -6930,7 +6930,7 @@
         "PyYAML==6.0.3",
         "anyio==4.12.1",
         "httpx==0.28.1",
-        "python-multipart==0.0.21",
+        "python-multipart==0.0.22",
         "typing_extensions==4.15.0"
       ],
       "ref": "starlette==0.50.0"
