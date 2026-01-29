@@ -1,7 +1,7 @@
 """Label routes."""
 
-from fastapi import APIRouter, Depends, Query, status
-from fastapi_pagination import LimitOffsetPage, LimitOffsetParams
+from fastapi import APIRouter, Query, status
+from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.controllers import labels as label_controller
@@ -10,11 +10,13 @@ from app.dependencies import (
     CurrentUser,
     LabelDep,
     LabelNotCompletedDep,
-    LabelWithProductForCompletionDep,
+    LimitOffsetParamsDep,
     ProductTypeDep,
+    ProductTypeQueryDep,
     S3ClientDep,
     SessionDep,
 )
+from app.exceptions import LabelDataNotFound, RegistrationNumberMissing
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
@@ -52,8 +54,8 @@ def create_label(
 def read_labels(
     session: SessionDep,
     current_user: CurrentUser,
-    params: LimitOffsetParams = Depends(),
-    product_type: str = Query(default="fertilizer", description="Product type"),
+    params: LimitOffsetParamsDep,
+    product_type: ProductTypeQueryDep,
     review_status: ReviewStatus | None = Query(
         default=None, description="Filter by review status"
     ),
@@ -67,7 +69,7 @@ def read_labels(
     """List labels with optional filters and sorting."""
     stmt = label_controller.get_labels_query(
         user_id=current_user.id,
-        product_type=product_type,
+        product_type_id=product_type.id,
         review_status=review_status,
         unlinked=unlinked,
         order_by=order_by,
@@ -107,15 +109,25 @@ async def update_label(
 @router.patch("/{label_id}/review-status", response_model=LabelDetail)
 async def update_label_review_status(
     session: SessionDep,
-    _: CurrentUser,
-    label:  LabelWithProductForCompletionDep ,
+    current_user: CurrentUser,
+    label: LabelDep,
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""
+    if label.label_data is None:
+        raise LabelDataNotFound()
+
+    if (
+        label.label_data.registration_number is None
+        or label.label_data.registration_number.strip() == ""
+    ):
+        raise RegistrationNumberMissing()
+
     return label_controller.update_label_review_status(  # type: ignore[return-value]
         session=session,
         label=label,
         status_in=status_in,
+        current_user=current_user,
     )
 
 

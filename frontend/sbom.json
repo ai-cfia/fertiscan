@@ -3610,6 +3610,41 @@
     },
     {
       "type": "library",
+      "name": "resolvers",
+      "group": "@hookform",
+      "version": "5.2.2",
+      "bom-ref": "frontend@0.0.0|@hookform/resolvers@5.2.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40hookform/resolvers@5.2.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@hookform/resolvers/-/resolvers-5.2.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "03f23194c2d2871dca8d5fc77937137da331770cbaf74f8bfd9003a1e69396d2f1f8256ece479520fbb26cade3ad17f0ed866799d2ac5551c09443c800450d94"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@hookform/resolvers"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "core",
       "group": "@humanfs",
       "version": "0.19.1",
@@ -5934,6 +5969,41 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@standard-schema/spec"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "utils",
+      "group": "@standard-schema",
+      "version": "0.3.0",
+      "bom-ref": "frontend@0.0.0|@standard-schema/utils@0.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40standard-schema/utils@0.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@standard-schema/utils/-/utils-0.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7bb31ec3af3aa3031a3c954d34bb39e4f52f833dfbd672a0c2c738bf1138f73b0e0e92449f1831468db2fce2abaae79abd781934c0d58f70dd1c595a480794f2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@standard-schema/utils"
         }
       ]
     },
@@ -21708,6 +21778,7 @@
         "frontend@0.0.0|@eslint/js@9.39.2",
         "frontend@0.0.0|@fontsource/roboto@5.2.9",
         "frontend@0.0.0|@hey-api/openapi-ts@0.90.8",
+        "frontend@0.0.0|@hookform/resolvers@5.2.2",
         "frontend@0.0.0|@mui/icons-material@7.3.7",
         "frontend@0.0.0|@mui/material@7.3.7",
         "frontend@0.0.0|@mui/x-data-grid@8.25.0",
@@ -22244,6 +22315,13 @@
       "ref": "frontend@0.0.0|@hey-api/types@0.1.1"
     },
     {
+      "ref": "frontend@0.0.0|@hookform/resolvers@5.2.2",
+      "dependsOn": [
+        "frontend@0.0.0|@standard-schema/utils@0.3.0",
+        "frontend@0.0.0|react-hook-form@7.71.1"
+      ]
+    },
+    {
       "ref": "frontend@0.0.0|@humanfs/core@0.19.1"
     },
     {
@@ -22643,6 +22721,9 @@
     },
     {
       "ref": "frontend@0.0.0|@standard-schema/spec@1.1.0"
+    },
+    {
+      "ref": "frontend@0.0.0|@standard-schema/utils@0.3.0"
     },
     {
       "ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.4"

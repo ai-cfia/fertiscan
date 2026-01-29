@@ -75,6 +75,14 @@ class ProductTypeNotFound(HTTPException):
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
+class InactiveProductType(HTTPException):
+    def __init__(self, code: str | None = None) -> None:
+        detail = (
+            f"Product type '{code}' is inactive" if code else "Product type is inactive"
+        )
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
 class InvalidProductType(HTTPException):
     def __init__(self, detail: str = "Invalid product type") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
@@ -119,8 +127,11 @@ class LabelCompleted(HTTPException):
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
-class LabelNotLinkedToProduct(HTTPException):
-    def __init__(
-        self, detail: str = "Label must be associated with a product before completion"
-    ) -> None:
+class LabelDataNotFound(HTTPException):
+    def __init__(self, detail: str = "Label data not found") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class RegistrationNumberMissing(HTTPException):
+    def __init__(self, detail: str = "Registration number missing") -> None:
+        super().__init__(status.HTTP_422_UNPROCESSABLE_CONTENT, detail)

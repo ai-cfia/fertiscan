@@ -1,11 +1,19 @@
 """Product routes."""
 
-from fastapi import APIRouter, Depends, Query
-from fastapi_pagination import LimitOffsetPage, LimitOffsetParams
+from typing import Annotated
+
+from fastapi import APIRouter, Query
+from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.controllers import products as product_controller
-from app.dependencies import CurrentUser, SessionDep
+from app.dependencies import (
+    CurrentUser,
+    LimitOffsetParamsDep,
+    ProductRegistrationNumberUniqueDep,
+    ProductTypeQueryDep,
+    SessionDep,
+)
 from app.schemas.product import ProductPublic
 
 router = APIRouter(prefix="/products", tags=["products"])
@@ -16,12 +24,34 @@ router = APIRouter(prefix="/products", tags=["products"])
 def read_products(
     session: SessionDep,
     current_user: CurrentUser,
-    params: LimitOffsetParams = Depends(),
-    product_type: str = Query(default="fertilizer", description="Product type"),
+    params: LimitOffsetParamsDep,
+    product_type: ProductTypeQueryDep,
+    registration_number: Annotated[
+        str | None,
+        Query(
+            description="Registration number",
+            max_length=50,
+            pattern=r"^[a-zA-Z0-9\s-]+$",
+        ),
+    ] = None,
 ) -> LimitOffsetPage[ProductPublic]:
     """List products with optional filters."""
     stmt = product_controller.get_products_query(
-        user_id=current_user.id,
-        product_type=product_type,
+        _user_id=current_user.id,
+        product_type_id=product_type.id,
+        registration_number=registration_number,
     )
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
+
+
+@router.post("", response_model=ProductPublic, status_code=201)
+async def create_product(
+    *,
+    session: SessionDep,
+    product: ProductRegistrationNumberUniqueDep,
+) -> ProductPublic:
+    """Create a new product."""
+    created_product = product_controller.create_product(
+        session=session, product=product
+    )
+    return created_product  # type: ignore[return-value]

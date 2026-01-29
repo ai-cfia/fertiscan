@@ -9,16 +9,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
   Link as RouterLink,
   redirect,
 } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type { BodyLoginLoginAccessToken as AccessToken } from "@/api"
-import BackendStatusBanner from "@/components/Common/BackendStatusBanner"
+import PageTopBanner from "@/components/Common/PageTopBanner"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
+import { useBackendStatus } from "@/stores/useBackendStatus"
 import { emailPattern, passwordRules } from "@/utils"
 
 export const Route = createFileRoute("/login")({
@@ -34,8 +37,21 @@ export const Route = createFileRoute("/login")({
 })
 
 function Login() {
-  const { t } = useTranslation("auth")
+  const { t } = useTranslation(["auth", "common"])
   const { loginMutation, error, resetError } = useAuth()
+  const { ready: backendReady } = useBackendStatus()
+  const queryClient = useQueryClient()
+  const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  useEffect(() => {
+    if (backendReady) {
+      setBackendErrorDismissed(false)
+    }
+  }, [backendReady])
+  const handleBackendRetry = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["backend", "health", "readiness"],
+    })
+  }
   const {
     register,
     handleSubmit,
@@ -59,7 +75,14 @@ function Login() {
   }
   return (
     <>
-      <BackendStatusBanner />
+      {!backendReady && !backendErrorDismissed && (
+        <PageTopBanner
+          message={t("backend.unavailable", { ns: "common" })}
+          severity="error"
+          onRetry={handleBackendRetry}
+          onDismiss={() => setBackendErrorDismissed(true)}
+        />
+      )}
       <Container
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -90,7 +113,12 @@ function Login() {
           fullWidth
           error={!!errors.username || !!error}
           helperText={
-            errors.username?.message || (error ? t("login.failed") : "")
+            errors.username?.message ||
+            (error
+              ? t("login.failed")
+              : t("login.emailHelper", {
+                  defaultValue: "Enter your email address",
+                }))
           }
           slotProps={{
             input: {
@@ -112,7 +140,10 @@ function Login() {
           type="password"
           fullWidth
           error={!!errors.password}
-          helperText={errors.password?.message}
+          helperText={
+            errors.password?.message ||
+            t("login.passwordHelper", { defaultValue: "Enter your password" })
+          }
           slotProps={{
             input: {
               startAdornment: (
