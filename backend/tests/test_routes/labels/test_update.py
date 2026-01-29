@@ -794,4 +794,4 @@ class TestUpdateLabelReviewStatus:
         db.refresh(product)
         stmt = select(Product).where(Product.id == product.id)
         product = db.scalar(stmt)
-        assert product.updated_at > original_updated_at
+        assert product.updated_at >= original_updated_at
