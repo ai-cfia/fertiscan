@@ -8,13 +8,13 @@
     }
   },
   "dashboard": {
-    "completed": "dashboard.completed",
+    "completed": "Completed",
     "createNewLabel": "Create New Label",
     "createNewLabelDescription": "Upload and process a new label",
-    "inProgress": "dashboard.inProgress",
+    "inProgress": "In Progress",
     "manageProducts": "Manage Products",
     "manageProductsDescription": "View and edit products",
-    "notStarted": "dashboard.notStarted",
+    "notStarted": "Not Started",
     "overview": "Overview",
     "quickActions": "Quick Actions",
     "title": "Dashboard - Label Inspection",
