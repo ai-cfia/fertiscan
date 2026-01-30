@@ -1,14 +1,25 @@
 """Product route tests."""
 
 import pytest
+from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.db.models.label import Label
+from app.db.models.label_image import LabelImage
+from tests.factories.label import LabelFactory
+from tests.factories.label_data import LabelDataFactory
+from tests.factories.label_image import LabelImageFactory
 from tests.factories.product import ProductFactory
 from tests.factories.product_type import ProductTypeFactory
 from tests.factories.user import UserFactory
-from tests.utils.user import authentication_token_from_email
+from tests.utils.user import (
+    authentication_token_from_email,
+    authentication_token_from_email_async,
+)
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -509,3 +520,180 @@ class TestProductCreate:
             json=data_fertilizer,
         )
         assert response1.status_code == 201
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestDeleteProduct:
+    """Tests for deleting products endpoint."""
+
+    def test_delete_product_success(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test successful product deletion."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        product_id = str(product.id)
+        response = client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        content = response.json()
+        assert content["message"] == "Product deleted successfully"
+
+    def test_product_not_found(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test deleting a non-existent product."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        non_existent_product_id = "123e4567-e89b-12d3-a456-426614174000"
+        response = client.delete(
+            f"{settings.API_V1_STR}/products/{non_existent_product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 404
+        content = response.json()
+        assert content["detail"] == "Product not found"
+
+    def test_auth_required_for_deletion(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that authentication is required for deleting a product."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        product_id = str(product.id)
+        response = client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers={},
+        )
+        assert response.status_code == 401
+
+    def test_try_to_delete_after_already_deleted(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test deleting a product that has already been deleted."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        product_id = str(product.id)
+        response1 = client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response1.status_code == 200
+        response2 = client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response2.status_code == 404
+
+    @pytest.mark.asyncio
+    async def test_delete_product_delete_all_associated_data(
+        self, async_client: AsyncClient, db: Session
+    ) -> None:
+        """Test that deleting a product also deletes all associated data from database."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        LabelDataFactory(
+            label=label,
+            registration_number="REG-12345",
+            brand_name_en="New Brand",
+            product_name_en="New Name",
+        )
+        image1 = LabelImageFactory(label=label)
+        image1_id = image1.id
+        image2 = LabelImageFactory(label=label)
+        image2_id = image2.id
+
+        headers = await authentication_token_from_email_async(
+            client=async_client, email=user.email, db=db
+        )
+        product_id = product.id
+        label_id = label.id
+
+        response = await async_client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        content = response.json()
+        assert content["message"] == "Product deleted successfully"
+        db.flush()
+
+        stm = select(Label).where(Label.product_id == product_id)
+        label = db.scalar(stm)
+        assert label is None
+        stm = select(LabelImage).where(LabelImage.label_id == label_id)  # type: ignore[assignment]
+        label_images = db.scalar(stm)
+        assert label_images is None
+        assert (db.get(LabelImage, image1_id) and db.get(LabelImage, image2_id)) is None
+
+    @pytest.mark.asyncio
+    async def test_delete_product_delete_files_from_storage(
+        self, async_client: AsyncClient, db: Session, s3_client
+    ) -> None:
+        """Test that deleting a product also deletes all associated files from storage."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        label = LabelFactory(created_by=user, product=product)
+        image1 = LabelImageFactory(label=label)
+        image2 = LabelImageFactory(label=label)
+
+        await s3_client.put_object(
+            Bucket=settings.STORAGE_BUCKET_NAME,
+            Key=image1.file_path,
+            Body=b"test content",
+        )
+        await s3_client.put_object(
+            Bucket=settings.STORAGE_BUCKET_NAME,
+            Key=image2.file_path,
+            Body=b"test content",
+        )
+
+        headers = await authentication_token_from_email_async(
+            client=async_client, email=user.email, db=db
+        )
+        product_id = product.id
+
+        response = await async_client.delete(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        try:
+            await s3_client.head_object(
+                Bucket=settings.STORAGE_BUCKET_NAME,
+                Key=image1.file_path,
+            )
+            raise AssertionError("File should have been deleted")
+        except ClientError as e:
+            assert e.response["Error"]["Code"] in ("404", "NoSuchKey")
+        finally:
+            try:
+                await s3_client.head_object(
+                    Bucket=settings.STORAGE_BUCKET_NAME,
+                    Key=image2.file_path,
+                )
+                raise AssertionError("File should have been deleted")
+            except ClientError as e:
+                assert e.response["Error"]["Code"] in ("404", "NoSuchKey")
