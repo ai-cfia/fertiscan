@@ -12,8 +12,11 @@ from app.dependencies import (
     LimitOffsetParamsDep,
     ProductRegistrationNumberUniqueDep,
     ProductTypeQueryDep,
+    S3ClientDep,
     SessionDep,
 )
+from app.exceptions import ProductNotFound
+from app.schemas.message import Message
 from app.schemas.product import ProductPublic
 
 router = APIRouter(prefix="/products", tags=["products"])
@@ -55,3 +58,19 @@ async def create_product(
         session=session, product=product
     )
     return created_product  # type: ignore[return-value]
+
+
+@router.delete("/{product_id}", response_model=Message, status_code=200)
+async def delete_product(
+    *,
+    session: SessionDep,
+    _: CurrentUser,
+    product_id: str,
+    s3_client: S3ClientDep,
+) -> Message:
+    """Delete a product"""
+    if not await product_controller.delete_product(
+        session=session, product_id=product_id, s3_client=s3_client
+    ):
+        raise ProductNotFound()
+    return Message(message="Product deleted successfully")
