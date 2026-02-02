@@ -697,3 +697,68 @@ class TestDeleteProduct:
                 raise AssertionError("File should have been deleted")
             except ClientError as e:
                 assert e.response["Error"]["Code"] in ("404", "NoSuchKey")
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestReadByIdProduct:
+    """Tests for reading product by ID endpoint."""
+
+    def test_read_product_by_id_success(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test successful reading product by ID."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        product_id = str(product.id)
+        response = client.get(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        content = response.json()
+        assert content["id"] == product_id
+        assert content["registration_number"] == product.registration_number
+        assert content["brand_name_en"] == product.brand_name_en
+        assert content["brand_name_fr"] == product.brand_name_fr
+        assert content["name_en"] == product.name_en
+        assert content["name_fr"] == product.name_fr
+
+    def test_product_not_found(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test reading a non-existent product by ID."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        non_existent_product_id = "123e4567-e89b-12d3-a456-426614174000"
+        response = client.get(
+            f"{settings.API_V1_STR}/products/{non_existent_product_id}",
+            headers=headers,
+        )
+        assert response.status_code == 404
+        content = response.json()
+        assert content["detail"] == "Product not found"
+
+    def test_auth_required_for_reading_by_id(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that authentication is required for reading product by ID."""
+        user = UserFactory()
+        product = ProductFactory(created_by=user)
+        product_id = str(product.id)
+        response = client.get(
+            f"{settings.API_V1_STR}/products/{product_id}",
+            headers={},
+        )
+        assert response.status_code == 401

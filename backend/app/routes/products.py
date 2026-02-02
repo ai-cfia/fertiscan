@@ -47,11 +47,26 @@ def read_products(
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
 
 
+@router.get("/{product_id}", response_model=ProductPublic)
+def read_product_by_id(
+    *, session: SessionDep, _: CurrentUser, product_id: str
+) -> ProductPublic:
+    """Get product by ID."""
+    if not (
+        product := product_controller.get_product_by_id(
+            session=session, product_id=product_id
+        )
+    ):
+        raise ProductNotFound()
+    return product  # type: ignore[return-value]
+
+
 @router.post("", response_model=ProductPublic, status_code=201)
 async def create_product(
     *,
     session: SessionDep,
     product: ProductRegistrationNumberUniqueDep,
+    _: CurrentUser,
 ) -> ProductPublic:
     """Create a new product."""
     created_product = product_controller.create_product(
