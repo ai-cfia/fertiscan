@@ -35,6 +35,8 @@ def get_product_by_id(
     product_id: UUID | str,
 ) -> Product | None:
     """Get product by ID."""
+    if isinstance(product_id, str):
+        product_id = UUID(product_id)
     stmt = select(Product).where(Product.id == product_id)
     result = session.execute(stmt)
     return result.scalar_one_or_none()
