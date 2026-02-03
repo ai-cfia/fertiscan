@@ -10,12 +10,12 @@ from app.controllers import products as product_controller
 from app.dependencies import (
     CurrentUser,
     LimitOffsetParamsDep,
+    ProductDep,
+    ProductQueryTypeDep,
     ProductRegistrationNumberUniqueDep,
-    ProductTypeQueryDep,
     S3ClientDep,
     SessionDep,
 )
-from app.exceptions import ProductNotFound
 from app.schemas.message import Message
 from app.schemas.product import ProductPublic
 
@@ -28,7 +28,7 @@ def read_products(
     session: SessionDep,
     current_user: CurrentUser,
     params: LimitOffsetParamsDep,
-    product_type: ProductTypeQueryDep,
+    product_type: ProductQueryTypeDep,
     registration_number: Annotated[
         str | None,
         Query(
@@ -49,15 +49,10 @@ def read_products(
 
 @router.get("/{product_id}", response_model=ProductPublic)
 def read_product_by_id(
-    *, session: SessionDep, _: CurrentUser, product_id: str
+    product: ProductDep,
+    _: CurrentUser,
 ) -> ProductPublic:
     """Get product by ID."""
-    if not (
-        product := product_controller.get_product_by_id(
-            session=session, product_id=product_id
-        )
-    ):
-        raise ProductNotFound()
     return product  # type: ignore[return-value]
 
 
@@ -80,12 +75,11 @@ async def delete_product(
     *,
     session: SessionDep,
     _: CurrentUser,
-    product_id: str,
+    product: ProductDep,
     s3_client: S3ClientDep,
 ) -> Message:
     """Delete a product"""
-    if not await product_controller.delete_product(
-        session=session, product_id=product_id, s3_client=s3_client
-    ):
-        raise ProductNotFound()
+    await product_controller.delete_product(
+        session=session, product=product, s3_client=s3_client
+    )
     return Message(message="Product deleted successfully")

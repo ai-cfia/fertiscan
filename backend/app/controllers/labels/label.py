@@ -108,24 +108,6 @@ def get_labels_query(
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def load_label_with_images_and_product_type(
-    session: Session,
-    label: Label,
-) -> Label:
-    """Load label with images and product_type relationships."""
-    stmt = (
-        select(Label)
-        .where(Label.id == label.id)
-        .options(
-            selectinload(Label.images),  # type: ignore[arg-type]
-            selectinload(Label.product_type),  # type: ignore[arg-type]
-        )
-    )
-    result = session.execute(stmt)
-    return result.scalar_one()
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
 async def get_label_detail(
     session: Session,
     label: Label,
@@ -171,7 +153,6 @@ def update_label_review_status(
     label_data = label.label_data
     assert label_data is not None
     assert label_data.registration_number is not None
-    assert label_data.registration_number.strip() != ""
     label.review_status = status_in.review_status
 
     if label.product_id is None and label.review_status == ReviewStatus.completed:

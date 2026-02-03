@@ -138,5 +138,8 @@ class RegistrationNumberMissing(HTTPException):
 
 
 class ProductNotFound(HTTPException):
-    def __init__(self, detail: str = "Product not found") -> None:
+    def __init__(self, product_id: str | None = None) -> None:
+        detail = (
+            f"Product {product_id} not found" if product_id else "Product not found"
+        )
         super().__init__(status.HTTP_404_NOT_FOUND, detail)

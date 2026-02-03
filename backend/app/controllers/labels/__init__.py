@@ -19,7 +19,6 @@ from app.controllers.labels.label import (
     delete_label,
     get_label_detail,
     get_labels_query,
-    load_label_with_images_and_product_type,
     update_label,
     update_label_review_status,
 )
@@ -53,7 +52,6 @@ __all__ = [
     "delete_label",
     "get_label_detail",
     "get_labels_query",
-    "load_label_with_images_and_product_type",
     "update_label",
     "update_label_review_status",
     # LabelImage functions

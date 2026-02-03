@@ -6,13 +6,13 @@ from app.controllers import labels as label_controller
 from app.dependencies import (
     CompletedLabelImageDep,
     CurrentUser,
+    EditableLabelImageDep,
     LabelDep,
     LabelImageDep,
-    LabelImageEditDep,
-    LabelWithImageLimitEditDep,
     S3ClientDep,
     SessionDep,
-    VerifiedLabelImageDep,
+    StoredPendingImageDep,
+    UploadableLabelDep,
 )
 from app.schemas.label import (
     LabelImageDetail,
@@ -33,7 +33,7 @@ router = APIRouter(prefix="/labels", tags=["labels"])
 def create_label_image(
     session: SessionDep,
     _: CurrentUser,
-    label: LabelWithImageLimitEditDep,
+    label: UploadableLabelDep,
     request: PresignedUrlRequest,
 ) -> LabelImageDetail:
     """Create pending LabelImage record."""
@@ -77,7 +77,7 @@ async def read_label_image(
 async def complete_label_image_upload(
     session: SessionDep,
     _: CurrentUser,
-    label_image: VerifiedLabelImageDep,
+    label_image: StoredPendingImageDep,
 ) -> LabelImageDetail:
     """Complete upload by updating LabelImage status from pending to completed."""
     return await label_controller.complete_label_image_upload(  # type: ignore[return-value]
@@ -94,7 +94,7 @@ async def delete_label_image(
     session: SessionDep,
     s3_client: S3ClientDep,
     _: CurrentUser,
-    label_image: LabelImageEditDep,
+    label_image: EditableLabelImageDep,
 ) -> None:
     """Delete a label image, its storage file, and renumber remaining images."""
     await label_controller.delete_label_image(

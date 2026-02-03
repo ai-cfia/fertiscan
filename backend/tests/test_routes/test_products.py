@@ -564,7 +564,7 @@ class TestDeleteProduct:
         )
         assert response.status_code == 404
         content = response.json()
-        assert content["detail"] == "Product not found"
+        assert content["detail"] == f"Product {non_existent_product_id} not found"
 
     def test_auth_required_for_deletion(
         self,
@@ -746,7 +746,7 @@ class TestReadByIdProduct:
         )
         assert response.status_code == 404
         content = response.json()
-        assert content["detail"] == "Product not found"
+        assert content["detail"] == f"Product {non_existent_product_id} not found"
 
     def test_auth_required_for_reading_by_id(
         self,

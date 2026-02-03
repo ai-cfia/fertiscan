@@ -6,8 +6,8 @@ from app.controllers import labels as label_controller
 from app.dependencies import (
     CurrentUser,
     FertilizerLabelDataDep,
-    FertilizerLabelDataNotExistsEditDep,
-    FertilizerTypeLabelEditDep,
+    FertilizerLabelDep,
+    LabelWithoutFertilizerDataDep,
     SessionDep,
 )
 from app.schemas.label_data import (
@@ -30,7 +30,7 @@ router = APIRouter(prefix="/labels", tags=["labels"])
 def create_fertilizer_label_data(
     session: SessionDep,
     _: CurrentUser,
-    label: FertilizerLabelDataNotExistsEditDep,
+    label: LabelWithoutFertilizerDataDep,
     data_in: FertilizerLabelDataCreate,
 ) -> FertilizerLabelData:
     """Create FertilizerLabelData for label."""
@@ -54,7 +54,7 @@ def read_fertilizer_label_data(
 def update_fertilizer_label_data(
     session: SessionDep,
     _: CurrentUser,
-    label: FertilizerTypeLabelEditDep,
+    label: FertilizerLabelDep,
     fertilizer_label_data: FertilizerLabelDataDep,
     data_in: FertilizerLabelDataUpdate,
 ) -> FertilizerLabelData:
@@ -97,7 +97,7 @@ def read_fertilizer_label_data_meta(
 def update_fertilizer_label_data_meta(
     session: SessionDep,
     _: CurrentUser,
-    label: FertilizerTypeLabelEditDep,
+    label: FertilizerLabelDep,
     fertilizer_label_data: FertilizerLabelDataDep,
     meta_in: FertilizerLabelDataMetaUpdate,
 ) -> FertilizerLabelDataMetaResponse:

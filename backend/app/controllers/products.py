@@ -30,19 +30,6 @@ def get_products_query(
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def get_product_by_id(
-    session: Session,
-    product_id: UUID | str,
-) -> Product | None:
-    """Get product by ID."""
-    if isinstance(product_id, str):
-        product_id = UUID(product_id)
-    stmt = select(Product).where(Product.id == product_id)
-    result = session.execute(stmt)
-    return result.scalar_one_or_none()
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
 def create_product(session: Session, product: Product) -> Product:
     """Create a new product."""
     session.add(product)
@@ -53,19 +40,13 @@ def create_product(session: Session, product: Product) -> Product:
 
 @validate_call(config={"arbitrary_types_allowed": True})
 async def delete_product(
-    session: Session, product_id: UUID | str, s3_client: AioBaseClient
-) -> bool:
+    session: Session, product: Product, s3_client: AioBaseClient
+) -> None:
     """Delete a product"""
-    if not (product := get_product_by_id(session=session, product_id=product_id)):
-        return False
-
     stm = select(Label).where(Label.product_id == product.id)
-    label = session.scalar(stm)
-    if label:
-        file_paths = [img.file_path for img in label.images]
-        if file_paths:
+    if label := session.scalar(stm):
+        if file_paths := [img.file_path for img in label.images]:
             await delete_files(client=s3_client, file_paths=file_paths)
 
     session.delete(product)
     session.flush()
-    return True

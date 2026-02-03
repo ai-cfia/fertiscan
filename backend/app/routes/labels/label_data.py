@@ -5,9 +5,9 @@ from fastapi import APIRouter, Query
 from app.controllers import labels as label_controller
 from app.dependencies import (
     CurrentUser,
+    EditableLabelDep,
     LabelDataDep,
-    LabelDataNotExistsEditDep,
-    LabelNotCompletedDep,
+    LabelWithoutDataDep,
     SessionDep,
 )
 from app.schemas.label_data import (
@@ -30,7 +30,7 @@ router = APIRouter(prefix="/labels", tags=["labels"])
 def create_label_data(
     session: SessionDep,
     _: CurrentUser,
-    label: LabelDataNotExistsEditDep,
+    label: LabelWithoutDataDep,
     data_in: LabelDataCreate,
 ) -> LabelData:
     """Create LabelData for label."""
@@ -54,7 +54,7 @@ def read_label_data(
 def update_label_data(
     session: SessionDep,
     _: CurrentUser,
-    label: LabelNotCompletedDep,
+    label: EditableLabelDep,
     label_data: LabelDataDep,
     data_in: LabelDataUpdate,
 ) -> LabelData:
@@ -91,7 +91,7 @@ def read_label_data_meta(
 def update_label_data_meta(
     session: SessionDep,
     _: CurrentUser,
-    label: LabelNotCompletedDep,
+    label: EditableLabelDep,
     label_data: LabelDataDep,
     meta_in: LabelDataFieldMetaUpdate,
 ) -> LabelDataFieldMetaResponse:

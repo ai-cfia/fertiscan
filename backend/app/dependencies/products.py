@@ -9,7 +9,7 @@ from sqlmodel import select
 
 from app.db.models.product import Product
 from app.dependencies.auth import CurrentUser, SessionDep
-from app.dependencies.product_types import ProductCreateProductTypeDep
+from app.dependencies.product_types import ProductCreateTypeDep
 from app.exceptions import ProductNotFound, ResourceConflict
 from app.schemas.product import ProductCreate
 
@@ -19,7 +19,7 @@ def ensure_product_registration_number_unique(
     session: SessionDep,
     current_user: CurrentUser,
     product_in: ProductCreate,
-    product_type: ProductCreateProductTypeDep,
+    product_type: ProductCreateTypeDep,
 ) -> Product:
     """Ensure product registration number is unique for product type, raise 409 if duplicate.
     Returns a Product instance (not yet persisted to database)."""
@@ -53,13 +53,11 @@ ProductRegistrationNumberUniqueDep = Annotated[
 # ============================== Retrieval Dependencies ==============================
 
 
-def get_product_by_id(session: SessionDep, product_id: str | UUID) -> Product:
+def get_product_by_id(session: SessionDep, product_id: UUID) -> Product:
     """Get product by ID or raise 404."""
-    stmt = select(Product).where(Product.id == product_id)
-    product = session.scalar(stmt)
-    if not product:
-        raise ProductNotFound(f"product with id {product_id} not found.")
+    if not (product := session.get(Product, product_id)):
+        raise ProductNotFound(str(product_id))
     return product
 
 
-ProductByIdDep = Annotated[Product, Depends(get_product_by_id)]
+ProductDep = Annotated[Product, Depends(get_product_by_id)]

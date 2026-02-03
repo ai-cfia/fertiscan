@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from app.controllers import labels as label_controller
 from app.dependencies import (
     CurrentUser,
-    FertilizerTypeLabelWithCompletedImagesEditDep,
+    ExtractableLabelDep,
     InstructorDep,
     S3ClientDep,
 )
@@ -22,7 +22,7 @@ router = APIRouter(prefix="/labels", tags=["labels"])
 async def extract_fertilizer_fields(
     s3_client: S3ClientDep,
     _: CurrentUser,
-    label: FertilizerTypeLabelWithCompletedImagesEditDep,
+    label: ExtractableLabelDep,
     instructor: InstructorDep,
     request: ExtractFieldsRequest | None = None,
 ) -> ExtractFertilizerFieldsOutput:
