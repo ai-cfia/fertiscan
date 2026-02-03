@@ -16,7 +16,6 @@ from app.dependencies.label_images import (
     StoredPendingImageDep,
 )
 from app.dependencies.labels import (
-    CompletableLabelDep,
     EditableLabelDep,
     ExtractableLabelDep,
     FertilizerLabelDep,
@@ -25,6 +24,7 @@ from app.dependencies.labels import (
     LabelWithoutFertilizerDataDep,
     S3ClientDep,
     UploadableLabelDep,
+    ValidatedStatusLabelDep,
 )
 from app.dependencies.pagination import LimitOffsetParamsDep
 from app.dependencies.product_types import (
@@ -32,10 +32,9 @@ from app.dependencies.product_types import (
     ProductQueryTypeDep,
     ProductTypeDep,
 )
-from app.dependencies.products import ProductDep, ProductRegistrationNumberUniqueDep
+from app.dependencies.products import NewProductDep, ProductDep
 
 __all__ = [
-    "CompletableLabelDep",
     "CompletedLabelImageDep",
     "CurrentSuperuser",
     "CurrentUser",
@@ -52,8 +51,8 @@ __all__ = [
     "LabelWithoutFertilizerDataDep",
     "LimitOffsetParamsDep",
     "ProductCreateTypeDep",
+    "NewProductDep",
     "ProductDep",
-    "ProductRegistrationNumberUniqueDep",
     "ProductTypeDep",
     "ProductQueryTypeDep",
     "S3ClientDep",
@@ -61,4 +60,5 @@ __all__ = [
     "StoredPendingImageDep",
     "TokenDep",
     "UploadableLabelDep",
+    "ValidatedStatusLabelDep",
 ]

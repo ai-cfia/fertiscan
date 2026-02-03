@@ -10,9 +10,9 @@ from app.controllers import products as product_controller
 from app.dependencies import (
     CurrentUser,
     LimitOffsetParamsDep,
+    NewProductDep,
     ProductDep,
     ProductQueryTypeDep,
-    ProductRegistrationNumberUniqueDep,
     S3ClientDep,
     SessionDep,
 )
@@ -58,16 +58,12 @@ def read_product_by_id(
 
 @router.post("", response_model=ProductPublic, status_code=201)
 async def create_product(
-    *,
+    product: NewProductDep,
     session: SessionDep,
-    product: ProductRegistrationNumberUniqueDep,
     _: CurrentUser,
 ) -> ProductPublic:
     """Create a new product."""
-    created_product = product_controller.create_product(
-        session=session, product=product
-    )
-    return created_product  # type: ignore[return-value]
+    return product_controller.create_product(session, product)  # type: ignore[return-value]
 
 
 @router.delete("/{product_id}", response_model=Message, status_code=200)

@@ -21,9 +21,11 @@ from app.exceptions import (
     LabelCompleted,
     LabelDataNotFound,
     LabelNotFound,
+    LabelNotLinkedToProduct,
     RegistrationNumberMissing,
     ResourceConflict,
 )
+from app.schemas.label import LabelReviewStatusUpdate
 from app.storage import get_s3_client
 
 # Storage client dependency
@@ -81,8 +83,20 @@ UploadableLabelDep = Annotated[Label, Depends(verify_label_is_uploadable)]
 
 
 # ============================== Update Endpoints (PATCH / Update Child) ==============================
-def verify_label_is_completable(label: LabelDep) -> Label:
-    """Verify label has data required for marking as complete."""
+def verify_completable_if_needed(
+    label: LabelDep,
+    status_in: LabelReviewStatusUpdate,
+) -> Label:
+    """Validate completion requirements if targeting completed status."""
+    # Only validate if targeting completed status
+    if status_in.review_status != ReviewStatus.completed:
+        return label
+
+    # Skip validation if already completed (idempotent)
+    if label.review_status == ReviewStatus.completed:
+        return label
+
+    # Validate label has required data for completion
     if not label.label_data:
         raise LabelDataNotFound()
 
@@ -92,10 +106,13 @@ def verify_label_is_completable(label: LabelDep) -> Label:
     if label.label_data.registration_number.strip() == "":
         raise RegistrationNumberMissing()
 
+    if not label.product_id:
+        raise LabelNotLinkedToProduct(label.id)
+
     return label
 
 
-CompletableLabelDep = Annotated[Label, Depends(verify_label_is_completable)]
+ValidatedStatusLabelDep = Annotated[Label, Depends(verify_completable_if_needed)]
 
 
 async def verify_fertilizer_label_edit(

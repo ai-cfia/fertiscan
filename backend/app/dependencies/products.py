@@ -4,7 +4,6 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import Depends
-from sqlalchemy import func
 from sqlmodel import select
 
 from app.db.models.product import Product
@@ -25,30 +24,22 @@ def ensure_product_registration_number_unique(
     Returns a Product instance (not yet persisted to database)."""
 
     stm = select(Product.id).where(
-        Product.product_type_id == product_type.id,
-        func.lower(Product.registration_number)
-        == func.lower(product_in.registration_number),
+        Product.registration_number.ilike(  # type: ignore[attr-defined]
+            product_in.registration_number
+        )
     )
     if session.scalar(stm):
-        raise ResourceConflict(
-            f"Product with registration number {product_in.registration_number}"
-            + " is already exist on the same product type."
-        )
-    product = Product(
-        product_type_id=product_type.id,
-        registration_number=product_in.registration_number,
-        brand_name_en=product_in.brand_name_en,
-        brand_name_fr=product_in.brand_name_fr,
-        name_en=product_in.name_en,
-        name_fr=product_in.name_fr,
+        msg = f"Product with registration number {product_in.registration_number} already exists."
+        raise ResourceConflict(msg)
+    return Product(
+        **product_in.model_dump(exclude={"product_type"}),
+        product_type=product_type,
         created_by=current_user,
     )
-    return product
 
 
-ProductRegistrationNumberUniqueDep = Annotated[
-    Product, Depends(ensure_product_registration_number_unique)
-]
+NewProductDep = Annotated[Product, Depends(ensure_product_registration_number_unique)]
+
 
 # ============================== Retrieval Dependencies ==============================
 

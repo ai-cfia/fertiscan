@@ -7,7 +7,6 @@ from fastapi_pagination.ext.sqlmodel import paginate
 from app.controllers import labels as label_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
-    CompletableLabelDep,
     CurrentUser,
     EditableLabelDep,
     LabelDep,
@@ -16,6 +15,7 @@ from app.dependencies import (
     ProductTypeDep,
     S3ClientDep,
     SessionDep,
+    ValidatedStatusLabelDep,
 )
 from app.schemas.label import (
     LabelCreate,
@@ -109,16 +109,15 @@ async def update_label(
 @router.patch("/{label_id}/review-status", response_model=LabelDetail)
 async def update_label_review_status(
     session: SessionDep,
-    current_user: CurrentUser,
-    label: CompletableLabelDep,
+    _: CurrentUser,
+    label: ValidatedStatusLabelDep,
     status_in: LabelReviewStatusUpdate,
 ) -> LabelDetail:
     """Update Label review_status (allowed even when completed)."""
     return label_controller.update_label_review_status(  # type: ignore[return-value]
         session=session,
         label=label,
-        status_in=status_in,
-        current_user=current_user,
+        new_status=status_in.review_status,
     )
 
 

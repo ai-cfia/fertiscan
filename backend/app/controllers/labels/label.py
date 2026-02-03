@@ -10,16 +10,9 @@ from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
-from app.controllers.products import create_product
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
-from app.dependencies import CurrentUser
-from app.dependencies.products import (
-    ensure_product_registration_number_unique,
-    get_product_by_id,
-)
-from app.schemas.label import LabelReviewStatusUpdate, LabelUpdate
-from app.schemas.product import ProductCreate
+from app.schemas.label import LabelUpdate
 from app.storage import delete_files
 
 
@@ -146,50 +139,10 @@ def update_label(
 def update_label_review_status(
     session: Session,
     label: Label,
-    status_in: LabelReviewStatusUpdate,
-    current_user: CurrentUser,
+    new_status: ReviewStatus,
 ) -> Label:
     """Update Label review_status (allowed even when completed)."""
-    label_data = label.label_data
-    assert label_data is not None
-    assert label_data.registration_number is not None
-    label.review_status = status_in.review_status
-
-    if label.product_id is None and label.review_status == ReviewStatus.completed:
-        product_in = ProductCreate(
-            registration_number=label_data.registration_number,
-            product_type=label.product_type.code,
-            brand_name_en=label_data.brand_name_en,
-            brand_name_fr=label_data.brand_name_fr,
-            name_en=label_data.product_name_en,
-            name_fr=label_data.product_name_fr,
-        )
-        product = ensure_product_registration_number_unique(
-            session=session,
-            current_user=current_user,
-            product_in=product_in,
-            product_type=label.product_type,
-        )
-
-        product = create_product(session=session, product=product)
-        label.product_id = product.id
-    elif label.review_status == ReviewStatus.completed:
-        assert label.product_id is not None
-        product = get_product_by_id(session=session, product_id=label.product_id)
-        assert product is not None
-        for _field, label_attr, product_attr in [
-            ("brand_name_en", "brand_name_en", "brand_name_en"),
-            ("brand_name_fr", "brand_name_fr", "brand_name_fr"),
-            ("product_name_en", "product_name_en", "name_en"),
-            ("product_name_fr", "product_name_fr", "name_fr"),
-        ]:
-            value = getattr(label_data, label_attr)
-            if value is not None and value.strip():
-                setattr(product, product_attr, value)
-        session.add(product)
-        session.flush()
-        session.refresh(product)
-
+    label.review_status = new_status
     session.add(label)
     session.flush()
     session.refresh(label)
