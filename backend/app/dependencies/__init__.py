@@ -6,6 +6,7 @@ from app.dependencies.auth import (
     SessionDep,
     TokenDep,
 )
+from app.dependencies.date import DateDep
 from app.dependencies.fertilizer_label_data import FertilizerLabelDataDep
 from app.dependencies.instructor import InstructorDep
 from app.dependencies.label_data import LabelDataDep
@@ -44,6 +45,7 @@ __all__ = [
     "CompletedLabelImageDep",
     "CurrentSuperuser",
     "CurrentUser",
+    "DateDep",
     "FertilizerLabelDataDep",
     "FertilizerLabelDataNotExistsDep",
     "FertilizerLabelDataNotExistsEditDep",

@@ -9,6 +9,7 @@ from fastapi_pagination.ext.sqlmodel import paginate
 from app.controllers import products as product_controller
 from app.dependencies import (
     CurrentUser,
+    DateDep,
     LimitOffsetParamsDep,
     ProductRegistrationNumberUniqueDep,
     ProductTypeQueryDep,
@@ -37,12 +38,41 @@ def read_products(
             pattern=r"^[a-zA-Z0-9\s-]+$",
         ),
     ] = None,
+    brand_name: Annotated[
+        str | None,
+        Query(
+            description="Brand name",
+            max_length=100,
+        ),
+    ] = None,
+    product_name: Annotated[
+        str | None,
+        Query(
+            description="Product name",
+            max_length=100,
+        ),
+    ] = None,
+    created_by: Annotated[
+        str | None,
+        Query(
+            description="The user who created the product",
+            max_length=36,
+        ),
+    ] = None,
+    created_at: DateDep = None,
+    updated_at: DateDep = None,
 ) -> LimitOffsetPage[ProductPublic]:
     """List products with optional filters."""
+
     stmt = product_controller.get_products_query(
         _user_id=current_user.id,
         product_type_id=product_type.id,
         registration_number=registration_number,
+        brand_name=brand_name,
+        product_name=product_name,
+        created_by=created_by,
+        created_at=created_at,
+        updated_at=updated_at,
     )
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
 
