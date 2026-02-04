@@ -5,26 +5,13 @@ from uuid import UUID
 
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import validate_call
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlmodel import select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.label import Label
 from app.db.models.product import Product
-from app.db.models.user import User
 from app.storage import delete_files
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-def get_pattern_for_ilike(input_str: str) -> str:
-    """Escape special characters for ILIKE pattern matching and prevent SQL injection."""
-    return (
-        input_str.replace("\\", "\\\\")
-        .replace("[", "\\[")
-        .replace("%", "\\%")
-        .replace("_", "\\_")
-    )
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -34,7 +21,6 @@ def get_products_query(
     registration_number: str | None = None,
     brand_name: str | None = None,
     product_name: str | None = None,
-    created_by: str | None = None,
     start_created_at: datetime | None = None,
     end_created_at: datetime | None = None,
     start_updated_at: datetime | None = None,
@@ -51,29 +37,16 @@ def get_products_query(
     # Filter by brand name (en or fr)
     if brand_name:
         assert brand_name is not None
-        pattern = get_pattern_for_ilike(brand_name)
         stmt = stmt.where(
-            (Product.brand_name_en.ilike(f"%{pattern}%", escape="\\"))  # type: ignore[union-attr]
-            | (Product.brand_name_fr.ilike(f"%{pattern}%", escape="\\"))  # type: ignore[union-attr]
+            (Product.brand_name_en.ilike(f"%{brand_name}%", escape="\\"))  # type: ignore[union-attr]
+            | (Product.brand_name_fr.ilike(f"%{brand_name}%", escape="\\"))  # type: ignore[union-attr]
         )
     # Filter by product name (en or fr)
     if product_name:
         assert product_name is not None
-        pattern = get_pattern_for_ilike(product_name)
         stmt = stmt.where(
-            (Product.name_en.ilike(f"%{pattern}%", escape="\\"))  # type: ignore[union-attr]
-            | (Product.name_fr.ilike(f"%{pattern}%", escape="\\"))  # type: ignore[union-attr]
-        )
-
-    # Filter by created by (user's full name)
-    if created_by:
-        pattern = get_pattern_for_ilike(created_by)
-        stmt = stmt.join(User, Product.created_by_id == User.id).where(  # type: ignore[arg-type]
-            func.concat(
-                func.coalesce(User.first_name, ""),
-                " ",
-                func.coalesce(User.last_name, ""),
-            ).ilike(f"%{pattern}%", escape="\\")
+            (Product.name_en.ilike(f"%{product_name}%", escape="\\"))  # type: ignore[union-attr]
+            | (Product.name_fr.ilike(f"%{product_name}%", escape="\\"))  # type: ignore[union-attr]
         )
 
     # Filter by start created at and end created at

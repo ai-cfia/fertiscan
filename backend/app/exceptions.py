@@ -140,8 +140,3 @@ class RegistrationNumberMissing(HTTPException):
 class ProductNotFound(HTTPException):
     def __init__(self, detail: str = "Product not found") -> None:
         super().__init__(status.HTTP_404_NOT_FOUND, detail)
-
-
-class DateUnprocessableEntity(HTTPException):
-    def __init__(self, detail: str = "Date string is not in a valid format") -> None:
-        super().__init__(status.HTTP_422_UNPROCESSABLE_CONTENT, detail)

@@ -42,21 +42,14 @@ def read_products(
         str | None,
         Query(
             description="Brand name",
-            max_length=100,
+            max_length=255,
         ),
     ] = None,
     product_name: Annotated[
         str | None,
         Query(
             description="Product name",
-            max_length=100,
-        ),
-    ] = None,
-    created_by: Annotated[
-        str | None,
-        Query(
-            description="The user who created the product",
-            max_length=36,
+            max_length=255,
         ),
     ] = None,
     start_created_at: datetime | None = None,
@@ -76,7 +69,6 @@ def read_products(
         end_created_at=end_created_at,
         start_updated_at=start_updated_at,
         end_updated_at=end_updated_at,
-        created_by=created_by,
     )
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
 
