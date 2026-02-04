@@ -76,14 +76,14 @@ def get_products_query(
             ).ilike(f"%{pattern}%", escape="\\")
         )
 
-    # Filter by created at (supports partial dates)
+    # Filter by start created at and end created at
     if start_created_at and end_created_at:
         stmt = stmt.where(
             (Product.created_at >= start_created_at)
             & (Product.created_at <= end_created_at)
         )
 
-    # Filter by updated at (supports partial dates)
+    # Filter by start updated at and end updated at
     if start_updated_at and end_updated_at:
         stmt = stmt.where(
             (Product.updated_at >= start_updated_at)
