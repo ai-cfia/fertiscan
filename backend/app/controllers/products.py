@@ -28,33 +28,6 @@ def get_pattern_for_ilike(input_str: str) -> str:
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def _parse_partial_date(date_str: str) -> tuple[datetime, datetime]:
-    """Parse partial date string and return start/end datetime range."""
-    parts = date_str.strip().split("-")
-
-    if len(parts) == 1:  # Year only
-        year = int(parts[0])
-        start = datetime(year, 1, 1)
-        end = datetime(year + 1, 1, 1)
-    elif len(parts) == 2:  # Year-Month
-        year, month = int(parts[0]), int(parts[1])
-        start = datetime(year, month, 1)
-        if month == 12:
-            end = datetime(year + 1, 1, 1)
-        else:
-            end = datetime(year, month + 1, 1)
-    else:  # Full date
-        start = datetime.fromisoformat(date_str)
-
-        if start.month == 12:
-            end = datetime(start.year + 1, 1, 1)
-        else:
-            end = datetime(start.year, start.month + 1, 1)
-
-    return start, end
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
 def get_products_query(
     _user_id: UUID,
     product_type_id: UUID,
@@ -62,8 +35,10 @@ def get_products_query(
     brand_name: str | None = None,
     product_name: str | None = None,
     created_by: str | None = None,
-    created_at: str | None = None,
-    updated_at: str | None = None,
+    start_created_at: datetime | None = None,
+    end_created_at: datetime | None = None,
+    start_updated_at: datetime | None = None,
+    end_updated_at: datetime | None = None,
 ) -> SelectOfScalar[Product]:
     """Build products query with optional filters."""
     stmt = select(Product).where(Product.product_type_id == product_type_id)
@@ -102,14 +77,18 @@ def get_products_query(
         )
 
     # Filter by created at (supports partial dates)
-    if created_at:
-        start, end = _parse_partial_date(created_at)
-        stmt = stmt.where((Product.created_at >= start) & (Product.created_at < end))
+    if start_created_at and end_created_at:
+        stmt = stmt.where(
+            (Product.created_at >= start_created_at)
+            & (Product.created_at <= end_created_at)
+        )
 
     # Filter by updated at (supports partial dates)
-    if updated_at:
-        start, end = _parse_partial_date(updated_at)
-        stmt = stmt.where((Product.updated_at >= start) & (Product.updated_at < end))
+    if start_updated_at and end_updated_at:
+        stmt = stmt.where(
+            (Product.updated_at >= start_updated_at)
+            & (Product.updated_at <= end_updated_at)
+        )
     return stmt
 
 

@@ -1,5 +1,6 @@
 """Product routes."""
 
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Query
@@ -9,7 +10,6 @@ from fastapi_pagination.ext.sqlmodel import paginate
 from app.controllers import products as product_controller
 from app.dependencies import (
     CurrentUser,
-    DateDep,
     LimitOffsetParamsDep,
     ProductRegistrationNumberUniqueDep,
     ProductTypeQueryDep,
@@ -59,8 +59,10 @@ def read_products(
             max_length=36,
         ),
     ] = None,
-    created_at: DateDep = None,
-    updated_at: DateDep = None,
+    start_created_at: datetime | None = None,
+    end_created_at: datetime | None = None,
+    start_updated_at: datetime | None = None,
+    end_updated_at: datetime | None = None,
 ) -> LimitOffsetPage[ProductPublic]:
     """List products with optional filters."""
 
@@ -70,9 +72,11 @@ def read_products(
         registration_number=registration_number,
         brand_name=brand_name,
         product_name=product_name,
+        start_created_at=start_created_at,
+        end_created_at=end_created_at,
+        start_updated_at=start_updated_at,
+        end_updated_at=end_updated_at,
         created_by=created_by,
-        created_at=created_at,
-        updated_at=updated_at,
     )
     return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
 

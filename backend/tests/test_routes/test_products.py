@@ -1035,7 +1035,7 @@ class TestReadProductWithFilter:
             client=client, email=user.email, db=db
         )
         response = client.get(
-            f"{settings.API_V1_STR}/products?updated_at=2023-01",
+            f"{settings.API_V1_STR}/products?start_updated_at=2023-01-15T00:00:00&end_updated_at=2023-01-15T23:59:59",
             headers=headers,
         )
         assert response.status_code == 200
@@ -1065,7 +1065,7 @@ class TestReadProductWithFilter:
             client=client, email=user.email, db=db
         )
         response = client.get(
-            f"{settings.API_V1_STR}/products?brand_name=Brand1&product_name=Product1&updated_at=2023-03-02",
+            f"{settings.API_V1_STR}/products?brand_name=Brand1&product_name=Product1&start_updated_at=2023-03-02T00:00:00&end_updated_at=2023-03-02T23:59:59",
             headers=headers,
         )
         assert response.status_code == 200
@@ -1086,7 +1086,7 @@ class TestReadProductWithFilter:
                 brand_name_en=f"Brand{i}",
                 name_en=f"Product{i}",
                 created_by=user,
-                updated_at=datetime(2023, 4, i + 1),
+                updated_at=datetime(2023, 4, 1, i, i),
             )
             products.append(product)
         ProductFactory(
@@ -1094,13 +1094,13 @@ class TestReadProductWithFilter:
             brand_name_en="OtherBR",
             name_en="OtherCA",
             created_by=user,
-            updated_at=datetime(2023, 4, 1),
+            updated_at=datetime(2023, 3, 1, 0, 0),
         )
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
         response = client.get(
-            f"{settings.API_V1_STR}/products?brand_name=Brand&product_name=Product&updated_at=2023-04",
+            f"{settings.API_V1_STR}/products?brand_name=Brand&product_name=Product&start_updated_at=2023-04-01T00:00:00&end_updated_at=2023-04-01T23:59:59",
             headers=headers,
         )
         assert response.status_code == 200
@@ -1181,21 +1181,33 @@ class TestReadProductWithFilter:
         )
         # Test invalid month
         response = client.get(
-            f"{settings.API_V1_STR}/products?updated_at=2026-13-01",
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-13-01&end_updated_at=2026-13-31",
             headers=headers,
         )
         assert response.status_code == 422
 
         # Test invalid day
         response = client.get(
-            f"{settings.API_V1_STR}/products?updated_at=2026-01-32",
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-01-32&end_updated_at=2026-01-33",
             headers=headers,
         )
         assert response.status_code == 422
 
         # Test completely invalid format
         response = client.get(
-            f"{settings.API_V1_STR}/products?updated_at=not-a-date",
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-01&end_updated_at=2026-01",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-01-01T25:00:00&end_created_at=2026-01-01T25:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-04-01T0:00:00&end_created_at=2026-03-01T0:00:00",
             headers=headers,
         )
         assert response.status_code == 422
@@ -1306,3 +1318,75 @@ class TestReadProductWithFilter:
         content = response.json()
         assert len(content["items"]) == 2
         assert content["total"] == 2
+
+    def test_filter_created_at_valid_date(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by created_at date."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            created_at=datetime(2022, 5, 10, 15, 32, 50),
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            created_at=datetime(2022, 6, 15, 15, 30, 45),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2022-05-10T15:32:50&end_created_at=2022-05-10T15:32:50",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_filter_date_with_second_difference(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by created_at and updated_at with second difference."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            created_at=datetime(2022, 7, 20, 10, 15, 30),
+            updated_at=datetime(2022, 7, 20, 10, 15, 35),
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            created_at=datetime(2022, 7, 20, 10, 15, 36),
+            updated_at=datetime(2022, 7, 20, 10, 15, 37),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response_created = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2022-07-20T10:15:30&end_created_at=2022-07-20T10:15:35",
+            headers=headers,
+        )
+        assert response_created.status_code == 200
+        content_created = response_created.json()
+        assert len(content_created["items"]) == 1
+        assert content_created["total"] == 1
+        assert content_created["items"][0]["id"] == str(product1.id)
+
+        response_updated = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2022-07-20T10:15:35&end_updated_at=2022-07-20T10:15:36",
+            headers=headers,
+        )
+        assert response_updated.status_code == 200
+        content_updated = response_updated.json()
+        assert len(content_updated["items"]) == 1
+        assert content_updated["total"] == 1
+        assert content_updated["items"][0]["id"] == str(product1.id)
