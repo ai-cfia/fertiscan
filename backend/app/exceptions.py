@@ -149,3 +149,8 @@ class LabelNotLinkedToProduct(HTTPException):
     def __init__(self, label_id: str | UUID | None = None) -> None:
         detail = f"Label {label_id or ''} must be linked to a product before completion"
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class InvalidDateRange(HTTPException):
+    def __init__(self, detail: str = "Invalid date range") -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
