@@ -1,5 +1,7 @@
 """Product route tests."""
 
+from datetime import datetime
+
 import pytest
 from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
@@ -762,3 +764,613 @@ class TestReadByIdProduct:
             headers={},
         )
         assert response.status_code == 401
+
+
+@pytest.mark.usefixtures("override_dependencies")
+class TestReadProductWithFilter:
+    """Tests for reading products with various filters."""
+
+    def test_read_products_filter_by_brand_name(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by brand name."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            brand_name_en="Alpha Brand",
+            brand_name_fr="Marque Alpha",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            brand_name_en="Beta Brand",
+            brand_name_fr="Marque Beta",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name=Alpha",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["brand_name_en"] == "Alpha Brand"
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_read_products_filter_by_product_name(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by product name."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            name_en="Super Fertilizer",
+            name_fr="Super Engrais",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            name_en="Mega Fertilizer",
+            name_fr="Mega Engrais",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?product_name=Super",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["name_en"] == "Super Fertilizer"
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_list_products_no_matching_filters(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test listing products with filters that match no products."""
+        user = UserFactory()
+        ProductFactory.create_batch(3, created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name=NonExistentBrand",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 0
+        assert content["total"] == 0
+
+    def test_matching_two_products(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test listing products with filters that match two products."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            name_en="Common Test",
+            name_fr="Test Commun",
+            brand_name_en="Common Brand",
+            brand_name_fr="Marque Commune",
+            created_by=user,
+        )
+        product2 = ProductFactory(
+            registration_number="REG-67890",
+            name_en="Common Name",
+            name_fr="Nom Commun",
+            brand_name_en="Common Brand",
+            brand_name_fr="Marque Commune",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-11111",
+            brand_name_en="Unique Brand",
+            brand_name_fr="Marque Unique",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-22222",
+            brand_name_en="Another Brand",
+            brand_name_fr="Une Autre Marque",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name=Common",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 2
+        assert content["total"] == 2
+        returned_ids = {item["id"] for item in content["items"]}
+        expected_ids = {str(product1.id), str(product2.id)}
+        products = content["items"]
+        assert products[0]["brand_name_en"] == "Common Brand"
+        assert products[1]["brand_name_en"] == "Common Brand"
+        assert returned_ids == expected_ids
+
+    def test_partial_match_case_insensitive_with_two_products(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test listing products with case-insensitive partial match that matches two products."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            name_en="Alpha Test",
+            name_fr="Test Alpha",
+            brand_name_en="Alpha Brand",
+            brand_name_fr="Marque Alpha",
+            created_by=user,
+        )
+        product2 = ProductFactory(
+            registration_number="REG-67890",
+            name_en="Beta Test",
+            name_fr="Test Beta",
+            brand_name_en="Beta Brand",
+            brand_name_fr="Marque Beta",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-11111",
+            brand_name_en="Gamma Brand",
+            brand_name_fr="Marque Gamma",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?product_name=test",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 2
+        assert content["total"] == 2
+        returned_ids = {item["id"] for item in content["items"]}
+        expected_ids = {str(product1.id), str(product2.id)}
+        assert returned_ids == expected_ids
+
+    def test_if_registration_number_used_he_are_exact(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that registration number filter requires exact match."""
+        user = UserFactory()
+        ProductFactory(
+            registration_number="REG-12345",
+            name_en="Alpha Test",
+            name_fr="Test Alpha",
+            brand_name_en="Alpha Brand",
+            brand_name_fr="Marque Alpha",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            name_en="Beta Test",
+            name_fr="Test Beta",
+            brand_name_en="Beta Brand",
+            brand_name_fr="Marque Beta",
+            created_by=user,
+        )
+        ProductFactory(
+            registration_number="REG-11111",
+            brand_name_en="Gamma Brand",
+            brand_name_fr="Marque Gamma",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?registration_number=REG",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 0
+        assert content["total"] == 0
+
+    def test_if_no_product_exist_with_filter(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that no products are returned when none match the filter."""
+        user = UserFactory()
+        ProductFactory.create_batch(3, created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?product_name=NonExistentProduct",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 0
+        assert content["total"] == 0
+
+    def test_filter_updated_at(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by updated_at date."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            updated_at=datetime(2023, 1, 15),
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            updated_at=datetime(2023, 2, 20),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2023-01-15T00:00:00&end_updated_at=2023-01-15T23:59:59",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_on_ten_product_with_all_filter_except_registration_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering among ten products with all filters except registration number."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                updated_at=datetime(2023, 3, i + 1),
+            )
+            products.append(product)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name=Brand1&product_name=Product1&start_updated_at=2023-03-02T00:00:00&end_updated_at=2023-03-02T23:59:59",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["id"] == str(products[1].id)
+
+    def test_with_all_filter_with_partial_match_except_registration_number(
+        self, client: TestClient, db: Session
+    ) -> None:
+        """Test filtering among ten products with all filters with partial match except registration number."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                updated_at=datetime(2023, 4, 1, i, i),
+            )
+            products.append(product)
+        ProductFactory(
+            registration_number="REG-12345",
+            brand_name_en="OtherBR",
+            name_en="OtherCA",
+            created_by=user,
+            updated_at=datetime(2023, 3, 1, 0, 0),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name=Brand&product_name=Product&start_updated_at=2023-04-01T00:00:00&end_updated_at=2023-04-01T23:59:59",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 10
+        assert content["total"] == 10
+
+    def test_sql_injection(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that SQL injection attempts are mitigated."""
+        user = UserFactory()
+        ProductFactory(
+            registration_number="REG-12345",
+            brand_name_en="Safe Brand",
+            name_en="Safe Product",
+            created_by=user,
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        malicious_input = "Safe'; DROP TABLE products; --"
+        response = client.get(
+            f"{settings.API_V1_STR}/products?brand_name={malicious_input}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 0
+        assert content["total"] == 0
+
+    def test_registration_number_exact_match(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering by exact registration number."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                updated_at=datetime(2023, 4, i + 1),
+            )
+            products.append(product)
+        ProductFactory(
+            registration_number="REG-12345",
+            brand_name_en="OtherBR",
+            name_en="OtherCA",
+            created_by=user,
+            updated_at=datetime(2023, 4, 1),
+        )
+        header = authentication_token_from_email(client=client, email=user.email, db=db)
+        response = client.get(
+            f"{settings.API_V1_STR}/products?registration_number=REG-12345",
+            headers=header,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["registration_number"] == "REG-12345"
+
+    def test_bad_date_error(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that invalid date format returns validation error."""
+        user = UserFactory()
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        # Test invalid month
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-13-01&end_updated_at=2026-13-31",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        # Test invalid day
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-01-32&end_updated_at=2026-01-33",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        # Test completely invalid format
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-01&end_updated_at=2026-01",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-01-01T25:00:00&end_created_at=2026-01-01T25:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-04-01T0:00:00&end_created_at=2026-03-01T0:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 422
+
+    def test_filter_created_at_valid_date(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by created_at date."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            created_at=datetime(2022, 5, 10, 15, 32, 50),
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            created_at=datetime(2022, 6, 15, 15, 30, 45),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2022-05-10T15:32:50&end_created_at=2022-05-10T15:32:50",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 1
+        assert content["total"] == 1
+        assert content["items"][0]["id"] == str(product1.id)
+
+    def test_filter_date_with_second_difference(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products by created_at and updated_at with second difference."""
+        user = UserFactory()
+        product1 = ProductFactory(
+            registration_number="REG-12345",
+            created_by=user,
+            created_at=datetime(2022, 7, 20, 10, 15, 30),
+            updated_at=datetime(2022, 7, 20, 10, 15, 35),
+        )
+        ProductFactory(
+            registration_number="REG-67890",
+            created_by=user,
+            created_at=datetime(2022, 7, 20, 10, 15, 36),
+            updated_at=datetime(2022, 7, 20, 10, 15, 37),
+        )
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response_created = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2022-07-20T10:15:30&end_created_at=2022-07-20T10:15:35",
+            headers=headers,
+        )
+        assert response_created.status_code == 200
+        content_created = response_created.json()
+        assert len(content_created["items"]) == 1
+        assert content_created["total"] == 1
+        assert content_created["items"][0]["id"] == str(product1.id)
+
+        response_updated = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2022-07-20T10:15:35&end_updated_at=2022-07-20T10:15:36",
+            headers=headers,
+        )
+        assert response_updated.status_code == 200
+        content_updated = response_updated.json()
+        assert len(content_updated["items"]) == 1
+        assert content_updated["total"] == 1
+        assert content_updated["items"][0]["id"] == str(product1.id)
+
+    def test_only_one_part_of_start_or_end_date_filter(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products when only start or en date is provided."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                created_at=datetime(2026, 3, i + 1),
+                updated_at=datetime(2026, 4, i + 1),
+            )
+            products.append(product)
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 6
+        assert content["total"] == 6
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?end_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 5
+        assert content["total"] == 5
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?end_created_at=2026-03-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 5
+        assert content["total"] == 5
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-03-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 6
+        assert content["total"] == 6
+
+    def test_error_date_range(self, client: TestClient, db: Session) -> None:
+        """Test that providing a start date later than the end date returns an error."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                created_at=datetime(2026, 3, i + 1),
+                updated_at=datetime(2026, 4, i + 1),
+            )
+            products.append(product)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-03-05T00:00:00&end_created_at=2026-03-01T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 400
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-04-10T00:00:00&end_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 400
