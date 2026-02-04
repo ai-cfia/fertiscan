@@ -16,7 +16,7 @@ from app.dependencies import (
     S3ClientDep,
     SessionDep,
 )
-from app.exceptions import ProductNotFound
+from app.exceptions import InvalidDateRange, ProductNotFound
 from app.schemas.message import Message
 from app.schemas.product import ProductPublic
 
@@ -58,6 +58,14 @@ def read_products(
     end_updated_at: datetime | None = None,
 ) -> LimitOffsetPage[ProductPublic]:
     """List products with optional filters."""
+
+    if start_created_at and end_created_at:
+        if start_created_at > end_created_at:
+            raise InvalidDateRange()
+
+    if start_updated_at and end_updated_at:
+        if start_updated_at > end_updated_at:
+            raise InvalidDateRange()
 
     stmt = product_controller.get_products_query(
         _user_id=current_user.id,

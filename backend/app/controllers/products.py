@@ -38,15 +38,15 @@ def get_products_query(
     if brand_name:
         assert brand_name is not None
         stmt = stmt.where(
-            (Product.brand_name_en.ilike(f"%{brand_name}%", escape="\\"))  # type: ignore[union-attr]
-            | (Product.brand_name_fr.ilike(f"%{brand_name}%", escape="\\"))  # type: ignore[union-attr]
+            (Product.brand_name_en.ilike(f"%{brand_name}%"))  # type: ignore[union-attr]
+            | (Product.brand_name_fr.ilike(f"%{brand_name}%"))  # type: ignore[union-attr]
         )
     # Filter by product name (en or fr)
     if product_name:
         assert product_name is not None
         stmt = stmt.where(
-            (Product.name_en.ilike(f"%{product_name}%", escape="\\"))  # type: ignore[union-attr]
-            | (Product.name_fr.ilike(f"%{product_name}%", escape="\\"))  # type: ignore[union-attr]
+            (Product.name_en.ilike(f"%{product_name}%"))  # type: ignore[union-attr]
+            | (Product.name_fr.ilike(f"%{product_name}%"))  # type: ignore[union-attr]
         )
 
     # Filter by start created at and end created at
@@ -55,6 +55,10 @@ def get_products_query(
             (Product.created_at >= start_created_at)
             & (Product.created_at <= end_created_at)
         )
+    elif start_created_at:
+        stmt = stmt.where(Product.created_at >= start_created_at)
+    elif end_created_at:
+        stmt = stmt.where(Product.created_at <= end_created_at)
 
     # Filter by start updated at and end updated at
     if start_updated_at and end_updated_at:
@@ -62,6 +66,10 @@ def get_products_query(
             (Product.updated_at >= start_updated_at)
             & (Product.updated_at <= end_updated_at)
         )
+    elif start_updated_at:
+        stmt = stmt.where(Product.updated_at >= start_updated_at)
+    elif end_updated_at:
+        stmt = stmt.where(Product.updated_at <= end_updated_at)
     return stmt
 
 

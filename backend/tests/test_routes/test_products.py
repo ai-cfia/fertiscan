@@ -1283,3 +1283,94 @@ class TestReadProductWithFilter:
         assert len(content_updated["items"]) == 1
         assert content_updated["total"] == 1
         assert content_updated["items"][0]["id"] == str(product1.id)
+
+    def test_only_one_part_of_start_or_end_date_filter(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test filtering products when only start or en date is provided."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                created_at=datetime(2026, 3, i + 1),
+                updated_at=datetime(2026, 4, i + 1),
+            )
+            products.append(product)
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 6
+        assert content["total"] == 6
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?end_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 5
+        assert content["total"] == 5
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?end_created_at=2026-03-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 5
+        assert content["total"] == 5
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-03-05T00:00:00",
+            headers=headers,
+        )
+
+        assert response.status_code == 200
+        content = response.json()
+        assert len(content["items"]) == 6
+        assert content["total"] == 6
+
+    def test_error_date_range(self, client: TestClient, db: Session) -> None:
+        """Test that providing a start date later than the end date returns an error."""
+        user = UserFactory()
+        products = []
+        for i in range(10):
+            product = ProductFactory(
+                registration_number=f"REG-{i:05d}",
+                brand_name_en=f"Brand{i}",
+                name_en=f"Product{i}",
+                created_by=user,
+                created_at=datetime(2026, 3, i + 1),
+                updated_at=datetime(2026, 4, i + 1),
+            )
+            products.append(product)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_created_at=2026-03-05T00:00:00&end_created_at=2026-03-01T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 400
+
+        response = client.get(
+            f"{settings.API_V1_STR}/products?start_updated_at=2026-04-10T00:00:00&end_updated_at=2026-04-05T00:00:00",
+            headers=headers,
+        )
+        assert response.status_code == 400
