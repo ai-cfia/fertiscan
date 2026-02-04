@@ -49,26 +49,20 @@ def get_products_query(
             | (Product.name_fr.ilike(f"%{product_name}%"))  # type: ignore[union-attr]
         )
 
-    # Filter by start created at and end created at
-    if start_created_at and end_created_at:
-        stmt = stmt.where(
-            (Product.created_at >= start_created_at)
-            & (Product.created_at <= end_created_at)
-        )
-    elif start_created_at:
+    # Filter by start created at
+    if start_created_at:
         stmt = stmt.where(Product.created_at >= start_created_at)
-    elif end_created_at:
+
+    # Filter by end created at
+    if end_created_at:
         stmt = stmt.where(Product.created_at <= end_created_at)
 
-    # Filter by start updated at and end updated at
-    if start_updated_at and end_updated_at:
-        stmt = stmt.where(
-            (Product.updated_at >= start_updated_at)
-            & (Product.updated_at <= end_updated_at)
-        )
-    elif start_updated_at:
+    # Filter by start updated
+    if start_updated_at:
         stmt = stmt.where(Product.updated_at >= start_updated_at)
-    elif end_updated_at:
+
+    # Filter by end updated at
+    if end_updated_at:
         stmt = stmt.where(Product.updated_at <= end_updated_at)
     return stmt
 
