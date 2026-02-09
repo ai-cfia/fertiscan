@@ -135,8 +135,10 @@ class LabelDataNotFound(HTTPException):
 
 
 class RegistrationNumberMissing(HTTPException):
-    def __init__(self, detail: str = "Registration number missing") -> None:
-        super().__init__(status.HTTP_422_UNPROCESSABLE_CONTENT, detail)
+    def __init__(
+        self, detail: str = "Registration number missing from label data"
+    ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
 class ProductNotFound(HTTPException):

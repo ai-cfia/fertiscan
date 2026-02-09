@@ -23,14 +23,15 @@ def ensure_product_registration_number_unique(
     """Ensure product registration number is unique for product type, raise 409 if duplicate.
     Returns a Product instance (not yet persisted to database)."""
 
-    stm = select(Product.id).where(
-        Product.registration_number.ilike(  # type: ignore[attr-defined]
-            product_in.registration_number
+    if product_in.registration_number:
+        stm = select(Product.id).where(
+            Product.registration_number.ilike(  # type: ignore[union-attr]
+                product_in.registration_number
+            )
         )
-    )
-    if session.scalar(stm):
-        msg = f"Product with registration number {product_in.registration_number} already exists."
-        raise ResourceConflict(msg)
+        if session.scalar(stm):
+            msg = f"Product with registration number {product_in.registration_number} already exists."
+            raise ResourceConflict(msg)
     return Product(
         **product_in.model_dump(exclude={"product_type"}),
         product_type=product_type,

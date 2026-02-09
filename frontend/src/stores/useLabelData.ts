@@ -1,8 +1,8 @@
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 
 // ============================== Types ==============================
 export type AccordionSection =
+  | "association"
   | "basic"
   | "npk"
   | "ingredients"
@@ -54,6 +54,7 @@ interface LabelDataStore {
   isFieldExtracting: (labelId: string, fieldName: string) => boolean
 }
 const defaultAccordionState: AccordionState = {
+  association: false,
   basic: true,
   npk: true,
   ingredients: true,
@@ -186,6 +187,4 @@ const store = (set: any, get: any): LabelDataStore => ({
     return state.extractingFields.get(labelId)?.has(fieldName) ?? false
   },
 })
-export const useLabelDataStore = create<LabelDataStore>()(
-  devtools(store, { name: "LabelDataStore" }),
-)
+export const useLabelDataStore = create<LabelDataStore>()(store)

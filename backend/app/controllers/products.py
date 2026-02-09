@@ -6,7 +6,7 @@ from uuid import UUID
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import validate_call
 from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import or_, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.label import Label
@@ -19,8 +19,10 @@ def get_products_query(
     _user_id: UUID,
     product_type_id: UUID,
     registration_number: str | None = None,
-    brand_name: str | None = None,
-    product_name: str | None = None,
+    brand_name_en: str | None = None,
+    brand_name_fr: str | None = None,
+    name_en: str | None = None,
+    name_fr: str | None = None,
     start_created_at: datetime | None = None,
     end_created_at: datetime | None = None,
     start_updated_at: datetime | None = None,
@@ -29,23 +31,33 @@ def get_products_query(
     """Build products query with optional filters."""
     stmt = select(Product).where(Product.product_type_id == product_type_id)
 
-    # Filter by registration number (partial match, case-insensitive)
+    # Identity Search Attributes (Grouped OR)
+    search_conditions = []
     if registration_number:
-        stmt = stmt.where(Product.registration_number.ilike(f"%{registration_number}%"))  # type: ignore[attr-defined]
-
-    # Filter by brand name (en or fr)
-    if brand_name:
-        stmt = stmt.where(
-            (Product.brand_name_en.ilike(f"%{brand_name}%"))  # type: ignore[union-attr]
-            | (Product.brand_name_fr.ilike(f"%{brand_name}%"))  # type: ignore[union-attr]
+        search_conditions.append(
+            Product.registration_number.ilike(f"%{registration_number}%")  # type: ignore[union-attr]
         )
-    # Filter by product name (en or fr)
-    if product_name:
-        stmt = stmt.where(
-            (Product.name_en.ilike(f"%{product_name}%"))  # type: ignore[union-attr]
-            | (Product.name_fr.ilike(f"%{product_name}%"))  # type: ignore[union-attr]
+    if brand_name_en:
+        search_conditions.append(
+            Product.brand_name_en.ilike(f"%{brand_name_en}%")  # type: ignore[union-attr]
+        )
+    if brand_name_fr:
+        search_conditions.append(
+            Product.brand_name_fr.ilike(f"%{brand_name_fr}%")  # type: ignore[union-attr]
+        )
+    if name_en:
+        search_conditions.append(
+            Product.name_en.ilike(f"%{name_en}%")  # type: ignore[union-attr]
+        )
+    if name_fr:
+        search_conditions.append(
+            Product.name_fr.ilike(f"%{name_fr}%")  # type: ignore[union-attr]
         )
 
+    if search_conditions:
+        stmt = stmt.where(or_(*search_conditions))
+
+    # Strict Metadata Filters (AND)
     # Filter by start created at
     if start_created_at:
         stmt = stmt.where(Product.created_at >= start_created_at)

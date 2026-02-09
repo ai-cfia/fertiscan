@@ -23,7 +23,9 @@ class Product(Base, table=True):
     )
     brand_name_en: str | None = Field(default=None, max_length=255)
     brand_name_fr: str | None = Field(default=None, max_length=255)
-    registration_number: str = Field(unique=True, index=True, max_length=255)
+    registration_number: str | None = Field(
+        default=None, unique=True, index=True, max_length=255, nullable=True
+    )
     name_en: str | None = Field(default=None, max_length=255)
     name_fr: str | None = Field(default=None, max_length=255)
     created_by: User = Relationship(back_populates="products")

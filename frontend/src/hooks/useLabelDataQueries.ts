@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { LabelsService, type ReviewStatus } from "@/api"
+import { LabelsService, ProductsService, type ReviewStatus } from "@/api"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataStore } from "@/stores/useLabelData"
 import { isCommonField, isFertilizerField } from "@/utils/labelData"
@@ -436,6 +436,49 @@ export function useLabelDataQueries(
       }
     },
   })
+  // ............................. Update Label Mutation (Root) .............................
+  const updateLabelMutation = useMutation({
+    mutationFn: async (body: any) => {
+      return await LabelsService.updateLabel({
+        path: { label_id: labelId },
+        body,
+      })
+    },
+    onSuccess: (response) => {
+      if (response.data) {
+        queryClient.setQueryData(["label", labelId], response.data)
+        queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
+      }
+    },
+    onError: (error) => {
+      showErrorToast(getErrorMessage(error, t))
+    },
+  })
+
+  // ............................. Create Product Mutation .............................
+  const createProductMutation = useMutation({
+    mutationFn: async (body: any) => {
+      return await ProductsService.createProduct({
+        body,
+      })
+    },
+    onSuccess: (response) => {
+      if (response.data) {
+        // We only show toast if it's a standalone creation,
+        // usually this will be followed by a link action which has its own feedback.
+        showSuccessToast(
+          t("data.sections.association.createSuccess", {
+            ns: "labels",
+            defaultValue: "Product created successfully",
+          }),
+        )
+      }
+    },
+    onError: (error) => {
+      showErrorToast(getErrorMessage(error, t))
+    },
+  })
+
   // --- Save Handler ---
   // ............................. Handle Save .............................
   const handleSave = useCallback(async () => {
@@ -527,6 +570,8 @@ export function useLabelDataQueries(
     toggleReviewMutation,
     updateCommonDataMutation,
     updateFertilizerDataMutation,
+    updateLabelMutation,
+    createProductMutation,
     handleSave,
     isSaving,
   }

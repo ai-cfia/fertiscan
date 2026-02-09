@@ -1,6 +1,9 @@
 """Fertilizer label data routes."""
 
+from typing import Annotated
+
 from fastapi import APIRouter, Query
+from pydantic import StringConstraints
 
 from app.controllers import labels as label_controller
 from app.dependencies import (
@@ -76,7 +79,9 @@ def read_fertilizer_label_data_meta(
     session: SessionDep,
     _: CurrentUser,
     fertilizer_label_data: FertilizerLabelDataDep,
-    field_name: str | None = Query(default=None, description="Filter by field name"),
+    field_name: Annotated[str | None, StringConstraints(strip_whitespace=True)] = Query(
+        default=None, description="Filter by field name"
+    ),
     needs_review: bool | None = Query(
         default=None, description="Filter by needs_review flag"
     ),

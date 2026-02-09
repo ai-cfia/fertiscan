@@ -1,8 +1,11 @@
 """Label routes."""
 
+from typing import Annotated
+
 from fastapi import APIRouter, Query, status
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
+from pydantic import StringConstraints
 
 from app.controllers import labels as label_controller
 from app.db.models.label import ReviewStatus
@@ -63,8 +66,12 @@ def read_labels(
         default=None,
         description="Filter labels not linked to a product (product_id is null)",
     ),
-    order_by: str = Query(default="created_at", description="Field to sort by"),
-    order: str = Query(default="desc", description="Sort direction (asc or desc)"),
+    order_by: Annotated[str, StringConstraints(strip_whitespace=True)] = Query(
+        default="created_at", description="Field to sort by"
+    ),
+    order: Annotated[str, StringConstraints(strip_whitespace=True)] = Query(
+        default="desc", description="Sort direction (asc or desc)"
+    ),
 ) -> LimitOffsetPage[LabelListItem]:
     """List labels with optional filters and sorting."""
     stmt = label_controller.get_labels_query(

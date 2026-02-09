@@ -3,7 +3,6 @@
  * health check and interceptors
  */
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 
 interface BackendStatusStore {
   ready: boolean
@@ -27,6 +26,4 @@ const store = (set: any) => ({
     }),
 })
 
-export const useBackendStatus = create<BackendStatusStore>()(
-  import.meta.env.DEV ? devtools(store, { name: "BackendStatus" }) : store,
-)
+export const useBackendStatus = create<BackendStatusStore>()(store)

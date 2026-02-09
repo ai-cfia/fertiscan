@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 
 // ============================== Types ==============================
 export interface Banner {
@@ -40,6 +39,4 @@ const store = (set: any) => ({
     })),
 })
 
-export const useBanner = create<BannerStore>()(
-  import.meta.env.DEV ? devtools(store, { name: "Banner" }) : store,
-)
+export const useBanner = create<BannerStore>()(store)

@@ -139,6 +139,12 @@ export default function LabelDataGuaranteedAnalysis<
                   fullWidth
                   size="small"
                   disabled={disabled}
+                  onBlur={() => {
+                    field.onBlur()
+                    if (typeof field.value === "string") {
+                      field.onChange(field.value.trim())
+                    }
+                  }}
                 />
               )}
             />
@@ -154,6 +160,12 @@ export default function LabelDataGuaranteedAnalysis<
                   fullWidth
                   size="small"
                   disabled={disabled}
+                  onBlur={() => {
+                    field.onBlur()
+                    if (typeof field.value === "string") {
+                      field.onChange(field.value.trim())
+                    }
+                  }}
                 />
               )}
             />

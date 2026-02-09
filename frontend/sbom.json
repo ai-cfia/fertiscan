@@ -4466,8 +4466,8 @@
       "type": "library",
       "name": "brace-expansion",
       "group": "@isaacs",
-      "version": "5.0.0",
-      "bom-ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.0",
+      "version": "5.0.1",
+      "bom-ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.1",
       "licenses": [
         {
           "license": {
@@ -4476,15 +4476,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40isaacs/brace-expansion@5.0.0",
+      "purl": "pkg:npm/%40isaacs/brace-expansion@5.0.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@isaacs/brace-expansion/-/brace-expansion-5.0.0.tgz",
+          "url": "https://registry.npmjs.org/@isaacs/brace-expansion/-/brace-expansion-5.0.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "653e790432d5d32bf44419b673332267e4aa0863bb02f98e3371bfc36c6154f1feb5ed1a2a0163981bc694bd5d1feaa5dad8063b7315adb6f78c22b2be9827c4"
+              "content": "58ccfbd53d494badb89d68f69f67e7600b8fa2f86fec452193af51ea2f5db15cb3c6de5e3376e3c2f824f4bf803c4d5346c706cac0153003640748e1d0b419ad"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -9739,8 +9739,8 @@
     {
       "type": "library",
       "name": "axios",
-      "version": "1.13.2",
-      "bom-ref": "frontend@0.0.0|axios@1.13.2",
+      "version": "1.13.5",
+      "bom-ref": "frontend@0.0.0|axios@1.13.5",
       "licenses": [
         {
           "license": {
@@ -9749,15 +9749,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/axios@1.13.2",
+      "purl": "pkg:npm/axios@1.13.5",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/axios/-/axios-1.13.2.tgz",
+          "url": "https://registry.npmjs.org/axios/-/axios-1.13.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "54f93d79b36a3dccb99511ae4a52b1ef9d889436ad3a34fda5a3e59bc03bc8eb96d856efa785f72739c9b53e1fd06cc62cb89613d5bca27cf9d52a8b630cc668"
+              "content": "733e2eafb55bd314b8fca50dd2d3d67b8e1eab1ac8bb7d667be7db6a78378a388db1c135dbd3cece2a49240eb39e2ab60bf67ab090a33229a34bc2dcfc602cf1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21099,6 +21099,40 @@
     },
     {
       "type": "library",
+      "name": "use-debounce",
+      "version": "10.1.0",
+      "bom-ref": "frontend@0.0.0|use-debounce@10.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/use-debounce@10.1.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/use-debounce/-/use-debounce-10.1.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "96ef3b65adf95779ff3323281290f9cc9bf493b8429f4a7e57f7cada4583fb7936bb790e0b03b9f77500adb7338357e17ecdaba8f1271e950b2772a619d0f3be"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/use-debounce"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "use-sync-external-store",
       "version": "1.6.0",
       "bom-ref": "frontend@0.0.0|use-sync-external-store@1.6.0",
@@ -21793,7 +21827,7 @@
         "frontend@0.0.0|@types/react-dom@19.2.3",
         "frontend@0.0.0|@types/react@19.2.9",
         "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
-        "frontend@0.0.0|axios@1.13.2",
+        "frontend@0.0.0|axios@1.13.5",
         "frontend@0.0.0|date-fns@4.1.0",
         "frontend@0.0.0|dotenv@17.2.3",
         "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
@@ -21816,6 +21850,7 @@
         "frontend@0.0.0|tailwindcss@4.1.18",
         "frontend@0.0.0|typescript-eslint@8.53.1",
         "frontend@0.0.0|typescript@5.9.3",
+        "frontend@0.0.0|use-debounce@10.1.0",
         "frontend@0.0.0|vitest@4.0.17",
         "frontend@0.0.0|zustand@5.0.10"
       ]
@@ -22477,7 +22512,7 @@
       "ref": "frontend@0.0.0|@isaacs/balanced-match@4.0.1"
     },
     {
-      "ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.0",
+      "ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.1",
       "dependsOn": [
         "frontend@0.0.0|@isaacs/balanced-match@4.0.1"
       ]
@@ -23327,7 +23362,7 @@
       "ref": "frontend@0.0.0|asynckit@0.4.0"
     },
     {
-      "ref": "frontend@0.0.0|axios@1.13.2",
+      "ref": "frontend@0.0.0|axios@1.13.5",
       "dependsOn": [
         "frontend@0.0.0|follow-redirects@1.15.11",
         "frontend@0.0.0|form-data@4.0.5",
@@ -23914,7 +23949,7 @@
     {
       "ref": "frontend@0.0.0|glob@13.0.0|minimatch@10.1.1",
       "dependsOn": [
-        "frontend@0.0.0|@isaacs/brace-expansion@5.0.0"
+        "frontend@0.0.0|@isaacs/brace-expansion@5.0.1"
       ]
     },
     {
@@ -24019,7 +24054,7 @@
     {
       "ref": "frontend@0.0.0|i18next-cli@1.36.1|minimatch@10.1.1",
       "dependsOn": [
-        "frontend@0.0.0|@isaacs/brace-expansion@5.0.0"
+        "frontend@0.0.0|@isaacs/brace-expansion@5.0.1"
       ]
     },
     {
@@ -24907,6 +24942,12 @@
       "ref": "frontend@0.0.0|uri-js@4.4.1",
       "dependsOn": [
         "frontend@0.0.0|punycode@2.3.1"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|use-debounce@10.1.0",
+      "dependsOn": [
+        "frontend@0.0.0|react@19.2.3"
       ]
     },
     {

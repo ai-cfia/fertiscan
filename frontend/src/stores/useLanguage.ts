@@ -3,7 +3,7 @@
  * Integrates with i18next for language switching
  */
 import { create } from "zustand"
-import { devtools, persist } from "zustand/middleware"
+import { persist } from "zustand/middleware"
 
 type Language = "en" | "fr"
 
@@ -59,7 +59,5 @@ const persistedStore = persist(store, {
 })
 
 export const useLanguage = create<LanguageStore>()(
-  (import.meta.env.DEV
-    ? devtools(persistedStore, { name: "Language" })
-    : persistedStore) as typeof persistedStore,
+  persistedStore as typeof persistedStore,
 )
