@@ -3,7 +3,6 @@
 ```mermaid
 %%{init: { "sequence": { "mirrorActors": false } }}%%
 sequenceDiagram
-    title Lot number verification
     participant be as Backend
     participant db as Database
 
