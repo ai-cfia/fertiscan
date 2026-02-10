@@ -9,10 +9,9 @@ sequenceDiagram
     be ->> db : get lot number
     db -->> be : lot number data
 
-    be ->> be : verify lot number
-    alt lot number is not null
-        be ->> be : return valid verification result
-    else lot number is invalid
+    alt lot number is null or lot number is empty
         be ->> be : return invalid verification result
+    else
+        be ->> be : return valid verification result
     end
 ```
