@@ -9,13 +9,14 @@ import {
   Grid,
   Paper,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
-import { useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { LabelsService } from "@/api"
@@ -25,7 +26,9 @@ import BasicInformationSection from "@/components/LabelData/BasicInformationSect
 import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysisSection"
 import IngredientsSection from "@/components/LabelData/IngredientsSection"
 import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
+import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
 import SafetyInformationSection from "@/components/LabelData/SafetyInformationSection"
+import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useBanner } from "@/stores/useBanner"
@@ -65,7 +68,8 @@ export const Route = createFileRoute(
           },
         })
       }
-      return { label }
+      const isLinked = !!label?.product_id
+      return { label, isLinked }
     } catch (error) {
       if (error instanceof AxiosError) {
         const status = error.response?.status
@@ -105,6 +109,7 @@ function LabelData() {
   })
   const {
     label,
+    labelData,
     labelDataMeta,
     fertilizerDataMeta,
     isLoading: isLoadingAll,
@@ -115,9 +120,96 @@ function LabelData() {
     updateReviewStatusMutation,
     extractFieldMutation,
     toggleReviewMutation,
+    updateLabelMutation,
+    createProductMutation,
     handleSave,
     isSaving,
   } = useLabelDataQueries(labelId, isFertilizer, form)
+
+  const { showSuccessToast } = useSnackbar()
+
+  const handleAssociate = useCallback(
+    (productId: string) => {
+      updateLabelMutation.mutate(
+        { product_id: productId },
+        {
+          onSuccess: () => {
+            showSuccessToast(
+              t("data.sections.association.linkSuccess", {
+                ns: "labels",
+                defaultValue: "Product associated successfully",
+              }),
+            )
+          },
+        },
+      )
+    },
+    [updateLabelMutation, t, showSuccessToast],
+  )
+
+  const handleUnlink = useCallback(() => {
+    updateLabelMutation.mutate(
+      { product_id: null },
+      {
+        onSuccess: () => {
+          showSuccessToast(
+            t("data.sections.association.unlinkSuccess", {
+              ns: "labels",
+              defaultValue: "Product unlinked successfully",
+            }),
+          )
+        },
+      },
+    )
+  }, [updateLabelMutation, t, showSuccessToast])
+
+  const handleCreateAndAssociate = useCallback(async () => {
+    const values = form.getValues()
+    try {
+      const productResponse = await createProductMutation.mutateAsync({
+        registration_number: values.registration_number,
+        product_type: productType,
+        brand_name_en: values.brand_name_en,
+        brand_name_fr: values.brand_name_fr,
+        name_en: values.product_name_en,
+        name_fr: values.product_name_fr,
+      })
+
+      if (productResponse.data) {
+        await updateLabelMutation.mutateAsync(
+          { product_id: productResponse.data.id },
+          {
+            onSuccess: () => {
+              showSuccessToast(
+                t("data.sections.association.createAndLinkSuccess", {
+                  ns: "labels",
+                  defaultValue: "Product created and associated successfully",
+                }),
+              )
+            },
+          },
+        )
+      }
+    } catch (_error) {
+      // Errors are already handled by mutation global onError (showErrorToast)
+    }
+  }, [
+    createProductMutation,
+    updateLabelMutation,
+    form,
+    productType,
+    t,
+    showSuccessToast,
+  ])
+
+  const completionDisabledReason = useMemo(() => {
+    if (!labelData) return t("data.validation.missingLabelData")
+    if (!labelData.registration_number?.trim())
+      return t("data.validation.missingRegistrationNumber")
+    return null
+  }, [labelData, t])
+
+  const isReviewCompletable = !completionDisabledReason
   useEffect(() => {
     document.title = t("data.pageTitle")
   }, [t])
@@ -386,19 +478,28 @@ function LabelData() {
                     {t("data.continueReview")}
                   </Button>
                 ) : (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    onClick={() =>
-                      updateReviewStatusMutationRef.current.mutate("completed")
-                    }
-                    disabled={updateReviewStatusMutationRef.current.isPending}
-                    startIcon={<LockIcon />}
-                    sx={{ mr: 0.5 }}
-                  >
-                    {t("data.markComplete")}
-                  </Button>
+                  <Tooltip title={completionDisabledReason ?? ""}>
+                    <span>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={() =>
+                          updateReviewStatusMutationRef.current.mutate(
+                            "completed",
+                          )
+                        }
+                        disabled={
+                          updateReviewStatusMutationRef.current.isPending ||
+                          !isReviewCompletable
+                        }
+                        startIcon={<LockIcon />}
+                        sx={{ mr: 0.5 }}
+                      >
+                        {t("data.markComplete")}
+                      </Button>
+                    </span>
+                  </Tooltip>
                 )}
               </Toolbar>
               <Box
@@ -409,6 +510,25 @@ function LabelData() {
                 }}
               >
                 <form>
+                  <ProductAssociationSection
+                    label={label}
+                    registrationNumber={form.watch("registration_number")}
+                    brandNameEn={form.watch("brand_name_en")}
+                    brandNameFr={form.watch("brand_name_fr")}
+                    productNameEn={form.watch("product_name_en")}
+                    productNameFr={form.watch("product_name_fr")}
+                    accordionState={accordionState.association}
+                    onAccordionChange={(isExpanded) =>
+                      setAccordionExpanded(labelId, "association", isExpanded)
+                    }
+                    onAssociate={handleAssociate}
+                    onCreateAndAssociate={handleCreateAndAssociate}
+                    onUnlink={handleUnlink}
+                    isLinking={updateLabelMutation.isPending}
+                    isCreating={createProductMutation.isPending}
+                    isUnlinking={updateLabelMutation.isPending}
+                    disabled={isCompleted}
+                  />
                   <BasicInformationSection
                     control={form.control}
                     accordionState={accordionState.basic}

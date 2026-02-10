@@ -3,7 +3,6 @@
  * throughout codebase
  */
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 
 interface ConfigStore {
   backendHealthCheckIntervalMs: number
@@ -22,6 +21,4 @@ const config = {
 
 const store = () => config
 
-export const useConfig = create<ConfigStore>()(
-  import.meta.env.DEV ? devtools(store, { name: "Config" }) : store,
-)
+export const useConfig = create<ConfigStore>()(store)

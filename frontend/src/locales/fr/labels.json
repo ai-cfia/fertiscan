@@ -5,7 +5,11 @@
     },
     "button": {
       "cancel": "Annuler"
-    }
+    },
+    "unnamedProduct": "Produit sans nom",
+    "noBrand": "Aucune marque",
+    "loading": "Chargement...",
+    "processing": "Traitement..."
   },
   "dashboard": {
     "completed": "Terminé",
@@ -127,11 +131,39 @@
     "save": "Enregistrer",
     "saved": "Modifications enregistrées avec succès",
     "sections": {
+      "association": {
+        "title": "Association de produit",
+        "linked": "Produit associé",
+        "linkedMessage": "Cette étiquette est liée à une entrée de produit.",
+        "linkedProduct": "Produit lié",
+        "unlink": "Délier le produit",
+        "unlinkSuccess": "Produit délié avec succès",
+        "linkSuccess": "Produit associé avec succès",
+        "createAndLinkSuccess": "Produit créé et associé avec succès",
+        "associate": "Associer",
+        "createSuccess": "Produit créé avec succès",
+        "missingCriteria": "Au moins un attribut de produit requis pour la recherche",
+        "matchesFound": "{{count}} correspondances potentielles trouvées",
+        "matchesFound_one": "{{count}} correspondance potentielle trouvée",
+        "matchesFound_many": "{{count}} correspondances potentielles trouvées",
+        "matchesFound_other": "{{count}} correspondances potentielles trouvées",
+        "noMatch": "Aucun produit correspondant trouvé",
+        "creationDraft": "Créer une nouvelle entrée de produit",
+        "creationHelp": "Nous pouvons créer une nouvelle entrée de produit à l'aide des données extraites de cette étiquette.",
+        "createAndAssociate": "Créer et associer"
+      },
       "basic": "Informations de base",
       "npk": "Analyse NPK",
       "ingredients": "Ingrédients",
       "guaranteed": "Analyse garantie",
-      "safety": "Informations de sécurité"
+      "safety": "Informations de sécurité",
+      "product": "Produit",
+      "brand": "Marque",
+      "registrationNumber": "Numéro d'enregistrement"
+    },
+    "validation": {
+      "missingRegistrationNumber": "Le numéro d'enregistrement est requis pour marquer la révision comme terminée",
+      "missingLabelData": "Les données de l'étiquette doivent être créées avant de marquer la révision comme terminée"
     }
   },
   "empty": {

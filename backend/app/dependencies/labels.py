@@ -5,7 +5,6 @@ from uuid import UUID
 
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from fastapi import Depends
-from sqlalchemy.orm import Session
 from sqlmodel import select
 
 from app.config import settings
@@ -20,44 +19,54 @@ from app.exceptions import (
     ImageNotCompleted,
     InvalidProductType,
     LabelCompleted,
+    LabelDataNotFound,
     LabelNotFound,
+    LabelNotLinkedToProduct,
+    RegistrationNumberMissing,
     ResourceConflict,
 )
+from app.schemas.label import LabelReviewStatusUpdate
 from app.storage import get_s3_client
 
 # Storage client dependency
 S3ClientDep = Annotated[AioBaseClient, Depends(get_s3_client)]
 
 
-# ============================== Utility Functions ==============================
-def _check_label_data_exists(session: Session, label_id: UUID) -> bool:
-    """Check if LabelData exists for a given label."""
-    result = session.execute(select(LabelData).where(LabelData.label_id == label_id))
-    return result.scalar_one_or_none() is not None
+# ============================== Read Endpoints (GET) ==============================
+def get_label_by_id(session: SessionDep, label_id: UUID) -> Label:
+    """Get label by ID or raise 404."""
+    if not (label := session.get(Label, label_id)):
+        raise LabelNotFound(str(label_id))
+    return label
 
 
-def _check_fertilizer_label_data_exists(session: Session, label_id: UUID) -> bool:
-    """Check if FertilizerLabelData exists for a given label."""
-    result = session.execute(
-        select(FertilizerLabelData).where(FertilizerLabelData.label_id == label_id)
-    )
-    return result.scalar_one_or_none() is not None
+LabelDep = Annotated[Label, Depends(get_label_by_id)]
 
 
-def _verify_label_has_completed_images(label: Label) -> None:
-    """Verify label has completed images, raise 400 if none."""
-    if not any(img.status == UploadStatus.completed for img in label.images):
-        raise ImageNotCompleted("Label has no completed images")
+# ============================== Mutation Base (Required for POST/PATCH) ==============================
+def verify_label_is_editable(label: LabelDep) -> Label:
+    """Verify label is not completed, root for all mutations."""
+    if label.review_status == ReviewStatus.completed:
+        raise LabelCompleted(f"Label {label.id} is completed and cannot be edited")
+    return label
 
 
-def _verify_fertilizer_product_type(label: Label) -> None:
-    """Verify label is fertilizer product type, raise 400 if not."""
-    if not label.product_type or label.product_type.code != "fertilizer":
-        raise InvalidProductType(f"Label {label.id} is not a fertilizer product type")
+EditableLabelDep = Annotated[Label, Depends(verify_label_is_editable)]
 
 
-def _verify_image_limit(session: Session, label: Label) -> Label:
-    """Verify label hasn't reached max image limit, return locked label."""
+# ============================== Create Endpoints (POST / Create Child) ==============================
+def ensure_label_has_no_data(session: SessionDep, label: EditableLabelDep) -> Label:
+    """Ensure LabelData doesn't exist before creation."""
+    if session.scalar(select(LabelData).where(LabelData.label_id == label.id)):
+        raise ResourceConflict(f"LabelData already exists for label {label.id}")
+    return label
+
+
+LabelWithoutDataDep = Annotated[Label, Depends(ensure_label_has_no_data)]
+
+
+def verify_label_is_uploadable(session: SessionDep, label: EditableLabelDep) -> Label:
+    """Verify image limit before upload."""
     locked_label, current_count = label_controller.verify_and_lock_label_image_limit(
         session, label
     )
@@ -70,179 +79,85 @@ def _verify_image_limit(session: Session, label: Label) -> Label:
     return locked_label
 
 
-# ============================== Resource Dependencies ==============================
-def get_label_by_id(session: SessionDep, label_id: UUID) -> Label:
-    """Get label by ID or raise 404."""
-    if not (label := session.get(Label, label_id)):
-        raise LabelNotFound(str(label_id))
-    return label
+UploadableLabelDep = Annotated[Label, Depends(verify_label_is_uploadable)]
 
 
-LabelDep = Annotated[Label, Depends(get_label_by_id)]
-
-
-# ============================== Label with Relationships Dependencies ==============================
-def get_label_with_images_and_product_type(
-    session: SessionDep, label: LabelDep
+# ============================== Update Endpoints (PATCH / Update Child) ==============================
+def verify_completable_if_needed(
+    label: LabelDep,
+    status_in: LabelReviewStatusUpdate,
 ) -> Label:
-    """Eagerly load images and product_type relationships for extraction endpoints."""
-    return label_controller.load_label_with_images_and_product_type(session, label)
+    """Validate completion requirements if targeting completed status."""
+    # Only validate if targeting completed status
+    if status_in.review_status != ReviewStatus.completed:
+        return label
 
-
-LabelWithImagesAndProductTypeDep = Annotated[
-    Label, Depends(get_label_with_images_and_product_type)
-]
-
-
-# ============================== Product Type Validation Dependencies ==============================
-def verify_fertilizer_product_type(label: LabelWithImagesAndProductTypeDep) -> Label:
-    """Verify label is fertilizer product type, raise 400 if not. Product_type already loaded."""
-    _verify_fertilizer_product_type(label)
-    return label
-
-
-FertilizerTypeLabelDep = Annotated[Label, Depends(verify_fertilizer_product_type)]
-
-
-def ensure_fertilizer_label_data_not_exists(
-    session: SessionDep, label: FertilizerTypeLabelDep
-) -> Label:
-    """Ensure FertilizerLabelData doesn't exist for label, raise 409 if it does."""
-    if _check_fertilizer_label_data_exists(session, label.id):
-        msg = f"FertilizerLabelData already exists for label {label.id}"
-        raise ResourceConflict(msg)
-    return label
-
-
-FertilizerLabelDataNotExistsDep = Annotated[
-    Label, Depends(ensure_fertilizer_label_data_not_exists)
-]
-
-
-def ensure_label_data_not_exists(session: SessionDep, label: LabelDep) -> Label:
-    """Ensure LabelData doesn't exist for label, raise 409 if it does."""
-    if _check_label_data_exists(session, label.id):
-        raise ResourceConflict(f"LabelData already exists for label {label.id}")
-    return label
-
-
-LabelDataNotExistsDep = Annotated[Label, Depends(ensure_label_data_not_exists)]
-
-
-def verify_label_has_completed_images(label: LabelWithImagesAndProductTypeDep) -> Label:
-    """Verify label has completed images, raise 400 if none."""
-    _verify_label_has_completed_images(label)
-    return label
-
-
-LabelWithCompletedImagesDep = Annotated[
-    Label, Depends(verify_label_has_completed_images)
-]
-
-
-def verify_label_has_completed_images_for_fertilizer(
-    label: FertilizerTypeLabelDep,
-) -> Label:
-    """Verify fertilizer label has completed images, raise 400 if none."""
-    _verify_label_has_completed_images(label)
-    return label
-
-
-FertilizerTypeLabelWithCompletedImagesDep = Annotated[
-    Label, Depends(verify_label_has_completed_images_for_fertilizer)
-]
-
-
-def verify_label_image_limit(session: SessionDep, label: LabelDep) -> Label:
-    """Verify label hasn't reached max image limit."""
-    return _verify_image_limit(session, label)
-
-
-LabelWithImageLimitDep = Annotated[Label, Depends(verify_label_image_limit)]
-
-
-# ============================== Review Status Validation Dependencies ==============================
-def verify_label_not_completed(label: LabelDep) -> Label:
-    """Verify label is not completed, raise 400 if it is."""
+    # Skip validation if already completed (idempotent)
     if label.review_status == ReviewStatus.completed:
-        raise LabelCompleted(f"Label {label.id} is completed and cannot be edited")
+        return label
+
+    # Validate label has required data for completion
+    if not label.label_data:
+        raise LabelDataNotFound()
+
+    if not label.label_data.registration_number:
+        raise RegistrationNumberMissing()
+
+    if label.label_data.registration_number.strip() == "":
+        raise RegistrationNumberMissing()
+
+    if not label.product_id:
+        raise LabelNotLinkedToProduct(label.id)
+
     return label
 
 
-LabelNotCompletedDep = Annotated[Label, Depends(verify_label_not_completed)]
+ValidatedStatusLabelDep = Annotated[Label, Depends(verify_completable_if_needed)]
 
 
-def ensure_label_data_not_exists_edit(
-    session: SessionDep, label: LabelNotCompletedDep
+async def verify_fertilizer_label_edit(
+    session: SessionDep, label: EditableLabelDep
 ) -> Label:
-    """Ensure LabelData doesn't exist for label (edit), raise 409 if it does."""
-    if _check_label_data_exists(session, label.id):
-        raise ResourceConflict(f"LabelData already exists for label {label.id}")
+    """Verify fertilizer type for updates (eagerly loads relationships)."""
+    label = await label_controller.get_label_detail(session, label)
+    if not label.product_type or label.product_type.code != "fertilizer":
+        raise InvalidProductType(f"Label {label.id} is not a fertilizer product type")
     return label
 
 
-LabelDataNotExistsEditDep = Annotated[Label, Depends(ensure_label_data_not_exists_edit)]
+FertilizerLabelDep = Annotated[Label, Depends(verify_fertilizer_label_edit)]
 
 
-# ============================== Edit Chain Dependencies ==============================
-def get_label_with_images_and_product_type_edit(
-    session: SessionDep, label: LabelNotCompletedDep
+# ============================== Fertilizer Specific Chains ==============================
+def ensure_fertilizer_label_has_no_data(
+    session: SessionDep, label: FertilizerLabelDep
 ) -> Label:
-    """Eagerly load images and product_type relationships for edit endpoints."""
-    return label_controller.load_label_with_images_and_product_type(session, label)
+    """Ensure FertilizerLabelData doesn't exist before creation."""
+    # Robust check: verify product type since this is a fertilizer-specific endpoint
+    if not label.product_type or label.product_type.code != "fertilizer":
+        raise InvalidProductType(f"Label {label.id} is not a fertilizer product type")
+
+    if session.scalar(
+        select(FertilizerLabelData).where(FertilizerLabelData.label_id == label.id)
+    ):
+        raise ResourceConflict(
+            f"FertilizerLabelData already exists for label {label.id}"
+        )
+    return label
 
 
-LabelWithImagesAndProductTypeEditDep = Annotated[
-    Label, Depends(get_label_with_images_and_product_type_edit)
+LabelWithoutFertilizerDataDep = Annotated[
+    Label, Depends(ensure_fertilizer_label_has_no_data)
 ]
 
 
-def verify_fertilizer_product_type_edit(
-    label: LabelWithImagesAndProductTypeEditDep,
+def verify_label_is_extractable(
+    label: FertilizerLabelDep,
 ) -> Label:
-    """Verify label is fertilizer product type for edit endpoints, raise 400 if not."""
-    _verify_fertilizer_product_type(label)
+    """Verify images exist before starting extraction."""
+    if not any(img.status == UploadStatus.completed for img in label.images):
+        raise ImageNotCompleted("Label has no completed images")
     return label
 
 
-FertilizerTypeLabelEditDep = Annotated[
-    Label, Depends(verify_fertilizer_product_type_edit)
-]
-
-
-def ensure_fertilizer_label_data_not_exists_edit(
-    session: SessionDep, label: FertilizerTypeLabelEditDep
-) -> Label:
-    """Ensure FertilizerLabelData doesn't exist for label (edit), raise 409 if it does."""
-    if _check_fertilizer_label_data_exists(session, label.id):
-        msg = f"FertilizerLabelData already exists for label {label.id}"
-        raise ResourceConflict(msg)
-    return label
-
-
-FertilizerLabelDataNotExistsEditDep = Annotated[
-    Label, Depends(ensure_fertilizer_label_data_not_exists_edit)
-]
-
-
-def verify_label_has_completed_images_for_fertilizer_edit(
-    label: FertilizerTypeLabelEditDep,
-) -> Label:
-    """Verify fertilizer label has completed images for edit endpoints, raise 400 if none."""
-    _verify_label_has_completed_images(label)
-    return label
-
-
-FertilizerTypeLabelWithCompletedImagesEditDep = Annotated[
-    Label, Depends(verify_label_has_completed_images_for_fertilizer_edit)
-]
-
-
-def verify_label_image_limit_edit(
-    session: SessionDep, label: LabelNotCompletedDep
-) -> Label:
-    """Verify label hasn't reached max image limit for edit endpoints."""
-    return _verify_image_limit(session, label)
-
-
-LabelWithImageLimitEditDep = Annotated[Label, Depends(verify_label_image_limit_edit)]
+ExtractableLabelDep = Annotated[Label, Depends(verify_label_is_extractable)]

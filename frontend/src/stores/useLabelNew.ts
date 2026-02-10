@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios"
 import pLimit from "p-limit"
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 import { type LabelImageDetail, LabelsService } from "@/api"
 import { queryClient } from "@/main"
 
@@ -415,6 +414,4 @@ const store = (set: any, get: () => LabelNewStore) => {
   }
 }
 
-export const useLabelNew = create<LabelNewStore>()(
-  import.meta.env.DEV ? devtools(store, { name: "LabelNew" }) : store,
-)
+export const useLabelNew = create<LabelNewStore>()(store)

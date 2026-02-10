@@ -5,7 +5,11 @@
     },
     "button": {
       "cancel": "Cancel"
-    }
+    },
+    "unnamedProduct": "Unnamed Product",
+    "noBrand": "No Brand",
+    "loading": "Loading...",
+    "processing": "Processing..."
   },
   "dashboard": {
     "completed": "Completed",
@@ -127,11 +131,37 @@
     "save": "Save",
     "saved": "Changes saved successfully",
     "sections": {
+      "association": {
+        "title": "Product Association",
+        "linked": "Product associated",
+        "linkedMessage": "This label is linked to a product entry.",
+        "linkedProduct": "Linked Product",
+        "unlink": "Unlink Product",
+        "unlinkSuccess": "Product unlinked successfully",
+        "linkSuccess": "Product associated successfully",
+        "createAndLinkSuccess": "Product created and associated successfully",
+        "associate": "Associate",
+        "createSuccess": "Product created successfully",
+        "missingCriteria": "At least one product attribute required for search",
+        "matchesFound": "{{count}} potential matches found",
+        "matchesFound_one": "{{count}} potential match found",
+        "noMatch": "No matching product found",
+        "creationDraft": "Create New Product Entry",
+        "creationHelp": "We can create a new product entry using the data extracted from this label.",
+        "createAndAssociate": "Create & Associate"
+      },
       "basic": "Basic Information",
       "npk": "NPK Analysis",
       "ingredients": "Ingredients",
       "guaranteed": "Guaranteed Analysis",
-      "safety": "Safety Information"
+      "safety": "Safety Information",
+      "product": "Product",
+      "brand": "Brand",
+      "registrationNumber": "Registration Number"
+    },
+    "validation": {
+      "missingRegistrationNumber": "Registration number is required to mark review as complete",
+      "missingLabelData": "Label data must be created before marking review as complete"
     }
   },
   "empty": {

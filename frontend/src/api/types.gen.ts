@@ -1007,6 +1007,36 @@ export type PrivateUserCreate = {
 };
 
 /**
+ * ProductCreate
+ */
+export type ProductCreate = {
+    /**
+     * Registration Number
+     */
+    registration_number?: string | null;
+    /**
+     * Product Type
+     */
+    product_type: string;
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
+    /**
+     * Name En
+     */
+    name_en?: string | null;
+    /**
+     * Name Fr
+     */
+    name_fr?: string | null;
+};
+
+/**
  * ProductPublic
  */
 export type ProductPublic = {
@@ -1014,6 +1044,14 @@ export type ProductPublic = {
      * Id
      */
     id: string;
+    /**
+     * Brand Name En
+     */
+    brand_name_en?: string | null;
+    /**
+     * Brand Name Fr
+     */
+    brand_name_fr?: string | null;
     /**
      * Name En
      */
@@ -1025,7 +1063,7 @@ export type ProductPublic = {
     /**
      * Registration Number
      */
-    registration_number: string;
+    registration_number?: string | null;
 };
 
 /**
@@ -1716,12 +1754,6 @@ export type GetApiV1LabelsData = {
     path?: never;
     query?: {
         /**
-         * Product Type
-         *
-         * Product type
-         */
-        product_type?: string;
-        /**
          * Review Status
          *
          * Filter by review status
@@ -1757,6 +1789,12 @@ export type GetApiV1LabelsData = {
          * Page offset
          */
         offset?: number;
+        /**
+         * Product Type
+         *
+         * Product type
+         */
+        product_type?: string;
     };
     url: '/api/v1/labels';
 };
@@ -2527,12 +2565,6 @@ export type GetApiV1ProductsData = {
     path?: never;
     query?: {
         /**
-         * Product Type
-         *
-         * Product type
-         */
-        product_type?: string;
-        /**
          * Limit
          *
          * Page size limit
@@ -2544,6 +2576,48 @@ export type GetApiV1ProductsData = {
          * Page offset
          */
         offset?: number;
+        /**
+         * Product Type
+         *
+         * Product type
+         */
+        product_type?: string;
+        /**
+         * Registration Number
+         */
+        registration_number?: string | null;
+        /**
+         * Brand Name En
+         */
+        brand_name_en?: string | null;
+        /**
+         * Brand Name Fr
+         */
+        brand_name_fr?: string | null;
+        /**
+         * Name En
+         */
+        name_en?: string | null;
+        /**
+         * Name Fr
+         */
+        name_fr?: string | null;
+        /**
+         * Start Created At
+         */
+        start_created_at?: string | null;
+        /**
+         * End Created At
+         */
+        end_created_at?: string | null;
+        /**
+         * Start Updated At
+         */
+        start_updated_at?: string | null;
+        /**
+         * End Updated At
+         */
+        end_updated_at?: string | null;
     };
     url: '/api/v1/products';
 };
@@ -2565,6 +2639,91 @@ export type GetApiV1ProductsResponses = {
 };
 
 export type GetApiV1ProductsResponse = GetApiV1ProductsResponses[keyof GetApiV1ProductsResponses];
+
+export type PostApiV1ProductsData = {
+    body: ProductCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/products';
+};
+
+export type PostApiV1ProductsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostApiV1ProductsError = PostApiV1ProductsErrors[keyof PostApiV1ProductsErrors];
+
+export type PostApiV1ProductsResponses = {
+    /**
+     * Successful Response
+     */
+    201: ProductPublic;
+};
+
+export type PostApiV1ProductsResponse = PostApiV1ProductsResponses[keyof PostApiV1ProductsResponses];
+
+export type DeleteApiV1ProductsByProductIdData = {
+    body?: never;
+    path: {
+        /**
+         * Product Id
+         */
+        product_id: string;
+    };
+    query?: never;
+    url: '/api/v1/products/{product_id}';
+};
+
+export type DeleteApiV1ProductsByProductIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteApiV1ProductsByProductIdError = DeleteApiV1ProductsByProductIdErrors[keyof DeleteApiV1ProductsByProductIdErrors];
+
+export type DeleteApiV1ProductsByProductIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: Message;
+};
+
+export type DeleteApiV1ProductsByProductIdResponse = DeleteApiV1ProductsByProductIdResponses[keyof DeleteApiV1ProductsByProductIdResponses];
+
+export type GetApiV1ProductsByProductIdData = {
+    body?: never;
+    path: {
+        /**
+         * Product Id
+         */
+        product_id: string;
+    };
+    query?: never;
+    url: '/api/v1/products/{product_id}';
+};
+
+export type GetApiV1ProductsByProductIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1ProductsByProductIdError = GetApiV1ProductsByProductIdErrors[keyof GetApiV1ProductsByProductIdErrors];
+
+export type GetApiV1ProductsByProductIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: ProductPublic;
+};
+
+export type GetApiV1ProductsByProductIdResponse = GetApiV1ProductsByProductIdResponses[keyof GetApiV1ProductsByProductIdResponses];
 
 export type PostApiV1PrivateUsersData = {
     body: PrivateUserCreate;

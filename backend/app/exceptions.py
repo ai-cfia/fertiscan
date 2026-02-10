@@ -1,5 +1,7 @@
 """HTTP exceptions."""
 
+from uuid import UUID
+
 from fastapi import HTTPException, status
 
 
@@ -133,13 +135,22 @@ class LabelDataNotFound(HTTPException):
 
 
 class RegistrationNumberMissing(HTTPException):
-    def __init__(self, detail: str = "Registration number missing") -> None:
-        super().__init__(status.HTTP_422_UNPROCESSABLE_CONTENT, detail)
+    def __init__(
+        self, detail: str = "Registration number missing from label data"
+    ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
 class ProductNotFound(HTTPException):
-    def __init__(self, detail: str = "Product not found") -> None:
+    def __init__(self, product_id: str | UUID | None = None) -> None:
+        detail = f"Product {product_id or ''} not found"
         super().__init__(status.HTTP_404_NOT_FOUND, detail)
+
+
+class LabelNotLinkedToProduct(HTTPException):
+    def __init__(self, label_id: str | UUID | None = None) -> None:
+        detail = f"Label {label_id or ''} must be linked to a product before completion"
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
 class InvalidDateRange(HTTPException):
