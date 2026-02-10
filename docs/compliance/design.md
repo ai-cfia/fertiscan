@@ -7,10 +7,20 @@ sequenceDiagram
     participant fe as Frontend
     participant be as Backend
     participant db as Database
+    actor usr as User
+    participant fe as Frontend
+    participant be as Backend
+    participant db as Database
 
     usr ->> fe : click "verify"
     fe ->> be : GET /api/verify/{label_id}
+    usr ->> fe : click "verify"
+    fe ->> be : GET /api/verify/{label_id}
 
+    be ->> db : get product
+    db -->> be : product
+    be ->> db : get label data
+    db -->> be: label data
     be ->> db : get product
     db -->> be : product
     be ->> db : get label data
@@ -20,7 +30,7 @@ sequenceDiagram
         note over be,db: Verification steps
     end
 
-    be ->> db : INSERT INTO items ( report )
+    be ->> db : INSERT INTO reports ( report )
 
     be -->> fe: 201 Created (report Details)
 
