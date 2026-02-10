@@ -4,18 +4,16 @@
 %%{init: { "sequence": { "mirrorActors": false } }}%%
 sequenceDiagram
     title Lot number verification
-    participant ver as <<Controller>><br>verification_controller : <br> verification
-    participant ld as label_data : LabelData
+    participant be as Backend
+    participant db as Database
 
-    ver ->>+ ver: verifyLabelData(label_data : LabelData): bool
+    be ->> db : get lot number
+    db -->> be : lot number data
 
-    ver ->>+ ld: lot_number :  str | None
-    ld -->>- ver: lot_number | None
-
-    ver -->>- ver: hasLotNumber : bool
-
-
-
-
-
+    be ->> be : verify lot number
+    alt lot number is not null
+        be ->> be : return valid verification result
+    else lot number is invalid
+        be ->> be : return invalid verification result
+    end
 ```
