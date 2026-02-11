@@ -35,35 +35,34 @@ erDiagram
 
     Label ||--o| LabelData : "has"
     Product ||--o{ Label : "has"
-    LabelNonComplianceData |o--|| Label:"has"
-    NonComplianceData ||--||LabelNonComplianceData:"has"
-    NonComplianceData ||--|{NonComplianceDataItem:"has"
-
+    NonComplianceDataItem }o--|| Label:"has"
+    rule ||--o{ NonComplianceDataItem:"has"
+    rule{
+        uuid id PK
+        string reference_number UK
+        string title_en
+        string title_fr
+        string description_en
+        string description_fr
+        string url_en
+        string url_fr
+        timestamp created_at
+        timestamp updated_at
+    }
 
     NonComplianceDataItem{
         uuid id PK
-        uuid non_compliance_data_id FK
+        uuid label_id FK
+        uuid rule_id FK
         string name_en
         string name_fr
         string description_en
         string description_fr
         string comment "nullable"
         boolean is_good
-
-    }
-
-    NonComplianceData{
-        uuid id PK
-        uuid label_non_compliance_data_id FK
-        string comment "nullable"
         timestamp created_at
         timestamp updated_at
-    }
 
-    LabelNonComplianceData{
-        uuid id PK
-        uuid label_id FK
-        uuid NonCompliance_id FK
     }
 
     Product {
@@ -84,7 +83,6 @@ erDiagram
         uuid product_id FK "nullable"
         uuid product_type_id FK
         uuid created_by_id FK
-        uuid label_non_compliance_data_id FK
         string review_status
         timestamp created_at
         timestamp updated_at
