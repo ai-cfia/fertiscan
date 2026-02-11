@@ -35,12 +35,12 @@ erDiagram
 
     Label ||--o| LabelData : "has"
     Product ||--o{ Label : "has"
-    LabelNonComplianceData }|--|| Label:"has"
-    NonComplianceData ||--|{LabelNonComplianceData:"has"
-    NonComplianceData ||--o{VerificationStep:"has"
+    LabelNonComplianceData |o--|| Label:"has"
+    NonComplianceData ||--||LabelNonComplianceData:"has"
+    NonComplianceData ||--|{NonComplianceDataItem:"has"
 
 
-    VerificationStep{
+    NonComplianceDataItem{
         uuid id PK
         uuid non_compliance_data_id FK
         string name_en
