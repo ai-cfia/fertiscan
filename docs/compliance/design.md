@@ -43,8 +43,8 @@ erDiagram
         string title_fr
         string description_en
         string description_fr
-        string url_en
-        string url_fr
+        string url_en "nullable"
+        string url_fr "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -53,7 +53,9 @@ erDiagram
         uuid id PK
         uuid label_id FK
         uuid rule_id FK
-        string comment "nullable"
+        string note "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
         boolean is_good
         timestamp created_at
         timestamp updated_at

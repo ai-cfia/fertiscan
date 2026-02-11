@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: e3c1e049e9db
+Revision ID: 6a96f390624d
 Revises:
-Create Date: 2026-01-29 20:17:30.680690
+Create Date: 2026-02-11 22:06:47.730248
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e3c1e049e9db'
+revision: str = '6a96f390624d'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -34,6 +34,20 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_producttype_code'), 'producttype', ['code'], unique=True)
     op.create_index(op.f('ix_producttype_is_active'), 'producttype', ['is_active'], unique=False)
+    op.create_table('rule',
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('reference_number', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
+    sa.Column('title_en', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('title_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('description_en', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('description_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('url_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('url_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_rule'))
+    )
+    op.create_index(op.f('ix_rule_reference_number'), 'rule', ['reference_number'], unique=True)
     op.create_table('user',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('email', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
@@ -137,6 +151,20 @@ def upgrade() -> None:
     op.create_index(op.f('ix_labelimage_label_id'), 'labelimage', ['label_id'], unique=False)
     op.create_index(op.f('ix_labelimage_sequence_order'), 'labelimage', ['sequence_order'], unique=False)
     op.create_index(op.f('ix_labelimage_status'), 'labelimage', ['status'], unique=False)
+    op.create_table('noncompliancedataitem',
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('rule_id', sa.Uuid(), nullable=False),
+    sa.Column('label_id', sa.Uuid(), nullable=False),
+    sa.Column('note', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('description_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('description_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('is_good', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_noncompliancedataitem_label_id_label')),
+    sa.ForeignKeyConstraint(['rule_id'], ['rule.id'], name=op.f('fk_noncompliancedataitem_rule_id_rule')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_noncompliancedataitem'))
+    )
     op.create_table('fertilizerlabeldatameta',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('label_id', sa.Uuid(), nullable=False),
@@ -179,6 +207,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_fertilizerlabeldatameta_label_id'), table_name='fertilizerlabeldatameta')
     op.drop_index(op.f('ix_fertilizerlabeldatameta_field_name'), table_name='fertilizerlabeldatameta')
     op.drop_table('fertilizerlabeldatameta')
+    op.drop_table('noncompliancedataitem')
     op.drop_index(op.f('ix_labelimage_status'), table_name='labelimage')
     op.drop_index(op.f('ix_labelimage_sequence_order'), table_name='labelimage')
     op.drop_index(op.f('ix_labelimage_label_id'), table_name='labelimage')
@@ -199,6 +228,8 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_user_external_id'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')
+    op.drop_index(op.f('ix_rule_reference_number'), table_name='rule')
+    op.drop_table('rule')
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
