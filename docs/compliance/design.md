@@ -33,8 +33,7 @@ sequenceDiagram
 ```mermaid
 erDiagram
 
-    Label ||--o| LabelData : "has"
-    Product ||--o{ Label : "has"
+
     NonComplianceDataItem }o--|| Label:"has"
     rule ||--o{ NonComplianceDataItem:"has"
     rule{
@@ -54,10 +53,6 @@ erDiagram
         uuid id PK
         uuid label_id FK
         uuid rule_id FK
-        string name_en
-        string name_fr
-        string description_en
-        string description_fr
         string comment "nullable"
         boolean is_good
         timestamp created_at
@@ -65,18 +60,6 @@ erDiagram
 
     }
 
-    Product {
-            uuid id PK
-            uuid created_by_id FK
-            uuid product_type_id FK
-            string brand_name_en "nullable"
-            string brand_name_fr "nullable"
-            string registration_number UK
-            string name_en "nullable"
-            string name_fr "nullable"
-            timestamp created_at
-            timestamp updated_at
-        }
 
     Label {
         uuid id PK
@@ -88,19 +71,5 @@ erDiagram
         timestamp updated_at
     }
 
-    LabelData {
-        uuid id PK
-        uuid label_id FK "unique"
-        string brand_name_en "nullable"
-        string brand_name_fr "nullable"
-        string product_name_en "nullable"
-        string product_name_fr "nullable"
-        jsonb contacts "nullable"
-        string registration_number "nullable"
-        string lot_number "nullable"
-        string net_weight "nullable"
-        string volume "nullable"
-        timestamp created_at
-        timestamp updated_at
-    }
+
 ```
