@@ -1,8 +1,10 @@
 """Application configuration and settings."""
 
+import json
 import logging
 import secrets
 import warnings
+from pathlib import Path
 from typing import Annotated, Any, Literal, Self
 
 from dotenv import load_dotenv
@@ -72,6 +74,7 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_KEY: SecretStr | None = None
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
+    RULE_SEED_DATA_PATH: Path = Path(__file__).parent / "data" / "rule_data.json"
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
@@ -156,6 +159,15 @@ class Settings(BaseSettings):
         )
         self._check_default_secret("MINIO_ROOT_PASSWORD", self.MINIO_ROOT_PASSWORD)
         return self
+
+    def rule_data_seed(self) -> list[dict[str, Any]]:
+        rule_seed_data_path = Path(self.RULE_SEED_DATA_PATH)
+        if rule_seed_data_path.exists():
+            with rule_seed_data_path.open("r", encoding="utf-8") as data_file:
+                rule_data = json.load(data_file)
+        else:
+            rule_data = []
+        return rule_data
 
 
 settings = Settings()  # type: ignore

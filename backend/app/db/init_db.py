@@ -53,13 +53,9 @@ def init_db(session: Session) -> None:
 
     # Seed rule
 
-    rule_seed_data_path = Path(__file__).parent.parent / "data" / "rule_data.json"
-    if rule_seed_data_path.exists():
-        with rule_seed_data_path.open("r", encoding="utf-8") as data_file:
-            rule_data = json.load(data_file)
-    else:
-        rule_data = []
-        logger.warning(f"Rule seed file not found: {rule_seed_data_path}")
+    rule_data = settings.rule_data_seed()
+    if len(rule_data) == 0:
+        logger.warning(f"Rule seed file not found: {settings.RULE_SEED_DATA_PATH}")
 
     rules_added = False
     for rule_draft in rule_data:
