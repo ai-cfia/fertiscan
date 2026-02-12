@@ -1,6 +1,8 @@
 """Database initialization utilities."""
 
+import json
 import logging
+from pathlib import Path
 
 from sqlalchemy.orm import Session
 
@@ -11,7 +13,6 @@ from app.controllers.product_types import (
 )
 from app.controllers.users import create_user, get_user_by_email
 from app.db.models.rule import Rule
-from app.db.rule_data import rule_data
 from app.db.session import get_sessionmaker
 from app.schemas.product_type import ProductTypeCreate
 from app.schemas.user import UserCreate
@@ -51,16 +52,25 @@ def init_db(session: Session) -> None:
         logger.info(f"ProductType 'fertilizer' created: {product_type.code}")
 
     # Seed rule
+
+    rule_seed_data_path = Path(__file__).parent.parent / "data" / "rule_data.json"
+    if rule_seed_data_path.exists():
+        with rule_seed_data_path.open("r", encoding="utf-8") as data_file:
+            rule_data = json.load(data_file)
+    else:
+        rule_data = []
+        logger.warning(f"Rule seed file not found: {rule_seed_data_path}")
+
     rules_added = False
     for rule_draft in rule_data:
         if (
             rule := session.query(Rule)
-            .filter_by(reference_number=rule_draft.reference_number)
+            .filter_by(reference_number=rule_draft["reference_number"])
             .first()
         ):
             logger.info(f"This rule already exists: {rule.reference_number}")
         else:
-            rule = Rule(**rule_draft.model_dump())
+            rule = Rule(**rule_draft)
             session.add(rule)
             logger.info(f"Rule created: {rule.reference_number}")
             rules_added = True
