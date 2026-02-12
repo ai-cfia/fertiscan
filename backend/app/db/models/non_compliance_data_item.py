@@ -21,7 +21,7 @@ class NonComplianceDataItem(Base, table=True):
     note: str | None = Field(default=None)
     description_en: str | None = Field(default=None)
     description_fr: str | None = Field(default=None)
-    is_good: bool = Field(default=False)
+    is_compliant: bool = False
     rule: "Rule" = Relationship(back_populates="non_compliance_data_items")
     label: "Label" = Relationship(back_populates="non_compliance_data_items")
     created_at: datetime = Field(
