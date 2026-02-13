@@ -2115,12 +2115,103 @@ export const PrivateUserCreateSchema = {
     title: 'PrivateUserCreate'
 } as const;
 
+export const ProductCreateSchema = {
+    properties: {
+        registration_number: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Registration Number'
+        },
+        product_type: {
+            type: 'string',
+            title: 'Product Type'
+        },
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
+        },
+        name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name En'
+        },
+        name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name Fr'
+        }
+    },
+    type: 'object',
+    required: [
+        'product_type'
+    ],
+    title: 'ProductCreate'
+} as const;
+
 export const ProductPublicSchema = {
     properties: {
         id: {
             type: 'string',
             format: 'uuid',
             title: 'Id'
+        },
+        brand_name_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name En'
+        },
+        brand_name_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Brand Name Fr'
         },
         name_en: {
             anyOf: [
@@ -2145,14 +2236,20 @@ export const ProductPublicSchema = {
             title: 'Name Fr'
         },
         registration_number: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Registration Number'
         }
     },
     type: 'object',
     required: [
-        'id',
-        'registration_number'
+        'id'
     ],
     title: 'ProductPublic'
 } as const;

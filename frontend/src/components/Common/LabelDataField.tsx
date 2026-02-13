@@ -146,6 +146,12 @@ export default function LabelDataField<
           value={field.value ?? ""}
           multiline={multiline}
           maxRows={maxRows}
+          onBlur={(_e) => {
+            field.onBlur()
+            if (typeof field.value === "string") {
+              field.onChange(field.value.trim())
+            }
+          }}
           slotProps={{
             input: {
               endAdornment:

@@ -33,10 +33,10 @@ export default function BasicInformationSection({
 }: BasicInformationSectionProps) {
   const { t } = useTranslation("labels")
   const basicFields = [
-    "brand_name_en",
-    "brand_name_fr",
     "product_name_en",
     "product_name_fr",
+    "brand_name_en",
+    "brand_name_fr",
     "registration_number",
     "lot_number",
     "net_weight",
@@ -99,44 +99,6 @@ export default function BasicInformationSection({
         >
           <Box sx={{ flex: 1 }}>
             <LabelDataField
-              fieldName="brand_name_en"
-              label={t("data.fields.brandNameEn")}
-              control={control}
-              type="text"
-              helperText={t("data.helperText.brandNameEn")}
-              needsReview={getFieldMeta("brand_name_en").needs_review}
-              hasImages={hasImages}
-              isExtracting={getIsFieldExtracting("brand_name_en")}
-              onExtract={() => onExtractField("brand_name_en")}
-              onToggleReview={() => onToggleReview("brand_name_en")}
-              disabled={disabled}
-            />
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            <LabelDataField
-              fieldName="brand_name_fr"
-              label={t("data.fields.brandNameFr")}
-              control={control}
-              type="text"
-              helperText={t("data.helperText.brandNameFr")}
-              needsReview={getFieldMeta("brand_name_fr").needs_review}
-              hasImages={hasImages}
-              isExtracting={getIsFieldExtracting("brand_name_fr")}
-              onExtract={() => onExtractField("brand_name_fr")}
-              onToggleReview={() => onToggleReview("brand_name_fr")}
-              disabled={disabled}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexDirection: { xs: "column", xl: "row" },
-          }}
-        >
-          <Box sx={{ flex: 1 }}>
-            <LabelDataField
               fieldName="product_name_en"
               label={t("data.fields.productNameEn")}
               control={control}
@@ -162,6 +124,44 @@ export default function BasicInformationSection({
               isExtracting={getIsFieldExtracting("product_name_fr")}
               onExtract={() => onExtractField("product_name_fr")}
               onToggleReview={() => onToggleReview("product_name_fr")}
+              disabled={disabled}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexDirection: { xs: "column", xl: "row" },
+          }}
+        >
+          <Box sx={{ flex: 1 }}>
+            <LabelDataField
+              fieldName="brand_name_en"
+              label={t("data.fields.brandNameEn")}
+              control={control}
+              type="text"
+              helperText={t("data.helperText.brandNameEn")}
+              needsReview={getFieldMeta("brand_name_en").needs_review}
+              hasImages={hasImages}
+              isExtracting={getIsFieldExtracting("brand_name_en")}
+              onExtract={() => onExtractField("brand_name_en")}
+              onToggleReview={() => onToggleReview("brand_name_en")}
+              disabled={disabled}
+            />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <LabelDataField
+              fieldName="brand_name_fr"
+              label={t("data.fields.brandNameFr")}
+              control={control}
+              type="text"
+              helperText={t("data.helperText.brandNameFr")}
+              needsReview={getFieldMeta("brand_name_fr").needs_review}
+              hasImages={hasImages}
+              isExtracting={getIsFieldExtracting("brand_name_fr")}
+              onExtract={() => onExtractField("brand_name_fr")}
+              onToggleReview={() => onToggleReview("brand_name_fr")}
               disabled={disabled}
             />
           </Box>

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
 
 // ============================== Types ==============================
 interface AppBarActionsStore {
@@ -20,6 +19,4 @@ const store = (set: any): AppBarActionsStore => ({
   },
 })
 
-export const useAppBarActionsStore = create<AppBarActionsStore>()(
-  devtools(store, { name: "AppBarActionsStore" }),
-)
+export const useAppBarActionsStore = create<AppBarActionsStore>()(store)

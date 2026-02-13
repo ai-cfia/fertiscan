@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { DeleteApiV1LabelsByLabelIdData, DeleteApiV1LabelsByLabelIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdData, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1UsersByUserIdData, DeleteApiV1UsersByUserIdErrors, DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersMeData, DeleteApiV1UsersMeResponses, GetApiV1LabelsByLabelIdData, GetApiV1LabelsByLabelIdDataData, GetApiV1LabelsByLabelIdDataErrors, GetApiV1LabelsByLabelIdDataMetaData, GetApiV1LabelsByLabelIdDataMetaErrors, GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdErrors, GetApiV1LabelsByLabelIdFertilizerDataData, GetApiV1LabelsByLabelIdFertilizerDataErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaData, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdImagesByImageIdData, GetApiV1LabelsByLabelIdImagesByImageIdErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesData, GetApiV1LabelsByLabelIdImagesErrors, GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsData, GetApiV1LabelsErrors, GetApiV1LabelsResponses, GetApiV1ProductsData, GetApiV1ProductsErrors, GetApiV1ProductsResponses, GetApiV1UsersByUserIdData, GetApiV1UsersByUserIdErrors, GetApiV1UsersByUserIdResponses, GetApiV1UsersData, GetApiV1UsersErrors, GetApiV1UsersMeData, GetApiV1UsersMeResponses, GetApiV1UsersResponses, GetHealthzData, GetHealthzResponses, GetReadyzData, GetReadyzResponses, PatchApiV1LabelsByLabelIdData, PatchApiV1LabelsByLabelIdDataData, PatchApiV1LabelsByLabelIdDataErrors, PatchApiV1LabelsByLabelIdDataMetaData, PatchApiV1LabelsByLabelIdDataMetaErrors, PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdErrors, PatchApiV1LabelsByLabelIdFertilizerDataData, PatchApiV1LabelsByLabelIdFertilizerDataErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaData, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdReviewStatusData, PatchApiV1LabelsByLabelIdReviewStatusErrors, PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1UsersByUserIdData, PatchApiV1UsersByUserIdErrors, PatchApiV1UsersByUserIdResponses, PatchApiV1UsersMeData, PatchApiV1UsersMeErrors, PatchApiV1UsersMePasswordData, PatchApiV1UsersMePasswordErrors, PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMeResponses, PostApiV1LabelsByLabelIdDataData, PostApiV1LabelsByLabelIdDataErrors, PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdFertilizerDataData, PostApiV1LabelsByLabelIdFertilizerDataErrors, PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerExtractData, PostApiV1LabelsByLabelIdFertilizerExtractErrors, PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdImagesCompleteData, PostApiV1LabelsByLabelIdImagesCompleteErrors, PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesData, PostApiV1LabelsByLabelIdImagesErrors, PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsData, PostApiV1LabelsErrors, PostApiV1LabelsResponses, PostApiV1LoginAccessTokenData, PostApiV1LoginAccessTokenErrors, PostApiV1LoginAccessTokenResponses, PostApiV1LoginTestTokenData, PostApiV1LoginTestTokenResponses, PostApiV1PasswordRecoveryByEmailData, PostApiV1PasswordRecoveryByEmailErrors, PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailData, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PrivateUsersData, PostApiV1PrivateUsersErrors, PostApiV1PrivateUsersResponses, PostApiV1ResetPasswordData, PostApiV1ResetPasswordErrors, PostApiV1ResetPasswordResponses, PostApiV1UsersData, PostApiV1UsersErrors, PostApiV1UsersResponses } from './types.gen';
+import type { DeleteApiV1LabelsByLabelIdData, DeleteApiV1LabelsByLabelIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdData, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1ProductsByProductIdData, DeleteApiV1ProductsByProductIdErrors, DeleteApiV1ProductsByProductIdResponses, DeleteApiV1UsersByUserIdData, DeleteApiV1UsersByUserIdErrors, DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersMeData, DeleteApiV1UsersMeResponses, GetApiV1LabelsByLabelIdData, GetApiV1LabelsByLabelIdDataData, GetApiV1LabelsByLabelIdDataErrors, GetApiV1LabelsByLabelIdDataMetaData, GetApiV1LabelsByLabelIdDataMetaErrors, GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdErrors, GetApiV1LabelsByLabelIdFertilizerDataData, GetApiV1LabelsByLabelIdFertilizerDataErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaData, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdImagesByImageIdData, GetApiV1LabelsByLabelIdImagesByImageIdErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesData, GetApiV1LabelsByLabelIdImagesErrors, GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsData, GetApiV1LabelsErrors, GetApiV1LabelsResponses, GetApiV1ProductsByProductIdData, GetApiV1ProductsByProductIdErrors, GetApiV1ProductsByProductIdResponses, GetApiV1ProductsData, GetApiV1ProductsErrors, GetApiV1ProductsResponses, GetApiV1UsersByUserIdData, GetApiV1UsersByUserIdErrors, GetApiV1UsersByUserIdResponses, GetApiV1UsersData, GetApiV1UsersErrors, GetApiV1UsersMeData, GetApiV1UsersMeResponses, GetApiV1UsersResponses, GetHealthzData, GetHealthzResponses, GetReadyzData, GetReadyzResponses, PatchApiV1LabelsByLabelIdData, PatchApiV1LabelsByLabelIdDataData, PatchApiV1LabelsByLabelIdDataErrors, PatchApiV1LabelsByLabelIdDataMetaData, PatchApiV1LabelsByLabelIdDataMetaErrors, PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdErrors, PatchApiV1LabelsByLabelIdFertilizerDataData, PatchApiV1LabelsByLabelIdFertilizerDataErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaData, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdReviewStatusData, PatchApiV1LabelsByLabelIdReviewStatusErrors, PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1UsersByUserIdData, PatchApiV1UsersByUserIdErrors, PatchApiV1UsersByUserIdResponses, PatchApiV1UsersMeData, PatchApiV1UsersMeErrors, PatchApiV1UsersMePasswordData, PatchApiV1UsersMePasswordErrors, PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMeResponses, PostApiV1LabelsByLabelIdDataData, PostApiV1LabelsByLabelIdDataErrors, PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdFertilizerDataData, PostApiV1LabelsByLabelIdFertilizerDataErrors, PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerExtractData, PostApiV1LabelsByLabelIdFertilizerExtractErrors, PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdImagesCompleteData, PostApiV1LabelsByLabelIdImagesCompleteErrors, PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesData, PostApiV1LabelsByLabelIdImagesErrors, PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsData, PostApiV1LabelsErrors, PostApiV1LabelsResponses, PostApiV1LoginAccessTokenData, PostApiV1LoginAccessTokenErrors, PostApiV1LoginAccessTokenResponses, PostApiV1LoginTestTokenData, PostApiV1LoginTestTokenResponses, PostApiV1PasswordRecoveryByEmailData, PostApiV1PasswordRecoveryByEmailErrors, PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailData, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PrivateUsersData, PostApiV1PrivateUsersErrors, PostApiV1PrivateUsersResponses, PostApiV1ProductsData, PostApiV1ProductsErrors, PostApiV1ProductsResponses, PostApiV1ResetPasswordData, PostApiV1ResetPasswordErrors, PostApiV1ResetPasswordResponses, PostApiV1UsersData, PostApiV1UsersErrors, PostApiV1UsersResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -663,6 +663,52 @@ export class ProductsService {
             responseType: 'json',
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/products',
+            ...options
+        });
+    }
+
+    /**
+     * Create Product
+     *
+     * Create a new product.
+     */
+    public static createProduct<ThrowOnError extends boolean = false>(options: Options<PostApiV1ProductsData, ThrowOnError>) {
+        return (options.client ?? client).post<PostApiV1ProductsResponses, PostApiV1ProductsErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/products',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+
+    /**
+     * Delete Product
+     *
+     * Delete a product
+     */
+    public static deleteProduct<ThrowOnError extends boolean = false>(options: Options<DeleteApiV1ProductsByProductIdData, ThrowOnError>) {
+        return (options.client ?? client).delete<DeleteApiV1ProductsByProductIdResponses, DeleteApiV1ProductsByProductIdErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/products/{product_id}',
+            ...options
+        });
+    }
+
+    /**
+     * Read Product By Id
+     *
+     * Get product by ID.
+     */
+    public static readProductById<ThrowOnError extends boolean = false>(options: Options<GetApiV1ProductsByProductIdData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1ProductsByProductIdResponses, GetApiV1ProductsByProductIdErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/products/{product_id}',
             ...options
         });
     }

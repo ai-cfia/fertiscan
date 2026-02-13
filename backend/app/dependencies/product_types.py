@@ -31,19 +31,17 @@ def get_product_type(session: SessionDep, label_in: LabelCreate) -> ProductType:
 ProductTypeDep = Annotated[ProductType, Depends(get_product_type)]
 
 
-def get_product_type_from_product_create(
+def get_product_type_from_product(
     session: SessionDep, product_in: ProductCreate
 ) -> ProductType:
     """Get product type from product create request or raise 400."""
     return _get_product_type_by_code_or_raise(session, product_in.product_type)
 
 
-ProductCreateProductTypeDep = Annotated[
-    ProductType, Depends(get_product_type_from_product_create)
-]
+ProductCreateTypeDep = Annotated[ProductType, Depends(get_product_type_from_product)]
 
 
-def get_product_type_from_query(
+def get_query_product_type(
     session: SessionDep,
     product_type: str = Query(default="fertilizer", description="Product type"),
 ) -> ProductType:
@@ -51,4 +49,4 @@ def get_product_type_from_query(
     return _get_product_type_by_code_or_raise(session, product_type)
 
 
-ProductTypeQueryDep = Annotated[ProductType, Depends(get_product_type_from_query)]
+ProductQueryTypeDep = Annotated[ProductType, Depends(get_query_product_type)]

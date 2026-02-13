@@ -521,18 +521,6 @@
         "security": [{ "OAuth2PasswordBearer": [] }],
         "parameters": [
           {
-            "name": "product_type",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Product type",
-              "default": "fertilizer",
-              "title": "Product Type"
-            },
-            "description": "Product type"
-          },
-          {
             "name": "review_status",
             "in": "query",
             "required": false,
@@ -607,6 +595,18 @@
               "title": "Offset"
             },
             "description": "Page offset"
+          },
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
           }
         ],
         "responses": {
@@ -1690,18 +1690,6 @@
         "security": [{ "OAuth2PasswordBearer": [] }],
         "parameters": [
           {
-            "name": "product_type",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Product type",
-              "default": "fertilizer",
-              "title": "Product Type"
-            },
-            "description": "Product type"
-          },
-          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -1727,6 +1715,130 @@
               "title": "Offset"
             },
             "description": "Page offset"
+          },
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          },
+          {
+            "name": "registration_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 50,
+                  "pattern": "^[a-zA-Z0-9\\s-]+$"
+                },
+                { "type": "null" }
+              ],
+              "title": "Registration Number"
+            }
+          },
+          {
+            "name": "brand_name_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Brand Name En"
+            }
+          },
+          {
+            "name": "brand_name_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Brand Name Fr"
+            }
+          },
+          {
+            "name": "name_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Name En"
+            }
+          },
+          {
+            "name": "name_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Name Fr"
+            }
+          },
+          {
+            "name": "start_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Created At"
+            }
+          },
+          {
+            "name": "end_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Created At"
+            }
+          },
+          {
+            "name": "start_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Updated At"
+            }
+          },
+          {
+            "name": "end_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Updated At"
+            }
           }
         ],
         "responses": {
@@ -1737,6 +1849,115 @@
                 "schema": {
                   "$ref": "#/components/schemas/LimitOffsetPage_ProductPublic_"
                 }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["products"],
+        "summary": "Create Product",
+        "description": "Create a new product.",
+        "operationId": "products_create_product",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProductCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_id}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Read Product By Id",
+        "description": "Get product by ID.",
+        "operationId": "products_read_product_by_id",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["products"],
+        "summary": "Delete Product",
+        "description": "Delete a product",
+        "operationId": "products_delete_product",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -2931,9 +3152,45 @@
         "required": ["email", "password"],
         "title": "PrivateUserCreate"
       },
+      "ProductCreate": {
+        "properties": {
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "product_type": { "type": "string", "title": "Product Type" },
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr"
+          }
+        },
+        "type": "object",
+        "required": ["product_type"],
+        "title": "ProductCreate"
+      },
       "ProductPublic": {
         "properties": {
           "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
           "name_en": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Name En"
@@ -2943,12 +3200,12 @@
             "title": "Name Fr"
           },
           "registration_number": {
-            "type": "string",
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Registration Number"
           }
         },
         "type": "object",
-        "required": ["id", "registration_number"],
+        "required": ["id"],
         "title": "ProductPublic"
       },
       "ProductTypePublic": {

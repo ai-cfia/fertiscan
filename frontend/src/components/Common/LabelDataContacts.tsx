@@ -250,6 +250,12 @@ export default function LabelDataContacts<
                             size="small"
                             required
                             disabled={disabled}
+                            onBlur={() => {
+                              nameField.onBlur()
+                              if (typeof nameField.value === "string") {
+                                nameField.onChange(nameField.value.trim())
+                              }
+                            }}
                           />
                         )}
                       />
@@ -274,6 +280,12 @@ export default function LabelDataContacts<
                             fullWidth
                             size="small"
                             disabled={disabled}
+                            onBlur={() => {
+                              addressField.onBlur()
+                              if (typeof addressField.value === "string") {
+                                addressField.onChange(addressField.value.trim())
+                              }
+                            }}
                           />
                         )}
                       />
@@ -290,6 +302,12 @@ export default function LabelDataContacts<
                             fullWidth
                             size="small"
                             disabled={disabled}
+                            onBlur={() => {
+                              phoneField.onBlur()
+                              if (typeof phoneField.value === "string") {
+                                phoneField.onChange(phoneField.value.trim())
+                              }
+                            }}
                           />
                         )}
                       />
@@ -315,6 +333,12 @@ export default function LabelDataContacts<
                             fullWidth
                             size="small"
                             disabled={disabled}
+                            onBlur={() => {
+                              websiteField.onBlur()
+                              if (typeof websiteField.value === "string") {
+                                websiteField.onChange(websiteField.value.trim())
+                              }
+                            }}
                           />
                         )}
                       />
@@ -332,6 +356,12 @@ export default function LabelDataContacts<
                             fullWidth
                             size="small"
                             disabled={disabled}
+                            onBlur={() => {
+                              emailField.onBlur()
+                              if (typeof emailField.value === "string") {
+                                emailField.onChange(emailField.value.trim())
+                              }
+                            }}
                           />
                         )}
                       />
