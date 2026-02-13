@@ -45,5 +45,5 @@ def verify_rule(
     )
     return cast(
         LimitOffsetPage[NonComplianceDataItemPublic],
-        paginate(non_compliance_data_items),
+        paginate(non_compliance_data_items),  # type: ignore[arg-type]
     )
