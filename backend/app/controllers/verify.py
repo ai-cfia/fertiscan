@@ -7,35 +7,35 @@ from sqlmodel import select
 from app.db.models.label import Label
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
-from app.db.models.product import Product
 from app.db.models.rule import Rule
-from app.schemas.label import NonComplianceDataItemPublic, NonComplianceDataItemsList
 
-# ======================================General verification function for a product======================================
+# ======================================General verification function for a label======================================
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def verify_product(
-    session: Session, label: Label, _product: Product
-) -> NonComplianceDataItemsList:
-    """Verify non-compliance data item of the label."""
+def verify_all_rules(session: Session, label: Label) -> Label:
+    """Verify non-compliance data item of the label.
+    All verifications should be addded in this function.
 
-    label = verify_all_rules(session, label, _product)
+    Template for adding new verification:
 
-    session.commit()
-    stmt = select(NonComplianceDataItem).where(
-        NonComplianceDataItem.label_id == label.id
+    session = update_is_compliant(
+        is_compliant=verification_lot_number(label_data),
+        reference_number="Reference number of the rule",
+        session=session,
+        label=label,
+    )
+    """
+
+    assert label.label_data is not None
+    label = update_is_compliant(
+        is_compliant=verification_lot_number(label.label_data),
+        rule=get_rule_by_reference_number("FzR: 16.(1)(j)", session=session),
+        session=session,
+        label=label,
     )
 
-    non_compliance_data_items = session.scalars(stmt).all()
-    public_non_compliance_items = [
-        NonComplianceDataItemPublic.model_validate(item, from_attributes=True)
-        for item in non_compliance_data_items
-    ]
-    return NonComplianceDataItemsList(
-        total=len(public_non_compliance_items),
-        items=public_non_compliance_items,
-    )
+    return label
 
 
 # ======================================Update or create non-compliance data item======================================
@@ -77,31 +77,7 @@ def update_is_compliant(
     return label
 
 
-# ======================================Verification function to verify all rules======================================
-@validate_call(config={"arbitrary_types_allowed": True})
-def verify_all_rules(session: Session, label: Label, _product: Product) -> Label:
-    """All verifications should be addded in this function.
-
-    Template for adding new verification:
-
-    session = update_is_compliant(
-        is_compliant=verification_lot_number(label_data),
-        reference_number="Reference number of the rule",
-        session=session,
-        label=label,
-    )
-    """
-    assert label.label_data is not None
-    label = update_is_compliant(
-        is_compliant=verification_lot_number(label.label_data),
-        rule=get_rule_by_reference_number("FzR: 16.(1)(j)", session=session),
-        session=session,
-        label=label,
-    )
-
-    return label
-
-
+# ============================= Ordinary function of getter =====================================================
 @validate_call(config={"arbitrary_types_allowed": True})
 def get_rule_by_reference_number(
     reference_number: str,

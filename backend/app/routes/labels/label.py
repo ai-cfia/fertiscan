@@ -33,6 +33,7 @@ from app.schemas.label import (
     LabelListItem,
     LabelReviewStatusUpdate,
     LabelUpdate,
+    NonComplianceDataItemPublic,
     NonComplianceDataItemsList,
 )
 
@@ -166,7 +167,18 @@ def verify_rule(
 
     if not label.product_id:
         raise ProductNotFound()
-    if not (product := product_controller.get_product_by_id(session, label.product_id)):
+    if not product_controller.get_product_by_id(session, label.product_id):
         raise ProductNotFound()
 
-    return verify_controller.verify_product(session, label, product)
+    label = verify_controller.verify_all_rules(session, label)
+
+    non_compliance_data_items = label.non_compliance_data_items
+    public_non_compliance_items = [
+        NonComplianceDataItemPublic.model_validate(item, from_attributes=True)
+        for item in non_compliance_data_items
+    ]
+
+    return NonComplianceDataItemsList(
+        total=len(public_non_compliance_items),
+        items=public_non_compliance_items,
+    )
