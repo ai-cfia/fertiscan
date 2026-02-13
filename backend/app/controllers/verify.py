@@ -21,7 +21,7 @@ def verify_all_rules(session: Session, label: Label) -> Label:
 
     session = update_is_compliant(
         is_compliant=verification_lot_number(label_data),
-        reference_number="Reference number of the rule",
+        rule=get_rule_by_reference_number(<<reference_number>>, session=session),
         session=session,
         label=label,
     )
@@ -34,6 +34,8 @@ def verify_all_rules(session: Session, label: Label) -> Label:
         session=session,
         label=label,
     )
+
+    return label
 
     return label
 
