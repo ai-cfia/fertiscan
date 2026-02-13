@@ -22,15 +22,10 @@ from app.dependencies import (
     SessionDep,
     ValidatedStatusLabelDep,
 )
-<<<<<<< 358-lot-number-verification
 from app.exceptions import (
-    LabelDataNotFound,
     LabelNotCompletedError,
     ProductNotFound,
-    RegistrationNumberMissing,
 )
-=======
->>>>>>> 257-restructure-datastore
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
