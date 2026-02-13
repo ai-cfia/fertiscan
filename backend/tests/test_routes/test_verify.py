@@ -73,7 +73,7 @@ class TestVerifyOneProduct:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 200
@@ -133,7 +133,7 @@ class TestVerifyOneProduct:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 200
@@ -181,7 +181,7 @@ class TestVerifyOneProduct:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 412
@@ -231,7 +231,7 @@ class TestVerifyOneProduct:
 
         db.commit()
 
-        response = client.get(f"{settings.API_V1_STR}/verify/{label_id}")
+        response = client.get(f"{settings.API_V1_STR}/labels/{label_id}/verify")
         assert response.status_code == 401
 
     def test_verify_three_time_the_same_product(
@@ -285,7 +285,7 @@ class TestVerifyOneProduct:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 200
@@ -296,11 +296,11 @@ class TestVerifyOneProduct:
 
         label_data.lot_number = None
         db.add(label_data)
-        db.flush()
+        db.commit()
         db.refresh(label_data)
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 200
@@ -311,11 +311,11 @@ class TestVerifyOneProduct:
 
         label_data.lot_number = "LOT-12345"
         db.add(label_data)
-        db.flush()
+        db.commit()
         db.refresh(label_data)
 
         response = client.get(
-            f"{settings.API_V1_STR}/verify/{label.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
             headers=headers,
         )
         assert response.status_code == 200
@@ -336,9 +336,128 @@ class TestVerifyOneProduct:
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-
         response = client.get(
-            f"{settings.API_V1_STR}/verify/00000000-0000-0000-0000-000000000000",
+            f"{settings.API_V1_STR}/labels/00000000-0000-0000-0000-000000000000/verify",
             headers=headers,
         )
         assert response.status_code == 404
+
+    def test_verify_product_with_whitespace_lot_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test verifying a product with whitespace-only lot_number."""
+        user = UserFactory.create(session=db)
+
+        product_type = ProductTypeFactory.create(session=db)
+
+        product = ProductFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+        )
+
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            review_status="completed",
+        )
+
+        LabelDataFactory.create(
+            session=db,
+            label=label,
+            lot_number="   ",
+        )
+
+        LabelImageFactory.create(
+            session=db,
+            label_id=label.id,
+        )
+
+        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
+        rule = db.scalars(stmt).first()
+        if rule is None:
+            rule = Rule(
+                reference_number="FzR: 16.(1)(j)",
+                title_en="Lot number",
+                title_fr="Numero de lot",
+                description_en="Lot number must be present.",
+                description_fr="Le numero de lot doit etre present.",
+            )
+            db.add(rule)
+
+        db.commit()
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert len(data["items"]) == 1
+        assert data["items"][0]["is_compliant"] is False
+
+    def test_verify_product_with_padded_lot_number(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test verifying a product with padded lot_number."""
+        user = UserFactory.create(session=db)
+
+        product_type = ProductTypeFactory.create(session=db)
+
+        product = ProductFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+        )
+
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            review_status="completed",
+        )
+
+        LabelDataFactory.create(
+            session=db,
+            label=label,
+            lot_number="  LOT-12345  ",
+        )
+
+        LabelImageFactory.create(
+            session=db,
+            label_id=label.id,
+        )
+
+        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
+        rule = db.scalars(stmt).first()
+        if rule is None:
+            rule = Rule(
+                reference_number="FzR: 16.(1)(j)",
+                title_en="Lot number",
+                title_fr="Numero de lot",
+                description_en="Lot number must be present.",
+                description_fr="Le numero de lot doit etre present.",
+            )
+            db.add(rule)
+
+        db.commit()
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/verify",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert len(data["items"]) == 1
+        assert data["items"][0]["is_compliant"] is True

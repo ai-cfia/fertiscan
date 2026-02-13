@@ -5,6 +5,8 @@ from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.controllers import labels as label_controller
+from app.controllers import products as product_controller
+from app.controllers import verify as verify_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
     CurrentUser,
@@ -16,7 +18,12 @@ from app.dependencies import (
     S3ClientDep,
     SessionDep,
 )
-from app.exceptions import LabelDataNotFound, RegistrationNumberMissing
+from app.exceptions import (
+    LabelDataNotFound,
+    LabelNotCompletedError,
+    ProductNotFound,
+    RegistrationNumberMissing,
+)
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
@@ -24,6 +31,7 @@ from app.schemas.label import (
     LabelListItem,
     LabelReviewStatusUpdate,
     LabelUpdate,
+    NonComplianceDataItemsList,
 )
 
 router = APIRouter(prefix="/labels", tags=["labels"])
@@ -147,3 +155,22 @@ async def delete_label(
         s3_client=s3_client,
         label=label,
     )
+
+
+@router.get("/{label_id}/verify", response_model=NonComplianceDataItemsList)
+def verify_rule(
+    label: LabelDep,
+    session: SessionDep,
+    __: CurrentUser,
+) -> NonComplianceDataItemsList:
+    """Verify non-compliance data item of the label."""
+
+    if label.review_status != ReviewStatus.completed:
+        raise LabelNotCompletedError()
+
+    if not label.product_id:
+        raise ProductNotFound()
+    if not (product := product_controller.get_product_by_id(session, label.product_id)):
+        raise ProductNotFound()
+
+    return verify_controller.verify_product(session, label, product)

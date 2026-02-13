@@ -1,66 +1,64 @@
-from typing import cast
-from uuid import UUID
+"""Controller of verification of a product."""
 
 from pydantic import validate_call
 from sqlalchemy.orm import Session
 from sqlmodel import select
-from sqlmodel.sql.expression import SelectOfScalar
 
+from app.db.models.label import Label
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.db.models.product import Product
 from app.db.models.rule import Rule
+from app.schemas.label import NonComplianceDataItemPublic, NonComplianceDataItemsList
 
 # ======================================General verification function for a product======================================
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
 def verify_product(
-    session: Session,
-    label_id: UUID,
-    _product: Product,
-) -> SelectOfScalar[NonComplianceDataItem]:
+    session: Session, label: Label, _product: Product
+) -> NonComplianceDataItemsList:
     """Verify non-compliance data item of the label."""
 
-    stmt = select(LabelData).where(LabelData.label_id == label_id)
-    label_data = session.scalars(stmt).first()
-    assert label_data is not None
-
-    session = verification(session, label_data, _product)
+    label = verify_all_rules(session, label, _product)
 
     session.commit()
-    stmt = select(NonComplianceDataItem).where(  # type: ignore[assignment]
-        NonComplianceDataItem.label_id == label_id
+    stmt = select(NonComplianceDataItem).where(
+        NonComplianceDataItem.label_id == label.id
     )
 
     non_compliance_data_items = session.scalars(stmt).all()
-
-    return cast(SelectOfScalar[NonComplianceDataItem], non_compliance_data_items)
+    public_non_compliance_items = [
+        NonComplianceDataItemPublic.model_validate(item, from_attributes=True)
+        for item in non_compliance_data_items
+    ]
+    return NonComplianceDataItemsList(
+        total=len(public_non_compliance_items),
+        items=public_non_compliance_items,
+    )
 
 
 # ======================================Update or create non-compliance data item======================================
 @validate_call(config={"arbitrary_types_allowed": True})
 def update_is_compliant(
-    is_compliant: bool, reference_number: str, session: Session, label_id: UUID
-) -> Session:
+    session: Session,
+    label: Label,
+    is_compliant: bool,
+    rule: Rule,
+) -> Label:
     """Update the is_compliant field of the non-compliance data item if the
     non-compliance data item already exists, otherwise create a new
     non-compliance data item."""
 
-    stmt = select(Rule).where(Rule.reference_number == reference_number)
-    rule = session.scalars(stmt).first()
-    if rule is None:
-        return session
-
-    stmt = select(NonComplianceDataItem).where(  # type: ignore[assignment]
+    stmt = select(NonComplianceDataItem).where(
         NonComplianceDataItem.rule_id == rule.id,
-        NonComplianceDataItem.label_id == label_id,
+        NonComplianceDataItem.label_id == label.id,
     )
     non_compliance_data_item = session.scalars(stmt).first()
 
     if non_compliance_data_item is None:
-        non_compliance_data_item = NonComplianceDataItem(  # type: ignore[assignment]
-            label_id=label_id,
+        non_compliance_data_item = NonComplianceDataItem(
+            label_id=label.id,
             rule_id=rule.id,
             description_en=rule.description_en,
             description_fr=rule.description_fr,
@@ -69,17 +67,19 @@ def update_is_compliant(
 
         session.add(non_compliance_data_item)
         session.flush()
-        return session
+        session.refresh(label)
+        return label
 
     non_compliance_data_item.is_compliant = is_compliant
     session.add(non_compliance_data_item)
     session.flush()
-    return session
+    session.refresh(label)
+    return label
 
 
 # ======================================Verification function to verify all rules======================================
 @validate_call(config={"arbitrary_types_allowed": True})
-def verification(session: Session, label_data: LabelData, _product: Product) -> Session:
+def verify_all_rules(session: Session, label: Label, _product: Product) -> Label:
     """All verifications should be addded in this function.
 
     Template for adding new verification:
@@ -88,18 +88,30 @@ def verification(session: Session, label_data: LabelData, _product: Product) -> 
         is_compliant=verification_lot_number(label_data),
         reference_number="Reference number of the rule",
         session=session,
-        label_id=label_data.label_id,
+        label=label,
     )
     """
-
-    session = update_is_compliant(
-        is_compliant=verification_lot_number(label_data),
-        reference_number="FzR: 16.(1)(j)",
+    assert label.label_data is not None
+    label = update_is_compliant(
+        is_compliant=verification_lot_number(label.label_data),
+        rule=get_rule_by_reference_number("FzR: 16.(1)(j)", session=session),
         session=session,
-        label_id=label_data.label_id,
+        label=label,
     )
 
-    return session
+    return label
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+def get_rule_by_reference_number(
+    reference_number: str,
+    session: Session,
+) -> Rule:
+    """Get the rule with the given reference number."""
+    stmt = select(Rule).where(Rule.reference_number == reference_number)
+    rule = session.scalars(stmt).first()
+    assert rule is not None, f"Rule with reference number {reference_number} not found"
+    return rule
 
 
 # ======================================Verification functions for each rule======================================

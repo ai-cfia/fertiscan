@@ -114,3 +114,24 @@ class LabelImageDetail(BaseModel):
     created_at: datetime
     updated_at: datetime
     current_image_count: int | None = None
+
+
+# ============================== Non-compliance Data Item Schemas ==============================
+
+
+class NonComplianceDataItemCreate(BaseModel):
+    label_id: UUID
+    rule_id: UUID
+    note: str | None = None
+    description_en: str | None = None
+    description_fr: str | None = None
+    is_compliant: bool = False
+
+
+class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
+    id: UUID
+
+
+class NonComplianceDataItemsList(BaseModel):
+    total: int
+    items: list[NonComplianceDataItemPublic]
