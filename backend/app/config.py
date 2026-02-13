@@ -5,7 +5,7 @@ import logging
 import secrets
 import warnings
 from pathlib import Path
-from typing import Annotated, Any, Literal, Self
+from typing import Annotated, Any, Literal, Self, cast
 
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
@@ -167,7 +167,7 @@ class Settings(BaseSettings):
                 rule_data = json.load(data_file)
         else:
             rule_data = []
-        return rule_data
+        return cast(list[dict[str, Any]], rule_data)
 
 
 settings = Settings()  # type: ignore
