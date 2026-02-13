@@ -56,7 +56,7 @@ erDiagram
         string note "nullable"
         string description_en "nullable"
         string description_fr "nullable"
-        boolean is_good
+        boolean is_compliant
         timestamp created_at
         timestamp updated_at
 
