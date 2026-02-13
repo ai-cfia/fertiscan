@@ -37,8 +37,6 @@ def verify_all_rules(session: Session, label: Label) -> Label:
 
     return label
 
-    return label
-
 
 # ======================================Update or create non-compliance data item======================================
 @validate_call(config={"arbitrary_types_allowed": True})
