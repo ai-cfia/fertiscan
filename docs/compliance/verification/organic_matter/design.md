@@ -19,7 +19,7 @@ sequenceDiagram
 
     else
 
-    be ->> db: Create a NonComplianceDataItem with is_compliant set to true and the comment ‘No organic matter present
+    be ->> db: Create NonComplianceDataItem true comment 'No organic matter'
 
     be -->> be: return the label with non compliance data item
 
