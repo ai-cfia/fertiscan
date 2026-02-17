@@ -8,6 +8,8 @@ from fastapi_pagination.ext.sqlmodel import paginate
 from pydantic import StringConstraints
 
 from app.controllers import labels as label_controller
+from app.controllers import products as product_controller
+from app.controllers import verify as verify_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
     CurrentUser,
@@ -20,6 +22,10 @@ from app.dependencies import (
     SessionDep,
     ValidatedStatusLabelDep,
 )
+from app.exceptions import (
+    LabelNotCompletedError,
+    ProductNotFound,
+)
 from app.schemas.label import (
     LabelCreate,
     LabelCreated,
@@ -27,6 +33,8 @@ from app.schemas.label import (
     LabelListItem,
     LabelReviewStatusUpdate,
     LabelUpdate,
+    NonComplianceDataItemPublic,
+    NonComplianceDataItemsList,
 )
 
 router = APIRouter(prefix="/labels", tags=["labels"])
@@ -143,4 +151,34 @@ async def delete_label(
         session=session,
         s3_client=s3_client,
         label=label,
+    )
+
+
+@router.get("/{label_id}/verify", response_model=NonComplianceDataItemsList)
+def verify_rule(
+    label: LabelDep,
+    session: SessionDep,
+    __: CurrentUser,
+) -> NonComplianceDataItemsList:
+    """Verify non-compliance data item of the label."""
+
+    if label.review_status != ReviewStatus.completed:
+        raise LabelNotCompletedError()
+
+    if not label.product_id:
+        raise ProductNotFound()
+    if not product_controller.get_product_by_id(session, label.product_id):
+        raise ProductNotFound()
+
+    label = verify_controller.verify_all_rules(session, label)
+
+    non_compliance_data_items = label.non_compliance_data_items
+    public_non_compliance_items = [
+        NonComplianceDataItemPublic.model_validate(item, from_attributes=True)
+        for item in non_compliance_data_items
+    ]
+
+    return NonComplianceDataItemsList(
+        total=len(public_non_compliance_items),
+        items=public_non_compliance_items,
     )

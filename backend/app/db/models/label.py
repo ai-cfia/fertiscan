@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from app.db.models.fertilizer_label_data import FertilizerLabelData
     from app.db.models.label_data import LabelData
     from app.db.models.label_image import LabelImage
+    from app.db.models.non_compliance_data_item import NonComplianceDataItem
     from app.db.models.product import Product
 
 
@@ -47,6 +48,9 @@ class Label(Base, table=True):
         back_populates="label", cascade_delete=True
     )
     fertilizer_label_data: Optional["FertilizerLabelData"] = Relationship(
+        back_populates="label", cascade_delete=True
+    )
+    non_compliance_data_items: list["NonComplianceDataItem"] = Relationship(
         back_populates="label", cascade_delete=True
     )
     created_at: datetime = Field(

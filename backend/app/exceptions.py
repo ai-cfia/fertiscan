@@ -156,3 +156,8 @@ class LabelNotLinkedToProduct(HTTPException):
 class InvalidDateRange(HTTPException):
     def __init__(self, detail: str = "Invalid date range") -> None:
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
+class LabelNotCompletedError(HTTPException):
+    def __init__(self, detail: str = "Label is not completed") -> None:
+        super().__init__(status.HTTP_412_PRECONDITION_FAILED, detail)

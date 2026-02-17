@@ -10,6 +10,7 @@ from app.controllers.product_types import (
     get_product_type_by_code,
 )
 from app.controllers.users import create_user, get_user_by_email
+from app.db.models.rule import Rule
 from app.db.session import get_sessionmaker
 from app.schemas.product_type import ProductTypeCreate
 from app.schemas.user import UserCreate
@@ -47,6 +48,28 @@ def init_db(session: Session) -> None:
         product_type = create_product_type(session, product_type_in)
         session.commit()
         logger.info(f"ProductType 'fertilizer' created: {product_type.code}")
+
+    # Seed rule
+
+    rule_data = settings.rule_data_seed()
+    if len(rule_data) == 0:
+        logger.warning(f"Rule seed file not found: {settings.RULE_SEED_DATA_PATH}")
+
+    rules_added = False
+    for rule_draft in rule_data:
+        if (
+            rule := session.query(Rule)
+            .filter_by(reference_number=rule_draft["reference_number"])
+            .first()
+        ):
+            logger.info(f"This rule already exists: {rule.reference_number}")
+        else:
+            rule = Rule(**rule_draft)
+            session.add(rule)
+            logger.info(f"Rule created: {rule.reference_number}")
+            rules_added = True
+    if rules_added:
+        session.commit()
 
 
 def run(session: Session | None = None) -> None:
