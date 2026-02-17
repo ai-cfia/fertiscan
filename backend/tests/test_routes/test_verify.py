@@ -3,10 +3,8 @@
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from sqlmodel import select
 
 from app.config import settings
-from app.db.models.rule import Rule
 from tests.factories.label import LabelFactory
 from tests.factories.label_data import LabelDataFactory
 from tests.factories.label_image import LabelImageFactory
@@ -29,44 +27,13 @@ class TestVerifyOneProduct:
     ) -> None:
         """Test verifying a product with a lot_number."""
         user = UserFactory.create(session=db)
-
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="LOT-12345",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        LabelDataFactory.create(session=db, label=label, lot_number="LOT-12345")
+        LabelImageFactory.create(session=db, label_id=label.id)
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -89,44 +56,13 @@ class TestVerifyOneProduct:
     ) -> None:
         """Test verifying a product without a lot_number."""
         user = UserFactory.create(session=db)
-
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        LabelDataFactory.create(session=db, label=label, lot_number="")
+        LabelImageFactory.create(session=db, label_id=label.id)
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -150,31 +86,8 @@ class TestVerifyOneProduct:
         """Test verifying a product that the label is in progress"""
 
         user = UserFactory.create(session=db)
-
-        label = LabelFactory.create(
-            session=db,
-            review_status="in_progress",
-        )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="",
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        label = LabelFactory.create(session=db, review_status="in_progress")
+        LabelDataFactory.create(session=db, label=label, lot_number="")
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -194,42 +107,13 @@ class TestVerifyOneProduct:
         """Test that authentication is required to verify a product."""
 
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="LOT-12345",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
+        LabelDataFactory.create(session=db, label=label, lot_number="LOT-12345")
+        LabelImageFactory.create(session=db, label_id=label.id)
         label_id = label.id
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
 
         response = client.get(f"{settings.API_V1_STR}/labels/{label_id}/verify")
         assert response.status_code == 401
@@ -241,44 +125,13 @@ class TestVerifyOneProduct:
     ) -> None:
         """Test verifying the same product three times without lot number and with lot number ."""
         user = UserFactory.create(session=db)
-
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        label_data = LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        label_data = LabelDataFactory.create(session=db, label=label, lot_number="")
+        LabelImageFactory.create(session=db, label_id=label.id)
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -295,8 +148,7 @@ class TestVerifyOneProduct:
         assert data["items"][0]["is_compliant"] is False
 
         label_data.lot_number = None
-        db.add(label_data)
-        db.commit()
+        db.flush()
         db.refresh(label_data)
 
         response = client.get(
@@ -310,8 +162,7 @@ class TestVerifyOneProduct:
         assert data["items"][0]["is_compliant"] is False
 
         label_data.lot_number = "LOT-12345"
-        db.add(label_data)
-        db.commit()
+        db.flush()
         db.refresh(label_data)
 
         response = client.get(
@@ -349,44 +200,13 @@ class TestVerifyOneProduct:
     ) -> None:
         """Test verifying a product with whitespace-only lot_number."""
         user = UserFactory.create(session=db)
-
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="   ",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        LabelDataFactory.create(session=db, label=label, lot_number="   ")
+        LabelImageFactory.create(session=db, label_id=label.id)
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -409,44 +229,13 @@ class TestVerifyOneProduct:
     ) -> None:
         """Test verifying a product with padded lot_number."""
         user = UserFactory.create(session=db)
-
         product_type = ProductTypeFactory.create(session=db)
-
-        product = ProductFactory.create(
-            session=db,
-            product_type_id=product_type.id,
-        )
-
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
         label = LabelFactory.create(
-            session=db,
-            product_id=product.id,
-            review_status="completed",
+            session=db, product_id=product.id, review_status="completed"
         )
-
-        LabelDataFactory.create(
-            session=db,
-            label=label,
-            lot_number="  LOT-12345  ",
-        )
-
-        LabelImageFactory.create(
-            session=db,
-            label_id=label.id,
-        )
-
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 16.(1)(j)")
-        rule = db.scalars(stmt).first()
-        if rule is None:
-            rule = Rule(
-                reference_number="FzR: 16.(1)(j)",
-                title_en="Lot number",
-                title_fr="Numero de lot",
-                description_en="Lot number must be present.",
-                description_fr="Le numero de lot doit etre present.",
-            )
-            db.add(rule)
-
-        db.commit()
+        LabelDataFactory.create(session=db, label=label, lot_number="  LOT-12345  ")
+        LabelImageFactory.create(session=db, label_id=label.id)
 
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
