@@ -45,12 +45,21 @@ sequenceDiagram
 ```python
     from [...] import verify_organic_matter
     from app.db.models.label import Label
-
+    import json
 
     def message_organic_matter(label : Label, [...]) -> str :
         fertilizer_label_data = label.fertilizer_label_data
+        ingredients = fertilizer_label_data.ingredients
+        guaranteed_analysis = fertilizer_label_data.guaranteed_analysis
 
-       return str(fertilizer_label_data)
+        msg =(
+             "This is the first part of data, the ingredient :\n"
+             f"{json.dumps(ingredients,indent=2, ensure_ascii=False)}\n\n"
+             "This is the second part of data, guaranteed analysis :\n"
+             f"{json.dumps(guaranteed_analysis, indent=2, ensure_ascii=False)}"
+        )
+
+       return msg
 
 
 
@@ -62,22 +71,29 @@ sequenceDiagram
     import instructor
     from pydantic import BaseModel, Field
     from app.config import settings
+    from app.db.models.rule import Rule
 
-    class LabelModelResponse(BaseModel):
+    class CompliantResponseLLM(BaseModel):
+        is_compliant : bool = Field(...,
+        description="Is the data compliant with the rule")
         explanation : str = Field(..., description="Explanation of all field answer")
-        is_Organic : bool = Field(...,description ="label contains Organic matter")
-        verify : tuple(str ,bool ) = Field(...,description= "Check if the label"+
-        " shows the percentage of humidity and/or the percentage of organic matter")
 
     @validate_call(config={"arbitrary_types_allowed": True})
     def verify_organic_matter(
         instructor : instructor,
-        message : message
-    ) -> LabelModelResponse:
+        message : str,
+        rule : Rule,
+    ) -> CompliantResponseLLM:
+
+        content = (
+            "This is the rule I want to apply on the data :\n"
+            f"{json.dumps(rule, indent=2, ensure_ascii=False)}\n\n"
+            f"{message}"
+        )
         response, _ =  await instructor.chat.completions.create_with_completion(
             model=settings.AZURE_OPENAI_MODEL,
-            message=[{"role": "user", "content": f"Analyze this : {message}" }],
-            response_model = LabelModelResponse,
+            message=[{"role": "user", "content": f"Analyze this : {content}" }],
+            response_model = CompliantResponseLLM,
             max_completion_tokens=4000,
          )
 
