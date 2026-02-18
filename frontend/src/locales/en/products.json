@@ -1,0 +1,40 @@
+{
+  "pageTitle": "Products - Label Inspection",
+  "title": "Products",
+  "table": {
+    "actions": "Actions",
+    "copyId": "Copy product ID {{id}}",
+    "createdAt": "Created At",
+    "id": "ID",
+    "idCopied": "Product ID copied to clipboard",
+    "brand": "Brand",
+    "name": "Product Name",
+    "registrationNumber": "Registration Number",
+    "selectAll": "select all products",
+    "sortedAscending": "sorted ascending",
+    "sortedDescending": "sorted descending"
+  },
+  "empty": {
+    "noProducts": "No products found",
+    "noProductsDescription": "Products created from labels will appear here.",
+    "noMatches": "No products match your search",
+    "noMatchesDescription": "Try adjusting your search criteria to see more results."
+  },
+  "rowActions": {
+    "viewDetails": "View Details",
+    "delete": "Delete",
+    "deleteDialog": {
+      "title": "Delete product",
+      "description": "Are you sure you want to delete this product? This action cannot be undone."
+    }
+  },
+  "bulkActions": {
+    "selected": "{{count}} selected",
+    "delete": "Delete",
+    "export": "Export",
+    "deleteDialog": {
+      "title": "Delete {{count}} products?",
+      "description": "Are you sure you want to delete {{count}} selected products? This action cannot be undone."
+    }
+  }
+}

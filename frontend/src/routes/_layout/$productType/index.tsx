@@ -191,6 +191,7 @@ function Dashboard() {
                     navigate({
                       to: "/$productType/products",
                       params: { productType },
+                      search: { page: 0, per_page: defaultPerPage },
                     })
                   }}
                 />

@@ -794,6 +794,47 @@
         }
       }
     },
+    "/api/v1/labels/{label_id}/verify": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Verify Rule",
+        "description": "Verify non-compliance data item of the label.",
+        "operationId": "labels_verify_rule",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonComplianceDataItemsList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/labels/{label_id}/images": {
       "post": {
         "tags": ["labels"],
@@ -1839,6 +1880,22 @@
               ],
               "title": "End Updated At"
             }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Order By"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "desc", "title": "Order" }
           }
         ],
         "responses": {
@@ -3014,6 +3071,52 @@
         "required": ["token", "new_password"],
         "title": "NewPassword"
       },
+      "NonComplianceDataItemPublic": {
+        "properties": {
+          "label_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Label Id"
+          },
+          "rule_id": { "type": "string", "format": "uuid", "title": "Rule Id" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "is_compliant": {
+            "type": "boolean",
+            "title": "Is Compliant",
+            "default": false
+          },
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["label_id", "rule_id", "id"],
+        "title": "NonComplianceDataItemPublic"
+      },
+      "NonComplianceDataItemsList": {
+        "properties": {
+          "total": { "type": "integer", "title": "Total" },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NonComplianceDataItemPublic"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["total", "items"],
+        "title": "NonComplianceDataItemsList"
+      },
       "Nutrient-Input": {
         "properties": {
           "name_en": {
@@ -3202,10 +3305,15 @@
           "registration_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Registration Number"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
           }
         },
         "type": "object",
-        "required": ["id"],
+        "required": ["id", "created_at"],
         "title": "ProductPublic"
       },
       "ProductTypePublic": {

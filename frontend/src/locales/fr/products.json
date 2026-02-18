@@ -1,0 +1,40 @@
+{
+  "pageTitle": "Produits - Inspection des étiquettes",
+  "title": "Produits",
+  "table": {
+    "actions": "Actions",
+    "copyId": "Copier l'ID du produit {{id}}",
+    "createdAt": "Créé le",
+    "id": "ID",
+    "idCopied": "ID du produit copié dans le presse-papier",
+    "brand": "Marque",
+    "name": "Nom du produit",
+    "registrationNumber": "Numéro d'enregistrement",
+    "selectAll": "sélectionner tous les produits",
+    "sortedAscending": "trié par ordre croissant",
+    "sortedDescending": "trié par ordre décroissant"
+  },
+  "empty": {
+    "noProducts": "Aucun produit trouvé",
+    "noProductsDescription": "Les produits créés à partir des étiquettes apparaîtront ici.",
+    "noMatches": "Aucun produit ne correspond à votre recherche",
+    "noMatchesDescription": "Essayez de modifier vos critères de recherche pour voir plus de résultats."
+  },
+  "rowActions": {
+    "viewDetails": "Voir les détails",
+    "delete": "Supprimer",
+    "deleteDialog": {
+      "title": "Supprimer le produit",
+      "description": "Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible."
+    }
+  },
+  "bulkActions": {
+    "selected": "{{count}} sélectionnés",
+    "delete": "Supprimer",
+    "export": "Exporter",
+    "deleteDialog": {
+      "title": "Supprimer {{count}} produits ?",
+      "description": "Êtes-vous sûr de vouloir supprimer les {{count}} produits sélectionnés ? Cette action est irréversible."
+    }
+  }
+}
