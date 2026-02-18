@@ -73,10 +73,15 @@ sequenceDiagram
     from app.config import settings
     from app.db.models.rule import Rule
 
-    class CompliantResponseLLM(BaseModel):
-        is_compliant : bool = Field(...,
-        description="Is the data compliant with the rule")
-        explanation : str = Field(..., description="Explanation of all field answer")
+    class ComplianceResult(BaseModel):
+        explanation: str = Field(
+            ...,
+            description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
+        )
+        is_compliant: bool = Field(
+            ...,
+            description="Whether the Label Data satisfies the requirements of the Regulation to Enforce.",
+        )
 
     @validate_call(config={"arbitrary_types_allowed": True})
     def verify_organic_matter(
