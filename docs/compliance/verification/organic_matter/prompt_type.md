@@ -7,10 +7,14 @@ This is the rule I want to apply on the data :
         "reference_number": "FzR: 15.(1)(i)",
         "title_en": "Organic matter",
         "title_fr": "Matière organique",
-        "description_en": "The packaging of a fertilizer or organic supplement must indicate the percentage of organic matter and/or the moisture content.s",
-        "description_fr": "L’emballage d’un engrais ou d’un supplément organique doit indiquer le pourcentage de matière organique et/ou le taux d’humidité.",
-        "url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
-        "url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html"
+        "description_en": "The packaging of a fertilizer or organic supplement
+         must indicate the percentage of organic matter and/or the moisture content.",
+        "description_fr": "L’emballage d’un engrais ou d’un supplément organique
+        doit indiquer le pourcentage de matière organique et/ou le taux d’humidité.",
+        "url_en":
+         "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
+        "url_fr":
+         "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html"
     }
 ```
 
