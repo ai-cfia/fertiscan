@@ -218,3 +218,70 @@ class TestProductList:
         """Test that listing products requires authentication."""
         response = client.get(self.PROD_URL)
         assert response.status_code == 401
+
+    def test_list_products_sort_by_registration(
+        self, client: TestClient, user, auth_headers: dict
+    ) -> None:
+        """Test sorting products by registration number."""
+        ProductFactory(registration_number="REG-A", created_by=user)
+        ProductFactory(registration_number="REG-B", created_by=user)
+
+        # ASC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=registration_number&order=asc",
+            headers=auth_headers,
+        )
+        assert response.status_code == 200
+        items = response.json()["items"]
+        assert [i["registration_number"] for i in items] == ["REG-A", "REG-B"]
+
+        # DESC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=registration_number&order=desc",
+            headers=auth_headers,
+        )
+        assert response.status_code == 200
+        items = response.json()["items"]
+        assert [i["registration_number"] for i in items] == ["REG-B", "REG-A"]
+
+    def test_list_products_sort_by_brand(
+        self, client: TestClient, user, auth_headers: dict
+    ) -> None:
+        """Test sorting products by brand name."""
+        ProductFactory(brand_name_en="Alpha", created_by=user)
+        ProductFactory(brand_name_en="Beta", created_by=user)
+
+        # ASC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=brand_name_en&order=asc", headers=auth_headers
+        )
+        items = response.json()["items"]
+        assert [i["brand_name_en"] for i in items] == ["Alpha", "Beta"]
+
+        # DESC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=brand_name_en&order=desc", headers=auth_headers
+        )
+        items = response.json()["items"]
+        assert [i["brand_name_en"] for i in items] == ["Beta", "Alpha"]
+
+    def test_list_products_sort_by_name(
+        self, client: TestClient, user, auth_headers: dict
+    ) -> None:
+        """Test sorting products by product name."""
+        ProductFactory(name_en="Apple", created_by=user)
+        ProductFactory(name_en="Banana", created_by=user)
+
+        # ASC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=name_en&order=asc", headers=auth_headers
+        )
+        items = response.json()["items"]
+        assert [i["name_en"] for i in items] == ["Apple", "Banana"]
+
+        # DESC
+        response = client.get(
+            f"{self.PROD_URL}?order_by=name_en&order=desc", headers=auth_headers
+        )
+        items = response.json()["items"]
+        assert [i["name_en"] for i in items] == ["Banana", "Apple"]
