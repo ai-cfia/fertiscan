@@ -1,8 +1,9 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import Query
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, StringConstraints
 
 
 class ProductParams(BaseModel):
@@ -38,6 +39,12 @@ class ProductParams(BaseModel):
     end_created_at: datetime | None = Query(None, description="End created at")
     start_updated_at: datetime | None = Query(None, description="Start updated at")
     end_updated_at: datetime | None = Query(None, description="End updated at")
+    order_by: Annotated[str, StringConstraints(strip_whitespace=True)] = Query(
+        default="created_at", description="Field to sort by"
+    )
+    order: Annotated[str, StringConstraints(strip_whitespace=True)] = Query(
+        default="desc", description="Sort direction (asc or desc)"
+    )
 
 
 class ProductCreate(BaseModel):
@@ -58,6 +65,7 @@ class ProductPublic(BaseModel):
     name_en: str | None = None
     name_fr: str | None = None
     registration_number: str | None = None
+    created_at: datetime
 
 
 class ProductsPublic(BaseModel):

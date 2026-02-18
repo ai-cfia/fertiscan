@@ -877,6 +877,54 @@ export type NewPassword = {
 };
 
 /**
+ * NonComplianceDataItemPublic
+ */
+export type NonComplianceDataItemPublic = {
+    /**
+     * Label Id
+     */
+    label_id: string;
+    /**
+     * Rule Id
+     */
+    rule_id: string;
+    /**
+     * Note
+     */
+    note?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    /**
+     * Is Compliant
+     */
+    is_compliant?: boolean;
+    /**
+     * Id
+     */
+    id: string;
+};
+
+/**
+ * NonComplianceDataItemsList
+ */
+export type NonComplianceDataItemsList = {
+    /**
+     * Total
+     */
+    total: number;
+    /**
+     * Items
+     */
+    items: Array<NonComplianceDataItemPublic>;
+};
+
+/**
  * Nutrient
  */
 export type NutrientInput = {
@@ -1064,6 +1112,10 @@ export type ProductPublic = {
      * Registration Number
      */
     registration_number?: string | null;
+    /**
+     * Created At
+     */
+    created_at: string;
 };
 
 /**
@@ -1962,6 +2014,36 @@ export type PatchApiV1LabelsByLabelIdReviewStatusResponses = {
 
 export type PatchApiV1LabelsByLabelIdReviewStatusResponse = PatchApiV1LabelsByLabelIdReviewStatusResponses[keyof PatchApiV1LabelsByLabelIdReviewStatusResponses];
 
+export type GetApiV1LabelsByLabelIdVerifyData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/verify';
+};
+
+export type GetApiV1LabelsByLabelIdVerifyErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1LabelsByLabelIdVerifyError = GetApiV1LabelsByLabelIdVerifyErrors[keyof GetApiV1LabelsByLabelIdVerifyErrors];
+
+export type GetApiV1LabelsByLabelIdVerifyResponses = {
+    /**
+     * Successful Response
+     */
+    200: NonComplianceDataItemsList;
+};
+
+export type GetApiV1LabelsByLabelIdVerifyResponse = GetApiV1LabelsByLabelIdVerifyResponses[keyof GetApiV1LabelsByLabelIdVerifyResponses];
+
 export type GetApiV1LabelsByLabelIdImagesData = {
     body?: never;
     path: {
@@ -2618,6 +2700,14 @@ export type GetApiV1ProductsData = {
          * End Updated At
          */
         end_updated_at?: string | null;
+        /**
+         * Order By
+         */
+        order_by?: string;
+        /**
+         * Order
+         */
+        order?: string;
     };
     url: '/api/v1/products';
 };

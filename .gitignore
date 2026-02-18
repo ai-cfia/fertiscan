@@ -197,3 +197,5 @@ template/
 # Local scripts (not version controlled)
 backend/scripts-local/
 frontend/scripts-local/
+
+.agent/

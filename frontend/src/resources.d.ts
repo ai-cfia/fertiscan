@@ -3,11 +3,13 @@ interface Resources {
   auth: {
     login: {
       email: "Email"
+      emailHelper: "Enter your email address"
       emailInvalid: "Invalid email address"
       failed: "Login failed"
       forgotPassword: "Forgot Password?"
       noAccount: "Don't have an account?"
       password: "Password"
+      passwordHelper: "Enter your password"
       signUp: "Sign Up"
       submit: "Log In"
       submitting: "Logging in..."
@@ -17,6 +19,7 @@ interface Resources {
     recoverPassword: {
       description: "A password recovery email will be sent to the registered account."
       email: "Email"
+      emailHelper: "Enter your email address to receive a password reset link"
       emailInvalid: "Invalid email address"
       emailRequired: "Email is required"
       submit: "Continue"
@@ -26,25 +29,32 @@ interface Resources {
     }
     resetPassword: {
       confirmPassword: "Confirm Password"
+      confirmPasswordHelper: "Re-enter your new password to confirm"
       description: "Please enter your new password and confirm it to reset your password."
       newPassword: "New Password"
+      newPasswordHelper: "Enter your new password"
       submit: "Reset Password"
       success: "Password updated successfully."
       title: "Reset Password"
     }
     signup: {
       confirmPassword: "Confirm Password"
+      confirmPasswordHelper: "Re-enter your password to confirm"
       confirmPasswordRequired: "Password confirmation is required"
       email: "Email"
+      emailHelper: "Enter your email address"
       emailInvalid: "Invalid email address"
       emailRequired: "Email is required"
       firstName: "First Name"
+      firstNameHelper: "Enter your first name"
       firstNameRequired: "First Name is required"
       hasAccount: "Already have an account?"
       lastName: "Last Name"
+      lastNameHelper: "Enter your last name"
       lastNameRequired: "Last Name is required"
       logIn: "Log In"
       password: "Password"
+      passwordHelper: "Enter a secure password"
       passwordMinLength: "Password must be at least 8 characters"
       passwordRequired: "Password is required"
       passwordsDoNotMatch: "The passwords do not match"
@@ -101,6 +111,11 @@ interface Resources {
       upload: "Upload Files"
       uploading: "Uploading..."
       viewAll: "View All"
+    }
+    labels: {
+      errorOccurred: "An error occurred"
+      loadFailed: "Failed to load labels"
+      loadFailedRetry: "Failed to load labels. Please try again."
     }
     language: {
       en: {
@@ -163,9 +178,7 @@ interface Resources {
         pageTitle: "Create New Product"
         title: "Create New Product"
       }
-      createNew: "Create New Product"
-      pageTitle: "Products - Label Inspection"
-      title: "Products"
+      createNew: "Product"
     }
     settings: {
       pageTitle: "Settings - Label Inspection"
@@ -211,15 +224,19 @@ interface Resources {
       button: {
         cancel: "Cancel"
       }
+      loading: "Loading..."
+      noBrand: "No Brand"
+      processing: "Processing..."
+      unnamedProduct: "Unnamed Product"
     }
     dashboard: {
-      completed: "dashboard.completed"
+      completed: "Completed"
       createNewLabel: "Create New Label"
       createNewLabelDescription: "Upload and process a new label"
-      inProgress: "dashboard.inProgress"
+      inProgress: "In Progress"
       manageProducts: "Manage Products"
       manageProductsDescription: "View and edit products"
-      notStarted: "dashboard.notStarted"
+      notStarted: "Not Started"
       overview: "Overview"
       quickActions: "Quick Actions"
       title: "Dashboard - Label Inspection"
@@ -331,13 +348,39 @@ interface Resources {
       save: "Save"
       saved: "Changes saved successfully"
       sections: {
+        association: {
+          associate: "Associate"
+          createAndAssociate: "Create & Associate"
+          createAndLinkSuccess: "Product created and associated successfully"
+          createSuccess: "Product created successfully"
+          creationDraft: "Create New Product Entry"
+          creationHelp: "We can create a new product entry using the data extracted from this label."
+          linkSuccess: "Product associated successfully"
+          linked: "Product associated"
+          linkedMessage: "This label is linked to a product entry."
+          linkedProduct: "Linked Product"
+          matchesFound_one: "{{count}} potential match found"
+          matchesFound_other: "{{count}} potential matches found"
+          missingCriteria: "At least one product attribute required for search"
+          noMatch: "No matching product found"
+          title: "Product Association"
+          unlink: "Unlink Product"
+          unlinkSuccess: "Product unlinked successfully"
+        }
         basic: "Basic Information"
+        brand: "Brand"
         guaranteed: "Guaranteed Analysis"
         ingredients: "Ingredients"
         npk: "NPK Analysis"
+        product: "Product"
+        registrationNumber: "Registration Number"
         safety: "Safety Information"
       }
       title: "Label Review"
+      validation: {
+        missingLabelData: "Label data must be created before marking review as complete"
+        missingRegistrationNumber: "Registration number is required to mark review as complete"
+      }
     }
     empty: {
       noLabels: "No labels found"
@@ -352,6 +395,7 @@ interface Resources {
     }
     files: {
       pageTitle: "Label Files - Label Inspection"
+      reviewLabel: "Review Label"
       title_one: "Label Image: {{count}} (max {{max}})"
       title_other: "Label Images: {{count}} (max {{max}})"
     }
@@ -402,7 +446,6 @@ interface Resources {
         title: "Create New Label"
       }
       rowActions: {
-        actionsForLabel: "Actions for label {{id}}"
         continueReview: "Continue review"
         delete: "Delete"
         deleteDialog: {
@@ -443,6 +486,42 @@ interface Resources {
       success_one: "Successfully uploaded {{completed}} of {{total}} file"
       success_other: "Successfully uploaded {{completed}} of {{total}} files"
     }
+  }
+  products: {
+    common: {
+      button: {
+        cancel: "Cancel"
+      }
+    }
+    empty: {
+      noProducts: "No products found"
+      noProductsDescription: "Products created from labels will appear here."
+    }
+    pageTitle: "Products - Label Inspection"
+    products: {
+      rowActions: {
+        delete: "Delete"
+        deleteDialog: {
+          description: "Are you sure you want to delete this product? This action cannot be undone and will permanently delete the product."
+          title: "Delete product"
+        }
+        deleteNotImplemented: "Delete functionality not yet implemented"
+        viewDetails: "View Details"
+      }
+    }
+    table: {
+      brand: "Brand"
+      copyId: "Copy product ID {{id}}"
+      createdAt: "Created At"
+      id: "ID"
+      idCopied: "Product ID copied to clipboard"
+      name: "Product Name"
+      registrationNumber: "Registration Number"
+      selectAll: "select all products"
+      sortedAscending: "sorted ascending"
+      sortedDescending: "sorted descending"
+    }
+    title: "Products"
   }
 }
 

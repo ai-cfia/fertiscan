@@ -43,6 +43,11 @@
     "uploading": "Téléversement en cours...",
     "viewAll": "Voir tout"
   },
+  "labels": {
+    "errorOccurred": "Une erreur s'est produite",
+    "loadFailed": "Échec du chargement des étiquettes",
+    "loadFailedRetry": "Échec du chargement des étiquettes. Veuillez réessayer."
+  },
   "language": {
     "en": {
       "ariaLabel": "Passer à l'anglais"
@@ -59,54 +64,52 @@
     "title": "Oups !"
   },
   "products": {
-    "createNew": "Produit",
-    "pageTitle": "Produits - Inspection d'étiquettes",
-    "title": "Produits",
     "create": {
-      "pageTitle": "Créer un nouveau produit",
-      "title": "Créer un nouveau produit",
       "form": {
-        "registrationNumber": {
-          "label": "Numéro d'enregistrement",
-          "required": "Le numéro d'enregistrement est requis",
-          "maxLength": "Le numéro d'enregistrement doit contenir 50 caractères ou moins",
-          "invalidFormat": "Le numéro d'enregistrement ne peut contenir que des lettres, des chiffres, des espaces et des tirets",
-          "duplicate": "Un produit avec ce numéro d'enregistrement existe déjà.",
-          "checking": "Vérification...",
-          "helperText": "Le numéro d'enregistrement officiel attribué à ce produit"
-        },
         "brandNameEn": {
+          "helperText": "Le nom de marque en anglais (optionnel)",
           "label": "Nom de marque (EN)",
-          "maxLength": "Le nom de marque (EN) doit contenir 100 caractères ou moins",
-          "helperText": "Le nom de marque en anglais (optionnel)"
+          "maxLength": "Le nom de marque (EN) doit contenir 100 caractères ou moins"
         },
         "brandNameFr": {
+          "helperText": "Le nom de marque en français (optionnel)",
           "label": "Nom de marque (FR)",
-          "maxLength": "Le nom de marque (FR) doit contenir 100 caractères ou moins",
-          "helperText": "Le nom de marque en français (optionnel)"
-        },
-        "nameEn": {
-          "label": "Nom du produit (EN)",
-          "maxLength": "Le nom du produit (EN) doit contenir 200 caractères ou moins",
-          "helperText": "Le nom du produit en anglais (optionnel)"
-        },
-        "nameFr": {
-          "label": "Nom du produit (FR)",
-          "maxLength": "Le nom du produit (FR) doit contenir 200 caractères ou moins",
-          "helperText": "Le nom du produit en français (optionnel)"
+          "maxLength": "Le nom de marque (FR) doit contenir 100 caractères ou moins"
         },
         "cancel": "Annuler",
-        "submit": "Créer le produit",
-        "success": "Produit créé avec succès",
-        "error": "Échec de la création du produit. Veuillez réessayer.",
         "cancelDialog": {
-          "title": "Ignorer les modifications ?",
-          "message": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter cette page ?",
+          "discard": "Ignorer les modifications",
           "keepEditing": "Continuer l'édition",
-          "discard": "Ignorer les modifications"
-        }
-      }
-    }
+          "message": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter cette page ?",
+          "title": "Ignorer les modifications ?"
+        },
+        "error": "Échec de la création du produit. Veuillez réessayer.",
+        "nameEn": {
+          "helperText": "Le nom du produit en anglais (optionnel)",
+          "label": "Nom du produit (EN)",
+          "maxLength": "Le nom du produit (EN) doit contenir 200 caractères ou moins"
+        },
+        "nameFr": {
+          "helperText": "Le nom du produit en français (optionnel)",
+          "label": "Nom du produit (FR)",
+          "maxLength": "Le nom du produit (FR) doit contenir 200 caractères ou moins"
+        },
+        "registrationNumber": {
+          "checking": "Vérification...",
+          "duplicate": "Un produit avec ce numéro d'enregistrement existe déjà.",
+          "helperText": "Le numéro d'enregistrement officiel attribué à ce produit",
+          "invalidFormat": "Le numéro d'enregistrement ne peut contenir que des lettres, des chiffres, des espaces et des tirets",
+          "label": "Numéro d'enregistrement",
+          "maxLength": "Le numéro d'enregistrement doit contenir 50 caractères ou moins",
+          "required": "Le numéro d'enregistrement est requis"
+        },
+        "submit": "Créer le produit",
+        "success": "Produit créé avec succès"
+      },
+      "pageTitle": "Créer un nouveau produit",
+      "title": "Créer un nouveau produit"
+    },
+    "createNew": "Produit"
   },
   "settings": {
     "pageTitle": "Paramètres - Inspection d'étiquettes",
@@ -132,10 +135,5 @@
     "logOut": "Se déconnecter",
     "products": "Produits",
     "userSettings": "Paramètres utilisateur"
-  },
-  "labels": {
-    "errorOccurred": "Une erreur s'est produite",
-    "loadFailed": "Échec du chargement des étiquettes",
-    "loadFailedRetry": "Échec du chargement des étiquettes. Veuillez réessayer."
   }
 }

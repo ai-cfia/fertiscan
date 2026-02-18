@@ -6,10 +6,10 @@
     "button": {
       "cancel": "Cancel"
     },
-    "unnamedProduct": "Unnamed Product",
+    "loading": "Loading linked product...",
     "noBrand": "No Brand",
-    "loading": "Loading...",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "unnamedProduct": "Unnamed Product"
   },
   "dashboard": {
     "completed": "Completed",
@@ -33,8 +33,6 @@
     "viewAllLabelsDescription": "Browse and manage all labels"
   },
   "data": {
-    "pageTitle": "Label Review - Label Inspection",
-    "title": "Label Review",
     "contacts": {
       "addContact": "Add Contact",
       "address": "Address",
@@ -127,41 +125,43 @@
       "value": "Value"
     },
     "markComplete": "Mark Complete",
+    "pageTitle": "Label Review - Label Inspection",
     "removeReviewFlag": "Remove review flag",
     "save": "Save",
     "saved": "Changes saved successfully",
     "sections": {
       "association": {
-        "title": "Product Association",
+        "associate": "Associate",
+        "createAndAssociate": "Create & Associate",
+        "createAndLinkSuccess": "Product created and associated successfully",
+        "createSuccess": "Product created successfully",
+        "creationDraft": "Create New Product Entry",
+        "creationHelp": "We can create a new product entry using the data extracted from this label.",
         "linked": "Product associated",
         "linkedMessage": "This label is linked to a product entry.",
         "linkedProduct": "Linked Product",
-        "unlink": "Unlink Product",
-        "unlinkSuccess": "Product unlinked successfully",
         "linkSuccess": "Product associated successfully",
-        "createAndLinkSuccess": "Product created and associated successfully",
-        "associate": "Associate",
-        "createSuccess": "Product created successfully",
+        "matchesFound_one": "{{count}} potential matches found",
+        "matchesFound_other": "{{count}} potential matches found",
         "missingCriteria": "At least one product attribute required for search",
-        "matchesFound": "{{count}} potential matches found",
-        "matchesFound_one": "{{count}} potential match found",
         "noMatch": "No matching product found",
-        "creationDraft": "Create New Product Entry",
-        "creationHelp": "We can create a new product entry using the data extracted from this label.",
-        "createAndAssociate": "Create & Associate"
+        "title": "Product Association",
+        "unlink": "Unlink Product",
+        "unlinkSuccess": "Product unlinked successfully"
       },
       "basic": "Basic Information",
-      "npk": "NPK Analysis",
-      "ingredients": "Ingredients",
-      "guaranteed": "Guaranteed Analysis",
-      "safety": "Safety Information",
-      "product": "Product",
       "brand": "Brand",
-      "registrationNumber": "Registration Number"
+      "guaranteed": "Guaranteed Analysis",
+      "ingredients": "Ingredients",
+      "npk": "NPK Analysis",
+      "product": "Product",
+      "registrationNumber": "Registration Number",
+      "safety": "Safety Information"
     },
+    "title": "Label Review",
     "validation": {
-      "missingRegistrationNumber": "Registration number is required to mark review as complete",
-      "missingLabelData": "Label data must be created before marking review as complete"
+      "missingLabelData": "Label data must be created before marking review as complete",
+      "missingRegistrationNumber": "Registration number is required to mark review as complete"
     }
   },
   "empty": {
@@ -228,7 +228,6 @@
       "title": "Create New Label"
     },
     "rowActions": {
-      "actionsForLabel": "Actions for label {{id}}",
       "continueReview": "Continue review",
       "delete": "Delete",
       "deleteDialog": {
@@ -250,11 +249,11 @@
   "pageTitle": "Labels - Label Inspection",
   "table": {
     "actions": "Actions",
+    "brand": "Brand",
     "copyId": "Copy label ID {{id}}",
     "createdAt": "Created At",
     "id": "ID",
     "idCopied": "Label ID copied to clipboard",
-    "brand": "Brand",
     "productName": "Product",
     "reviewStatus": "Review Status",
     "selectAll": "select all labels",
