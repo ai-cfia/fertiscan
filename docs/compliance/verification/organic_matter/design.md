@@ -46,20 +46,22 @@ sequenceDiagram
     from [...] import verify_organic_matter
     from app.db.models.label import Label
     import json
+    from app.config import
 
-    def message_organic_matter(label : Label, [...]) -> str :
+    def prompt_organic_matter(label : Label) -> str :
         fertilizer_label_data = label.fertilizer_label_data
         ingredients = fertilizer_label_data.ingredients
         guaranteed_analysis = fertilizer_label_data.guaranteed_analysis
 
-        msg =(
-             "This is the first part of data, the ingredient :\n"
-             f"{json.dumps(ingredients,indent=2, ensure_ascii=False)}\n\n"
-             "This is the second part of data, guaranteed analysis :\n"
-             f"{json.dumps(guaranteed_analysis, indent=2, ensure_ascii=False)}"
-        )
+        prompt_template_env =settings.prompt_template_env
+        template = prompt_template_env.get_template("compliance_verification.md")
+        label_data =  {ingredients,guaranteed_analysis }
 
-       return msg
+        prompt = template.render(
+            rule_data=json.dumps(rule, indent=2),
+            label_data=json.dumps(label_data, indent=2),
+        )
+       return prompt
 
 
 
