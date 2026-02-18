@@ -74,17 +74,26 @@ sequenceDiagram
     from app.db.models.rule import Rule
 
     class ComplianceResult(BaseModel):
-        explanation: str = Field(
+        explanation_en: str = Field(
             ...,
-            description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
+            description="Step-by-step reasoning citing specific evidence from the"+
+            " Label Data that supports or contradicts the regulation's requirements."+
+            "in English",
+        )
+        explanation_fr : str = Field(
+            ...,
+            description="Step-by-step reasoning citing specific evidence from the"+
+            " Label Data that supports or contradicts the regulation's requirements."+
+            "in French",
         )
         is_compliant: bool = Field(
             ...,
-            description="Whether the Label Data satisfies the requirements of the Regulation to Enforce.",
+            description="Whether the Label Data satisfies the requirements of the "+
+            " Regulation to Enforce.",
         )
 
     @validate_call(config={"arbitrary_types_allowed": True})
-    def verify_organic_matter(
+    def verify_rule_with_llm(
         instructor : instructor,
         message : str,
         rule : Rule,
