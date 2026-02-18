@@ -45,10 +45,11 @@ sequenceDiagram
 ```python
     from [...] import verify_organic_matter
     from app.db.models.label import Label
+    from app.db.models.rule import Rule
     import json
     from app.config import
 
-    def prompt_organic_matter(label : Label) -> str :
+    def prompt_organic_matter(label : Label, rule : Rule) -> str :
         fertilizer_label_data = label.fertilizer_label_data
         ingredients = fertilizer_label_data.ingredients
         guaranteed_analysis = fertilizer_label_data.guaranteed_analysis
@@ -73,7 +74,7 @@ sequenceDiagram
     import instructor
     from pydantic import BaseModel, Field
     from app.config import settings
-    from app.db.models.rule import Rule
+
 
     class ComplianceResult(BaseModel):
         explanation_en: str = Field(
@@ -97,15 +98,9 @@ sequenceDiagram
     @validate_call(config={"arbitrary_types_allowed": True})
     def verify_rule_with_llm(
         instructor : instructor,
-        message : str,
-        rule : Rule,
+        content : str,
     ) -> CompliantResponseLLM:
 
-        content = (
-            "This is the rule I want to apply on the data :\n"
-            f"{json.dumps(rule, indent=2, ensure_ascii=False)}\n\n"
-            f"{message}"
-        )
         response, _ =  await instructor.chat.completions.create_with_completion(
             model=settings.AZURE_OPENAI_MODEL,
             message=[{"role": "user", "content": f"Analyze this : {content}" }],
