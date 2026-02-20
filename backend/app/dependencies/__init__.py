@@ -16,6 +16,7 @@ from app.dependencies.label_images import (
     StoredPendingImageDep,
 )
 from app.dependencies.labels import (
+    CompletedLabelDep,
     EditableLabelDep,
     ExtractableLabelDep,
     FertilizerLabelDep,
@@ -33,6 +34,7 @@ from app.dependencies.product_types import (
     ProductTypeDep,
 )
 from app.dependencies.products import NewProductDep, ProductDep
+from app.dependencies.rule import RulesDep
 
 __all__ = [
     "CompletedLabelImageDep",
@@ -61,4 +63,6 @@ __all__ = [
     "TokenDep",
     "UploadableLabelDep",
     "ValidatedStatusLabelDep",
+    "CompletedLabelDep",
+    "RulesDep",
 ]

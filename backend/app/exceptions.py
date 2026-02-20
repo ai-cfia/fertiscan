@@ -161,3 +161,9 @@ class InvalidDateRange(HTTPException):
 class LabelNotCompletedError(HTTPException):
     def __init__(self, detail: str = "Label is not completed") -> None:
         super().__init__(status.HTTP_412_PRECONDITION_FAILED, detail)
+
+
+class RuleNotFound(HTTPException):
+    def __init__(self, rule_id: str | None = None) -> None:
+        detail = f"Rule with id {rule_id} not found" if rule_id else "Rule not found"
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)

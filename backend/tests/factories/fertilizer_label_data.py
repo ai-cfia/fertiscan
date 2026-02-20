@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Any
 
 import factory
 
@@ -15,3 +16,5 @@ class FertilizerLabelDataFactory(BaseFactory):
     n = Decimal("10.0")
     p = Decimal("20.0")
     k = Decimal("10.0")
+    ingredients = list[dict[str, Any]]
+    guaranteed_analysis = dict[str, Any]

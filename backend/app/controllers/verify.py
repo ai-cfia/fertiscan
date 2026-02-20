@@ -1,13 +1,20 @@
 """Controller of verification of a product."""
 
+import json
+from typing import cast
+from uuid import UUID
+
+import instructor
 from pydantic import validate_call
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
+from app.config import settings
 from app.db.models.label import Label
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.db.models.rule import Rule
+from app.schemas.label import ComplianceResult
 
 # ======================================General verification function for a label======================================
 
@@ -36,6 +43,46 @@ def verify_all_rules(session: Session, label: Label) -> Label:
     )
 
     return label
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def verify_rules_for_label(
+    label: Label,
+    rules: list[Rule],
+    instructor: instructor,
+) -> dict[UUID, ComplianceResult]:
+    dictComplianceResult = {}
+    for rule in rules:
+        if rule.ai_verify:
+            dictComplianceResult[rule.id] = cast(
+                ComplianceResult,
+                await verify_specific_rule_ai(label, rule, instructor),
+            )
+        else:
+            dictComplianceResult[rule.id] = verify_specific_rule(label, rule)
+    return dictComplianceResult
+
+
+# ===========================================Local verification ======================================
+# TODO: Find another way to choose the verification function instead of using an match case statement
+@validate_call(config={"arbitrary_types_allowed": True})
+def verify_specific_rule(
+    label: Label,
+    rule: Rule,
+) -> ComplianceResult:
+    """Verify a specific rule on the label."""
+    assert label.label_data is not None
+
+    match rule.reference_number:
+        case "FzR: 16.(1)(j)":
+            cpr = ComplianceResult(
+                explanation_fr=rule.description_fr,
+                explanation_en=rule.description_en,
+                is_compliant=verification_lot_number(label.label_data),
+            )
+    assert label is not None
+
+    return cpr
 
 
 # ======================================Update or create non-compliance data item======================================
@@ -103,3 +150,61 @@ def verification_lot_number(label_data: LabelData) -> bool:
         return bool(lot_number_data.strip())
 
     return True
+
+
+# ============================== Verification with AI======================================
+# TODO: Find another way to choose the prompt_method instead of using an match case statement
+@validate_call(config={"arbitrary_types_allowed": True})
+async def verify_specific_rule_ai(
+    label: Label,
+    rule: Rule,
+    instructor: instructor,
+) -> ComplianceResult:
+    """Verify a specific rule with AI on the label."""
+    assert label.label_data is not None
+
+    match rule.reference_number:
+        case "FzR: 15.(1)(i)":
+            content = prompt_organic_matter(label, rule)
+
+    assert content is not None
+    return await verify_rule_with_llm(instructor, content)
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def verify_rule_with_llm(
+    instructor: instructor,
+    content: str,
+) -> ComplianceResult:
+    response, _ = await instructor.chat.completions.create_with_completion(
+        model=settings.AZURE_OPENAI_MODEL,
+        messages=[{"role": "user", "content": f"Analyze this : {content}"}],
+        response_model=ComplianceResult,
+        max_completion_tokens=4000,
+    )
+    assert response is not None
+    return response
+
+
+# =============================== Prompt engineering for LLM verification functions ===============================
+
+
+def prompt_organic_matter(label: Label, rule: Rule) -> str:
+    fertilizer_label_data = label.fertilizer_label_data
+    assert fertilizer_label_data is not None
+    ingredients = fertilizer_label_data.ingredients
+    guaranteed_analysis = fertilizer_label_data.guaranteed_analysis
+
+    prompt_template_env = settings.prompt_template_env
+    template = prompt_template_env.get_template("compliance_verification.md")
+    label_data = {
+        "ingredients": ingredients,
+        "guaranteed_analysis": guaranteed_analysis,
+    }
+
+    prompt = template.render(
+        rule_data=json.dumps(rule.model_dump(mode="json"), indent=2),
+        label_data=json.dumps(label_data, indent=2),
+    )
+
+    return prompt

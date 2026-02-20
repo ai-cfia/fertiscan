@@ -20,8 +20,10 @@ from app.exceptions import (
     InvalidProductType,
     LabelCompleted,
     LabelDataNotFound,
+    LabelNotCompletedError,
     LabelNotFound,
     LabelNotLinkedToProduct,
+    ProductNotFound,
     RegistrationNumberMissing,
     ResourceConflict,
 )
@@ -161,3 +163,21 @@ def verify_label_is_extractable(
 
 
 ExtractableLabelDep = Annotated[Label, Depends(verify_label_is_extractable)]
+
+
+# ====================== Label Completed Verification for Non-Compliance Data Item Endpoint ======================
+
+
+def verify_label_is_completed(label: LabelDep) -> Label:
+    """Verify label is completed before allowing access to non-compliance data items."""
+
+    if label.review_status != ReviewStatus.completed:
+        raise LabelNotCompletedError()
+
+    if not label.product_id:
+        raise ProductNotFound()
+
+    return label
+
+
+CompletedLabelDep = Annotated[Label, Depends(verify_label_is_completed)]

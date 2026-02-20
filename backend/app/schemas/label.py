@@ -135,3 +135,26 @@ class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
 class NonComplianceDataItemsList(BaseModel):
     total: int
     items: list[NonComplianceDataItemPublic]
+
+
+# ============================== Compliance AI result Schema ==============================
+
+
+class ComplianceResult(BaseModel):
+    explanation_en: str = Field(
+        ...,
+        description="Step-by-step reasoning citing specific evidence from the"
+        + " Label Data that supports or contradicts the regulation's requirements."
+        + "in English",
+    )
+    explanation_fr: str = Field(
+        ...,
+        description="Step-by-step reasoning citing specific evidence from the"
+        + " Label Data that supports or contradicts the regulation's requirements."
+        + "in French",
+    )
+    is_compliant: bool = Field(
+        ...,
+        description="Whether the Label Data satisfies the requirements of the "
+        + " Regulation to Enforce.",
+    )

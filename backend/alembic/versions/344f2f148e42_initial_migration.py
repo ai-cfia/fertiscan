@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: dd5db39b8d6a
+Revision ID: 344f2f148e42
 Revises:
-Create Date: 2026-02-13 18:21:14.079786
+Create Date: 2026-02-18 20:42:49.126039
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'dd5db39b8d6a'
+revision: str = '344f2f148e42'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -43,6 +43,7 @@ def upgrade() -> None:
     sa.Column('description_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('url_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('url_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('ai_verify', sa.Boolean(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_rule'))

@@ -47,7 +47,7 @@ sequenceDiagram
     from app.db.models.label import Label
     from app.db.models.rule import Rule
     import json
-    from app.config import
+    from app.config import settings
 
     def prompt_organic_matter(label : Label, rule : Rule) -> str :
         fertilizer_label_data = label.fertilizer_label_data

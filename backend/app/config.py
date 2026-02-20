@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
     RULE_SEED_DATA_PATH: str = "app/data/rule_data.json"
+    PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
@@ -127,6 +128,13 @@ class Settings(BaseSettings):
         """Storage endpoint URL with scheme based on environment."""
         scheme = "https" if self.ENVIRONMENT in ("production", "staging") else "http"
         return f"{scheme}://{self.STORAGE_ENDPOINT}"
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def prompt_template_env(self) -> Environment:
+        return Environment(
+            loader=FileSystemLoader(self.PROMPT_TEMPLATES_DIR), autoescape=True
+        )
 
     @model_validator(mode="after")
     def _set_default_emails_from(self) -> Self:

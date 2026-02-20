@@ -22,6 +22,7 @@ class Rule(Base, table=True):
     description_fr: str
     url_en: str | None = None
     url_fr: str | None = None
+    ai_verify: bool = Field(default=False)
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),
         sa_column=Column(DateTime(timezone=True), default=func.now()),
