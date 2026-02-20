@@ -23,4 +23,4 @@ def read_rules(
     """List rules with optional filters."""
 
     rules = rule_controller.get_rules_query(**filters.model_dump())
-    return paginate(session, rules, param)
+    return paginate(session, rules, param)  # type: ignore[no-any-return, call-overload]

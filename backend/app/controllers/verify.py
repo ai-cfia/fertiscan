@@ -49,12 +49,12 @@ def verify_all_rules(session: Session, label: Label) -> Label:
 async def verify_rules_for_label(
     label: Label,
     rules: list[Rule],
-    instructor: instructor,
+    instructor: instructor,  # type: ignore[valid-type]
 ) -> dict[UUID, ComplianceResult]:
     dictComplianceResult = {}
     for rule in rules:
         if rule.ai_verify:
-            dictComplianceResult[rule.id] = cast(
+            dictComplianceResult[rule.id] = cast(  # type: ignore[redundant-cast]
                 ComplianceResult,
                 await verify_specific_rule_ai(label, rule, instructor),
             )
@@ -158,7 +158,7 @@ def verification_lot_number(label_data: LabelData) -> bool:
 async def verify_specific_rule_ai(
     label: Label,
     rule: Rule,
-    instructor: instructor,
+    instructor: instructor,  # type: ignore[valid-type]
 ) -> ComplianceResult:
     """Verify a specific rule with AI on the label."""
     assert label.label_data is not None
@@ -173,16 +173,17 @@ async def verify_specific_rule_ai(
 
 @validate_call(config={"arbitrary_types_allowed": True})
 async def verify_rule_with_llm(
-    instructor: instructor,
+    instructor: instructor,  # type: ignore[valid-type]
     content: str,
 ) -> ComplianceResult:
-    response, _ = await instructor.chat.completions.create_with_completion(
+    response, _ = await instructor.chat.completions.create_with_completion(  # type: ignore[attr-defined]
         model=settings.AZURE_OPENAI_MODEL,
         messages=[{"role": "user", "content": f"Analyze this : {content}"}],
         response_model=ComplianceResult,
         max_completion_tokens=4000,
     )
     assert response is not None
+    assert isinstance(response, ComplianceResult)
     return response
 
 
