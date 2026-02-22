@@ -50,7 +50,6 @@ def init_db(session: Session) -> None:
         logger.info(f"ProductType 'fertilizer' created: {product_type.code}")
 
     # Seed rule
-
     rule_data = settings.rule_data_seed()
     if len(rule_data) == 0:
         logger.warning(f"Rule seed file not found: {settings.RULE_SEED_DATA_PATH}")

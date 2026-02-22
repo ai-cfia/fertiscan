@@ -1,5 +1,6 @@
 """Rule dependencies."""
 
+from collections.abc import Sequence
 from typing import Annotated
 from uuid import UUID
 
@@ -8,27 +9,18 @@ from sqlmodel import select
 
 from app.db.models.rule import Rule
 from app.dependencies import SessionDep
-from app.exceptions import RuleNotFound
 
 
-def get_rule_by_reference_number(
+def get_rules_by_ids(
     rule_ids: Annotated[list[UUID] | None, Query()],
     session: SessionDep,
-) -> list[Rule]:
-    """Get rule by reference number."""
+) -> Sequence[Rule]:
+    """Get rules by their IDs in a single query."""
+    if not rule_ids:
+        return []
 
-    rules = []
-
-    for rule_id in rule_ids or []:
-        stmt = select(Rule).where(Rule.id == rule_id)
-
-        rule = session.scalars(stmt).first()
-
-        if rule is None:
-            raise RuleNotFound(rule_id=str(rule_id))
-
-        rules.append(rule)
-    return rules
+    stmt = select(Rule).where(Rule.id.in_(rule_ids))  # type: ignore[attr-defined]
+    return session.scalars(stmt).all()
 
 
-RulesDep = Annotated[list[Rule], Depends(get_rule_by_reference_number)]
+RulesDep = Annotated[Sequence[Rule], Depends(get_rules_by_ids)]

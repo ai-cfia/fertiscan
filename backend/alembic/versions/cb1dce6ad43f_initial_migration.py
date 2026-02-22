@@ -1,8 +1,8 @@
-"""initial migration
+"""initial_migration
 
-Revision ID: 344f2f148e42
+Revision ID: cb1dce6ad43f
 Revises:
-Create Date: 2026-02-18 20:42:49.126039
+Create Date: 2026-02-21 18:21:40.521733
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '344f2f148e42'
+revision: str = 'cb1dce6ad43f'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -43,7 +43,7 @@ def upgrade() -> None:
     sa.Column('description_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('url_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('url_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('ai_verify', sa.Boolean(), nullable=False),
+    sa.Column('evaluator_code', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_rule'))
@@ -234,6 +234,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
-    sa.Enum(name='uploadstatus').drop(op.get_bind(), checkfirst=True)
-    sa.Enum(name='reviewstatus').drop(op.get_bind(), checkfirst=True)
+    # Custom Enums
+    sa.Enum(name='reviewstatus').drop(op.get_bind())
+    sa.Enum(name='uploadstatus').drop(op.get_bind())
     # ### end Alembic commands ###

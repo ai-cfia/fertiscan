@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 
-from pydantic import BaseModel, EmailStr, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
 
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
@@ -73,6 +73,7 @@ class GuaranteedAnalysis(BaseModel):
 
 
 class LabelData(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     brand_name_en: str | None = None
     brand_name_fr: str | None = None
     product_name_en: str | None = None
@@ -126,6 +127,7 @@ class LabelDataFieldMetaResponse(BaseModel):
 
 
 class FertilizerLabelData(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     n: Decimal | None = Field(default=None, ge=0)
     p: Decimal | None = Field(default=None, ge=0)
     k: Decimal | None = Field(default=None, ge=0)

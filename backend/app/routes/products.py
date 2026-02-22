@@ -45,7 +45,7 @@ def read_products(
         product_type_id=product_type.id,
         **filters.model_dump(),
     )
-    return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
 
 
 @router.get("/{product_id}", response_model=ProductPublic)

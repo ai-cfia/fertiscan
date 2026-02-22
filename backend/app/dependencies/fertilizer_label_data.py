@@ -18,8 +18,7 @@ def get_fertilizer_label_data_by_label_id(
 ) -> FertilizerLabelData:
     """Get FertilizerLabelData by label_id or raise 404."""
     stmt = select(FertilizerLabelData).where(FertilizerLabelData.label_id == label.id)
-    result = session.execute(stmt)
-    if not (fertilizer_label_data := result.scalar_one_or_none()):
+    if not (fertilizer_label_data := session.exec(stmt).first()):
         raise LabelNotFound(f"FertilizerLabelData not found for label {label.id}")
     return fertilizer_label_data
 
