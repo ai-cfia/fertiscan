@@ -1,15 +1,13 @@
 """Label routes."""
 
 from typing import Annotated
-from uuid import UUID
 
 from fastapi import APIRouter, Query, status
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 from pydantic import StringConstraints
 
-from app.controllers import labels as label_controller
-from app.controllers import verify as verify_controller
+from app.controllers.labels import label as label_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
     CompletedLabelDep,
@@ -26,15 +24,13 @@ from app.dependencies import (
     ValidatedStatusLabelDep,
 )
 from app.schemas.label import (
-    ComplianceResult,
+    ComplianceResults,
     LabelCreate,
     LabelCreated,
     LabelDetail,
     LabelListItem,
     LabelReviewStatusUpdate,
     LabelUpdate,
-    NonComplianceDataItemPublic,
-    NonComplianceDataItemsList,
 )
 
 router = APIRouter(prefix="/labels", tags=["labels"])
@@ -154,34 +150,24 @@ async def delete_label(
     )
 
 
-@router.get("/{label_id}/verify/all", response_model=NonComplianceDataItemsList)
-def verify_rule(
+@router.get("/{label_id}/evaluate-non-compliance", response_model=ComplianceResults)
+async def evaluate_non_compliance(
     label: CompletedLabelDep,
     session: SessionDep,
-    __: CurrentUser,
-) -> NonComplianceDataItemsList:
-    """Verify non-compliance data item of the label."""
+    _: CurrentUser,
+    instructor: InstructorDep,
+    rules: RulesDep,
+) -> ComplianceResults:
+    """Evaluate non-compliance of the label against specified rules."""
 
-    label = verify_controller.verify_all_rules(session, label)
-
-    non_compliance_data_items = label.non_compliance_data_items
-    public_non_compliance_items = [
-        NonComplianceDataItemPublic.model_validate(item, from_attributes=True)
-        for item in non_compliance_data_items
-    ]
-
-    return NonComplianceDataItemsList(
-        total=len(public_non_compliance_items),
-        items=public_non_compliance_items,
+    results = await label_controller.evaluate_non_compliance(
+        session=session,
+        instructor=instructor,
+        label=label,
+        rules=rules,
     )
 
-
-@router.get("/{label_id}/verify", response_model=dict[UUID, ComplianceResult])
-async def verify_ai_rule(
-    label: CompletedLabelDep,
-    rules: RulesDep,
-    __: CurrentUser,
-    instructor: InstructorDep,
-) -> dict[UUID, ComplianceResult]:
-    """Verify a specific rule of the label."""
-    return await verify_controller.verify_rules_for_label(label, rules, instructor)
+    return ComplianceResults(
+        total=len(results),
+        results=results,
+    )

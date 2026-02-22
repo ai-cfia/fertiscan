@@ -63,7 +63,7 @@ class TestRuleRoutes:
         )
         rule = db.scalars(stmt).first()
         assert rule is not None
-        assert rule.ai_verify is True
+        assert rule.reference_number == "FzR: 15.(1)(i)"
 
     def test_authentication_required_for_rules(
         self,
