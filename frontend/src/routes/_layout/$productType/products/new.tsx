@@ -22,6 +22,7 @@ import type { ProductPublic } from "@/api"
 import { ProductsService } from "@/api"
 import { client } from "@/api/client.gen"
 import { useSnackbar } from "@/components/SnackbarProvider"
+import { useConfig } from "@/stores/useConfig"
 
 // ============================== Constants ==============================
 const VALID_PRODUCT_TYPES = ["fertilizer"] as const
@@ -83,6 +84,7 @@ function CreateProduct() {
   const { productType } = Route.useParams()
   const navigate = useNavigate()
   const { showSuccessToast } = useSnackbar()
+  const { defaultPerPage } = useConfig()
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const productFormSchema = createProductFormSchema(t)
@@ -167,6 +169,7 @@ function CreateProduct() {
         navigate({
           to: "/$productType/products",
           params: { productType },
+          search: { page: 0, per_page: defaultPerPage },
         })
       }
     },
@@ -238,6 +241,7 @@ function CreateProduct() {
       navigate({
         to: "/$productType/products",
         params: { productType },
+        search: { page: 0, per_page: defaultPerPage },
       })
     }
   }
@@ -246,6 +250,7 @@ function CreateProduct() {
     navigate({
       to: "/$productType/products",
       params: { productType },
+      search: { page: 0, per_page: defaultPerPage },
     })
   }
   const handleCancelCancel = () => {

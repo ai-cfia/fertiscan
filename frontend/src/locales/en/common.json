@@ -43,6 +43,11 @@
     "uploading": "Uploading...",
     "viewAll": "View All"
   },
+  "labels": {
+    "errorOccurred": "An error occurred",
+    "loadFailed": "Failed to load labels",
+    "loadFailedRetry": "Failed to load labels. Please try again."
+  },
   "language": {
     "en": {
       "ariaLabel": "Switch to English"
@@ -59,54 +64,52 @@
     "title": "Oops!"
   },
   "products": {
-    "createNew": "Product",
-    "pageTitle": "Products - Label Inspection",
-    "title": "Products",
     "create": {
-      "pageTitle": "Create New Product",
-      "title": "Create New Product",
       "form": {
-        "registrationNumber": {
-          "label": "Registration Number",
-          "required": "Registration number is required",
-          "maxLength": "Registration number must be 50 characters or less",
-          "invalidFormat": "Registration number can only contain letters, numbers, spaces, and hyphens",
-          "duplicate": "A product with this registration number already exists.",
-          "checking": "Checking...",
-          "helperText": "The official registration number assigned to this product"
-        },
         "brandNameEn": {
+          "helperText": "The brand name in English (optional)",
           "label": "Brand Name (EN)",
-          "maxLength": "Brand name (EN) must be 100 characters or less",
-          "helperText": "The brand name in English (optional)"
+          "maxLength": "Brand name (EN) must be 100 characters or less"
         },
         "brandNameFr": {
+          "helperText": "The brand name in French (optional)",
           "label": "Brand Name (FR)",
-          "maxLength": "Brand name (FR) must be 100 characters or less",
-          "helperText": "The brand name in French (optional)"
-        },
-        "nameEn": {
-          "label": "Product Name (EN)",
-          "maxLength": "Product name (EN) must be 200 characters or less",
-          "helperText": "The product name in English (optional)"
-        },
-        "nameFr": {
-          "label": "Product Name (FR)",
-          "maxLength": "Product name (FR) must be 200 characters or less",
-          "helperText": "The product name in French (optional)"
+          "maxLength": "Brand name (FR) must be 100 characters or less"
         },
         "cancel": "Cancel",
-        "submit": "Create Product",
-        "success": "Product created successfully",
-        "error": "Failed to create product. Please try again.",
         "cancelDialog": {
-          "title": "Discard Changes?",
-          "message": "You have unsaved changes. Are you sure you want to leave this page?",
+          "discard": "Discard Changes",
           "keepEditing": "Keep Editing",
-          "discard": "Discard Changes"
-        }
-      }
-    }
+          "message": "You have unsaved changes. Are you sure you want to leave this page?",
+          "title": "Discard Changes?"
+        },
+        "error": "Failed to create product. Please try again.",
+        "nameEn": {
+          "helperText": "The product name in English (optional)",
+          "label": "Product Name (EN)",
+          "maxLength": "Product name (EN) must be 200 characters or less"
+        },
+        "nameFr": {
+          "helperText": "The product name in French (optional)",
+          "label": "Product Name (FR)",
+          "maxLength": "Product name (FR) must be 200 characters or less"
+        },
+        "registrationNumber": {
+          "checking": "Checking...",
+          "duplicate": "A product with this registration number already exists.",
+          "helperText": "The official registration number assigned to this product",
+          "invalidFormat": "Registration number can only contain letters, numbers, spaces, and hyphens",
+          "label": "Registration Number",
+          "maxLength": "Registration number must be 50 characters or less",
+          "required": "Registration number is required"
+        },
+        "submit": "Create Product",
+        "success": "Product created successfully"
+      },
+      "pageTitle": "Create New Product",
+      "title": "Create New Product"
+    },
+    "createNew": "Product"
   },
   "settings": {
     "pageTitle": "Settings - Label Inspection",
@@ -132,10 +135,5 @@
     "logOut": "Log Out",
     "products": "Products",
     "userSettings": "User Settings"
-  },
-  "labels": {
-    "errorOccurred": "An error occurred",
-    "loadFailed": "Failed to load labels",
-    "loadFailedRetry": "Failed to load labels. Please try again."
   }
 }
