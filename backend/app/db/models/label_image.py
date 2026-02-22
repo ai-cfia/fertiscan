@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from sqlalchemy import CheckConstraint, Column, DateTime, UniqueConstraint, func
+from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base
@@ -34,7 +35,14 @@ class LabelImage(Base, table=True):
     file_path: str = Field(max_length=512)
     display_filename: str = Field(max_length=255)
     sequence_order: int = Field(index=True, ge=1)
-    status: UploadStatus = Field(default=UploadStatus.pending, index=True)
+    status: UploadStatus = Field(
+        sa_column=Column(
+            sa_Enum(UploadStatus, native_enum=False),
+            index=True,
+            nullable=False,
+            default=UploadStatus.pending,
+        )
+    )
     label: "Label" = Relationship(back_populates="images")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC),

@@ -1,8 +1,8 @@
 """initial_migration
 
-Revision ID: cb1dce6ad43f
+Revision ID: 97dc273148bb
 Revises:
-Create Date: 2026-02-21 18:21:40.521733
+Create Date: 2026-02-21 19:34:43.366150
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'cb1dce6ad43f'
+revision: str = '97dc273148bb'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -87,7 +87,7 @@ def upgrade() -> None:
     sa.Column('product_id', sa.Uuid(), nullable=True),
     sa.Column('product_type_id', sa.Uuid(), nullable=False),
     sa.Column('created_by_id', sa.Uuid(), nullable=False),
-    sa.Column('review_status', sa.Enum('not_started', 'in_progress', 'completed', name='reviewstatus'), nullable=False),
+    sa.Column('review_status', sa.Enum('not_started', 'in_progress', 'completed', name='reviewstatus', native_enum=False), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['created_by_id'], ['user.id'], name=op.f('fk_label_created_by_id_user')),
@@ -141,7 +141,7 @@ def upgrade() -> None:
     sa.Column('file_path', sqlmodel.sql.sqltypes.AutoString(length=512), nullable=False),
     sa.Column('display_filename', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
     sa.Column('sequence_order', sa.Integer(), nullable=False),
-    sa.Column('status', sa.Enum('pending', 'completed', name='uploadstatus'), nullable=False),
+    sa.Column('status', sa.Enum('pending', 'completed', name='uploadstatus', native_enum=False), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.CheckConstraint('sequence_order >= 1', name=op.f('ck_labelimage_ck_labelimage_sequence_order_positive')),
@@ -234,7 +234,4 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
-    # Custom Enums
-    sa.Enum(name='reviewstatus').drop(op.get_bind())
-    sa.Enum(name='uploadstatus').drop(op.get_bind())
     # ### end Alembic commands ###

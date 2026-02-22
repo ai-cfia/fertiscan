@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import Column, DateTime, func
+from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base
@@ -35,7 +36,14 @@ class Label(Base, table=True):
         foreign_key="producttype.id", nullable=False, index=True
     )
     created_by_id: UUID = Field(foreign_key="user.id", nullable=False, index=True)
-    review_status: ReviewStatus = Field(default=ReviewStatus.not_started, index=True)
+    review_status: ReviewStatus = Field(
+        sa_column=Column(
+            sa_Enum(ReviewStatus, native_enum=False),
+            index=True,
+            nullable=False,
+            default=ReviewStatus.not_started,
+        )
+    )
     product: Optional["Product"] = Relationship(back_populates="labels")
     product_type: "ProductType" = Relationship(back_populates="labels")
     created_by: User = Relationship(back_populates="labels")
