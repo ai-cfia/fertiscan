@@ -1,15 +1,14 @@
 """Label ORM model."""
 
-from datetime import UTC, datetime
 from enum import Enum
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID, uuid4
 
-from sqlalchemy import Column, DateTime, func
+from sqlalchemy import Column
 from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
-from app.db.base import Base
+from app.db.base import Base, TimestampMixin
 from app.db.models.product_type import ProductType
 from app.db.models.user import User
 
@@ -27,7 +26,7 @@ class ReviewStatus(str, Enum):
     completed = "completed"
 
 
-class Label(Base, table=True):
+class Label(Base, TimestampMixin, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     product_id: UUID | None = Field(
         foreign_key="product.id", default=None, nullable=True, index=True
@@ -60,12 +59,4 @@ class Label(Base, table=True):
     )
     non_compliance_data_items: list["NonComplianceDataItem"] = Relationship(
         back_populates="label", cascade_delete=True
-    )
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), default=func.now()),
-    )
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), onupdate=func.now()),
     )

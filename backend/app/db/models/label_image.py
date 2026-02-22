@@ -1,15 +1,14 @@
 """LabelImage ORM model."""
 
-from datetime import UTC, datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import CheckConstraint, Column, DateTime, UniqueConstraint, func
+from sqlalchemy import CheckConstraint, Column, UniqueConstraint
 from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
-from app.db.base import Base
+from app.db.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
@@ -20,7 +19,7 @@ class UploadStatus(str, Enum):
     completed = "completed"
 
 
-class LabelImage(Base, table=True):
+class LabelImage(Base, TimestampMixin, table=True):
     __table_args__ = (
         UniqueConstraint(
             "label_id", "sequence_order", name="uq_labelimage_label_id_sequence_order"
@@ -44,11 +43,3 @@ class LabelImage(Base, table=True):
         )
     )
     label: "Label" = Relationship(back_populates="images")
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), default=func.now()),
-    )
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), onupdate=func.now()),
-    )
