@@ -175,3 +175,11 @@ class NonComplianceDataItemAlreadyExists(HTTPException):
     ) -> None:
         detail = f"Non-compliance data item already exists for label {label_id} and rule {rule_id}"
         super().__init__(status.HTTP_409_CONFLICT, detail)
+
+
+class NonComplianceDataItemNotFound(HTTPException):
+    def __init__(
+        self, label_id: str | UUID | None = None, rule_id: str | UUID | None = None
+    ) -> None:
+        detail = f"Non-compliance data item not found for label {label_id} and rule {rule_id}"
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)

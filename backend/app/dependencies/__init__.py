@@ -6,7 +6,10 @@ from app.dependencies.auth import (
     SessionDep,
     TokenDep,
 )
-from app.dependencies.compliance import newComplianceDataItemDep
+from app.dependencies.compliance import (
+    NonComplianceDataItemDep,
+    newComplianceDataItemDep,
+)
 from app.dependencies.fertilizer_label_data import FertilizerLabelDataDep
 from app.dependencies.instructor import InstructorDep
 from app.dependencies.label_data import LabelDataDep
@@ -68,4 +71,5 @@ __all__ = [
     "RulesDep",
     "RuleDep",
     "newComplianceDataItemDep",
+    "NonComplianceDataItemDep",
 ]

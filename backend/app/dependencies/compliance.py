@@ -8,8 +8,11 @@ from sqlmodel import select
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.dependencies.auth import SessionDep
 from app.dependencies.labels import LabelDep
-from app.dependencies.rule import get_rule_by_id
-from app.exceptions import NonComplianceDataItemAlreadyExists
+from app.dependencies.rule import RuleDep, get_rule_by_id
+from app.exceptions import (
+    NonComplianceDataItemAlreadyExists,
+    NonComplianceDataItemNotFound,
+)
 from app.schemas.non_compliance_data_item import NonComplianceDataItemPayload
 
 
@@ -43,4 +46,27 @@ def ensure_Label_Has_No_Non_Compliance_Data(
 
 newComplianceDataItemDep = Annotated[
     NonComplianceDataItem, Depends(ensure_Label_Has_No_Non_Compliance_Data)
+]
+
+
+def get_non_compliance_data_item_by_label_and_rule(
+    label: LabelDep,
+    rule: RuleDep,
+    session: SessionDep,
+) -> NonComplianceDataItem:
+    """Get non-compliance data item for a given label and rule."""
+
+    stmt = select(NonComplianceDataItem).where(
+        NonComplianceDataItem.rule_id == rule.id,
+        NonComplianceDataItem.label_id == label.id,
+    )
+    result = session.scalars(stmt).first()
+    if result is None:
+        raise NonComplianceDataItemNotFound(label_id=label.id, rule_id=rule.id)
+
+    return result
+
+
+NonComplianceDataItemDep = Annotated[
+    NonComplianceDataItem, Depends(get_non_compliance_data_item_by_label_and_rule)
 ]

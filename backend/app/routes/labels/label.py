@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, Depends, Query, status
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 from pydantic import StringConstraints
@@ -17,6 +17,7 @@ from app.dependencies import (
     InstructorDep,
     LabelDep,
     LimitOffsetParamsDep,
+    NonComplianceDataItemDep,
     ProductQueryTypeDep,
     ProductTypeDep,
     RulesDep,
@@ -25,6 +26,7 @@ from app.dependencies import (
     ValidatedStatusLabelDep,
     newComplianceDataItemDep,
 )
+from app.exceptions import InvalidDateRange
 from app.schemas.label import (
     ComplianceResults,
     LabelCreate,
@@ -34,7 +36,10 @@ from app.schemas.label import (
     LabelReviewStatusUpdate,
     LabelUpdate,
 )
-from app.schemas.non_compliance_data_item import NonComplianceDataItemPublic
+from app.schemas.non_compliance_data_item import (
+    NonComplianceDataItemParams,
+    NonComplianceDataItemPublic,
+)
 
 router = APIRouter(prefix="/labels", tags=["labels"])
 
@@ -192,3 +197,44 @@ def create_compliance(
         session=session,
         compliance_data_item=compliance_data_item,
     )
+
+
+@router.get(
+    "/{label_id}/non_compliance_data_items",
+    response_model=LimitOffsetPage[NonComplianceDataItemPublic],
+)
+def reads_compliances(
+    session: SessionDep,
+    _: CurrentUser,
+    label: LabelDep,
+    params: LimitOffsetParamsDep,
+    filters: NonComplianceDataItemParams = Depends(),
+) -> LimitOffsetPage[NonComplianceDataItemPublic]:
+    """Read compliance results for a label with optional filters."""
+
+    if filters.start_created_at and filters.end_created_at:
+        if filters.start_created_at > filters.end_created_at:
+            raise InvalidDateRange()
+
+    if filters.start_updated_at and filters.end_updated_at:
+        if filters.start_updated_at > filters.end_updated_at:
+            raise InvalidDateRange()
+
+    stmt = compliance_controller.get_compliances_query(
+        label_id=label.id,
+        **filters.model_dump(),
+    )
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
+
+
+@router.get(
+    "/{label_id}/non_compliance_data_items/{rule_id}",
+    response_model=NonComplianceDataItemPublic,
+)
+def read_compliance_by_rule(
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+) -> NonComplianceDataItemPublic:
+    """Read compliance result for a label and a specific rule."""
+
+    return nonComplianceItem  # type: ignore[return-value]
