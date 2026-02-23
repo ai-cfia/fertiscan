@@ -1,3 +1,5 @@
+"""Routes for rules"""
+
 from fastapi import APIRouter, Depends
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
