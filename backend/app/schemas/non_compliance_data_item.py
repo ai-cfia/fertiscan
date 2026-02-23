@@ -14,3 +14,11 @@ class NonComplianceDataItemCreate(BaseModel):
 
 class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
     id: UUID
+
+
+class NonComplianceDataItemPayload(BaseModel):
+    rule_id: UUID
+    note: str | None = None
+    description_en: str | None = None
+    description_fr: str | None = None
+    is_compliant: bool = False

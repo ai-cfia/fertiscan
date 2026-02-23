@@ -38,14 +38,13 @@ class TestCreateCompliance:
         assert rule is not None
         data = {
             "rule_id": str(rule.id),
-            "label_id": str(label.id),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items",
             headers=headers,
             json=data,
         )
@@ -84,14 +83,13 @@ class TestCreateCompliance:
         )
         data = {
             "rule_id": str(rule.id),
-            "label_id": str(label.id),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items",
             headers=headers,
             json=data,
         )
@@ -102,7 +100,9 @@ class TestCreateCompliance:
         client: TestClient,
     ) -> None:
         """Test that authentication is required to create a non-compliance data item."""
-        response = client.post(f"{settings.API_V1_STR}/compliances", json={})
+        response = client.post(
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items", json={}
+        )
         assert response.status_code == 401
 
     def test_label_must_exist_to_create_compliance(
@@ -121,14 +121,13 @@ class TestCreateCompliance:
         assert rule is not None
         data = {
             "rule_id": str(rule.id),
-            "label_id": str(uuid4()),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items",
             headers=headers,
             json=data,
         )
@@ -148,14 +147,13 @@ class TestCreateCompliance:
 
         data = {
             "rule_id": str(uuid4()),
-            "label_id": str(label.id),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items",
             headers=headers,
             json=data,
         )
@@ -179,14 +177,13 @@ class TestCreateCompliance:
         assert rule is not None
         data1 = {
             "rule_id": str(rule.id),
-            "label_id": str(label1.id),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response1 = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{label1.id}/non_compliance_data_items",
             headers=headers,
             json=data1,
         )
@@ -194,14 +191,13 @@ class TestCreateCompliance:
 
         data2 = {
             "rule_id": str(rule.id),
-            "label_id": str(label2.id),
             "is_compliant": False,
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
         }
         response2 = client.post(
-            f"{settings.API_V1_STR}/compliances",
+            f"{settings.API_V1_STR}/labels/{label2.id}/non_compliance_data_items",
             headers=headers,
             json=data2,
         )

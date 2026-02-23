@@ -7,6 +7,7 @@ from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 from pydantic import StringConstraints
 
+from app.controllers import compliance as compliance_controller
 from app.controllers.labels import label as label_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
@@ -22,6 +23,7 @@ from app.dependencies import (
     S3ClientDep,
     SessionDep,
     ValidatedStatusLabelDep,
+    newComplianceDataItemDep,
 )
 from app.schemas.label import (
     ComplianceResults,
@@ -32,6 +34,7 @@ from app.schemas.label import (
     LabelReviewStatusUpdate,
     LabelUpdate,
 )
+from app.schemas.non_compliance_data_item import NonComplianceDataItemPublic
 
 router = APIRouter(prefix="/labels", tags=["labels"])
 
@@ -170,4 +173,22 @@ async def evaluate_non_compliance(
     return ComplianceResults(
         total=len(results),
         results=results,
+    )
+
+
+# =========================================CRUD for compliances===============================
+
+
+@router.post(
+    "/{label_id}/non_compliance_data_items", response_model=NonComplianceDataItemPublic
+)
+def create_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    compliance_data_item: newComplianceDataItemDep,
+) -> NonComplianceDataItemPublic:
+    """Create a new compliance result."""
+    return compliance_controller.create_compliance(  # type: ignore[return-value]
+        session=session,
+        compliance_data_item=compliance_data_item,
     )
