@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: 8d0c0fd2b0b3
+Revision ID: b1548a1beb32
 Revises:
-Create Date: 2026-02-24 15:03:08.729697
+Create Date: 2026-02-24 17:26:58.028140
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '8d0c0fd2b0b3'
+revision: str = 'b1548a1beb32'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -164,7 +164,8 @@ def upgrade() -> None:
     sa.Column('is_compliant', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_noncompliancedataitem_label_id_label')),
     sa.ForeignKeyConstraint(['rule_id'], ['rule.id'], name=op.f('fk_noncompliancedataitem_rule_id_rule')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_noncompliancedataitem'))
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_noncompliancedataitem')),
+    sa.UniqueConstraint('label_id', 'rule_id', name='uq_noncompliancedataitem_label_id_rule_id')
     )
     op.create_table('fertilizerlabeldatameta',
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
@@ -234,6 +235,4 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
-    sa.Enum(name='uploadstatus').drop(op.get_bind(), checkfirst=True)
-    sa.Enum(name='reviewstatus').drop(op.get_bind(), checkfirst=True)
     # ### end Alembic commands ###

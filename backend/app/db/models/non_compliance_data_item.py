@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
+from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base, TimestampMixin
@@ -11,6 +12,13 @@ if TYPE_CHECKING:
 
 
 class NonComplianceDataItem(Base, TimestampMixin, table=True):
+    __table_args__ = (
+        UniqueConstraint(
+            "label_id",
+            "rule_id",
+            name="uq_noncompliancedataitem_label_id_rule_id",
+        ),
+    )
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     rule_id: UUID = Field(foreign_key="rule.id")
     label_id: UUID = Field(foreign_key="label.id")

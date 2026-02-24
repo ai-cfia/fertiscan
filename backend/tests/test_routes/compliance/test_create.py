@@ -202,3 +202,39 @@ class TestCreateCompliance:
             json=data2,
         )
         assert response2.status_code == 200
+
+    def test_create_the_same_compliance_on_the_same_label(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test that creating two non-compliance data items for the same rule and same label returns a 409 error."""
+        user = UserFactory.create(session=db)
+        label = LabelFactory.create(session=db, created_by=user)
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
+        rule = db.scalars(stmt).first()
+        assert rule is not None
+        data = {
+            "rule_id": str(rule.id),
+            "is_compliant": False,
+            "note": "This is a note.",
+            "description_en": "This is a description in English.",
+            "description_fr": "Ceci est une description en français.",
+        }
+        response1 = client.post(
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items",
+            headers=headers,
+            json=data,
+        )
+        assert response1.status_code == 200
+
+        response2 = client.post(
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items",
+            headers=headers,
+            json=data,
+        )
+        assert response2.status_code == 409
