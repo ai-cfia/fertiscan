@@ -22,3 +22,8 @@ class RulePublic(RuleCreate):
 class RulesPublic(BaseModel):
     data: list[RulePublic]
     count: int
+
+
+class RuleParams(BaseModel):
+    rule_id: UUID | None = None
+    reference_number: str | None = None

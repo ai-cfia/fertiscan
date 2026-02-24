@@ -18,8 +18,7 @@ def get_label_data_by_label_id(
 ) -> LabelData:
     """Get LabelData by label_id or raise 404."""
     stmt = select(LabelData).where(LabelData.label_id == label.id)
-    result = session.execute(stmt)
-    if not (label_data := result.scalar_one_or_none()):
+    if not (label_data := session.exec(stmt).first()):
         raise LabelNotFound(f"LabelData not found for label {label.id}")
     return label_data
 

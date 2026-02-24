@@ -6,6 +6,17 @@
         "description_en": "The lot number must be clearly visible on the fertilizer or supplement packaging.",
         "description_fr": "Le numéro de lot doit être clairement visible sur l'emballage de l'engrais ou du supplément.",
         "url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
-        "url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html"
-    }
+        "url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html",
+        "evaluator_code": "LOT_NUMBER_PRESENT"
+    },
+	{
+		"reference_number": "FzR: 15.(1)(i)",
+		"title_en": "Organic matter",
+		"title_fr": "Matière organique",
+		"description_en": "The packaging of a fertilizer or organic supplement must indicate the percentage of organic matter and/or the moisture content.s",
+		"description_fr": "L'emballage d'un engrais ou d'un supplément organique doit indiquer le pourcentage de matière organique et/ou le taux d'humidité.",
+		"url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
+		"url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html",
+		"evaluator_code": "LLM_EVALUATION"
+	}
 ]

@@ -6,7 +6,7 @@ import jwt
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import ValidationError
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.core import security

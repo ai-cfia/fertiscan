@@ -15,8 +15,9 @@ from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from mypy_boto3_s3 import S3Client
 from sqlalchemy import create_engine, event
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import StaticPool
+from sqlmodel import Session
 
 from app.config import settings
 from app.db.base import Base

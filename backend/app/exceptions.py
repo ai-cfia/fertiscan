@@ -161,3 +161,25 @@ class InvalidDateRange(HTTPException):
 class LabelNotCompletedError(HTTPException):
     def __init__(self, detail: str = "Label is not completed") -> None:
         super().__init__(status.HTTP_412_PRECONDITION_FAILED, detail)
+
+
+class RuleNotFound(HTTPException):
+    def __init__(self, rule_id: str | None = None) -> None:
+        detail = f"Rule with id {rule_id} not found" if rule_id else "Rule not found"
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)
+
+
+class NonComplianceDataItemAlreadyExists(HTTPException):
+    def __init__(
+        self, label_id: str | UUID | None = None, rule_id: str | UUID | None = None
+    ) -> None:
+        detail = f"Non-compliance data item already exists for label {label_id} and rule {rule_id}"
+        super().__init__(status.HTTP_409_CONFLICT, detail)
+
+
+class NonComplianceDataItemNotFound(HTTPException):
+    def __init__(
+        self, label_id: str | UUID | None = None, rule_id: str | UUID | None = None
+    ) -> None:
+        detail = f"Non-compliance data item not found for label {label_id} and rule {rule_id}"
+        super().__init__(status.HTTP_404_NOT_FOUND, detail)

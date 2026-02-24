@@ -6,6 +6,10 @@ from app.dependencies.auth import (
     SessionDep,
     TokenDep,
 )
+from app.dependencies.compliance import (
+    NonComplianceDataItemDep,
+    newComplianceDataItemDep,
+)
 from app.dependencies.fertilizer_label_data import FertilizerLabelDataDep
 from app.dependencies.instructor import InstructorDep
 from app.dependencies.label_data import LabelDataDep
@@ -16,6 +20,7 @@ from app.dependencies.label_images import (
     StoredPendingImageDep,
 )
 from app.dependencies.labels import (
+    CompletedLabelDep,
     EditableLabelDep,
     ExtractableLabelDep,
     FertilizerLabelDep,
@@ -33,6 +38,7 @@ from app.dependencies.product_types import (
     ProductTypeDep,
 )
 from app.dependencies.products import NewProductDep, ProductDep
+from app.dependencies.rule import RuleDep, RulesDep
 
 __all__ = [
     "CompletedLabelImageDep",
@@ -61,4 +67,9 @@ __all__ = [
     "TokenDep",
     "UploadableLabelDep",
     "ValidatedStatusLabelDep",
+    "CompletedLabelDep",
+    "RulesDep",
+    "RuleDep",
+    "newComplianceDataItemDep",
+    "NonComplianceDataItemDep",
 ]

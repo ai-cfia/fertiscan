@@ -104,19 +104,19 @@ def get_products_query(
     # Strict Metadata Filters (AND)
     # Filter by start created at
     if start_created_at:
-        stmt = stmt.where(Product.created_at >= start_created_at)
+        stmt = stmt.where(Product.created_at >= start_created_at)  # type: ignore[operator]
 
     # Filter by end created at
     if end_created_at:
-        stmt = stmt.where(Product.created_at <= end_created_at)
+        stmt = stmt.where(Product.created_at <= end_created_at)  # type: ignore[operator]
 
     # Filter by start updated
     if start_updated_at:
-        stmt = stmt.where(Product.updated_at >= start_updated_at)
+        stmt = stmt.where(Product.updated_at >= start_updated_at)  # type: ignore[operator]
 
     # Filter by end updated at
     if end_updated_at:
-        stmt = stmt.where(Product.updated_at <= end_updated_at)
+        stmt = stmt.where(Product.updated_at <= end_updated_at)  # type: ignore[operator]
 
     stmt = _apply_product_sorting(stmt, order_by, order)
     return stmt

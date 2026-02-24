@@ -5,10 +5,11 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from app.db.models.label import ReviewStatus
 from app.db.models.label_image import UploadStatus
+from app.schemas.label_data import FertilizerLabelData, LabelData
 from app.schemas.product_type import ProductTypePublic
 from app.schemas.user import UserPublic
 
@@ -132,6 +133,36 @@ class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
     id: UUID
 
 
-class NonComplianceDataItemsList(BaseModel):
+# ============================== Compliance AI result Schema ==============================
+
+
+class ComplianceResults(BaseModel):
     total: int
-    items: list[NonComplianceDataItemPublic]
+    results: dict[UUID, "ComplianceResult"]
+
+
+class ComplianceResult(BaseModel):
+    explanation_en: str = Field(
+        ...,
+        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in English",
+    )
+    explanation_fr: str = Field(
+        ...,
+        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in French",
+    )
+    is_compliant: bool = Field(
+        ...,
+        description="Whether the Label Data satisfies the requirements of the Regulation to Enforce.",
+    )
+
+
+class LabelEvaluationContext(BaseModel):
+    """
+    A projected view of the Label and its associated technical data
+    specifically for LLM rule evaluation.
+    """
+
+    model_config = ConfigDict(from_attributes=True)
+
+    label_data: LabelData | None = None
+    fertilizer_label_data: FertilizerLabelData | None = None

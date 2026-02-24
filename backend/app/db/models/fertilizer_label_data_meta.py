@@ -1,15 +1,12 @@
-"""FertilizerLabelDataMeta ORM model."""
-
-from datetime import UTC, datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pydantic import field_validator
-from sqlalchemy import Column, DateTime, UniqueConstraint, func
+from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, Relationship
 
-from app.db.base import Base
+from app.db.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.fertilizer_label_data import FertilizerLabelData
@@ -29,7 +26,7 @@ class FertilizerLabelDataFieldName(str, Enum):
     instructions_fr = "instructions_fr"
 
 
-class FertilizerLabelDataMeta(Base, table=True):
+class FertilizerLabelDataMeta(Base, TimestampMixin, table=True):
     """Metadata for FertilizerLabelData fields (review flags, notes, AI generation tracking)."""
 
     __table_args__ = (
@@ -51,14 +48,6 @@ class FertilizerLabelDataMeta(Base, table=True):
     note: str | None = Field(default=None)
     ai_generated: bool = Field(default=False)
     fertilizer_label_data: "FertilizerLabelData" = Relationship(back_populates="meta")
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), default=func.now()),
-    )
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), onupdate=func.now()),
-    )
 
     @field_validator("field_name")
     @classmethod

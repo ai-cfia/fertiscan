@@ -4,8 +4,8 @@ __pycache__/
 *$py.class
 
 # Samples
-samples/*
-logs/
+/samples/
+/logs/
 
 # VS Code
 .vscode
@@ -15,16 +15,16 @@ logs/
 # .cursorignore
 
 # Tasks folder
-tasks/
+/tasks/
 
 # Experiments folder
-experiments/
+/experiments/
 
 # Upload folder
-uploads/
+/uploads/
 
 # Labels folder
-labels/
+/labels/
 
 # C extensions
 *.so
@@ -192,10 +192,8 @@ end_to_end_pipeline_artifacts
 
 .DS_Store
 
-template/
+/template/
 
 # Local scripts (not version controlled)
 backend/scripts-local/
 frontend/scripts-local/
-
-.agent/
