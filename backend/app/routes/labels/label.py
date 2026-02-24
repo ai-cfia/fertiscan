@@ -36,6 +36,7 @@ from app.schemas.label import (
     LabelReviewStatusUpdate,
     LabelUpdate,
 )
+from app.schemas.message import Message
 from app.schemas.non_compliance_data_item import (
     NonComplianceDataItemParams,
     NonComplianceDataItemPublic,
@@ -257,3 +258,21 @@ def update_compliance(
         nonComplianceDataItem=nonComplianceItem,
         compliance_data_items_in=compliance_data_items_in,
     )
+
+
+@router.delete(
+    "/{label_id}/non_compliance_data_items/{rule_id}", response_model=Message
+)
+def delete_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+) -> Message:
+    """Delete a non-compliance data item for a given label and rule."""
+
+    compliance_controller.delete_compliance(
+        session=session,
+        nonComplianceDataItem=nonComplianceItem,
+    )
+
+    return Message(message="Compliance data item deleted successfully")

@@ -139,3 +139,13 @@ def update_compliance(
     session.flush()
     session.refresh(nonComplianceDataItem)
     return nonComplianceDataItem
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+def delete_compliance(
+    session: Session,
+    nonComplianceDataItem: NonComplianceDataItem,
+) -> None:
+    """Delete a non-compliance data item."""
+    session.delete(nonComplianceDataItem)
+    session.flush()

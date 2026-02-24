@@ -1,8 +1,8 @@
-"""initial_migration
+"""initial migration
 
-Revision ID: a21d1d590689
+Revision ID: 8d0c0fd2b0b3
 Revises:
-Create Date: 2026-02-21 20:03:54.175334
+Create Date: 2026-02-24 15:03:08.729697
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a21d1d590689'
+revision: str = '8d0c0fd2b0b3'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -234,4 +234,6 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_producttype_is_active'), table_name='producttype')
     op.drop_index(op.f('ix_producttype_code'), table_name='producttype')
     op.drop_table('producttype')
+    sa.Enum(name='uploadstatus').drop(op.get_bind(), checkfirst=True)
+    sa.Enum(name='reviewstatus').drop(op.get_bind(), checkfirst=True)
     # ### end Alembic commands ###
