@@ -18,5 +18,15 @@
 		"url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
 		"url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html",
 		"evaluator_code": "LLM_EVALUATION"
-	}
+	},
+    {
+        "reference_number": "FzR: 16.(1)(g)",
+        "title_en": "guaranteed analysis",
+        "title_fr": "Analyse garantie",
+        "description_en": "The guaranteed analysis must be clearly visible on the fertilizer or supplement packaging.",
+        "description_fr": "L'analyse garantie doit être clairement visible sur l'emballage de l'engrais ou du supplément.",
+        "url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
+        "url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html",
+        "evaluator_code": "GUARANTEED_ANALYSIS_PRESENT"
+    }
 ]

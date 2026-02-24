@@ -11,6 +11,7 @@ from sqlmodel import select
 from app.config import settings
 from app.db.models.rule import Rule
 from app.schemas.label import ComplianceResult
+from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label import LabelFactory
 from tests.factories.label_data import LabelDataFactory
 from tests.factories.label_image import LabelImageFactory
@@ -142,6 +143,98 @@ class TestEvaluateNonCompliance:
             f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?rule_ids={rule.id}"
         )
         assert response.status_code == 401
+
+    def test_evaluate_non_compliance_guaranteed_analysis_success(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluating compliance with guaranteed analysis present."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            product_type_id=product_type.id,
+            review_status="completed",
+        )
+        LabelDataFactory.create(session=db, label=label)
+        FertilizerLabelDataFactory.create(
+            session=db,
+            label=label,
+            guaranteed_analysis={
+                "title_en": "Guaranteed Analysis",
+                "is_minimum": True,
+                "nutrients": [
+                    {"name_en": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}
+                ],
+            },
+        )
+
+        LabelImageFactory.create(session=db, label_id=label.id)
+
+        rule = db.scalars(
+            select(Rule).where(Rule.reference_number == "FzR: 16.(1)(g)")
+        ).first()
+        assert rule is not None
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?rule_ids={rule.id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert str(rule.id) in data["results"]
+        assert data["results"][str(rule.id)]["is_compliant"] is True
+
+    def test_evaluate_non_compliance_guaranteed_analysis_missing(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluating compliance with guaranteed analysis missing."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            product_type_id=product_type.id,
+            review_status="completed",
+        )
+        LabelDataFactory.create(session=db, label=label)
+        FertilizerLabelDataFactory.create(
+            session=db,
+            label=label,
+            guaranteed_analysis=None,  # Missing guaranteed analysis
+        )
+
+        LabelImageFactory.create(session=db, label_id=label.id)
+
+        rule = db.scalars(
+            select(Rule).where(Rule.reference_number == "FzR: 16.(1)(g)")
+        ).first()
+        assert rule is not None
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?rule_ids={rule.id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert str(rule.id) in data["results"]
+        assert data["results"][str(rule.id)]["is_compliant"] is False
 
 
 @pytest.mark.usefixtures("override_dependencies")

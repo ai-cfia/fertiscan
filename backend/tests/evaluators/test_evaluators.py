@@ -8,6 +8,7 @@ from app.config import settings
 from app.db.models.rule import Rule
 from app.dependencies.instructor import get_instructor
 from app.evaluators.base import RuleEvaluator
+from app.evaluators.guaranteed_analysis import GuaranteedAnalysisEvaluator
 from app.evaluators.llm import LLMEvaluator
 from app.evaluators.lot_number import LotNumberEvaluator
 from app.schemas.label import ComplianceResult
@@ -27,17 +28,24 @@ class TestRuleEvaluatorRegistry:
         lot_number_rule = (
             db.query(Rule).filter_by(reference_number="FzR: 16.(1)(j)").first()
         )
+        guaranteed_analysis_rule = (
+            db.query(Rule).filter_by(reference_number="FzR: 16.(1)(g)").first()
+        )
 
         assert organic_matter_rule is not None, "Rule FzR: 15.(1)(i) not seeded"
         assert lot_number_rule is not None, "Rule FzR: 16.(1)(j) not seeded"
+        assert guaranteed_analysis_rule is not None, "Rule FzR: 16.(1)(g) not seeded"
 
         evaluator_llm = RuleEvaluator.get_evaluator(organic_matter_rule)
         evaluator_lot = RuleEvaluator.get_evaluator(lot_number_rule)
+        evaluator_ga = RuleEvaluator.get_evaluator(guaranteed_analysis_rule)
 
         assert isinstance(evaluator_llm, LLMEvaluator)
         assert isinstance(evaluator_lot, LotNumberEvaluator)
+        assert isinstance(evaluator_ga, GuaranteedAnalysisEvaluator)
         assert evaluator_llm.rule == organic_matter_rule
         assert evaluator_lot.rule == lot_number_rule
+        assert evaluator_ga.rule == guaranteed_analysis_rule
 
     def test_constructor_guard(self, db: Session):
         wrong_rule = RuleFactory.create(session=db, evaluator_code="NITROGEN_CHECK")
@@ -211,3 +219,61 @@ class TestRealLLMIntegration:
         # The LLM should find "Organic Matter" in the ingredients and mark as compliant
         assert result.is_compliant is True
         assert result.explanation_en != ""
+
+
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("setup_db")
+class TestGuaranteedAnalysisEvaluator:
+    """Tests for the GuaranteedAnalysisEvaluator which checks for the presence of guaranteed analysis in the fertilizer label data."""
+
+    async def test_evaluate_compliant(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="GUARANTEED_ANALYSIS_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+        FertilizerLabelDataFactory.create(
+            session=db,
+            label=label,
+            guaranteed_analysis={
+                "title_en": "Guaranteed Analysis",
+                "is_minimum": True,
+                "nutrients": [
+                    {"name_en": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}
+                ],
+            },
+        )
+
+        evaluator = GuaranteedAnalysisEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is True
+        assert "present" in result.explanation_en.lower()
+
+    async def test_evaluate_non_compliant(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="GUARANTEED_ANALYSIS_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+        FertilizerLabelDataFactory.create(
+            session=db,
+            label=label,
+            guaranteed_analysis=None,
+        )
+
+        evaluator = GuaranteedAnalysisEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is False
+        assert "missing" in result.explanation_en.lower()
+
+    async def test_evaluate_non_compliant_no_fertilizer_data(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="GUARANTEED_ANALYSIS_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+
+        evaluator = GuaranteedAnalysisEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is False
+        assert "missing" in result.explanation_en.lower()
