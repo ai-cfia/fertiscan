@@ -46,3 +46,10 @@ class NonComplianceDataItemParams(BaseModel):
     order: Annotated[str, StringConstraints(strip_whitespace=True)] = Query(
         default="desc", description="Sort direction (asc or desc)"
     )
+
+
+class UpdateNonComplianceDataItemPayload(BaseModel):
+    note: str | None = None
+    description_en: str | None = None
+    description_fr: str | None = None
+    is_compliant: bool | None = None

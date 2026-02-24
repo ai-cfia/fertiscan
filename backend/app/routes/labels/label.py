@@ -39,6 +39,7 @@ from app.schemas.label import (
 from app.schemas.non_compliance_data_item import (
     NonComplianceDataItemParams,
     NonComplianceDataItemPublic,
+    UpdateNonComplianceDataItemPayload,
 )
 
 router = APIRouter(prefix="/labels", tags=["labels"])
@@ -238,3 +239,21 @@ def read_compliance_by_rule(
     """Read compliance result for a label and a specific rule."""
 
     return nonComplianceItem  # type: ignore[return-value]
+
+
+@router.patch(
+    "/{label_id}/non_compliance_data_items/{rule_id}",
+    response_model=NonComplianceDataItemPublic,
+)
+def update_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+    compliance_data_items_in: UpdateNonComplianceDataItemPayload,
+) -> NonComplianceDataItemPublic:
+    """Update a non-compliance data item for a given label and rule."""
+    return compliance_controller.update_compliance(  # type: ignore[return-value]
+        session=session,
+        nonComplianceDataItem=nonComplianceItem,
+        compliance_data_items_in=compliance_data_items_in,
+    )

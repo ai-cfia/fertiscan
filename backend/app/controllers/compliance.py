@@ -11,6 +11,9 @@ from sqlmodel import or_, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
+from app.schemas.non_compliance_data_item import (
+    UpdateNonComplianceDataItemPayload,
+)
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -119,3 +122,20 @@ def get_compliances_query(
 
     stmt = _apply_compliance_sorting(stmt, order_by, order)
     return stmt
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+def update_compliance(
+    session: Session,
+    nonComplianceDataItem: NonComplianceDataItem,
+    compliance_data_items_in: UpdateNonComplianceDataItemPayload,
+) -> NonComplianceDataItem:
+    """Update a non-compliance data item."""
+
+    for field, value in compliance_data_items_in.model_dump(exclude_unset=True).items():
+        setattr(nonComplianceDataItem, field, value)
+
+    session.add(nonComplianceDataItem)
+    session.flush()
+    session.refresh(nonComplianceDataItem)
+    return nonComplianceDataItem
