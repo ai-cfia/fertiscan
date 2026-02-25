@@ -1430,7 +1430,7 @@
       "version": "7.13.1"
     },
     {
-      "bom-ref": "cryptography==46.0.3",
+      "bom-ref": "cryptography==46.0.5",
       "description": "cryptography is a package which provides cryptographic recipes and primitives to Python developers.",
       "externalReferences": [
         {
@@ -1466,9 +1466,9 @@
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@46.0.3",
+      "purl": "pkg:pypi/cryptography@46.0.5",
       "type": "library",
-      "version": "46.0.3"
+      "version": "46.0.5"
     },
     {
       "bom-ref": "cyclonedx-bom==7.2.1",
@@ -6046,7 +6046,7 @@
     {
       "dependsOn": [
         "coverage==7.13.1",
-        "cryptography==46.0.3",
+        "cryptography==46.0.5",
         "pre_commit==4.5.1",
         "pytest==9.0.2"
       ],
@@ -6077,7 +6077,7 @@
       "dependsOn": [
         "aiobotocore==2.25.1",
         "aiofiles==25.1.0",
-        "cryptography==46.0.3"
+        "cryptography==46.0.5"
       ],
       "ref": "aioboto3==15.5.0"
     },
@@ -6262,7 +6262,7 @@
         "ruff==0.14.11",
         "typing_extensions==4.15.0"
       ],
-      "ref": "cryptography==46.0.3"
+      "ref": "cryptography==46.0.5"
     },
     {
       "dependsOn": [
@@ -6302,7 +6302,7 @@
     {
       "dependsOn": [
         "coverage==7.13.1",
-        "cryptography==46.0.3",
+        "cryptography==46.0.5",
         "httpcore==1.0.9",
         "httpx==0.28.1",
         "idna==3.11",
@@ -6555,7 +6555,7 @@
         "Werkzeug==3.1.5",
         "boto3==1.40.61",
         "botocore==1.40.61",
-        "cryptography==46.0.3",
+        "cryptography==46.0.5",
         "jsonschema==4.26.0",
         "py-partiql-parser==0.6.3",
         "pydantic==2.12.5",
