@@ -9,7 +9,7 @@
         {
           "type": "application",
           "name": "npm",
-          "version": "10.8.2"
+          "version": "11.10.1"
         },
         {
           "type": "library",
@@ -20234,8 +20234,8 @@
     {
       "type": "library",
       "name": "swiper",
-      "version": "12.0.3",
-      "bom-ref": "frontend@0.0.0|swiper@12.0.3",
+      "version": "12.1.2",
+      "bom-ref": "frontend@0.0.0|swiper@12.1.2",
       "licenses": [
         {
           "license": {
@@ -20244,15 +20244,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/swiper@12.0.3",
+      "purl": "pkg:npm/swiper@12.1.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/swiper/-/swiper-12.0.3.tgz",
+          "url": "https://registry.npmjs.org/swiper/-/swiper-12.1.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "04777a53554f10892cad79725e33264563b4a2799d34f69300576ecea477a608ef8bb29f9940809bfd1c8f8f6ed83ec1d33363330d364d27977e29c2d610c25e"
+              "content": "e2020bac8def5d9aa8661ef52353c02eaba4085824fa0a4ec1ed6d3afcf9b84f641ed9768130f39987e5602c16bd1e0b3af0ab262e9410453e827b96e41b6481"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21846,7 +21846,7 @@
         "frontend@0.0.0|react-i18next@16.5.3",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|rolldown-vite@7.3.1",
-        "frontend@0.0.0|swiper@12.0.3",
+        "frontend@0.0.0|swiper@12.1.2",
         "frontend@0.0.0|tailwindcss@4.1.18",
         "frontend@0.0.0|typescript-eslint@8.53.1",
         "frontend@0.0.0|typescript@5.9.3",
@@ -24808,7 +24808,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|swiper@12.0.3"
+      "ref": "frontend@0.0.0|swiper@12.1.2"
     },
     {
       "ref": "frontend@0.0.0|tailwindcss@4.1.18"
