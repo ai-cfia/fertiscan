@@ -9,7 +9,7 @@
         {
           "type": "application",
           "name": "npm",
-          "version": "11.10.1"
+          "version": "10.8.2"
         },
         {
           "type": "library",
