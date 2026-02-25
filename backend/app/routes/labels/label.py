@@ -2,31 +2,45 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, Depends, Query, status
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlmodel import paginate
 from pydantic import StringConstraints
 
-from app.controllers import labels as label_controller
+from app.controllers import compliance as compliance_controller
+from app.controllers.labels import label as label_controller
 from app.db.models.label import ReviewStatus
 from app.dependencies import (
+    CompletedLabelDep,
     CurrentUser,
     EditableLabelDep,
+    InstructorDep,
     LabelDep,
     LimitOffsetParamsDep,
+    NonComplianceDataItemDep,
     ProductQueryTypeDep,
     ProductTypeDep,
+    RulesDep,
     S3ClientDep,
     SessionDep,
     ValidatedStatusLabelDep,
+    newComplianceDataItemDep,
 )
+from app.exceptions import InvalidDateRange
 from app.schemas.label import (
+    ComplianceResults,
     LabelCreate,
     LabelCreated,
     LabelDetail,
     LabelListItem,
     LabelReviewStatusUpdate,
     LabelUpdate,
+)
+from app.schemas.message import Message
+from app.schemas.non_compliance_data_item import (
+    NonComplianceDataItemParams,
+    NonComplianceDataItemPublic,
+    UpdateNonComplianceDataItemPayload,
 )
 
 router = APIRouter(prefix="/labels", tags=["labels"])
@@ -82,7 +96,7 @@ def read_labels(
         order_by=order_by,
         order=order,
     )
-    return paginate(session, stmt, params)  # type: ignore[no-any-return, call-overload]
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
 
 
 @router.get("/{label_id}", response_model=LabelDetail)
@@ -144,3 +158,121 @@ async def delete_label(
         s3_client=s3_client,
         label=label,
     )
+
+
+@router.get("/{label_id}/evaluate-non-compliance", response_model=ComplianceResults)
+async def evaluate_non_compliance(
+    label: CompletedLabelDep,
+    session: SessionDep,
+    _: CurrentUser,
+    instructor: InstructorDep,
+    rules: RulesDep,
+) -> ComplianceResults:
+    """Evaluate non-compliance of the label against specified rules."""
+
+    results = await label_controller.evaluate_non_compliance(
+        session=session,
+        instructor=instructor,
+        label=label,
+        rules=rules,
+    )
+
+    return ComplianceResults(
+        total=len(results),
+        results=results,
+    )
+
+
+# =========================================CRUD for compliances===============================
+
+
+@router.post(
+    "/{label_id}/non_compliance_data_items", response_model=NonComplianceDataItemPublic
+)
+def create_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    compliance_data_item: newComplianceDataItemDep,
+) -> NonComplianceDataItemPublic:
+    """Create a new compliance result."""
+    return compliance_controller.create_compliance(  # type: ignore[return-value]
+        session=session,
+        compliance_data_item=compliance_data_item,
+    )
+
+
+@router.get(
+    "/{label_id}/non_compliance_data_items",
+    response_model=LimitOffsetPage[NonComplianceDataItemPublic],
+)
+def reads_compliances(
+    session: SessionDep,
+    _: CurrentUser,
+    label: LabelDep,
+    params: LimitOffsetParamsDep,
+    filters: NonComplianceDataItemParams = Depends(),
+) -> LimitOffsetPage[NonComplianceDataItemPublic]:
+    """Read compliance results for a label with optional filters."""
+
+    if filters.start_created_at and filters.end_created_at:
+        if filters.start_created_at > filters.end_created_at:
+            raise InvalidDateRange()
+
+    if filters.start_updated_at and filters.end_updated_at:
+        if filters.start_updated_at > filters.end_updated_at:
+            raise InvalidDateRange()
+
+    stmt = compliance_controller.get_compliances_query(
+        label_id=label.id,
+        **filters.model_dump(),
+    )
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
+
+
+@router.get(
+    "/{label_id}/non_compliance_data_items/{rule_id}",
+    response_model=NonComplianceDataItemPublic,
+)
+def read_compliance_by_rule(
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+) -> NonComplianceDataItemPublic:
+    """Read compliance result for a label and a specific rule."""
+
+    return nonComplianceItem  # type: ignore[return-value]
+
+
+@router.patch(
+    "/{label_id}/non_compliance_data_items/{rule_id}",
+    response_model=NonComplianceDataItemPublic,
+)
+def update_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+    compliance_data_items_in: UpdateNonComplianceDataItemPayload,
+) -> NonComplianceDataItemPublic:
+    """Update a non-compliance data item for a given label and rule."""
+    return compliance_controller.update_compliance(  # type: ignore[return-value]
+        session=session,
+        nonComplianceDataItem=nonComplianceItem,
+        compliance_data_items_in=compliance_data_items_in,
+    )
+
+
+@router.delete(
+    "/{label_id}/non_compliance_data_items/{rule_id}", response_model=Message
+)
+def delete_compliance(
+    session: SessionDep,
+    _: CurrentUser,
+    nonComplianceItem: NonComplianceDataItemDep,
+) -> Message:
+    """Delete a non-compliance data item for a given label and rule."""
+
+    compliance_controller.delete_compliance(
+        session=session,
+        nonComplianceDataItem=nonComplianceItem,
+    )
+
+    return Message(message="Compliance data item deleted successfully")

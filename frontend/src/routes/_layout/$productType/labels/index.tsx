@@ -41,8 +41,8 @@ import { useLanguage } from "@/stores/useLanguage"
 import { truncateUuid } from "@/utils"
 
 const labelsSearchSchema = z.object({
-  page: z.number().catch(0),
-  per_page: z.number().catch(10), // Default will be overridden by config in component
+  page: z.number().default(0).catch(0),
+  per_page: z.number().default(10).catch(10), // Default will be overridden by config in component
   review_status: z
     .enum(ReviewStatusSchema.enum as unknown as [string, ...string[]])
     .optional(),

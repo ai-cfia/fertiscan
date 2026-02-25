@@ -4,8 +4,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import Depends
-from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from app.db.models.label_image import LabelImage, UploadStatus
 from app.dependencies.auth import SessionDep
@@ -25,11 +24,11 @@ def _get_label_image_by_id_and_label_id(
 ) -> LabelImage:
     """Get LabelImage by ID and label_id, raise 404 if not found."""
     if not (
-        label_image := session.execute(
+        label_image := session.exec(
             select(LabelImage).where(
                 LabelImage.id == image_id, LabelImage.label_id == label_id
             )
-        ).scalar_one_or_none()
+        ).first()
     ):
         msg = f"LabelImage {image_id} not found for label {label_id}"
         raise LabelImageNotFound(msg)
@@ -70,7 +69,7 @@ async def get_stored_pending_image(
         LabelImage.file_path == request.storage_file_path,
         LabelImage.status == UploadStatus.pending,
     )
-    if not (label_image := session.execute(stmt).scalar_one_or_none()):
+    if not (label_image := session.exec(stmt).first()):
         msg = f"Pending LabelImage not found for path: {request.storage_file_path}"
         raise LabelImageNotFound(msg)
 

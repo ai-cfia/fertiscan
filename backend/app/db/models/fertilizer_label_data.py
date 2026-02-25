@@ -1,21 +1,18 @@
-"""FertilizerLabelData ORM model."""
-
-from datetime import UTC, datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import JSON, Column, DateTime, Numeric, func
+from sqlalchemy import JSON, Column, Numeric
 from sqlmodel import Field, Relationship
 
-from app.db.base import Base
+from app.db.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataMeta
     from app.db.models.label import Label
 
 
-class FertilizerLabelData(Base, table=True):
+class FertilizerLabelData(Base, TimestampMixin, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     label_id: UUID = Field(
         foreign_key="label.id", nullable=False, unique=True, index=True
@@ -32,12 +29,4 @@ class FertilizerLabelData(Base, table=True):
     label: "Label" = Relationship(back_populates="fertilizer_label_data")
     meta: list["FertilizerLabelDataMeta"] = Relationship(
         back_populates="fertilizer_label_data", cascade_delete=True
-    )
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), default=func.now()),
-    )
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True), onupdate=func.now()),
     )

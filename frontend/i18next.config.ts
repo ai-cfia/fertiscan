@@ -30,6 +30,8 @@ export default defineConfig({
     sort: true,
     // Whether to remove unused keys
     removeUnusedKeys: true,
+    // Preserve dynamically constructed keys (e.g. t(`data.sections.${sectionKey}`))
+    preservePatterns: ["labels:data.sections.*"],
     // Number of spaces for JSON indentation
     indentation: 2,
   },

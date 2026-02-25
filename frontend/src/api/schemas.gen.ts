@@ -1890,6 +1890,93 @@ export const NewPasswordSchema = {
     title: 'NewPassword'
 } as const;
 
+export const NonComplianceDataItemPublicSchema = {
+    properties: {
+        label_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Label Id'
+        },
+        rule_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Rule Id'
+        },
+        note: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Note'
+        },
+        description_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description En'
+        },
+        description_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description Fr'
+        },
+        is_compliant: {
+            type: 'boolean',
+            title: 'Is Compliant',
+            default: false
+        },
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'label_id',
+        'rule_id',
+        'id'
+    ],
+    title: 'NonComplianceDataItemPublic'
+} as const;
+
+export const NonComplianceDataItemsListSchema = {
+    properties: {
+        total: {
+            type: 'integer',
+            title: 'Total'
+        },
+        items: {
+            items: {
+                $ref: '#/components/schemas/NonComplianceDataItemPublic'
+            },
+            type: 'array',
+            title: 'Items'
+        }
+    },
+    type: 'object',
+    required: [
+        'total',
+        'items'
+    ],
+    title: 'NonComplianceDataItemsList'
+} as const;
+
 export const Nutrient_InputSchema = {
     properties: {
         name_en: {
@@ -2245,11 +2332,17 @@ export const ProductPublicSchema = {
                 }
             ],
             title: 'Registration Number'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
         }
     },
     type: 'object',
     required: [
-        'id'
+        'id',
+        'created_at'
     ],
     title: 'ProductPublic'
 } as const;

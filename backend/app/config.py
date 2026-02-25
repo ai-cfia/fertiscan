@@ -1,9 +1,11 @@
 """Application configuration and settings."""
 
+import json
 import logging
 import secrets
 import warnings
-from typing import Annotated, Any, Literal, Self
+from pathlib import Path
+from typing import Annotated, Any, Literal, Self, cast
 
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
@@ -72,6 +74,8 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_KEY: SecretStr | None = None
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
+    RULE_SEED_DATA_PATH: str = "app/data/rule_data.json"
+    PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
@@ -125,6 +129,13 @@ class Settings(BaseSettings):
         scheme = "https" if self.ENVIRONMENT in ("production", "staging") else "http"
         return f"{scheme}://{self.STORAGE_ENDPOINT}"
 
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def prompt_template_env(self) -> Environment:
+        return Environment(
+            loader=FileSystemLoader(self.PROMPT_TEMPLATES_DIR), autoescape=True
+        )
+
     @model_validator(mode="after")
     def _set_default_emails_from(self) -> Self:
         if not self.EMAILS_FROM_NAME:
@@ -156,6 +167,15 @@ class Settings(BaseSettings):
         )
         self._check_default_secret("MINIO_ROOT_PASSWORD", self.MINIO_ROOT_PASSWORD)
         return self
+
+    def rule_data_seed(self) -> list[dict[str, Any]]:
+        rule_seed_data_path = Path(self.RULE_SEED_DATA_PATH)
+        if rule_seed_data_path.exists():
+            with rule_seed_data_path.open("r", encoding="utf-8") as data_file:
+                rule_data = json.load(data_file)
+        else:
+            rule_data = []
+        return cast(list[dict[str, Any]], rule_data)
 
 
 settings = Settings()  # type: ignore

@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 
 from app.config import settings
-from app.routes import health, login, products, users
+from app.routes import health, login, products, rule, users
 from app.routes.labels import (
     fertilizer_label_data,
     label,
@@ -21,6 +21,8 @@ api_router.include_router(label_data.router)
 api_router.include_router(fertilizer_label_data.router)
 api_router.include_router(label_data_extraction.router)
 api_router.include_router(products.router)
+api_router.include_router(rule.router)
+
 
 if settings.ENVIRONMENT in ("local", "testing"):
     from app.routes import private

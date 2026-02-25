@@ -1,21 +1,17 @@
-"""User ORM model."""
-
-from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pydantic import EmailStr
-from sqlalchemy import Column, DateTime
 from sqlmodel import Field, Relationship
 
-from app.db.base import Base
+from app.db.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
     from app.db.models.product import Product
 
 
-class User(Base, table=True):
+class User(Base, TimestampMixin, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     email: EmailStr = Field(unique=True, index=True, max_length=255)
     first_name: str | None = Field(default=None, max_length=255)
@@ -34,11 +30,3 @@ class User(Base, table=True):
     )
     products: list["Product"] = Relationship(back_populates="created_by")
     labels: list["Label"] = Relationship(back_populates="created_by")
-    created_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True)),
-    )
-    updated_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC),
-        sa_column=Column(DateTime(timezone=True)),
-    )

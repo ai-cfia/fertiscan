@@ -6,10 +6,10 @@
     "button": {
       "cancel": "Annuler"
     },
-    "unnamedProduct": "Produit sans nom",
+    "loading": "Chargement du produit lié...",
     "noBrand": "Aucune marque",
-    "loading": "Chargement...",
-    "processing": "Traitement..."
+    "processing": "Traitement en cours...",
+    "unnamedProduct": "Produit sans nom"
   },
   "dashboard": {
     "completed": "Terminé",
@@ -33,8 +33,6 @@
     "viewAllLabelsDescription": "Parcourir et gérer toutes les étiquettes"
   },
   "data": {
-    "pageTitle": "Révision d'étiquette - Inspection d'étiquettes",
-    "title": "Révision d'étiquette",
     "contacts": {
       "addContact": "Ajouter un contact",
       "address": "Adresse",
@@ -127,43 +125,44 @@
       "value": "Valeur"
     },
     "markComplete": "Marquer comme terminé",
+    "pageTitle": "Révision d'étiquette - Inspection d'étiquettes",
     "removeReviewFlag": "Retirer le drapeau de révision",
     "save": "Enregistrer",
     "saved": "Modifications enregistrées avec succès",
     "sections": {
       "association": {
-        "title": "Association de produit",
+        "associate": "Associer",
+        "createAndAssociate": "Créer et associer",
+        "createAndLinkSuccess": "Produit créé et associé avec succès",
+        "createSuccess": "Produit créé avec succès",
+        "creationDraft": "Créer une nouvelle entrée de produit",
+        "creationHelp": "Nous pouvons créer une nouvelle entrée de produit à l'aide des données extraites de cette étiquette.",
         "linked": "Produit associé",
         "linkedMessage": "Cette étiquette est liée à une entrée de produit.",
         "linkedProduct": "Produit lié",
-        "unlink": "Délier le produit",
-        "unlinkSuccess": "Produit délié avec succès",
         "linkSuccess": "Produit associé avec succès",
-        "createAndLinkSuccess": "Produit créé et associé avec succès",
-        "associate": "Associer",
-        "createSuccess": "Produit créé avec succès",
-        "missingCriteria": "Au moins un attribut de produit requis pour la recherche",
-        "matchesFound": "{{count}} correspondances potentielles trouvées",
         "matchesFound_one": "{{count}} correspondance potentielle trouvée",
         "matchesFound_many": "{{count}} correspondances potentielles trouvées",
         "matchesFound_other": "{{count}} correspondances potentielles trouvées",
+        "missingCriteria": "Au moins un attribut de produit requis pour la recherche",
         "noMatch": "Aucun produit correspondant trouvé",
-        "creationDraft": "Créer une nouvelle entrée de produit",
-        "creationHelp": "Nous pouvons créer une nouvelle entrée de produit à l'aide des données extraites de cette étiquette.",
-        "createAndAssociate": "Créer et associer"
+        "title": "Association de produit",
+        "unlink": "Délier le produit",
+        "unlinkSuccess": "Produit délié avec succès"
       },
       "basic": "Informations de base",
-      "npk": "Analyse NPK",
-      "ingredients": "Ingrédients",
-      "guaranteed": "Analyse garantie",
-      "safety": "Informations de sécurité",
-      "product": "Produit",
       "brand": "Marque",
-      "registrationNumber": "Numéro d'enregistrement"
+      "guaranteed": "Analyse garantie",
+      "ingredients": "Ingrédients",
+      "npk": "Analyse NPK",
+      "product": "Produit",
+      "registrationNumber": "Numéro d'enregistrement",
+      "safety": "Informations de sécurité"
     },
+    "title": "Révision d'étiquette",
     "validation": {
-      "missingRegistrationNumber": "Le numéro d'enregistrement est requis pour marquer la révision comme terminée",
-      "missingLabelData": "Les données de l'étiquette doivent être créées avant de marquer la révision comme terminée"
+      "missingLabelData": "Les données de l'étiquette doivent être créées avant de marquer la révision comme terminée",
+      "missingRegistrationNumber": "Le numéro d'enregistrement est requis pour marquer la révision comme terminée"
     }
   },
   "empty": {
@@ -235,7 +234,6 @@
       "title": "Créer une nouvelle étiquette"
     },
     "rowActions": {
-      "actionsForLabel": "Actions pour l'étiquette {{id}}",
       "continueReview": "Continuer la révision",
       "delete": "Supprimer",
       "deleteDialog": {
@@ -259,11 +257,11 @@
   "pageTitle": "Étiquettes - Inspection d'étiquettes",
   "table": {
     "actions": "Actions",
+    "brand": "Marque",
     "copyId": "Copier l'ID de l'étiquette {{id}}",
     "createdAt": "Créé le",
     "id": "ID",
     "idCopied": "ID de l'étiquette copié dans le presse-papiers",
-    "brand": "Marque",
     "productName": "Produit",
     "reviewStatus": "Statut de révision",
     "selectAll": "sélectionner toutes les étiquettes",

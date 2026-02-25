@@ -1,18 +1,22 @@
-"""Label CRUD operations."""
-
+import asyncio
+from collections.abc import Sequence
 from typing import Any
 from uuid import UUID
 
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
+from instructor import AsyncInstructor
 from pydantic import validate_call
 from sqlalchemy import func
-from sqlalchemy.orm import Session, selectinload
-from sqlmodel import select
+from sqlalchemy.orm import selectinload
+from sqlmodel import Session, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
-from app.schemas.label import LabelUpdate
+from app.db.models.non_compliance_data_item import NonComplianceDataItem
+from app.db.models.rule import Rule
+from app.evaluators.base import RuleEvaluator
+from app.schemas.label import ComplianceResult, LabelUpdate
 from app.storage import delete_files
 
 
@@ -116,8 +120,7 @@ async def get_label_detail(
             selectinload(Label.created_by),  # type: ignore[arg-type]
         )
     )
-    result = session.execute(stmt)
-    return result.scalar_one()
+    return session.exec(stmt).one()
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -161,3 +164,56 @@ async def delete_label(
         await delete_files(s3_client, file_paths)
     session.delete(label)
     session.flush()
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+async def evaluate_non_compliance(
+    session: Session,
+    instructor: AsyncInstructor,
+    label: Label,
+    rules: Sequence[Rule],
+) -> dict[UUID, ComplianceResult]:
+    """Evaluate rules in parallel."""
+
+    tasks = []
+    rule_ids = []
+
+    for rule in rules:
+        if ev := RuleEvaluator.get_evaluator(rule, session, instructor):
+            tasks.append(ev.evaluate(label))
+            rule_ids.append(rule.id)
+
+    results = await asyncio.gather(*tasks)
+    return dict(zip(rule_ids, results, strict=True))
+
+
+@validate_call(config={"arbitrary_types_allowed": True})
+def update_is_compliant(
+    session: Session,
+    label: Label,
+    is_compliant: bool,
+    rule: Rule,
+) -> Label:
+    """Update or create non-compliance data item."""
+    stmt = select(NonComplianceDataItem).where(
+        NonComplianceDataItem.rule_id == rule.id,
+        NonComplianceDataItem.label_id == label.id,
+    )
+    non_compliance_data_item = session.scalars(stmt).first()
+
+    if non_compliance_data_item is None:
+        non_compliance_data_item = NonComplianceDataItem(
+            label_id=label.id,
+            rule_id=rule.id,
+            description_en=rule.description_en,
+            description_fr=rule.description_fr,
+            is_compliant=is_compliant,
+        )
+        session.add(non_compliance_data_item)
+    else:
+        non_compliance_data_item.is_compliant = is_compliant
+        session.add(non_compliance_data_item)
+
+    session.flush()
+    session.refresh(label)
+    return label

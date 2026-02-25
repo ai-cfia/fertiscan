@@ -1,0 +1,36 @@
+{
+  "common": {
+    "button": {
+      "cancel": "Annuler"
+    }
+  },
+  "empty": {
+    "noProducts": "Aucun produit trouvé",
+    "noProductsDescription": "Les produits créés à partir des étiquettes apparaîtront ici."
+  },
+  "pageTitle": "Produits - Inspection des étiquettes",
+  "products": {
+    "rowActions": {
+      "delete": "Supprimer",
+      "deleteDialog": {
+        "description": "Êtes-vous sûr de vouloir supprimer ce produit ? Cette action ne peut pas être annulée et supprimera définitivement le produit.",
+        "title": "Supprimer le produit"
+      },
+      "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
+      "viewDetails": "Voir les détails"
+    }
+  },
+  "table": {
+    "brand": "Marque",
+    "copyId": "Copier l'ID du produit {{id}}",
+    "createdAt": "Créé le",
+    "id": "ID",
+    "idCopied": "ID du produit copié dans le presse-papier",
+    "name": "Nom du produit",
+    "registrationNumber": "Numéro d'enregistrement",
+    "selectAll": "sélectionner tous les produits",
+    "sortedAscending": "trié par ordre croissant",
+    "sortedDescending": "trié par ordre décroissant"
+  },
+  "title": "Produits"
+}

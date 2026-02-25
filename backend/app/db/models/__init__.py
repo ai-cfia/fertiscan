@@ -7,8 +7,10 @@ from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.label_data_field_meta import LabelDataFieldMeta, LabelDataFieldName
 from app.db.models.label_image import LabelImage
+from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.db.models.product import Product
 from app.db.models.product_type import ProductType
+from app.db.models.rule import Rule
 from app.db.models.user import User
 
 __all__ = [
@@ -22,6 +24,8 @@ __all__ = [
     "LabelImage",
     "Product",
     "ProductType",
+    "Rule",
     "ReviewStatus",
     "User",
+    "NonComplianceDataItem",
 ]
