@@ -143,6 +143,82 @@ class TestEvaluateNonCompliance:
         )
         assert response.status_code == 401
 
+    def test_evaluate_non_compliance_registration_number_success(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluating compliance with a registration number present."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            product_type_id=product_type.id,
+            review_status="completed",
+        )
+        LabelDataFactory.create(
+            session=db, label=label, registration_number="REG-12345"
+        )
+        LabelImageFactory.create(session=db, label_id=label.id)
+
+        rule = db.scalars(
+            select(Rule).where(Rule.reference_number == "FzR: 16.(1)(c)")
+        ).first()
+        assert rule is not None
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?rule_ids={rule.id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert str(rule.id) in data["results"]
+        assert data["results"][str(rule.id)]["is_compliant"] is True
+
+    def test_evaluate_non_compliance_registration_number_missing(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluating compliance with a registration number missing."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        product = ProductFactory.create(session=db, product_type_id=product_type.id)
+        label = LabelFactory.create(
+            session=db,
+            product_id=product.id,
+            product_type_id=product_type.id,
+            review_status="completed",
+        )
+        LabelDataFactory.create(session=db, label=label, registration_number=None)
+        LabelImageFactory.create(session=db, label_id=label.id)
+
+        rule = db.scalars(
+            select(Rule).where(Rule.reference_number == "FzR: 16.(1)(c)")
+        ).first()
+        assert rule is not None
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?rule_ids={rule.id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert str(rule.id) in data["results"]
+        assert data["results"][str(rule.id)]["is_compliant"] is False
+
 
 @pytest.mark.usefixtures("override_dependencies")
 class TestEvaluateNonComplianceLLM:

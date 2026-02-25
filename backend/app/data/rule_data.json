@@ -18,5 +18,14 @@
 		"url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/index.html",
 		"url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/index.html",
 		"evaluator_code": "LLM_EVALUATION"
-	}
+	},{
+        "reference_number": "FzR: 16.(1)(c)",
+        "title_en": "Registration number",
+        "title_fr": "Numéro d'enregistrement",
+        "description_en": "The registration number must be clearly visible on the packaging of the fertilizer or supplement. (Only for products that require one.)",
+        "description_fr": "Le numéro d'enregistrement doit être clairement visible sur l'emballage de l'engrais ou du supplément. (Seulement pour les produit qui en nécessite un.)",
+        "url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/page-2.html#docCont",
+        "url_fr": "https://laws-lois.justice.gc.ca/fra/reglements/C.R.C.%2C_ch._666/page-2.html#docCont",
+        "evaluator_code": "REGISTRATION_NUMBER_PRESENT"
+    }
 ]

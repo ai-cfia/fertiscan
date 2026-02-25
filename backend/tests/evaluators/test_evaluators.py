@@ -10,6 +10,7 @@ from app.dependencies.instructor import get_instructor
 from app.evaluators.base import RuleEvaluator
 from app.evaluators.llm import LLMEvaluator
 from app.evaluators.lot_number import LotNumberEvaluator
+from app.evaluators.registration_number import RegistrationNumberEvaluator
 from app.schemas.label import ComplianceResult
 from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label import LabelFactory
@@ -211,3 +212,59 @@ class TestRealLLMIntegration:
         # The LLM should find "Organic Matter" in the ingredients and mark as compliant
         assert result.is_compliant is True
         assert result.explanation_en != ""
+
+
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("setup_db")
+class TestRegistrationNumberEvaluator:
+    """Tests for the RegistrationNumberEvaluator which checks for the presence of a registration number in the label data."""
+
+    async def test_evaluate_compliant(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="REGISTRATION_NUMBER_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+        LabelDataFactory.create(session=db, label=label, registration_number="REG-456")
+
+        evaluator = RegistrationNumberEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is True
+        assert "present" in result.explanation_en.lower()
+
+    async def test_evaluate_non_compliant_empty(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="REGISTRATION_NUMBER_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+        LabelDataFactory.create(session=db, label=label, registration_number="   ")
+
+        evaluator = RegistrationNumberEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is False
+        assert "missing" in result.explanation_en.lower()
+
+    async def test_evaluate_non_compliant_none(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="REGISTRATION_NUMBER_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+        LabelDataFactory.create(session=db, label=label, registration_number=None)
+
+        evaluator = RegistrationNumberEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is False
+
+    async def test_evaluate_non_compliant_no_label_data(self, db: Session):
+        rule = RuleFactory.create(
+            session=db, evaluator_code="REGISTRATION_NUMBER_PRESENT"
+        )
+        label = LabelFactory.create(session=db)
+
+        evaluator = RegistrationNumberEvaluator(rule=rule)
+        result = await evaluator.evaluate(label)
+
+        assert result.is_compliant is False
+        assert "missing" in result.explanation_en.lower()
