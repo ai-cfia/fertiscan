@@ -1,14 +1,42 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
+
   "ignorePaths": [],
+
+  "schedule": ["before 3am every day"],
+
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 3am every day"]
+  },
+
   "packageRules": [
     {
       "matchDatasources": ["github-releases"],
       "matchDepNames": ["ai-cfia/ailab-datastore"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-fertiscan-datastore$"
+    },
+    {
+      "groupName": "eslint monorepo",
+      "matchManagers": ["npm"],
+      "matchPackagePatterns": ["^eslint", "typescript-eslint", "eslint-plugin-"]
+    },
+    {
+      "groupName": "Vite & Vitest",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"]
+    },
+    {
+      "groupName": "Tailwind & plugins",
+      "matchManagers": ["npm"],
+      "matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "automerge": false,
+      "major": { "automerge": false }
     }
   ]
 }
