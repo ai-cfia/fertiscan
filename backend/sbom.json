@@ -321,7 +321,7 @@
       "version": "2.0.45"
     },
     {
-      "bom-ref": "Werkzeug==3.1.6",
+      "bom-ref": "Werkzeug==3.1.5",
       "description": "The comprehensive WSGI web application library.",
       "externalReferences": [
         {
@@ -359,9 +359,9 @@
         }
       ],
       "name": "Werkzeug",
-      "purl": "pkg:pypi/werkzeug@3.1.6",
+      "purl": "pkg:pypi/werkzeug@3.1.5",
       "type": "library",
-      "version": "3.1.6"
+      "version": "3.1.5"
     },
     {
       "bom-ref": "aioboto3==15.5.0",
@@ -6071,7 +6071,7 @@
       "dependsOn": [
         "MarkupSafe==3.0.3"
       ],
-      "ref": "Werkzeug==3.1.6"
+      "ref": "Werkzeug==3.1.5"
     },
     {
       "dependsOn": [
@@ -6552,7 +6552,7 @@
       "dependsOn": [
         "Jinja2==3.1.6",
         "PyYAML==6.0.3",
-        "Werkzeug==3.1.6",
+        "Werkzeug==3.1.5",
         "boto3==1.40.61",
         "botocore==1.40.61",
         "cryptography==46.0.5",
