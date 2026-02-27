@@ -6015,8 +6015,8 @@
       "type": "library",
       "name": "core-darwin-arm64",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6024,15 +6024,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-darwin-arm64@1.15.11",
+      "purl": "pkg:npm/%40swc/core-darwin-arm64@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "42822ea515951fc005d53831632780e674b5f1db6a32ec4dc1c863048c09a3745dc0b105889abaa273b1f490311edb8fc1490856e5365dba7e8c227b5739a0b6"
+              "content": "781f6a772b7813ad37db7212d2b815feb77bf4327e6164b220a8beb13d5d948811de7b38c65062ba74443379551f414a7146e1b6d881bdd56e6d3e10a0eb99fb"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6053,8 +6053,8 @@
       "type": "library",
       "name": "core-darwin-x64",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6062,15 +6062,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-darwin-x64@1.15.11",
+      "purl": "pkg:npm/%40swc/core-darwin-x64@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4b9d86bb542d3d27c160389e8e571fa7d1a537e3634d905144db33f0f370060484eb6ebf1547f63dc9655548b1ee3aa4a0c0beb74ad2f2dfb6fda49694cb90b4"
+              "content": "9354d901162cf3de3b8c9a528a8a9c3ebbaccfec04780045e22892770712c90876ac851d20493914ec9aa8901214f27a7597f1ed954eca3b430135407a0b36fd"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6091,8 +6091,8 @@
       "type": "library",
       "name": "core-linux-arm-gnueabihf",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6102,15 +6102,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm-gnueabihf@1.15.11",
+      "purl": "pkg:npm/%40swc/core-linux-arm-gnueabihf@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "95726cf285e8e99e320a98a6a50f2f3de0a3920a07bb936832f98967cab10f253df4a55d83a2b053d1fbf6fceb981f877c7f9d099ec918ca8c17ffdff027ef76"
+              "content": "a7adbcd8d419a396f3c74c29873d444c68e171107d08dfbf5d4023430029ca8c97f620a5a08e484ff442def8db7e5a38da0f113d3c544da22d00ed2194b49eb1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6131,8 +6131,8 @@
       "type": "library",
       "name": "core-linux-arm64-gnu",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6140,15 +6140,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm64-gnu@1.15.11",
+      "purl": "pkg:npm/%40swc/core-linux-arm64-gnu@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "72146ccf52b9dbfbe3f0c7eafd03ae815a6194a3d694c875d15f7da9f1f8d616c6bf0014eb148f77af35ba93b86ca88eafdfa64486595be11f26a638d99cd1c8"
+              "content": "4c69c34b87a3cbccbd8eac57a990b203e0ef15ceb89d75074bdaf1772789f41f6ec8876d295841ac0db17e0858452fec48f4b21d9d32bbcf4dc41202bce347f8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6169,8 +6169,8 @@
       "type": "library",
       "name": "core-linux-arm64-musl",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6178,15 +6178,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm64-musl@1.15.11",
+      "purl": "pkg:npm/%40swc/core-linux-arm64-musl@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3d87ed82c4da1a77c32b89bafddb72f6bc8ad456cb93e2e8b0327f4494769e45c673caddf967a75c896f1e35942e20559d2d51b231c73979934b89c385ed2fd3"
+              "content": "0f4ffa1e3e029204934da86d946c6ff480ec2d3baf433df49a4644303a7c4eac188422fc0289b39e489bc25414f07b58e2afdda9dd4e1913c7f8598d6f804110"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6207,8 +6207,8 @@
       "type": "library",
       "name": "core-linux-x64-gnu",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6216,15 +6216,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-x64-gnu@1.15.11",
+      "purl": "pkg:npm/%40swc/core-linux-x64-gnu@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "0cab6724a2078997404724ca897ef37518e20d2d4a8a191059ab508821ccbfecdcdac7f06f81a5ae8771d952ce5f8aec6bdd8d2d1d12c3c58b70f10c158d6ccd"
+              "content": "d6cd8e16c83a0de464594edcf8f21f20766c1426e2677e1a917147ae0eca8e917ccc8be91d93685146629a8584c1c07a1aab974a400efb56f92a91b99eeb1379"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6245,8 +6245,8 @@
       "type": "library",
       "name": "core-linux-x64-musl",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6254,15 +6254,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-x64-musl@1.15.11",
+      "purl": "pkg:npm/%40swc/core-linux-x64-musl@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9948e39ed1e3e3ef1605a8837b953044d1ee1332e32160534864f0d094fdf82f7f632ba1e0a42a95c110deba3a1a41e60465c11691888ffa3954cc9159f55f5b"
+              "content": "82dc4630662d4565a609c831eb1336628b38dee884fe3f2467091e2ff2cd186f73334b5ab5ddb736c7cbf4f9d0278e6163b419f9dc76accebc7b802b806e2426"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6283,8 +6283,8 @@
       "type": "library",
       "name": "core-win32-arm64-msvc",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6292,15 +6292,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-arm64-msvc@1.15.11",
+      "purl": "pkg:npm/%40swc/core-win32-arm64-msvc@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "66434d1b9ccbe3d629685cdf97a7ec90d392c6d719e6e398996064638c1502f81b4804332d1541a7ec40ac65a1da85e563f5a02fdf73412193bfb448e44ea7cc"
+              "content": "8318befcc8b2b5ecff3bdbc9fd08a17888af037a166633e9f6726edd59807cb31653371939133081a235ca0b434cb8f3ec2cdcc2518c273fc06fae98e437cda6"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6321,8 +6321,8 @@
       "type": "library",
       "name": "core-win32-ia32-msvc",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6330,15 +6330,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-ia32-msvc@1.15.11",
+      "purl": "pkg:npm/%40swc/core-win32-ia32-msvc@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e979f3391919090cef4d0e9c3eb53b89a4fdfa2d78e682f09e29fc26b7ec2c6e35c25dbafb970d4365d5df371bae714457a7ac8ce71ea26f583b5c3d986241cb"
+              "content": "294b11a8d6d3a7b4a934ad13f66e3e8bc1a59e0ccd8f06faf5adedb4a03a5c9e6be8f7b09be3526238bdde93646b05c88af6d66368e1bdc786300c9dfb885669"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6359,8 +6359,8 @@
       "type": "library",
       "name": "core-win32-x64-msvc",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.17",
       "scope": "optional",
       "licenses": [
         {
@@ -6368,15 +6368,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-x64-msvc@1.15.11",
+      "purl": "pkg:npm/%40swc/core-win32-x64-msvc@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "210da7e9a7fb5ca2cbe8fd6021e6400ac912c4af235ada0aa4958b6667574c38f5306ce4b54cb88be16fa5db7116625635abd1587d55993afa900b9b4431de2b"
+              "content": "ceab44184d3fad32af102e6c3ada4034b1de5843e3b130f8febc29531a3aca6ced70b23f67e2fd5a2f7142f20698b4d48a1d60bcd65c03044ea9d7d13f7a0059"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6397,8 +6397,8 @@
       "type": "library",
       "name": "core",
       "group": "@swc",
-      "version": "1.15.11",
-      "bom-ref": "frontend@0.0.0|@swc/core@1.15.11",
+      "version": "1.15.17",
+      "bom-ref": "frontend@0.0.0|@swc/core@1.15.17",
       "licenses": [
         {
           "license": {
@@ -6407,15 +6407,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40swc/core@1.15.11",
+      "purl": "pkg:npm/%40swc/core@1.15.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core/-/core-1.15.11.tgz",
+          "url": "https://registry.npmjs.org/@swc/core/-/core-1.15.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "88b98b4e875b631537f4784c3da314a283f03bfcea256becaa4ad7bf5648dfcacc6f4e3ca7a37baad02d4e9dfbb30f4dcd2aef1faa258bc11d0f2828d3d219ff"
+              "content": "32edde3ab62591d40f97bcaaa2d35c922b53afa159d3277b9a5588044ccaf84188cb26e03043491e66d2d83780ec13257898811253fa91ef8dcfdde990a98a27"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14240,8 +14240,8 @@
     {
       "type": "library",
       "name": "i18next-cli",
-      "version": "1.46.0",
-      "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0",
+      "version": "1.46.1",
+      "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1",
       "licenses": [
         {
           "license": {
@@ -14250,15 +14250,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next-cli@1.46.0",
+      "purl": "pkg:npm/i18next-cli@1.46.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.46.0.tgz",
+          "url": "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.46.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "beef5b99ab2b6eed4e6b3357e9848c604304dec218a681e35d3c594096d617fc90f3d71369aa31f24e306ccec2df4b9afa36903a8824fef88afb5ed6ec535f38"
+              "content": "e28da76129baaccf5924da6ef8920c9c6d9e18e24a249ee832a10c216b751bb15009910e1a63b01cb0212102e58799172cf503252fef6297b2e08d2929ec714f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14279,7 +14279,7 @@
           "type": "library",
           "name": "balanced-match",
           "version": "4.0.4",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|balanced-match@4.0.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|balanced-match@4.0.4",
           "licenses": [
             {
               "license": {
@@ -14316,8 +14316,8 @@
         {
           "type": "library",
           "name": "brace-expansion",
-          "version": "5.0.3",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|brace-expansion@5.0.3",
+          "version": "5.0.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|brace-expansion@5.0.4",
           "licenses": [
             {
               "license": {
@@ -14326,15 +14326,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/brace-expansion@5.0.3",
+          "purl": "pkg:npm/brace-expansion@5.0.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.3.tgz",
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "7f2e8a266d916b003945c1e42dad73fd272905e03beb6505f4a999431c086c3b5126b80bcccd7475ea4088443e09761ca22a96d7f9bde8e000a247b69c4f4478"
+                  "content": "87e0c49e956fc667d579f6b88c56c27f91dd1f960c0d746c98a7e5a5fd6920b6564459536c9a71794e799c99784a6b791d0686ce0d68e911c53c968eaa79810e"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14355,7 +14355,7 @@
           "type": "library",
           "name": "chokidar",
           "version": "5.0.0",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|chokidar@5.0.0",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|chokidar@5.0.0",
           "licenses": [
             {
               "license": {
@@ -14393,7 +14393,7 @@
           "type": "library",
           "name": "commander",
           "version": "14.0.3",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|commander@14.0.3",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|commander@14.0.3",
           "licenses": [
             {
               "license": {
@@ -14430,8 +14430,8 @@
         {
           "type": "library",
           "name": "minimatch",
-          "version": "10.2.2",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|minimatch@10.2.2",
+          "version": "10.2.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|minimatch@10.2.4",
           "licenses": [
             {
               "license": {
@@ -14440,15 +14440,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@10.2.2",
+          "purl": "pkg:npm/minimatch@10.2.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.2.tgz",
+              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "f86e02a4d0716b9329ad8fb4e0c6e03b0d6fed2a3a9f9258d7aea9162f4a7d8c13efc7f149c09e48d412373a7a7693d25b6ace34ea6ce8e71a9b5c0584282857"
+                  "content": "a118d3c3ff7b69304dd111db60276d1753107efbac488050334219120ce5eb8dbafbc8d20b49c5d5afc69a754ba5f07dcb2afa83a153a96aa26556f1aed68222"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14469,7 +14469,7 @@
           "type": "library",
           "name": "readdirp",
           "version": "5.0.0",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.0|readdirp@5.0.0",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.46.1|readdirp@5.0.0",
           "licenses": [
             {
               "license": {
@@ -14806,8 +14806,8 @@
     {
       "type": "library",
       "name": "inquirer",
-      "version": "13.2.5",
-      "bom-ref": "frontend@0.0.0|inquirer@13.2.5",
+      "version": "13.3.0",
+      "bom-ref": "frontend@0.0.0|inquirer@13.3.0",
       "licenses": [
         {
           "license": {
@@ -14816,15 +14816,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/inquirer@13.2.5",
+      "purl": "pkg:npm/inquirer@13.3.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/inquirer/-/inquirer-13.2.5.tgz",
+          "url": "https://registry.npmjs.org/inquirer/-/inquirer-13.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "247bd53e0388aded0dac0f68f0118750187dacdb8a90dd604b57df6d8832dc1bae266259867172f481f3de970d6d99bdccaeaa4d8bd0e8b379c25dd7720e0993"
+              "content": "00f4eb65ef4886bb2c84bd2ed8f82610c2cfdc25c306367df71879751dbeb2bc8eb7947e2462f428db9a4d34f6956e7807d78d40332eb4f474e546132fb5dbd5"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21952,7 +21952,7 @@
         "frontend@0.0.0|globals@17.3.0",
         "frontend@0.0.0|http-status-codes@2.3.0",
         "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
-        "frontend@0.0.0|i18next-cli@1.46.0",
+        "frontend@0.0.0|i18next-cli@1.46.1",
         "frontend@0.0.0|i18next@25.8.13",
         "frontend@0.0.0|p-limit@7.3.0",
         "frontend@0.0.0|react-dom@19.2.4",
@@ -22873,48 +22873,48 @@
       "ref": "frontend@0.0.0|@standard-schema/utils@0.3.0"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.11"
+      "ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.17"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core@1.15.11",
+      "ref": "frontend@0.0.0|@swc/core@1.15.17",
       "dependsOn": [
-        "frontend@0.0.0|@swc/core-darwin-arm64@1.15.11",
-        "frontend@0.0.0|@swc/core-darwin-x64@1.15.11",
-        "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.11",
-        "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.11",
-        "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.11",
-        "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.11",
-        "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.11",
-        "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.11",
-        "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.11",
-        "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.11",
+        "frontend@0.0.0|@swc/core-darwin-arm64@1.15.17",
+        "frontend@0.0.0|@swc/core-darwin-x64@1.15.17",
+        "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.17",
+        "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.17",
+        "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.17",
+        "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.17",
+        "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.17",
+        "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.17",
+        "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.17",
+        "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.17",
         "frontend@0.0.0|@swc/counter@0.1.3",
         "frontend@0.0.0|@swc/types@0.1.25"
       ]
@@ -24169,17 +24169,17 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0",
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1",
       "dependsOn": [
         "frontend@0.0.0|@croct/json5-parser@0.2.2",
-        "frontend@0.0.0|@swc/core@1.15.11",
+        "frontend@0.0.0|@swc/core@1.15.17",
         "frontend@0.0.0|execa@9.6.1",
         "frontend@0.0.0|glob@13.0.6",
-        "frontend@0.0.0|i18next-cli@1.46.0|chokidar@5.0.0",
-        "frontend@0.0.0|i18next-cli@1.46.0|commander@14.0.3",
-        "frontend@0.0.0|i18next-cli@1.46.0|minimatch@10.2.2",
+        "frontend@0.0.0|i18next-cli@1.46.1|chokidar@5.0.0",
+        "frontend@0.0.0|i18next-cli@1.46.1|commander@14.0.3",
+        "frontend@0.0.0|i18next-cli@1.46.1|minimatch@10.2.4",
         "frontend@0.0.0|i18next-resources-for-ts@2.0.0",
-        "frontend@0.0.0|inquirer@13.2.5",
+        "frontend@0.0.0|inquirer@13.3.0",
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|jsonc-parser@3.3.1",
         "frontend@0.0.0|ora@9.3.0",
@@ -24189,37 +24189,37 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|balanced-match@4.0.4"
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|balanced-match@4.0.4"
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|brace-expansion@5.0.3",
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|brace-expansion@5.0.4",
       "dependsOn": [
-        "frontend@0.0.0|i18next-cli@1.46.0|balanced-match@4.0.4"
+        "frontend@0.0.0|i18next-cli@1.46.1|balanced-match@4.0.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|chokidar@5.0.0",
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|chokidar@5.0.0",
       "dependsOn": [
-        "frontend@0.0.0|i18next-cli@1.46.0|readdirp@5.0.0"
+        "frontend@0.0.0|i18next-cli@1.46.1|readdirp@5.0.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|commander@14.0.3"
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|commander@14.0.3"
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|minimatch@10.2.2",
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|minimatch@10.2.4",
       "dependsOn": [
-        "frontend@0.0.0|i18next-cli@1.46.0|brace-expansion@5.0.3"
+        "frontend@0.0.0|i18next-cli@1.46.1|brace-expansion@5.0.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.46.0|readdirp@5.0.0"
+      "ref": "frontend@0.0.0|i18next-cli@1.46.1|readdirp@5.0.0"
     },
     {
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@swc/core@1.15.11",
+        "frontend@0.0.0|@swc/core@1.15.17",
         "frontend@0.0.0|i18next-resources-for-ts@2.0.0|chokidar@5.0.0",
         "frontend@0.0.0|yaml@2.8.2"
       ]
@@ -24260,7 +24260,7 @@
       "ref": "frontend@0.0.0|imurmurhash@0.1.4"
     },
     {
-      "ref": "frontend@0.0.0|inquirer@13.2.5",
+      "ref": "frontend@0.0.0|inquirer@13.3.0",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
         "frontend@0.0.0|@inquirer/core@11.1.5",
