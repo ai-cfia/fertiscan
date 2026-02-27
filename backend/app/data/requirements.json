@@ -1,0 +1,294 @@
+[
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(a)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply.",
+    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "title_en": "Manufacturer Name and Address Presence",
+    "title_fr": "Présence du nom et de l'adresse du fabricant"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(b)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply.",
+    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "title_en": "Product Name Presence",
+    "title_fr": "Présence du nom du produit"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(c)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(1)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(2)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(3)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(4)",
+        "type": "APPLICABILITY_CONDITION"
+      }
+    ],
+    "guidance_en": "Text-based check only; cannot verify against CFIA database. If no registration number found, flag as INCONCLUSIVE rather than exempt. Section 18 does not apply.",
+    "guidance_fr": "Vérification textuelle uniquement ; pas de validation contre la base ACIA. Si aucun numéro n'est trouvé, marquer INCONCLUSIF plutôt qu'exempté. L'article 18 ne s'applique pas.",
+    "title_en": "Registration Number Presence",
+    "title_fr": "Présence du numéro d'enregistrement"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(d)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "18(1)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(1)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(2)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(3)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(4)",
+        "type": "APPLICABILITY_CONDITION"
+      }
+    ],
+    "title_en": "Exempt Mixture Components Registration Numbers",
+    "title_fr": "Numéros d'enregistrement des composants d'un mélange exempté"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(e)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(3)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(4)",
+        "type": "APPLICABILITY_CONDITION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply. Exempt if product is a treated seed [3.1(3)] or growing medium [3.1(4)] exempt from registration. If registration status is unclear, flag as INCONCLUSIVE.",
+    "guidance_fr": "L'article 18 ne s'applique pas. Exempté si le produit est une semence traitée [3.1(3)] ou un milieu de culture [3.1(4)] exempté de l'enregistrement. Si le statut d'enregistrement est incertain, marquer comme INCONCLUSIF.",
+    "title_en": "Directions for Use Presence",
+    "title_fr": "Présence de modes d'emploi"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(f)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply. (Exemption 16(7) allows volume instead for certain materials).",
+    "guidance_fr": "L'article 18 ne s'applique pas. (L'exemption 16(7) autorise le volume à la place pour certains composants).",
+    "title_en": "Weight Presence",
+    "title_fr": "Présence du poids"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(g)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply.",
+    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "title_en": "Guaranteed Analysis Presence",
+    "title_fr": "Présence d'une analyse garantie"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(h)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply. Absence of a precaution statement is NON_COMPLIANT.",
+    "guidance_fr": "L'article 18 ne s'applique pas. L'absence d'un énoncé de précaution est NON CONFORME.",
+    "title_en": "Precaution Statement Presence",
+    "title_fr": "Présence de l'énoncé de précaution"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(i)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 296",
+        "citation": "162(1)",
+        "type": "APPLICABILITY_CONDITION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply.",
+    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "title_en": "Prohibited Material Statements",
+    "title_fr": "Énoncés relatifs aux substances interdites"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(j)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      }
+    ],
+    "guidance_en": "Section 18 does not apply.",
+    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "title_en": "Lot Number Presence",
+    "title_fr": "Présence du numéro de lot"
+  },
+  {
+    "rules": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(1)(k)"
+      }
+    ],
+    "modifiers": [
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "16(7)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "18(1)",
+        "type": "EXEMPTION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(1)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(2)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(3)",
+        "type": "APPLICABILITY_CONDITION"
+      },
+      {
+        "legislation": "C.R.C., c. 666",
+        "citation": "3.1(4)",
+        "type": "APPLICABILITY_CONDITION"
+      }
+    ],
+    "guidance_en": "Lexical validation against the List of Materials is not yet supported. Flag as INCONCLUSIVE if candidates are found or if proof of exemption is ambiguous.",
+    "guidance_fr": "La validation lexicale par rapport à la Liste des composants n'est pas encore prise en charge. Marquer comme INCONCLUSIF si des candidats sont trouvés ou si la preuve d'exemption est ambiguë.",
+    "title_en": "List of Materials Term for Exempt Products",
+    "title_fr": "Terme de la Liste des composants pour les produits exemptés"
+  }
+]

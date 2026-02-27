@@ -10,4 +10,5 @@
     },
   },
   "globs": ["**/*.md"],
+  "ignores": ["backend/app/data/law/markdown/**"],
 }

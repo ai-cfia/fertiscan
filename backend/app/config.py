@@ -5,7 +5,7 @@ import logging
 import secrets
 import warnings
 from pathlib import Path
-from typing import Annotated, Any, Literal, Self, cast
+from typing import Annotated, Any, Literal, Self
 
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
@@ -74,7 +74,7 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_KEY: SecretStr | None = None
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
-    RULE_SEED_DATA_PATH: str = "app/data/rule_data.json"
+    COMPLIANCE_SEED_DATA_DIR: str = "app/data"
     PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
 
     @field_validator("LOG_LEVEL", mode="before")
@@ -168,14 +168,33 @@ class Settings(BaseSettings):
         self._check_default_secret("MINIO_ROOT_PASSWORD", self.MINIO_ROOT_PASSWORD)
         return self
 
-    def rule_data_seed(self) -> list[dict[str, Any]]:
-        rule_seed_data_path = Path(self.RULE_SEED_DATA_PATH)
-        if rule_seed_data_path.exists():
-            with rule_seed_data_path.open("r", encoding="utf-8") as data_file:
-                rule_data = json.load(data_file)
-        else:
-            rule_data = []
-        return cast(list[dict[str, Any]], rule_data)
+    def compliance_seed_data(self) -> dict[str, Any]:
+        """Load compliance seed data from multiple files."""
+        seed_dir = Path(self.COMPLIANCE_SEED_DATA_DIR)
+        data = {
+            "legislations": [],
+            "provisions": [],
+            "definitions": [],
+            "requirements": [],
+        }
+
+        if not seed_dir.exists():
+            return data
+
+        file_map = {
+            "legislations": "legislations.json",
+            "provisions": "provisions.json",
+            "definitions": "definitions.json",
+            "requirements": "requirements.json",
+        }
+
+        for key, filename in file_map.items():
+            file_path = seed_dir / filename
+            if file_path.exists():
+                with file_path.open("r", encoding="utf-8") as f:
+                    data[key] = json.load(f)
+
+        return data
 
 
 settings = Settings()  # type: ignore
