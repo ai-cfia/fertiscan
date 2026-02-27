@@ -7,17 +7,13 @@ erDiagram
     Legislation ||--o{ Requirement : "governs"
     Legislation ||--o{ Provision : "contains"
     Legislation ||--o{ Definition : "defines terms"
-    Legislation ||--o{ ReferenceMaterial : "incorporates"
-
     %% 2. The Relationship Hub (Requirement)
     Requirement ||--o{ RequirementProvision : "has rules"
     Requirement ||--o{ RequirementModifier : "has modifiers"
-    Requirement ||--o{ RequirementReference : "uses material"
 
     %% 3. The Structural Units (Join Table Links)
     RequirementProvision }o--|| Provision : "references"
     RequirementModifier }o--|| Provision : "references"
-    RequirementReference }o--|| ReferenceMaterial : "points to"
 
     %% 4. The Glossary (Provision-Definition)
     Provision ||--o{ ProvisionDefinition : "has definitions"
@@ -33,10 +29,10 @@ erDiagram
         string legislation_type "nullable"
         string title_en "nullable"
         string title_fr "nullable"
-        text description_en "nullable"
-        text description_fr "nullable"
-        text guidance_en "nullable"
-        text guidance_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
         string source_url_en "nullable"
         string source_url_fr "nullable"
         date last_amended_date "nullable"
@@ -51,12 +47,12 @@ erDiagram
         boolean is_global_rule "default false"
         string title_en "nullable"
         string title_fr "nullable"
-        text description_en "nullable"
-        text description_fr "nullable"
-        text text_en
-        text text_fr
-        text guidance_en "nullable"
-        text guidance_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string text_en
+        string text_fr
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -66,12 +62,12 @@ erDiagram
         uuid legislation_id FK
         string title_en
         string title_fr
-        text description_en "nullable"
-        text description_fr "nullable"
-        text text_en
-        text text_fr
-        text guidance_en "nullable"
-        text guidance_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string text_en
+        string text_fr
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -81,15 +77,13 @@ erDiagram
         uuid legislation_id FK
         string title_en "nullable"
         string title_fr "nullable"
-        text description_en "nullable"
-        text description_fr "nullable"
-        text guidance_en "nullable"
-        text guidance_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
         timestamp created_at
         timestamp updated_at
     }
-
-
 
     RequirementProvision {
         uuid id PK
@@ -108,29 +102,6 @@ erDiagram
         uuid id PK
         uuid provision_id FK
         uuid definition_id FK
-    }
-
-    ReferenceMaterial {
-        uuid id PK
-        uuid legislation_id FK
-        string title_en "nullable"
-        string title_fr "nullable"
-        text description_en "nullable"
-        text description_fr "nullable"
-        text content_en
-        text content_fr
-        text guidance_en "nullable"
-        text guidance_fr "nullable"
-        string source_url_en "nullable"
-        string source_url_fr "nullable"
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    RequirementReference {
-        uuid id PK
-        uuid requirement_id FK
-        uuid reference_material_id FK
     }
 
     NonComplianceDataItem {

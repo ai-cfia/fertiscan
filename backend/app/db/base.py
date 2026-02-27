@@ -32,3 +32,15 @@ class TimestampMixin(SQLModel):
             "nullable": False,
         },
     )  # type: ignore[call-overload]
+
+
+class GuidanceMixin(SQLModel):
+    guidance_en: str | None = Field(default=None)
+    guidance_fr: str | None = Field(default=None)
+
+
+class DescriptiveMixin(SQLModel):
+    title_en: str | None = Field(default=None, max_length=255)
+    title_fr: str | None = Field(default=None, max_length=255)
+    description_en: str | None = Field(default=None)
+    description_fr: str | None = Field(default=None)
