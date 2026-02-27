@@ -1,14 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-
   "ignorePaths": [],
-
-  "schedule": ["before 3am every day"],
+  "schedule": ["before 3am"],
+  "prHourlyLimit": 2,
+  "rebaseWhen": "conflicted",
+  "labels": ["dependencies"],
+  "timezone": "America/Montreal",
 
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 3am every day"]
+    "schedule": ["before 3am"],
+    "automerge": true
   },
 
   "packageRules": [
@@ -20,23 +23,96 @@
     {
       "groupName": "eslint monorepo",
       "matchManagers": ["npm"],
-      "matchPackagePatterns": ["^eslint", "typescript-eslint", "eslint-plugin-"]
+      "matchPackageNames": [
+        "/^eslint($|-)/",
+        "/^@?typescript-eslint/",
+        "/^eslint-plugin-/"
+      ],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "eslint monorepo",
+      "matchManagers": ["npm"],
+      "matchPackageNames": [
+        "/^eslint($|-)/",
+        "/^@?typescript-eslint/",
+        "/^eslint-plugin-/"
+      ],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     },
     {
       "groupName": "Vite & Vitest",
       "matchManagers": ["npm"],
-      "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"]
+      "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "Vite & Vitest",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     },
     {
       "groupName": "Tailwind & plugins",
       "matchManagers": ["npm"],
-      "matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"]
+      "matchPackageNames": ["/^tailwindcss($|-)/", "/^@tailwindcss\\//"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "Tailwind & plugins",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["/^tailwindcss($|-)/", "/^@tailwindcss\\//"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     },
     {
       "matchManagers": ["npm"],
       "matchDepTypes": ["devDependencies"],
-      "automerge": false,
-      "major": { "automerge": false }
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchManagers": ["pep621", "pip_requirements", "poetry"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["pep621", "pip_requirements", "poetry"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ]
 }
