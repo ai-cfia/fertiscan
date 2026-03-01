@@ -1,7 +1,7 @@
 # Dockerfile for generating Python/uv SBOM in CycloneDX format.
 # Used by scripts/generate-sbom.sh
 
-FROM python:3.12
+FROM python:3.14
 
 # Install uv to global location
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
