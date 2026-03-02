@@ -106,8 +106,8 @@
       "type": "library",
       "name": "code-frame",
       "group": "@babel",
-      "version": "7.27.1",
-      "bom-ref": "frontend@0.0.0|@babel/code-frame@7.27.1",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/code-frame@7.29.0",
       "licenses": [
         {
           "license": {
@@ -116,15 +116,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/code-frame@7.27.1",
+      "purl": "pkg:npm/%40babel/code-frame@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz",
+          "url": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "72343b66543432fddbe3b84006e4debf24ee60de22fa5a09286795f5f95c0a020adfb7025d187e2f56ddde20479729deae143b0610a49f604f6d050bfab1aa16"
+              "content": "f4d8427988eaf7edeec6076da76d0b4a225726f37415e0ad346a49c6e3056752afddc59435be833a127052f7150b328647ae9cc389e3c0cea1ac92ea80ec1b73"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -141,8 +141,8 @@
       "type": "library",
       "name": "compat-data",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/compat-data@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/compat-data@7.29.0",
       "licenses": [
         {
           "license": {
@@ -151,15 +151,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/compat-data@7.28.5",
+      "purl": "pkg:npm/%40babel/compat-data@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "eae157c826b2a1c45baa164e07ee9772e65b90c3629b07d51858e2f024d99c2cce1d51af0eacef8adbb5aded805392d13a58b3ede40f841f02a4032f9f1f448c"
+              "content": "4f534226a4ff8fdf9c9fc7ef92dee3b706cb05f2c2ff5cb573b36d09e5c5460cc64ec69f8baf0c46ff32ce46126a9067140e8bdd4d9549cd367220f3a0026126"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -180,8 +180,8 @@
       "type": "library",
       "name": "core",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/core@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/core@7.29.0",
       "licenses": [
         {
           "license": {
@@ -190,15 +190,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/core@7.28.5",
+      "purl": "pkg:npm/%40babel/core@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/core/-/core-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/core/-/core-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7bb8d3e03c58bc80cb935647994fe6fe6075f6b7b1f6cbf47367ed06d8d206ffa454cffdd367a1d1f20d5330fb5302cb351fa3539f391b1509f3f1017c03397f"
+              "content": "08639f389a968e0daa5bf31beb336c0e6faee6f150f03c577db334f73ebda7967afa61358a43f68d45f0fa3e363dfd574d8103d919e2e5ff799e961ebb030340"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -219,8 +219,8 @@
       "type": "library",
       "name": "generator",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/generator@7.28.5",
+      "version": "7.29.1",
+      "bom-ref": "frontend@0.0.0|@babel/generator@7.29.1",
       "licenses": [
         {
           "license": {
@@ -229,15 +229,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/generator@7.28.5",
+      "purl": "pkg:npm/%40babel/generator@7.29.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/generator/-/generator-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/generator/-/generator-7.29.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dc4c0b161677f09e15c883fa58db6dda451d5bd76891703d0abe08548147b82a59dc7f3f6053a5e498d91e2b2b9f57c04cf06628aa97cc316f87d7d4c07cfa09"
+              "content": "aac685fbd41c9b642ff1244830cb1c02f1b83b7949d05d46b8ca391d1fc1a74d8ba293609d9042fc491b7af1c5786b3896cfe83f3f6ff81b26cdb91b7bed1d53"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -254,8 +254,8 @@
       "type": "library",
       "name": "helper-compilation-targets",
       "group": "@babel",
-      "version": "7.27.2",
-      "bom-ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
       "licenses": [
         {
           "license": {
@@ -264,15 +264,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-compilation-targets@7.27.2",
+      "purl": "pkg:npm/%40babel/helper-compilation-targets@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.27.2.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dbed6d8465145968cb4d84c76562b59fc6206b48a3073d5702151770acbcd6b77983aca1ee11aa329e39bfb71a7526c41dcf46dce4efe394b29de44dde9b380d"
+              "content": "258b65b3786a8b5e5f731e4669234bed209327630d9a3ae41d7838152a4e03f82bc4af0ac326796ee6c7b02abc1570a4b9aeb186e69a062b7eddbefe55945f70"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -328,8 +328,8 @@
       "type": "library",
       "name": "helper-module-imports",
       "group": "@babel",
-      "version": "7.27.1",
-      "bom-ref": "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
       "licenses": [
         {
           "license": {
@@ -338,15 +338,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-module-imports@7.27.1",
+      "purl": "pkg:npm/%40babel/helper-module-imports@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.27.1.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d204855943cd5cda29aad20f42f943e56817608e4663690fd9c0afa13f247338db7dc7ee2258d36dc5abba50f50883c85f682dd708216c3cb4f32135a7efebdf"
+              "content": "9795e464aeebef06bd2ee706c3d2f0672c8252c71be31dfb2564cfcfbb30c0513fd05310006a62594667f2ef43ce448158470adb98e6bee6dfa70d9d9c031d6f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -363,8 +363,8 @@
       "type": "library",
       "name": "helper-module-transforms",
       "group": "@babel",
-      "version": "7.28.3",
-      "bom-ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
       "licenses": [
         {
           "license": {
@@ -373,15 +373,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-module-transforms@7.28.3",
+      "purl": "pkg:npm/%40babel/helper-module-transforms@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.3.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "832b5751bb3c936b174bd3e7429b73e68d109e92cbe754b001220e458e97681285f3c9ec393d19c3db332ea9521900cfff84e58c1003e72f7ca765357ea91db3"
+              "content": "ebba1714062bd9c0cb0d518b5d3100063741259e9dac4954488ed62a9ef436ba72212b28de9946f52006105eb2ef36e16bfc0ecd40725964c9bc40d534850670"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -550,8 +550,8 @@
       "type": "library",
       "name": "helpers",
       "group": "@babel",
-      "version": "7.28.4",
-      "bom-ref": "frontend@0.0.0|@babel/helpers@7.28.4",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helpers@7.28.6",
       "licenses": [
         {
           "license": {
@@ -560,15 +560,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helpers@7.28.4",
+      "purl": "pkg:npm/%40babel/helpers@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.4.tgz",
+          "url": "https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "1c5379f4c9905c61d5c9869d28b56e998b00f5d045ba7fe5758c62a448f3038d7dea3a4b65df148c41012e46c492f7d8ade0ea2616716005853edadf84da63e3"
+              "content": "c4e06fc2af3a1c7741ed65034df29f4ff56ec61ee012543e49fb62d82cbac8858d5b4e4ff2252c94e55c678fec29b13efe341aba4400773fe07f7ef6e2461dab"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -589,8 +589,8 @@
       "type": "library",
       "name": "parser",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/parser@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/parser@7.29.0",
       "licenses": [
         {
           "license": {
@@ -599,15 +599,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/parser@7.28.5",
+      "purl": "pkg:npm/%40babel/parser@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/parser/-/parser-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/parser/-/parser-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "28a054d5519847b391af702de4702d510f935774b34425e603ff0e7436622c3048671572cd7bb3b4f8df2dddc15753d10101823165921d884bd05f1de6e1c10d"
+              "content": "2320e0155e467835155f861d17fdc23d42ed5464975cc2e1d7154881d0a0c40a64b6a9d0574afbffc36ab6183ef182c6680b5dc88968daa21d66b6c2bf8fbbc3"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -815,8 +815,8 @@
       "type": "library",
       "name": "template",
       "group": "@babel",
-      "version": "7.27.2",
-      "bom-ref": "frontend@0.0.0|@babel/template@7.27.2",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/template@7.28.6",
       "licenses": [
         {
           "license": {
@@ -825,15 +825,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/template@7.27.2",
+      "purl": "pkg:npm/%40babel/template@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz",
+          "url": "https://registry.npmjs.org/@babel/template/-/template-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2cf0d9f39684272612775f3f0e48cd878ff2d67b641392b05075938aa811c6bbae64bd85d72b879628151cbbdc1d8daf3075edb4a169267e8bc1f23b730ece0f"
+              "content": "600e8c6b62ac09d19bf960ba5290551491972f9f0c0c0ea8c8e35b8f217ffb9b0183163f7709212e881b313d865d7c94f38fc8851c3fd83d4eb3507f822cfe05"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -850,8 +850,8 @@
       "type": "library",
       "name": "traverse",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/traverse@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/traverse@7.29.0",
       "licenses": [
         {
           "license": {
@@ -860,15 +860,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/traverse@7.28.5",
+      "purl": "pkg:npm/%40babel/traverse@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/traverse/-/traverse-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4c20a3e2de7953dd24865624555ff44df9099009148378d9140dcd79beee9d94fc08fa24ee28917da5f417e5a7a96aadecec613a7d2e04a5c2c3895b2fc5b469"
+              "content": "e073e242bd17efec1a1dfc973d9a563df58bfc9edd70dd66c7d80be9675054c6cf9c5dfe66148cb3cb42c4dee81dd74913d7e1344efe9717679727a629f251b8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -885,8 +885,8 @@
       "type": "library",
       "name": "types",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/types@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/types@7.29.0",
       "licenses": [
         {
           "license": {
@@ -895,15 +895,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/types@7.28.5",
+      "purl": "pkg:npm/%40babel/types@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/types/-/types-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/types/-/types-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a90e66e3c788fcc14b4393f1423e0f15aa6b8f20932c8dfb12558c98db342bc2e4ddd55e39d36907792cf2373bc8ce420e6542ef778c564fedae4ddf826ad4a4"
+              "content": "2f07591e949c338433f17c3688a4b34be71f825673246be87d0202cbb5bbbf871aaeee046809b252e3ba046adbc90da6615d755b453c8f998185dd7875ddc1d0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8898,8 +8898,8 @@
       "type": "library",
       "name": "plugin-react",
       "group": "@vitejs",
-      "version": "5.1.2",
-      "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
+      "version": "5.1.4",
+      "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
       "licenses": [
         {
           "license": {
@@ -8908,15 +8908,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitejs/plugin-react@5.1.2",
+      "purl": "pkg:npm/%40vitejs/plugin-react@5.1.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-5.1.2.tgz",
+          "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-5.1.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "11c034ee91c9a2ecb0a73b284d4a8d87937019aca5d8f3d51092944a29c6192c451989feb2161ba8c18183a1570ea817ba6f4ebbf79c6fee35d6cb30f0722625"
+              "content": "5487052dd462fd561153c38bfe9b8bed05cc61a7c79aa3a7c13658e7453524f942363df43f108cc7ae5ce3de1bd4af5b7bd857f37295b74fa04c4c1358ba93a0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8930,6 +8930,47 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@vitejs/plugin-react"
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "pluginutils",
+          "group": "@rolldown",
+          "version": "1.0.0-rc.3",
+          "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/%40rolldown/pluginutils@1.0.0-rc.3",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.3.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "7b26e4dd38f3cf357dec3963e5cf97ac1156e7b793361ce877aeb2f47ac197327a36c0ab582a7fda468f4b72bdc099aeac10b44ddc38c8f8d7299aa5ce78a6dd"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@vitejs/plugin-react/node_modules/@rolldown/pluginutils"
+            }
+          ]
         }
       ]
     },
@@ -9883,8 +9924,8 @@
     {
       "type": "library",
       "name": "baseline-browser-mapping",
-      "version": "2.9.4",
-      "bom-ref": "frontend@0.0.0|baseline-browser-mapping@2.9.4",
+      "version": "2.10.0",
+      "bom-ref": "frontend@0.0.0|baseline-browser-mapping@2.10.0",
       "licenses": [
         {
           "license": {
@@ -9893,15 +9934,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/baseline-browser-mapping@2.9.4",
+      "purl": "pkg:npm/baseline-browser-mapping@2.10.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.9.4.tgz",
+          "url": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "64243d1845a5ef70559bc6eee45b6cf27b7b30775bb79bd8f5b3fa5869d487eaf797c33b0a07f24e5c2c8026cc0bae813713ebe97a1c7b78fae8cb3961441334"
+              "content": "948ca0d2ccd17d86e2cbaee3f4a37c232783eeaee1726aa727575d5a636dd7d22d1a934deb89a79659b150d14839d3a6e9bcbdee394beb07e94d326b9a78d600"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10295,8 +10336,8 @@
     {
       "type": "library",
       "name": "caniuse-lite",
-      "version": "1.0.30001759",
-      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001759",
+      "version": "1.0.30001775",
+      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001775",
       "licenses": [
         {
           "license": {
@@ -10305,15 +10346,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/caniuse-lite@1.0.30001759",
+      "purl": "pkg:npm/caniuse-lite@1.0.30001775",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001759.tgz",
+          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001775.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3f37f1f5f38aa0abdebd07fca025e8c8d450e50cb1263fb73b446ac76579a314fad4a1b1f3e9fa855fc853225e89f51c8b67259e698a569bed8aa4738225a34b"
+              "content": "b3742fecb86df736d5284f57a13c911bac150c229db4e1488c11a0dfe6219fa25acadb8d28f22304c4cc218d409ce1f7b1e2f99af17ec77de8180c8ade156ddc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -11737,8 +11778,8 @@
     {
       "type": "library",
       "name": "electron-to-chromium",
-      "version": "1.5.266",
-      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.266",
+      "version": "1.5.302",
+      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.302",
       "licenses": [
         {
           "license": {
@@ -11747,15 +11788,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/electron-to-chromium@1.5.266",
+      "purl": "pkg:npm/electron-to-chromium@1.5.302",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.266.tgz",
+          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.302.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9205848255ef9047cc1fbaf13f9392659c27683593ec9f44a190ae8e19e92db7e2d1b6cdb51920757d84de0b7451eaf5d5ceb5a82624b41de1c24012df6e6c26"
+              "content": "b0ce8700dd8bc8af362323c1a739c346a953400b6e49a3be4a1cc58964efa0c24b1f267e637f6bf1531f1f3c1b53c31507343859d9fce7ec25665d932c6225c2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21024,8 +21065,8 @@
     {
       "type": "library",
       "name": "update-browserslist-db",
-      "version": "1.2.2",
-      "bom-ref": "frontend@0.0.0|update-browserslist-db@1.2.2",
+      "version": "1.2.3",
+      "bom-ref": "frontend@0.0.0|update-browserslist-db@1.2.3",
       "licenses": [
         {
           "license": {
@@ -21034,15 +21075,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/update-browserslist-db@1.2.2",
+      "purl": "pkg:npm/update-browserslist-db@1.2.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.2.tgz",
+          "url": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "13ce697cdccc43d8e92a403bf932408b84c937eb410ae5a1e6b51c4bfb2fe9c162fb5abd2d80f00c8e5da542f4bbfef710497243c7774c469e5b8b0f79d06a60"
+              "content": "26cd26f5cc7ea8e803c68d1e32214612e796cedcfe778f8cdeb1a598a3d3f93e084bf8cfe32970dcdc29bba7294d33fc4753000b5905e156dd2eddc045fdb4f7"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21826,8 +21867,8 @@
         "frontend@0.0.0|@types/node@25.0.10",
         "frontend@0.0.0|@types/react-dom@19.2.3",
         "frontend@0.0.0|@types/react@19.2.9",
-        "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
-        "frontend@0.0.0|axios@1.13.6",
+        "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
+        "frontend@0.0.0|axios@1.13.5",
         "frontend@0.0.0|date-fns@4.1.0",
         "frontend@0.0.0|dotenv@17.2.3",
         "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
@@ -21856,7 +21897,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/code-frame@7.27.1",
+      "ref": "frontend@0.0.0|@babel/code-frame@7.29.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5",
         "frontend@0.0.0|js-tokens@4.0.0",
@@ -21864,20 +21905,20 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/compat-data@7.28.5"
+      "ref": "frontend@0.0.0|@babel/compat-data@7.29.0"
     },
     {
-      "ref": "frontend@0.0.0|@babel/core@7.28.5",
+      "ref": "frontend@0.0.0|@babel/core@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/generator@7.28.5",
-        "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
-        "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
-        "frontend@0.0.0|@babel/helpers@7.28.4",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
+        "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
+        "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
+        "frontend@0.0.0|@babel/helpers@7.28.6",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@jridgewell/remapping@2.3.5",
         "frontend@0.0.0|convert-source-map@2.0.0",
         "frontend@0.0.0|debug@4.4.3",
@@ -21887,19 +21928,19 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/generator@7.28.5",
+      "ref": "frontend@0.0.0|@babel/generator@7.29.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@jridgewell/gen-mapping@0.3.13",
         "frontend@0.0.0|@jridgewell/trace-mapping@0.3.31",
         "frontend@0.0.0|jsesc@3.1.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
+      "ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/compat-data@7.28.5",
+        "frontend@0.0.0|@babel/compat-data@7.29.0",
         "frontend@0.0.0|@babel/helper-validator-option@7.27.1",
         "frontend@0.0.0|browserslist@4.28.1",
         "frontend@0.0.0|lru-cache@5.1.1",
@@ -21910,19 +21951,19 @@
       "ref": "frontend@0.0.0|@babel/helper-globals@7.28.0"
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+      "ref": "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
+      "ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5",
-        "frontend@0.0.0|@babel/traverse@7.28.5"
+        "frontend@0.0.0|@babel/traverse@7.29.0"
       ]
     },
     {
@@ -21938,43 +21979,43 @@
       "ref": "frontend@0.0.0|@babel/helper-validator-option@7.27.1"
     },
     {
-      "ref": "frontend@0.0.0|@babel/helpers@7.28.4",
+      "ref": "frontend@0.0.0|@babel/helpers@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/parser@7.28.5",
+      "ref": "frontend@0.0.0|@babel/parser@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-syntax-jsx@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-syntax-typescript@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-transform-react-jsx-self@7.27.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-transform-react-jsx-source@7.27.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
@@ -21982,27 +22023,27 @@
       "ref": "frontend@0.0.0|@babel/runtime@7.28.4"
     },
     {
-      "ref": "frontend@0.0.0|@babel/template@7.27.2",
+      "ref": "frontend@0.0.0|@babel/template@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/traverse@7.28.5",
+      "ref": "frontend@0.0.0|@babel/traverse@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/generator@7.28.5",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
         "frontend@0.0.0|@babel/helper-globals@7.28.0",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|debug@4.4.3"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/types@7.28.5",
+      "ref": "frontend@0.0.0|@babel/types@7.29.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/helper-string-parser@7.27.1",
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5"
@@ -22076,7 +22117,7 @@
     {
       "ref": "frontend@0.0.0|@emotion/babel-plugin@11.13.5",
       "dependsOn": [
-        "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+        "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|@emotion/babel-plugin@11.13.5|convert-source-map@1.9.0",
         "frontend@0.0.0|@emotion/hash@0.9.2",
@@ -22998,12 +23039,12 @@
     {
       "ref": "frontend@0.0.0|@tanstack/router-plugin@1.154.7",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-syntax-jsx@7.28.6",
         "frontend@0.0.0|@babel/plugin-syntax-typescript@7.28.6",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@tanstack/react-router@1.154.7",
         "frontend@0.0.0|@tanstack/router-core@1.154.7",
         "frontend@0.0.0|@tanstack/router-generator@1.154.7",
@@ -23022,9 +23063,9 @@
     {
       "ref": "frontend@0.0.0|@tanstack/router-utils@1.154.7",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/generator@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
+        "frontend@0.0.0|@babel/parser@7.29.0",
         "frontend@0.0.0|ansis@4.2.0",
         "frontend@0.0.0|diff@8.0.3",
         "frontend@0.0.0|pathe@2.0.3",
@@ -23046,8 +23087,8 @@
     {
       "ref": "frontend@0.0.0|@types/babel__core@7.20.5",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@types/babel__generator@7.27.0",
         "frontend@0.0.0|@types/babel__template@7.4.4",
         "frontend@0.0.0|@types/babel__traverse@7.28.0"
@@ -23056,20 +23097,20 @@
     {
       "ref": "frontend@0.0.0|@types/babel__generator@7.27.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__template@7.4.4",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__traverse@7.28.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
@@ -23235,16 +23276,19 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
+      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-self@7.27.1",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-source@7.27.1",
-        "frontend@0.0.0|@rolldown/pluginutils@1.0.0-beta.53",
         "frontend@0.0.0|@types/babel__core@7.20.5",
+        "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
         "frontend@0.0.0|react-refresh@0.18.0",
         "frontend@0.0.0|rolldown-vite@7.3.1"
       ]
+    },
+    {
+      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3"
     },
     {
       "ref": "frontend@0.0.0|@vitest/expect@4.0.17",
@@ -23372,10 +23416,10 @@
     {
       "ref": "frontend@0.0.0|babel-dead-code-elimination@1.0.12",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
@@ -23390,7 +23434,7 @@
       "ref": "frontend@0.0.0|balanced-match@1.0.2"
     },
     {
-      "ref": "frontend@0.0.0|baseline-browser-mapping@2.9.4"
+      "ref": "frontend@0.0.0|baseline-browser-mapping@2.10.0"
     },
     {
       "ref": "frontend@0.0.0|binary-extensions@2.3.0"
@@ -23411,11 +23455,11 @@
     {
       "ref": "frontend@0.0.0|browserslist@4.28.1",
       "dependsOn": [
-        "frontend@0.0.0|baseline-browser-mapping@2.9.4",
-        "frontend@0.0.0|caniuse-lite@1.0.30001759",
-        "frontend@0.0.0|electron-to-chromium@1.5.266",
+        "frontend@0.0.0|baseline-browser-mapping@2.10.0",
+        "frontend@0.0.0|caniuse-lite@1.0.30001775",
+        "frontend@0.0.0|electron-to-chromium@1.5.302",
         "frontend@0.0.0|node-releases@2.0.27",
-        "frontend@0.0.0|update-browserslist-db@1.2.2"
+        "frontend@0.0.0|update-browserslist-db@1.2.3"
       ]
     },
     {
@@ -23461,7 +23505,7 @@
       "ref": "frontend@0.0.0|callsites@3.1.0"
     },
     {
-      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001759"
+      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001775"
     },
     {
       "ref": "frontend@0.0.0|chai@6.2.2"
@@ -23635,7 +23679,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|electron-to-chromium@1.5.266"
+      "ref": "frontend@0.0.0|electron-to-chromium@1.5.302"
     },
     {
       "ref": "frontend@0.0.0|emoji-regex@10.6.0"
@@ -23686,8 +23730,8 @@
     {
       "ref": "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
         "frontend@0.0.0|eslint@9.39.2",
         "frontend@0.0.0|hermes-parser@0.25.1",
         "frontend@0.0.0|zod-validation-error@4.0.2",
@@ -24466,7 +24510,7 @@
     {
       "ref": "frontend@0.0.0|parse-json@5.2.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
         "frontend@0.0.0|error-ex@1.3.4",
         "frontend@0.0.0|json-parse-even-better-errors@2.3.1",
         "frontend@0.0.0|lines-and-columns@1.2.4"
@@ -24931,7 +24975,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|update-browserslist-db@1.2.2",
+      "ref": "frontend@0.0.0|update-browserslist-db@1.2.3",
       "dependsOn": [
         "frontend@0.0.0|browserslist@4.28.1",
         "frontend@0.0.0|escalade@3.2.0",
