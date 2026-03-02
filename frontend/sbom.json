@@ -3381,8 +3381,8 @@
       "type": "library",
       "name": "roboto",
       "group": "@fontsource",
-      "version": "5.2.9",
-      "bom-ref": "frontend@0.0.0|@fontsource/roboto@5.2.9",
+      "version": "5.2.10",
+      "bom-ref": "frontend@0.0.0|@fontsource/roboto@5.2.10",
       "licenses": [
         {
           "license": {
@@ -3391,15 +3391,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40fontsource/roboto@5.2.9",
+      "purl": "pkg:npm/%40fontsource/roboto@5.2.10",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.2.9.tgz",
+          "url": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.2.10.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "6539321e23e4ef807f6a3f016566ecc43e58bbe2eafa747ae1e578c22ae5ada736a9747b8d893687a2652d8b8eba8aee4e419058dc367ccb8a35abf0effae0d3"
+              "content": "f07940e45b527f3fffa054abd9e2fb1855c0884ede2247063adc7bb63b0b2aaf9ab3bd36c7df8653b2bde620de5856a91c2e0cda1bfd46ba572914c618123c66"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21810,7 +21810,7 @@
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
         "frontend@0.0.0|@eslint/js@9.39.2",
-        "frontend@0.0.0|@fontsource/roboto@5.2.9",
+        "frontend@0.0.0|@fontsource/roboto@5.2.10",
         "frontend@0.0.0|@hey-api/openapi-ts@0.90.8",
         "frontend@0.0.0|@hookform/resolvers@5.2.2",
         "frontend@0.0.0|@mui/icons-material@7.3.7",
@@ -22308,7 +22308,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@fontsource/roboto@5.2.9"
+      "ref": "frontend@0.0.0|@fontsource/roboto@5.2.10"
     },
     {
       "ref": "frontend@0.0.0|@hey-api/codegen-core@0.5.4",
