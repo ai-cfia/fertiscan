@@ -9739,8 +9739,8 @@
     {
       "type": "library",
       "name": "axios",
-      "version": "1.13.5",
-      "bom-ref": "frontend@0.0.0|axios@1.13.5",
+      "version": "1.13.6",
+      "bom-ref": "frontend@0.0.0|axios@1.13.6",
       "licenses": [
         {
           "license": {
@@ -9749,15 +9749,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/axios@1.13.5",
+      "purl": "pkg:npm/axios@1.13.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/axios/-/axios-1.13.5.tgz",
+          "url": "https://registry.npmjs.org/axios/-/axios-1.13.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "733e2eafb55bd314b8fca50dd2d3d67b8e1eab1ac8bb7d667be7db6a78378a388db1c135dbd3cece2a49240eb39e2ab60bf67ab090a33229a34bc2dcfc602cf1"
+              "content": "0a14c21cca2e11eda49fbd775876d019cb98aebe9f5d3062bb8eb4393c16ad6a1bd7a8356d79f8bedcf4ecea5eedec0ca332409c4aae2e4e655905ad06283d0d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21827,7 +21827,7 @@
         "frontend@0.0.0|@types/react-dom@19.2.3",
         "frontend@0.0.0|@types/react@19.2.9",
         "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
-        "frontend@0.0.0|axios@1.13.5",
+        "frontend@0.0.0|axios@1.13.6",
         "frontend@0.0.0|date-fns@4.1.0",
         "frontend@0.0.0|dotenv@17.2.3",
         "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
@@ -23362,7 +23362,7 @@
       "ref": "frontend@0.0.0|asynckit@0.4.0"
     },
     {
-      "ref": "frontend@0.0.0|axios@1.13.5",
+      "ref": "frontend@0.0.0|axios@1.13.6",
       "dependsOn": [
         "frontend@0.0.0|follow-redirects@1.15.11",
         "frontend@0.0.0|form-data@4.0.5",
