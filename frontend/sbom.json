@@ -14553,8 +14553,8 @@
     {
       "type": "library",
       "name": "i18next",
-      "version": "25.8.0",
-      "bom-ref": "frontend@0.0.0|i18next@25.8.0",
+      "version": "25.8.13",
+      "bom-ref": "frontend@0.0.0|i18next@25.8.13",
       "licenses": [
         {
           "license": {
@@ -14563,15 +14563,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next@25.8.0",
+      "purl": "pkg:npm/i18next@25.8.13",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.0.tgz",
+          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.13.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "babae0e0730514c419d9b6ca44aec867cfc24c4ec3f07e09465030a80d99c034457dd7742bfe1c75b34d2e07e7f66a3e23f87dc09bbad6a2731fb8c214085465"
+              "content": "134bf38c1635c8cfa7b05aed8248cb8524f6341922ae4bce56841ad0c4a5761b2e6778d481eed9369bb01b409f73be33c28e59c11ce0dee3a04fe31c067df688"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21879,7 +21879,7 @@
         "frontend@0.0.0|http-status-codes@2.3.0",
         "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
         "frontend@0.0.0|i18next-cli@1.36.1",
-        "frontend@0.0.0|i18next@25.8.0",
+        "frontend@0.0.0|i18next@25.8.13",
         "frontend@0.0.0|p-limit@7.2.0",
         "frontend@0.0.0|react-dom@19.2.3",
         "frontend@0.0.0|react-error-boundary@6.1.0",
@@ -24123,7 +24123,7 @@
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0|readdirp@5.0.0"
     },
     {
-      "ref": "frontend@0.0.0|i18next@25.8.0",
+      "ref": "frontend@0.0.0|i18next@25.8.13",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|typescript@5.9.3"
@@ -24645,7 +24645,7 @@
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|html-parse-stringify@3.0.1",
-        "frontend@0.0.0|i18next@25.8.0",
+        "frontend@0.0.0|i18next@25.8.13",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|typescript@5.9.3",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
