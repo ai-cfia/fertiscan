@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # Force Python to write logs immediately instead of buffering
 ENV PYTHONUNBUFFERED=1
