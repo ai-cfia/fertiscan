@@ -18765,8 +18765,8 @@
     {
       "type": "library",
       "name": "react-i18next",
-      "version": "16.5.3",
-      "bom-ref": "frontend@0.0.0|react-i18next@16.5.3",
+      "version": "16.5.4",
+      "bom-ref": "frontend@0.0.0|react-i18next@16.5.4",
       "licenses": [
         {
           "license": {
@@ -18775,15 +18775,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react-i18next@16.5.3",
+      "purl": "pkg:npm/react-i18next@16.5.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.3.tgz",
+          "url": "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7e8fbf34d721dfbceac4ece5058ad6331d2ecbfc889cf9117e34aecb896a29d69e711d7b9ef0879c452ddd0cb303c5e343607fd225bfe4185a1d1dd99ae9291b"
+              "content": "eb28fe75c7cc9dc102db540f84e4ec5bc98e48efa9cc5993eaebd4ed75ddbccfc2a77f3326499378c78a993ae608c0f94e84fbf459a213f9915a2616709616e2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21884,7 +21884,7 @@
         "frontend@0.0.0|react-dom@19.2.3",
         "frontend@0.0.0|react-error-boundary@6.1.0",
         "frontend@0.0.0|react-hook-form@7.71.2",
-        "frontend@0.0.0|react-i18next@16.5.3",
+        "frontend@0.0.0|react-i18next@16.5.4",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|rolldown-vite@7.3.1",
         "frontend@0.0.0|swiper@12.1.2",
@@ -24081,7 +24081,7 @@
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|jsonc-parser@3.3.1",
         "frontend@0.0.0|ora@9.0.0",
-        "frontend@0.0.0|react-i18next@16.5.3",
+        "frontend@0.0.0|react-i18next@16.5.4",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|swc-walk@1.0.1"
       ]
@@ -24641,7 +24641,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|react-i18next@16.5.3",
+      "ref": "frontend@0.0.0|react-i18next@16.5.4",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|html-parse-stringify@3.0.1",
