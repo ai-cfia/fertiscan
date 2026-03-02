@@ -18731,8 +18731,8 @@
     {
       "type": "library",
       "name": "react-hook-form",
-      "version": "7.71.1",
-      "bom-ref": "frontend@0.0.0|react-hook-form@7.71.1",
+      "version": "7.71.2",
+      "bom-ref": "frontend@0.0.0|react-hook-form@7.71.2",
       "licenses": [
         {
           "license": {
@@ -18741,15 +18741,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react-hook-form@7.71.1",
+      "purl": "pkg:npm/react-hook-form@7.71.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.1.tgz",
+          "url": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f5250928218aa3c1d44ac08efb2d02b6a92a2399cdb9a0ea4f1caa3ec64fa88c2e7698f8ac2ac0cff8d957e8e7e7b6f1e60b5928e8779de42ef780d731cfb0e7"
+              "content": "d421ef703633b9150d39f96de0c3aadd9338e80ae89cd26d4354bbb675fa60de32ef6aa1822508b6969c654010d13c9661c8b7cb3d57fab5da4b18ae126f3a3c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21883,7 +21883,7 @@
         "frontend@0.0.0|p-limit@7.2.0",
         "frontend@0.0.0|react-dom@19.2.3",
         "frontend@0.0.0|react-error-boundary@6.1.0",
-        "frontend@0.0.0|react-hook-form@7.71.1",
+        "frontend@0.0.0|react-hook-form@7.71.2",
         "frontend@0.0.0|react-i18next@16.5.3",
         "frontend@0.0.0|react@19.2.3",
         "frontend@0.0.0|rolldown-vite@7.3.1",
@@ -22394,7 +22394,7 @@
       "ref": "frontend@0.0.0|@hookform/resolvers@5.2.2",
       "dependsOn": [
         "frontend@0.0.0|@standard-schema/utils@0.3.0",
-        "frontend@0.0.0|react-hook-form@7.71.1"
+        "frontend@0.0.0|react-hook-form@7.71.2"
       ]
     },
     {
@@ -24635,7 +24635,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|react-hook-form@7.71.1",
+      "ref": "frontend@0.0.0|react-hook-form@7.71.2",
       "dependsOn": [
         "frontend@0.0.0|react@19.2.3"
       ]
