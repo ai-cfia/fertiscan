@@ -4,7 +4,7 @@
   "ignorePaths": [],
   "schedule": ["before 3am"],
   "prHourlyLimit": 1,
-  "prConcurrentLimit": 5,
+  "prConcurrentLimit": 3,
   "rebaseWhen": "conflicted",
   "labels": ["dependencies"],
   "timezone": "America/Toronto",
