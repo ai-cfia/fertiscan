@@ -14211,8 +14211,8 @@
     {
       "type": "library",
       "name": "i18next-browser-languagedetector",
-      "version": "8.2.0",
-      "bom-ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
+      "version": "8.2.1",
+      "bom-ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
       "licenses": [
         {
           "license": {
@@ -14221,15 +14221,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next-browser-languagedetector@8.2.0",
+      "purl": "pkg:npm/i18next-browser-languagedetector@8.2.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.2.0.tgz",
+          "url": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.2.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3fedf310a2e7385d2a9a27ac5b7f37bec2ddb505722ad08d03d7234a8282a694ca3d055f29dd96f216d5a39661349283a9e33b04e72f3682893a3a4787826cf6"
+              "content": "6d983cfb86dd99a3a20290fb37b04f4fd5bc30b646fa73d338594b889893f2ecca5c58e1c70e2fda27ab0973b0079b050ccb6e0391b8920619d00ce767143f73"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21877,7 +21877,7 @@
         "frontend@0.0.0|form-data@4.0.5",
         "frontend@0.0.0|globals@17.0.0",
         "frontend@0.0.0|http-status-codes@2.3.0",
-        "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
+        "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
         "frontend@0.0.0|i18next-cli@1.36.1",
         "frontend@0.0.0|i18next@25.8.13",
         "frontend@0.0.0|p-limit@7.2.0",
@@ -24060,7 +24060,7 @@
       "ref": "frontend@0.0.0|human-signals@8.0.1"
     },
     {
-      "ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
+      "ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4"
       ]
