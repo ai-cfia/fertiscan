@@ -7,7 +7,7 @@
   "prConcurrentLimit": 5,
   "rebaseWhen": "conflicted",
   "labels": ["dependencies"],
-  "timezone": "America/Montreal",
+  "timezone": "America/Toronto",
 
   "lockFileMaintenance": {
     "enabled": true,
@@ -25,6 +25,15 @@
       "schedule": ["before 5am on monday"]
     },
     {
+      "description": "Group astral-sh/uv dependencies",
+      "groupName": "uv",
+      "matchDatasources": ["github-releases", "docker"],
+      "matchPackageNames": ["ai-cfia/uv", "astral-sh/uv", "ghcr.io/astral-sh/uv"],
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "automerge": false,
+      "automergeType": "pr"
+    },
+    {
       "matchDatasources": ["github-releases"],
       "matchDepNames": ["ai-cfia/ailab-datastore"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-fertiscan-datastore$"
@@ -37,9 +46,9 @@
         "/^@?typescript-eslint/",
         "/^eslint-plugin-/"
       ],
-      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
     },
     {
       "groupName": "eslint monorepo",
@@ -49,79 +58,98 @@
         "/^@?typescript-eslint/",
         "/^eslint-plugin-/"
       ],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     },
     {
       "groupName": "Vite & Vitest",
       "matchManagers": ["npm"],
       "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"],
-      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
     },
     {
       "groupName": "Vite & Vitest",
       "matchManagers": ["npm"],
       "matchPackageNames": ["vite", "vitest", "@vitejs/plugin-react"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     },
     {
       "groupName": "Tailwind & plugins",
       "matchManagers": ["npm"],
       "matchPackageNames": ["/^tailwindcss($|-)/", "/^@tailwindcss\\//"],
-      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
     },
     {
       "groupName": "Tailwind & plugins",
       "matchManagers": ["npm"],
       "matchPackageNames": ["/^tailwindcss($|-)/", "/^@tailwindcss\\//"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     },
     {
+      "groupName": "NPM dependencies (patch & minor)",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "automerge": true,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "groupName": "NPM dependencies (major)",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "groupName": "NPM devDependencies (patch & minor)",
       "matchManagers": ["npm"],
       "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
     },
     {
+      "groupName": "NPM devDependencies (major)",
       "matchManagers": ["npm"],
       "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     },
     {
+      "groupName": "Python dependencies (patch & minor)",
       "matchManagers": ["pep621", "pip_requirements", "poetry"],
-      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor"]
     },
     {
+      "groupName": "Python dependencies (major)",
       "matchManagers": ["pep621", "pip_requirements", "poetry"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     },
     {
       "matchManagers": ["dockerfile", "docker-compose"],
-      "matchUpdateTypes": ["patch", "minor", "digest"],
-      "automerge": true,
-      "automergeType": "pr"
+      "automerge": false,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor", "digest"]
     },
     {
       "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["patch", "minor", "digest"],
-      "automerge": true,
-      "automergeType": "pr"
+      "automerge": false,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["patch", "minor", "digest"]
     },
     {
       "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["major"],
-      "automerge": false
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
     }
   ]
 }
