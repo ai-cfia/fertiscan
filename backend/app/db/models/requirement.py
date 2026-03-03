@@ -34,19 +34,25 @@ class RequirementModifier(Base, TimestampMixin, table=True):
         )
     )
 
+    requirement: "Requirement" = Relationship(back_populates="modifiers")
+    provision: "Provision" = Relationship()
+
 
 class Requirement(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     legislation_id: UUID = Field(foreign_key="legislation.id", index=True)
 
-    legislation: "Legislation" = Relationship(back_populates="requirements")
+    legislation: "Legislation" = Relationship(
+        back_populates="requirements",
+        sa_relationship_kwargs={"lazy": "selectin"},
+    )
 
     provisions: list["Provision"] = Relationship(
         link_model=RequirementProvision,
         sa_relationship_kwargs={"lazy": "selectin"},
     )
-    modifiers: list["Provision"] = Relationship(
-        link_model=RequirementModifier,
+    modifiers: list[RequirementModifier] = Relationship(
+        back_populates="requirement",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
     non_compliance_data_items: list["NonComplianceDataItem"] = Relationship(

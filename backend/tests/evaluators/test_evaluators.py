@@ -3,19 +3,19 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from app.db.models.rule import Rule
-from sqlalchemy.orm import Session
-
-from app.config import settings
-from app.dependencies.instructor import get_instructor
 from app.evaluators.base import RuleEvaluator
 from app.evaluators.guaranteed_analysis import GuaranteedAnalysisEvaluator
 from app.evaluators.llm import LLMEvaluator
 from app.evaluators.lot_number import LotNumberEvaluator
+from sqlalchemy.orm import Session
+from tests.factories.rule import RuleFactory
+
+from app.config import settings
+from app.dependencies.instructor import get_instructor
 from app.schemas.label import ComplianceResult
 from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label import LabelFactory
 from tests.factories.label_data import LabelDataFactory
-from tests.factories.rule import RuleFactory
 
 
 @pytest.mark.usefixtures("setup_db")

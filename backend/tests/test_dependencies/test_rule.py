@@ -4,10 +4,10 @@ from uuid import UUID
 
 import pytest
 from app.db.models.rule import Rule
+from app.dependencies.rule import get_rules_by_ids
 from sqlmodel import select
 
 from app.dependencies import SessionDep
-from app.dependencies.rule import get_rules_by_ids
 
 
 @pytest.mark.usefixtures("override_dependencies")

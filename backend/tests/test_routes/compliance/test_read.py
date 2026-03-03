@@ -8,11 +8,11 @@ from app.db.models.rule import Rule
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from sqlmodel import select
+from tests.factories.rule import RuleFactory
 
 from app.config import settings
 from tests.factories.label import LabelFactory
 from tests.factories.NonComplianceDataItem import NonComplianceDataItemFactory
-from tests.factories.rule import RuleFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import (
     authentication_token_from_email,

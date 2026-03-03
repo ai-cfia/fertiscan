@@ -29,3 +29,10 @@ class Legislation(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=T
     requirements: list["Requirement"] = Relationship(
         back_populates="legislation", cascade_delete=True
     )
+    global_provisions: list["Provision"] = Relationship(
+        sa_relationship_kwargs={
+            "primaryjoin": "and_(Legislation.id == Provision.legislation_id, Provision.is_global_rule == True)",
+            "viewonly": True,
+            "lazy": "selectin",
+        }
+    )

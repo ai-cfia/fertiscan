@@ -1,4 +1,3 @@
-import asyncio
 from collections.abc import Sequence
 from typing import Any
 from uuid import UUID
@@ -15,9 +14,6 @@ from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.db.models.requirement import Requirement
-
-# from app.db.models.rule import Rule
-from app.evaluators.base import RuleEvaluator
 from app.schemas.label import ComplianceResult, LabelUpdate
 from app.storage import delete_files
 
@@ -177,16 +173,17 @@ async def evaluate_non_compliance(
 ) -> dict[UUID, ComplianceResult]:
     """Evaluate rules in parallel."""
 
-    tasks = []
-    requirement_ids = []
+    # tasks = []
+    # requirement_ids = []
 
-    for rule in rules:
-        if ev := RuleEvaluator.get_evaluator(rule, session, instructor):
-            tasks.append(ev.evaluate(label))
-            requirement_ids.append(rule.id)
+    # for rule in rules:
+    #     if ev := RuleEvaluator.get_evaluator(rule, session, instructor):
+    #         tasks.append(ev.evaluate(label))
+    #         requirement_ids.append(rule.id)
 
-    results = await asyncio.gather(*tasks)
-    return dict(zip(requirement_ids, results, strict=True))
+    # results = await asyncio.gather(*tasks)
+    # return dict(zip(requirement_ids, results, strict=True))
+    return {}
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
