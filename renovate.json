@@ -2,16 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "mergeConfidence:all-badges"],
   "ignorePaths": [],
-  "schedule": ["before 3am"],
-  "prHourlyLimit": 1,
-  "prConcurrentLimit": 3,
+  "schedule": ["before 5am"],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
   "rebaseWhen": "conflicted",
   "labels": ["dependencies"],
   "timezone": "America/Toronto",
 
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 3am"],
+    "schedule": ["before 5am"],
     "automerge": true
   },
 
