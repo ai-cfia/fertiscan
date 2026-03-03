@@ -6,7 +6,7 @@ from instructor import AsyncInstructor
 from sqlmodel import Session
 
 from app.db.models.label import Label
-from app.db.models.rule import Rule
+from app.db.models.requirement import Requirement
 from app.schemas.label import ComplianceResult
 
 
@@ -19,13 +19,13 @@ class RuleEvaluator:
 
     def __init__(
         self,
-        rule: Rule,
+        rule: Requirement,
         session: Session | None = None,
         instructor: AsyncInstructor | None = None,
-    ):
-        if self.evaluator_code and rule.evaluator_code != self.evaluator_code:
+    ):  # TODO: Update this method to be good with the new dependencies system
+        if self.evaluator_code and rule.evaluator_code != self.evaluator_code:  # type: ignore[attr-defined]
             raise ValueError(
-                f"Cannot use {self.__class__.__name__} for rule evaluator code '{rule.evaluator_code}' (expected '{self.evaluator_code}')"
+                f"Cannot use {self.__class__.__name__} for rule evaluator code '{rule.evaluator_code}' (expected '{self.evaluator_code}')"  # type: ignore[attr-defined]
             )
 
         self.rule = rule
@@ -45,18 +45,19 @@ class RuleEvaluator:
 
         return wrapper
 
+    # TODO: Update this method
     @classmethod
     def get_evaluator(
         cls,
-        rule: Rule,
+        rule: Requirement,
         session: Session | None = None,
         instructor: AsyncInstructor | None = None,
     ) -> RuleEvaluator | None:
         """Retrieves and instantiates the evaluator class for a given rule."""
-        if not rule.evaluator_code:
+        if not rule.evaluator_code:  # type: ignore[attr-defined]
             return None
 
-        if not (evaluator_class := cls._registry.get(rule.evaluator_code)):
+        if not (evaluator_class := cls._registry.get(rule.evaluator_code)):  # type: ignore[attr-defined]
             return None
 
         return evaluator_class(rule=rule, session=session, instructor=instructor)

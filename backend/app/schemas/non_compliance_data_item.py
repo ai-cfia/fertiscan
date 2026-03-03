@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, StringConstraints
 
 class NonComplianceDataItemCreate(BaseModel):
     label_id: UUID
-    rule_id: UUID
+    requirement_id: UUID
     note: str | None = None
     description_en: str | None = None
     description_fr: str | None = None
@@ -20,7 +20,7 @@ class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
 
 
 class NonComplianceDataItemPayload(BaseModel):
-    rule_id: UUID
+    requirement_id: UUID
     note: str | None = None
     description_en: str | None = None
     description_fr: str | None = None

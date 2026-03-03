@@ -14,7 +14,9 @@ from sqlmodel.sql.expression import SelectOfScalar
 from app.db.models.label import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
-from app.db.models.rule import Rule
+from app.db.models.requirement import Requirement
+
+# from app.db.models.rule import Rule
 from app.evaluators.base import RuleEvaluator
 from app.schemas.label import ComplianceResult, LabelUpdate
 from app.storage import delete_files
@@ -171,20 +173,20 @@ async def evaluate_non_compliance(
     session: Session,
     instructor: AsyncInstructor,
     label: Label,
-    rules: Sequence[Rule],
+    rules: Sequence[Requirement],
 ) -> dict[UUID, ComplianceResult]:
     """Evaluate rules in parallel."""
 
     tasks = []
-    rule_ids = []
+    requirement_ids = []
 
     for rule in rules:
         if ev := RuleEvaluator.get_evaluator(rule, session, instructor):
             tasks.append(ev.evaluate(label))
-            rule_ids.append(rule.id)
+            requirement_ids.append(rule.id)
 
     results = await asyncio.gather(*tasks)
-    return dict(zip(rule_ids, results, strict=True))
+    return dict(zip(requirement_ids, results, strict=True))
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
@@ -192,11 +194,11 @@ def update_is_compliant(
     session: Session,
     label: Label,
     is_compliant: bool,
-    rule: Rule,
+    requirement: Requirement,
 ) -> Label:
     """Update or create non-compliance data item."""
     stmt = select(NonComplianceDataItem).where(
-        NonComplianceDataItem.rule_id == rule.id,
+        NonComplianceDataItem.requirement_id == requirement.id,
         NonComplianceDataItem.label_id == label.id,
     )
     non_compliance_data_item = session.scalars(stmt).first()
@@ -204,9 +206,9 @@ def update_is_compliant(
     if non_compliance_data_item is None:
         non_compliance_data_item = NonComplianceDataItem(
             label_id=label.id,
-            rule_id=rule.id,
-            description_en=rule.description_en,
-            description_fr=rule.description_fr,
+            requirement_id=requirement.id,
+            description_en=requirement.description_en,
+            description_fr=requirement.description_fr,
             is_compliant=is_compliant,
         )
         session.add(non_compliance_data_item)

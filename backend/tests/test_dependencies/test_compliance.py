@@ -1,10 +1,10 @@
 """Test the non-compliance data item dependency."""
 
 import pytest
+from app.db.models.rule import Rule
 from fastapi.testclient import TestClient
 from sqlmodel import select
 
-from app.db.models.rule import Rule
 from app.dependencies import SessionDep
 from app.dependencies.compliance import get_non_compliance_data_item_by_label_and_rule
 from tests.factories.label import LabelFactory

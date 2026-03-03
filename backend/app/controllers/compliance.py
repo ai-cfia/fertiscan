@@ -66,6 +66,7 @@ def _apply_compliance_sorting(
     return stmt
 
 
+# TODO: Update this controller to be good with the new dependencies system and ensure it works with the updated label and requirement models
 @validate_call(config={"arbitrary_types_allowed": True})
 def get_compliances_query(
     label_id: UUID,
@@ -98,7 +99,7 @@ def get_compliances_query(
             NonComplianceDataItem.description_fr.ilike(f"%{description_fr}%")  # type: ignore[union-attr]
         )
     if is_compliant is not None:
-        search_conditions.append(NonComplianceDataItem.is_compliant == is_compliant)
+        search_conditions.append(NonComplianceDataItem.is_compliant == is_compliant)  # type: ignore[attr-defined]
 
     if search_conditions:
         stmt = stmt.where(or_(*search_conditions))

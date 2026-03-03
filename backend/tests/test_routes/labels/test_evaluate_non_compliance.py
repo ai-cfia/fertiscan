@@ -3,13 +3,13 @@
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from app.db.models.rule import Rule
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
 from app.config import settings
-from app.db.models.rule import Rule
 from app.schemas.label import ComplianceResult
 from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label import LabelFactory

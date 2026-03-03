@@ -3,12 +3,12 @@
 from uuid import uuid4
 
 import pytest
+from app.db.models.rule import Rule
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
 from app.config import settings
-from app.db.models.rule import Rule
 from tests.factories.label import LabelFactory
 from tests.factories.NonComplianceDataItem import NonComplianceDataItemFactory
 from tests.factories.user import UserFactory

@@ -20,7 +20,7 @@ from app.dependencies import (
     NonComplianceDataItemDep,
     ProductQueryTypeDep,
     ProductTypeDep,
-    RulesDep,
+    RequirementsDep,
     S3ClientDep,
     SessionDep,
     ValidatedStatusLabelDep,
@@ -166,15 +166,15 @@ async def evaluate_non_compliance(
     session: SessionDep,
     _: CurrentUser,
     instructor: InstructorDep,
-    rules: RulesDep,
+    requirements: RequirementsDep,
 ) -> ComplianceResults:
     """Evaluate non-compliance of the label against specified rules."""
-
-    results = await label_controller.evaluate_non_compliance(
+    # TODO: Update this endpoint to support the new dependencies system and ensure it works with the updated label and requirement models
+    results = await label_controller.evaluate_non_compliance(  # type: ignore[call-arg]
         session=session,
         instructor=instructor,
         label=label,
-        rules=rules,
+        requirements=requirements,
     )
 
     return ComplianceResults(
@@ -230,7 +230,7 @@ def reads_compliances(
 
 
 @router.get(
-    "/{label_id}/non_compliance_data_items/{rule_id}",
+    "/{label_id}/non_compliance_data_items/{requirement_id}",
     response_model=NonComplianceDataItemPublic,
 )
 def read_compliance_by_rule(
@@ -243,7 +243,7 @@ def read_compliance_by_rule(
 
 
 @router.patch(
-    "/{label_id}/non_compliance_data_items/{rule_id}",
+    "/{label_id}/non_compliance_data_items/{requirement_id}",
     response_model=NonComplianceDataItemPublic,
 )
 def update_compliance(
@@ -261,7 +261,7 @@ def update_compliance(
 
 
 @router.delete(
-    "/{label_id}/non_compliance_data_items/{rule_id}", response_model=Message
+    "/{label_id}/non_compliance_data_items/{requirement_id}", response_model=Message
 )
 def delete_compliance(
     session: SessionDep,

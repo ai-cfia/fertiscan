@@ -171,7 +171,7 @@ class Settings(BaseSettings):
     def compliance_seed_data(self) -> dict[str, Any]:
         """Load compliance seed data from multiple files."""
         seed_dir = Path(self.COMPLIANCE_SEED_DATA_DIR)
-        data = {
+        data = {  # type: ignore[var-annotated]
             "legislations": [],
             "provisions": [],
             "definitions": [],

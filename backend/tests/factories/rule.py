@@ -1,6 +1,6 @@
 import factory
-
 from app.db.models.rule import Rule
+
 from tests.factories import BaseFactory
 
 

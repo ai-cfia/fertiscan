@@ -3,9 +3,9 @@
 from uuid import UUID
 
 import pytest
+from app.db.models.rule import Rule
 from sqlmodel import select
 
-from app.db.models.rule import Rule
 from app.dependencies import SessionDep
 from app.dependencies.rule import get_rules_by_ids
 

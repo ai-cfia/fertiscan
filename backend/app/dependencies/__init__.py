@@ -38,7 +38,7 @@ from app.dependencies.product_types import (
     ProductTypeDep,
 )
 from app.dependencies.products import NewProductDep, ProductDep
-from app.dependencies.rule import RuleDep, RulesDep
+from app.dependencies.requirement import RequirementDep, RequirementsDep
 
 __all__ = [
     "CompletedLabelImageDep",
@@ -68,8 +68,8 @@ __all__ = [
     "UploadableLabelDep",
     "ValidatedStatusLabelDep",
     "CompletedLabelDep",
-    "RulesDep",
-    "RuleDep",
     "newComplianceDataItemDep",
     "NonComplianceDataItemDep",
+    "RequirementDep",
+    "RequirementsDep",
 ]
