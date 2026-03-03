@@ -9,13 +9,13 @@
         {
           "type": "application",
           "name": "npm",
-          "version": "10.8.2"
+          "version": "11.9.0"
         },
         {
           "type": "library",
           "name": "cyclonedx-library",
           "group": "@cyclonedx",
-          "version": "9.5.0",
+          "version": "10.0.0",
           "author": "Jan Kowalleck",
           "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
           "licenses": [
@@ -47,7 +47,7 @@
           "type": "application",
           "name": "cyclonedx-npm",
           "group": "@cyclonedx",
-          "version": "4.1.2",
+          "version": "4.2.0",
           "author": "Jan Kowalleck",
           "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
           "licenses": [
@@ -82,7 +82,6 @@
       "name": "frontend",
       "version": "0.0.0",
       "bom-ref": "frontend@0.0.0",
-      "purl": "pkg:npm/frontend@0.0.0",
       "properties": [
         {
           "name": "cdx:npm:package:path",
