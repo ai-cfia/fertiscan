@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, computed_field
 from app.db.models.enums import ComplianceStatus
 from app.db.models.label import ReviewStatus
 from app.db.models.label_image import UploadStatus
-from app.schemas.label_data import FertilizerLabelData, LabelData
+from app.schemas.label_data import BilingualText, FertilizerLabelData, LabelData
 from app.schemas.product_type import ProductTypePublic
 from app.schemas.user import UserPublic
 
@@ -56,10 +56,10 @@ class UploadCompletionRequest(BaseModel):
 
 
 class LabelDataLite(BaseModel):
-    brand_name_en: str | None = None
-    brand_name_fr: str | None = None
-    product_name_en: str | None = None
-    product_name_fr: str | None = None
+    model_config = ConfigDict(from_attributes=True)
+    brand_name: BilingualText | None = None
+    product_name: BilingualText | None = None
+    registration_number: str | None = None
 
 
 class LabelCreate(BaseModel):
@@ -131,13 +131,9 @@ class ComplianceResult(BaseModel):
         ...,
         description="Outcome of the check: compliant, non_compliant, not_applicable, or inconclusive (requires human review).",
     )
-    explanation_en: str = Field(
+    explanation: BilingualText = Field(
         ...,
-        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in English",
-    )
-    explanation_fr: str = Field(
-        ...,
-        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in French",
+        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
     )
 
 

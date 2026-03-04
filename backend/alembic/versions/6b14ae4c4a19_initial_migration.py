@@ -1,8 +1,8 @@
 """initial_migration
 
-Revision ID: a7aa9010a913
+Revision ID: 6b14ae4c4a19
 Revises:
-Create Date: 2026-03-04 09:15:42.245232
+Create Date: 2026-03-04 23:10:42.102488
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a7aa9010a913'
+revision: str = '6b14ae4c4a19'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -202,13 +202,14 @@ def upgrade() -> None:
     sa.Column('k', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.Column('ingredients', sa.JSON(), nullable=True),
     sa.Column('guaranteed_analysis', sa.JSON(), nullable=True),
-    sa.Column('caution_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('caution_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('instructions_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('is_customer_formula', sa.Boolean(), nullable=True),
+    sa.Column('precaution_statements', sa.JSON(), nullable=True),
+    sa.Column('directions_for_use_statements', sa.JSON(), nullable=True),
+    sa.Column('customer_formula_statements', sa.JSON(), nullable=True),
     sa.Column('intended_use_statements', sa.JSON(), nullable=True),
     sa.Column('processing_instruction_statements', sa.JSON(), nullable=True),
+    sa.Column('experimental_statements', sa.JSON(), nullable=True),
+    sa.Column('export_statements', sa.JSON(), nullable=True),
+    sa.Column('product_classification', sa.Enum('FERTILIZER', 'SUPPLEMENT', 'GROWING_MEDIUM', 'TREATED_SEED', name='productclassification', native_enum=False), nullable=True),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_fertilizerlabeldata_label_id_label')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_fertilizerlabeldata'))
     )
@@ -218,15 +219,16 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('label_id', sa.Uuid(), nullable=False),
-    sa.Column('brand_name_en', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('brand_name_fr', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_en', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
-    sa.Column('product_name_fr', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('brand_name', sa.JSON(), nullable=True),
+    sa.Column('product_name', sa.JSON(), nullable=True),
     sa.Column('contacts', sa.JSON(), nullable=True),
     sa.Column('registration_number', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('registration_claim', sa.JSON(), nullable=True),
     sa.Column('lot_number', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.Column('net_weight', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.Column('volume', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('exemption_claim', sa.JSON(), nullable=True),
+    sa.Column('country_of_origin', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_labeldata_label_id_label')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_labeldata'))
     )

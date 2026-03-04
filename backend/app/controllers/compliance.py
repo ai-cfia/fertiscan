@@ -49,14 +49,6 @@ def _apply_compliance_sorting(
             NonComplianceDataItem.note,
             "",
         ),
-        "description_en": func.coalesce(
-            NonComplianceDataItem.description_en,
-            NonComplianceDataItem.description_fr,
-        ),
-        "description_fr": func.coalesce(
-            NonComplianceDataItem.description_fr,
-            NonComplianceDataItem.description_en,
-        ),
     }
 
     sort_column: Any = valid_sort_fields.get(order_by, NonComplianceDataItem.created_at)

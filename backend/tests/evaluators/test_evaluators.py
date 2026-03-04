@@ -11,6 +11,7 @@ from app.db.models.enums import ComplianceStatus
 from app.db.models.requirement import Requirement
 from app.dependencies.instructor import get_instructor
 from app.schemas.label import ComplianceResult
+from app.schemas.label_data import BilingualText
 from app.services.compliance import evaluate_requirement
 from tests.factories.fertilizer_label_data import FertilizerLabelDataFactory
 from tests.factories.label import LabelFactory
@@ -29,13 +30,15 @@ class TestEvaluateRequirement:
         """Test successful evaluation with mocked instructor."""
         requirement = RequirementFactory.create()
         label = LabelFactory.create()
-        LabelDataFactory.create(label=label, brand_name_en="Organic Bloom")
+        LabelDataFactory.create(label=label, brand_name={"en": "Organic Bloom"})
 
         mock_instructor = MagicMock()
         mock_response = ComplianceResult(
             status=ComplianceStatus.COMPLIANT,
-            explanation_en="Valid organic matter.",
-            explanation_fr="Matière organique valide.",
+            explanation=BilingualText(
+                en="Valid organic matter.",
+                fr="Matière organique valide.",
+            ),
         )
         mock_instructor.chat.completions.create_with_completion = AsyncMock(
             return_value=(mock_response, MagicMock())
@@ -44,7 +47,7 @@ class TestEvaluateRequirement:
         result = await evaluate_requirement(mock_instructor, label, requirement)
 
         assert result.status == ComplianceStatus.COMPLIANT
-        assert result.explanation_en == "Valid organic matter."
+        assert result.explanation.en == "Valid organic matter."
 
         # Verify instructor was called with the prompt
         mock_instructor.chat.completions.create_with_completion.assert_called_once()
@@ -76,10 +79,10 @@ class TestRealComplianceIntegration:
         FertilizerLabelDataFactory.create(
             label=label,
             guaranteed_analysis={
-                "title_en": "Guaranteed Analysis",
+                "title": {"en": "Guaranteed Analysis"},
                 "is_minimum": True,
                 "nutrients": [
-                    {"name_en": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}
+                    {"name": {"en": "Total Nitrogen (N)"}, "value": 10.0, "unit": "%"}
                 ],
             },
         )
@@ -87,10 +90,10 @@ class TestRealComplianceIntegration:
 
         result = await evaluate_requirement(get_instructor(), label, requirement)
         logger.info(f"Guaranteed Analysis Result: {result.status}")
-        logger.info(f"Explanation: {result.explanation_en}")
+        logger.info(f"Explanation: {result.explanation.en}")
 
         assert result.status == ComplianceStatus.COMPLIANT
-        assert result.explanation_en != ""
+        assert result.explanation.en != ""
 
     async def test_evaluate_lot_number_missing(self, db: Session):
         """Integration test: non-compliance when lot number is missing."""
@@ -103,15 +106,15 @@ class TestRealComplianceIntegration:
         # Explicitly set empty lot number, but provide product name to establish context
         LabelDataFactory.create(
             label=label,
-            brand_name_en="Test Brand",
-            product_name_en="Test Fertilizer",
+            brand_name={"en": "Test Brand"},
+            product_name={"en": "Test Fertilizer"},
             lot_number=None,
         )
         db.flush()
 
         result = await evaluate_requirement(get_instructor(), label, requirement)
         logger.info(f"Lot Number Result: {result.status}")
-        logger.info(f"Explanation: {result.explanation_en}")
+        logger.info(f"Explanation: {result.explanation.en}")
 
         assert result.status == ComplianceStatus.NON_COMPLIANT
-        assert result.explanation_en != ""
+        assert result.explanation.en != ""

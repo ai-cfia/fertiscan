@@ -213,7 +213,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Create meta row with needs_review=True
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
         )
         db.add(meta)
@@ -222,7 +222,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Verify meta row exists
         stmt = select(LabelDataFieldMeta).where(
             LabelDataFieldMeta.label_id == label_data.id,
-            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name_en,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -265,7 +265,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Create meta row with ai_generated=True
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.product_name_en,
+            field_name=LabelDataFieldName.product_name,
             ai_generated=True,
         )
         db.add(meta)
@@ -274,7 +274,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Verify meta row exists
         stmt = select(LabelDataFieldMeta).where(
             LabelDataFieldMeta.label_id == label_data.id,
-            LabelDataFieldMeta.field_name == LabelDataFieldName.product_name_en,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.product_name,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -299,7 +299,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # When querying for meta, should return None (indicating defaults)
         stmt = select(LabelDataFieldMeta).where(
             LabelDataFieldMeta.label_id == label_data.id,
-            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name_en,
+            LabelDataFieldMeta.field_name == LabelDataFieldName.brand_name,
         )
         result = db.execute(stmt)
         found_meta = result.scalar_one_or_none()
@@ -315,7 +315,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Create meta row with needs_review=True
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
         )
         db.add(meta)
@@ -350,7 +350,7 @@ class TestLabelDataFieldMetaLazyCreation:
         # Create meta row with needs_review=True
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
             note="Test note",
             ai_generated=True,

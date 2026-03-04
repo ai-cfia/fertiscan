@@ -49,7 +49,7 @@ async def extract_fertilizer_fields(
     response_model: type[BaseModel] = ExtractFertilizerFieldsOutput
     if field_names:
         response_model = create_subset_model(ExtractFertilizerFieldsOutput, field_names)
-    result = await extract_fields_from_images(
+    result, _completion = await extract_fields_from_images(
         images,
         response_model,
         "Extract fertilizer label information from these label images exactly as written.",

@@ -32,8 +32,7 @@ class TestEvaluateNonCompliance:
         """Override the default mock_instructor for LLM tests."""
         mock_response = ComplianceResult(
             status="compliant",
-            explanation_en="Compliant.",
-            explanation_fr="Conforme.",
+            explanation={"en": "Compliant.", "fr": "Conforme."},
         )
         # Re-mock the specific method we need for LLM evaluator
         mock_instructor.chat.completions.create_with_completion = AsyncMock(
@@ -171,10 +170,10 @@ class TestEvaluateNonCompliance:
             session=db,
             label=label,
             guaranteed_analysis={
-                "title_en": "Guaranteed Analysis",
+                "title": {"en": "Guaranteed Analysis"},
                 "is_minimum": True,
                 "nutrients": [
-                    {"name_en": "Total Nitrogen (N)", "value": 10.0, "unit": "%"}
+                    {"name": {"en": "Total Nitrogen (N)"}, "value": 10.0, "unit": "%"}
                 ],
             },
         )
@@ -245,8 +244,7 @@ class TestEvaluateNonComplianceLLM:
         """Override the default mock_instructor for LLM tests."""
         mock_response = ComplianceResult(
             status="compliant",
-            explanation_en="Compliant.",
-            explanation_fr="Conforme.",
+            explanation={"en": "Compliant.", "fr": "Conforme."},
         )
         # Re-mock the specific method we need for LLM evaluator
         mock_instructor.chat.completions.create_with_completion = AsyncMock(

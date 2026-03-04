@@ -16,7 +16,7 @@ specific requirement checks are terminated.
 | `Sec 3(1)(a)` | Is product **natural manure**?   | Product name, ingredients                                                            | `3(1)(a)`, `fertilizer`, `supplement`           | **`NOT_APPLICABLE`** |
 | `Sec 3(1)(b)` | For **manufacturing only**?      | Intended use statements, processing instructions, address, country of origin         | `3(1)(b)`, `fertilizer`, `supplement`           | **`NOT_APPLICABLE`** |
 | `Sec 3(1.1)`  | For **export only**?             | Export intent or destination statements                                              | `3(1.1)`, `fertilizer`, `supplement`            | **`NOT_APPLICABLE`** |
-| `Sec 3(2)`    | **Experimental supplement**?     | Research intent, permit num                                                          | `3(2)`, `supplement`                            | **`NOT_APPLICABLE`** |
+| `Sec 3(2)`    | **Experimental supplement**?     | Research intent                                                                      | `3(2)`, `supplement`                            | **`NOT_APPLICABLE`** |
 | `Sec 3(3)`    | **Experimental fertilizer**?     | Research intent, ingredients (exclude supplements/pesticides), disposal instructions | `3(3)`, `fertilizer`, `supplement`, `pesticide` | **`NOT_APPLICABLE`** |
 
 ## Requirement Implementation: Manufacturer Name and Address (16(1)(a))

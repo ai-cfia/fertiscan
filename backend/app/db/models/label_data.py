@@ -16,15 +16,16 @@ class LabelData(Base, TimestampMixin, table=True):
     label_id: UUID = Field(
         foreign_key="label.id", nullable=False, unique=True, index=True
     )
-    brand_name_en: str | None = Field(default=None, max_length=255)
-    brand_name_fr: str | None = Field(default=None, max_length=255)
-    product_name_en: str | None = Field(default=None, max_length=255)
-    product_name_fr: str | None = Field(default=None, max_length=255)
+    brand_name: dict[str, str] | None = Field(default=None, sa_type=JSON)
+    product_name: dict[str, str] | None = Field(default=None, sa_type=JSON)
     contacts: list[dict[str, Any]] | None = Field(default=None, sa_type=JSON)
     registration_number: str | None = Field(default=None, max_length=255)
+    registration_claim: dict[str, str] | None = Field(default=None, sa_type=JSON)
     lot_number: str | None = Field(default=None, max_length=255)
     net_weight: str | None = Field(default=None, max_length=255)
     volume: str | None = Field(default=None, max_length=255)
+    exemption_claim: dict[str, str] | None = Field(default=None, sa_type=JSON)
+    country_of_origin: str | None = Field(default=None, max_length=255)
     label: "Label" = Relationship(back_populates="label_data")
     meta: list["LabelDataFieldMeta"] = Relationship(
         back_populates="label_data", cascade_delete=True

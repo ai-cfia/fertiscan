@@ -292,7 +292,7 @@ class TestGetRequirementProvisions:
 
     def test_get_provisions_sorting(self, db: Session) -> None:
         """Test that provisions are sorted by citation."""
-        requirement = RequirementFactory.create()
+        requirement = RequirementFactory.create(guidance_en="")
         p_b = ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="Provision-B",
@@ -319,7 +319,7 @@ class TestGetLabelDataJson:
     def test_get_label_data_json_basic(self, db: Session) -> None:
         """Test that label data is correctly serialized to JSON."""
         label_data = LabelDataFactory.create(
-            brand_name_en="GreenGrow",
+            brand_name={"en": "GreenGrow"},
             registration_number="REG-123",
         )
         label = label_data.label
@@ -329,6 +329,8 @@ class TestGetLabelDataJson:
         assert "REG-123" in result_json
         assert '"n"' in result_json
         assert '"10"' in result_json
+        # Check for the bilingual structure in the output
+        assert '"en"' in result_json
 
 
 class TestBuildContext:
@@ -350,7 +352,7 @@ class TestBuildContext:
             text_en="Core Requirement",
         )
         requirement.provisions.append(p_req)
-        label_data = LabelDataFactory.create(brand_name_en="TestBrand")
+        label_data = LabelDataFactory.create(brand_name={"en": "TestBrand"})
         label = label_data.label
 
         db.flush()

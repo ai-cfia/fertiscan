@@ -17,16 +17,18 @@ class FertilizerLabelDataFactory(BaseFactory):
     k = Decimal("10.0")
     ingredients = factory.LazyAttribute(
         lambda o: [
-            {"name_en": "Nitrogen", "name_fr": "Azote", "value": str(o.n), "unit": "%"},
             {
-                "name_en": "Phosphorus",
-                "name_fr": "Phosphore",
+                "name": {"en": "Nitrogen", "fr": "Azote"},
+                "value": str(o.n),
+                "unit": "%",
+            },
+            {
+                "name": {"en": "Phosphorus", "fr": "Phosphore"},
                 "value": str(o.p),
                 "unit": "%",
             },
             {
-                "name_en": "Potassium",
-                "name_fr": "Potassium",
+                "name": {"en": "Potassium", "fr": "Potassium"},
                 "value": str(o.k),
                 "unit": "%",
             },
@@ -34,32 +36,32 @@ class FertilizerLabelDataFactory(BaseFactory):
     )
     guaranteed_analysis = factory.LazyAttribute(
         lambda o: {
-            "title_en": "Guaranteed Analysis",
-            "title_fr": "Analyse Garantie",
+            "title": {"en": "Guaranteed Analysis", "fr": "Analyse Garantie"},
             "is_minimum": True,
             "nutrients": [
                 {
-                    "name_en": "Total Nitrogen (N)",
-                    "name_fr": "Azote Total (N)",
+                    "name": {"en": "Total Nitrogen (N)", "fr": "Azote Total (N)"},
                     "value": float(o.n),
                     "unit": "%",
                 },
                 {
-                    "name_en": "Available Phosphoric Acid (P2O5)",
-                    "name_fr": "Acide Phosphorique Assimilable (P2O5)",
+                    "name": {
+                        "en": "Available Phosphoric Acid (P2O5)",
+                        "fr": "Acide Phosphorique Assimilable (P2O5)",
+                    },
                     "value": float(o.p),
                     "unit": "%",
                 },
                 {
-                    "name_en": "Soluble Potash (K2O)",
-                    "name_fr": "Potasse Soluble (K2O)",
+                    "name": {
+                        "en": "Soluble Potash (K2O)",
+                        "fr": "Potasse Soluble (K2O)",
+                    },
                     "value": float(o.k),
                     "unit": "%",
                 },
             ],
         }
     )
-    caution_en = "Keep out of reach of children."
-    caution_fr = "Garder hors de la portée des enfants."
-    instructions_en = "Apply monthly during the growing season."
-    instructions_fr = "Appliquer mensuellement pendant la saison de croissance."
+    precaution_statements = [{"en": "Keep out of reach of children."}]
+    directions_for_use_statements = [{"en": "Apply monthly during the growing season."}]

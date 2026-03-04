@@ -3,9 +3,11 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from sqlalchemy import JSON, Column, Numeric
+from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base, TimestampMixin
+from app.db.models.enums import ProductClassification
 
 if TYPE_CHECKING:
     from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataMeta
@@ -22,14 +24,30 @@ class FertilizerLabelData(Base, TimestampMixin, table=True):
     k: Decimal | None = Field(default=None, sa_column=Column(Numeric(10, 2)))
     ingredients: list[dict[str, Any]] | None = Field(default=None, sa_type=JSON)
     guaranteed_analysis: dict[str, Any] | None = Field(default=None, sa_type=JSON)
-    caution_en: str | None = Field(default=None)
-    caution_fr: str | None = Field(default=None)
-    instructions_en: str | None = Field(default=None)
-    instructions_fr: str | None = Field(default=None)
-    is_customer_formula: bool | None = Field(default=None)
-    intended_use_statements: list[str] | None = Field(default=None, sa_type=JSON)
-    processing_instruction_statements: list[str] | None = Field(
+    precaution_statements: list[dict[str, str]] | None = Field(
         default=None, sa_type=JSON
+    )
+    directions_for_use_statements: list[dict[str, str]] | None = Field(
+        default=None, sa_type=JSON
+    )
+    customer_formula_statements: list[dict[str, str]] | None = Field(
+        default=None, sa_type=JSON
+    )
+    intended_use_statements: list[dict[str, str]] | None = Field(
+        default=None, sa_type=JSON
+    )
+    processing_instruction_statements: list[dict[str, str]] | None = Field(
+        default=None, sa_type=JSON
+    )
+    experimental_statements: list[dict[str, str]] | None = Field(
+        default=None, sa_type=JSON
+    )
+    export_statements: list[dict[str, str]] | None = Field(default=None, sa_type=JSON)
+    product_classification: ProductClassification | None = Field(
+        default=None,
+        sa_column=Column(
+            sa_Enum(ProductClassification, native_enum=False), nullable=True
+        ),
     )
     label: "Label" = Relationship(back_populates="fertilizer_label_data")
     meta: list["FertilizerLabelDataMeta"] = Relationship(

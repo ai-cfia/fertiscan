@@ -6,7 +6,7 @@ import pytest
 from pydantic import BaseModel
 
 from app.controllers.labels.label_data_extraction import create_subset_model
-from app.schemas.label_data import ExtractFertilizerFieldsOutput
+from app.schemas.label_data import BilingualText, ExtractFertilizerFieldsOutput
 from app.services.label_data_extraction import ImageData, extract_fields_from_images
 from tests.conftest import DUMMY_EXTRACTION_DATA
 
@@ -25,18 +25,18 @@ class TestExtractFieldsFromImages:
         self, mock_instructor: MagicMock, sample_image_data: ImageData
     ) -> None:
         """Test that all fields are extracted and returned."""
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [sample_image_data, sample_image_data],
             ExtractFertilizerFieldsOutput,
             "test prompt",
             mock_instructor,
         )
         assert isinstance(result, ExtractFertilizerFieldsOutput)
-        assert result.brand_name_en == DUMMY_EXTRACTION_DATA["brand_name_en"]
-        assert result.brand_name_en == "GreenGrow"
-        assert result.brand_name_fr == "CroissanceVerte"
-        assert result.product_name_en == "Premium All-Purpose Fertilizer"
-        assert result.product_name_fr == "Engrais Polyvalent Premium"
+        assert result.brand_name.en == DUMMY_EXTRACTION_DATA["brand_name"]["en"]
+        assert result.brand_name.en == "GreenGrow"
+        assert result.brand_name.fr == "CroissanceVerte"
+        assert result.product_name.en == "Premium All-Purpose Fertilizer"
+        assert result.product_name.fr == "Engrais Polyvalent Premium"
         assert result.registration_number == "REG-2024-12345"
         assert result.lot_number == "LOT-2024-001"
         assert result.net_weight == "10 kg"
@@ -50,14 +50,14 @@ class TestExtractFieldsFromImages:
 
     async def test_works_with_empty_images(self, mock_instructor: MagicMock) -> None:
         """Test that function works with empty images list."""
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [],
             ExtractFertilizerFieldsOutput,
             "test prompt",
             mock_instructor,
         )
         assert isinstance(result, ExtractFertilizerFieldsOutput)
-        assert result.brand_name_en is None
+        assert result.brand_name is None
 
     async def test_calls_instructor_with_correct_params(
         self, mock_instructor: MagicMock, sample_image_data: ImageData
@@ -87,19 +87,19 @@ class TestExtractFieldsFromImages:
         """Test that function works with different Pydantic models."""
 
         class CustomModel(BaseModel):
-            brand_name_en: str | None = None
-            product_name_en: str | None = None
+            brand_name: BilingualText | None = None
+            product_name: BilingualText | None = None
 
         mock_response = CustomModel.model_validate(DUMMY_EXTRACTION_DATA)
         mock_instructor.chat.completions.create_with_completion = AsyncMock(
             return_value=(mock_response, MagicMock())
         )
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [sample_image_data], CustomModel, "test prompt", mock_instructor
         )
         assert isinstance(result, CustomModel)
-        assert result.brand_name_en == "GreenGrow"
-        assert result.product_name_en == "Premium All-Purpose Fertilizer"
+        assert result.brand_name.en == "GreenGrow"
+        assert result.product_name.en == "Premium All-Purpose Fertilizer"
 
 
 @pytest.mark.asyncio
@@ -111,23 +111,22 @@ class TestExtractFieldsFromImagesWithFieldNames:
     ) -> None:
         """Test that single field is extracted and returned."""
         subset_model = create_subset_model(
-            ExtractFertilizerFieldsOutput, ["brand_name_en"]
+            ExtractFertilizerFieldsOutput, ["brand_name"]
         )
         mock_response = subset_model.model_validate(DUMMY_EXTRACTION_DATA)
         mock_instructor.chat.completions.create_with_completion = AsyncMock(
             return_value=(mock_response, MagicMock())
         )
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [sample_image_data],
             subset_model,
             "test prompt",
             mock_instructor,
         )
         assert isinstance(result, subset_model)
-        assert result.brand_name_en == "GreenGrow"  # type: ignore[attr-defined]
+        assert result.brand_name.en == "GreenGrow"  # type: ignore[attr-defined]
         full_result = ExtractFertilizerFieldsOutput.model_validate(result.model_dump())
-        assert full_result.brand_name_fr is None
-        assert full_result.product_name_en is None
+        assert full_result.product_name is None
 
     async def test_returns_nested_field(
         self, mock_instructor: MagicMock, sample_image_data: ImageData
@@ -138,7 +137,7 @@ class TestExtractFieldsFromImagesWithFieldNames:
         mock_instructor.chat.completions.create_with_completion = AsyncMock(
             return_value=(mock_response, MagicMock())
         )
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [sample_image_data],
             subset_model,
             "test prompt",
@@ -150,7 +149,7 @@ class TestExtractFieldsFromImagesWithFieldNames:
         assert result.contacts[0].type == "manufacturer"  # type: ignore[attr-defined]
         assert result.contacts[0].name == "GreenGrow Industries Inc."  # type: ignore[attr-defined]
         full_result = ExtractFertilizerFieldsOutput.model_validate(result.model_dump())
-        assert full_result.brand_name_en is None
+        assert full_result.brand_name is None
 
     async def test_returns_npk_fields(
         self, mock_instructor: MagicMock, sample_image_data: ImageData
@@ -166,19 +165,19 @@ class TestExtractFieldsFromImagesWithFieldNames:
                 (model_k.model_validate(DUMMY_EXTRACTION_DATA), MagicMock()),
             ]
         )
-        result_n = await extract_fields_from_images(
+        result_n, _ = await extract_fields_from_images(
             [sample_image_data],
             model_n,
             "test prompt",
             mock_instructor,
         )
-        result_p = await extract_fields_from_images(
+        result_p, _ = await extract_fields_from_images(
             [sample_image_data],
             model_p,
             "test prompt",
             mock_instructor,
         )
-        result_k = await extract_fields_from_images(
+        result_k, _ = await extract_fields_from_images(
             [sample_image_data],
             model_k,
             "test prompt",
@@ -212,9 +211,9 @@ class TestExtractFieldsFromImagesWithFieldNames:
     ) -> None:
         """Test that function works with empty images list and subset model."""
         subset_model = create_subset_model(
-            ExtractFertilizerFieldsOutput, ["brand_name_en"]
+            ExtractFertilizerFieldsOutput, ["brand_name"]
         )
-        result = await extract_fields_from_images(
+        result, _completion = await extract_fields_from_images(
             [],
             subset_model,
             "test prompt",
@@ -222,17 +221,15 @@ class TestExtractFieldsFromImagesWithFieldNames:
         )
         assert isinstance(result, subset_model)
         full_result = ExtractFertilizerFieldsOutput.model_validate(result.model_dump())
-        assert full_result.brand_name_en is None
+        assert full_result.brand_name is None
 
     async def test_returns_all_dummy_fields(
         self, mock_instructor: MagicMock, sample_image_data: ImageData
     ) -> None:
         """Test that all fields in DUMMY_EXTRACTION_DATA can be extracted."""
         fields_to_test = [
-            "brand_name_en",
-            "brand_name_fr",
-            "product_name_en",
-            "product_name_fr",
+            "brand_name",
+            "product_name",
             "registration_number",
             "lot_number",
             "net_weight",
@@ -241,10 +238,8 @@ class TestExtractFieldsFromImagesWithFieldNames:
             "k",
             "ingredients",
             "guaranteed_analysis",
-            "caution_en",
-            "caution_fr",
-            "instructions_en",
-            "instructions_fr",
+            "precaution_statements",
+            "directions_for_use_statements",
         ]
         for field_name in fields_to_test:
             subset_model = create_subset_model(
@@ -254,7 +249,7 @@ class TestExtractFieldsFromImagesWithFieldNames:
             mock_instructor.chat.completions.create_with_completion = AsyncMock(
                 return_value=(mock_response, MagicMock())
             )
-            result = await extract_fields_from_images(
+            result, _completion = await extract_fields_from_images(
                 [sample_image_data],
                 subset_model,
                 "test prompt",

@@ -181,7 +181,7 @@
       }
     ],
     "guidance_en": "Section 18 does not apply. Only check for the presence of a guaranteed analysis.",
-    "guidance_fr": "L'article 18 ne s'applique pas.",
+    "guidance_fr": "L'article 18 ne s'applique pas. Vérifiez uniquement la présence d'une analyse garantie.",
     "title_en": "Guaranteed Analysis Presence",
     "title_fr": "Présence d'une analyse garantie"
   },

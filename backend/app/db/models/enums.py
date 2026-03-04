@@ -22,3 +22,10 @@ class ComplianceStatus(str, Enum):
     NON_COMPLIANT = "non_compliant"
     NOT_APPLICABLE = "not_applicable"
     INCONCLUSIVE = "inconclusive"
+
+
+class ProductClassification(str, Enum):
+    FERTILIZER = "fertilizer"
+    SUPPLEMENT = "supplement"
+    GROWING_MEDIUM = "growing_medium"
+    TREATED_SEED = "treated_seed"

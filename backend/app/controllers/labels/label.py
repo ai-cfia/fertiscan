@@ -33,24 +33,31 @@ def _apply_label_sorting(
         "createdAt": Label.created_at,
         "review_status": Label.review_status,
         "reviewStatus": Label.review_status,
-        "brand_name_en": func.coalesce(
-            LabelData.brand_name_en,
-            LabelData.brand_name_fr,
-        ),
-        "brand_name_fr": func.coalesce(
-            LabelData.brand_name_fr,
-            LabelData.brand_name_en,
-        ),
-        "product_name_en": func.coalesce(
-            LabelData.product_name_en,
-            LabelData.product_name_fr,
-        ),
-        "product_name_fr": func.coalesce(
-            LabelData.product_name_fr,
-            LabelData.product_name_en,
-        ),
     }
-    sort_column: Any = valid_sort_fields.get(order_by, Label.created_at)
+
+    sort_column: Any
+    if order_by == "brand_name_en":
+        sort_column = func.coalesce(
+            LabelData.brand_name["en"].as_string(),  # type: ignore[index, union-attr]
+            LabelData.brand_name["fr"].as_string(),  # type: ignore[index, union-attr]
+        )
+    elif order_by == "brand_name_fr":
+        sort_column = func.coalesce(
+            LabelData.brand_name["fr"].as_string(),  # type: ignore[index, union-attr]
+            LabelData.brand_name["en"].as_string(),  # type: ignore[index, union-attr]
+        )
+    elif order_by == "product_name_en":
+        sort_column = func.coalesce(
+            LabelData.product_name["en"].as_string(),  # type: ignore[index, union-attr]
+            LabelData.product_name["fr"].as_string(),  # type: ignore[index, union-attr]
+        )
+    elif order_by == "product_name_fr":
+        sort_column = func.coalesce(
+            LabelData.product_name["fr"].as_string(),  # type: ignore[index, union-attr]
+            LabelData.product_name["en"].as_string(),  # type: ignore[index, union-attr]
+        )
+    else:
+        sort_column = valid_sort_fields.get(order_by, Label.created_at)
 
     needs_label_data = order_by in (
         "brand_name_en",
@@ -202,15 +209,15 @@ def update_non_compliance_data(
         non_compliance_data_item = NonComplianceDataItem(
             label_id=label.id,
             requirement_id=requirement.id,
-            description_en=compliance_result.explanation_en,
-            description_fr=compliance_result.explanation_fr,
+            description_en=compliance_result.explanation.en or "",
+            description_fr=compliance_result.explanation.fr or "",
             status=compliance_result.status,
         )
         session.add(non_compliance_data_item)
     else:
         non_compliance_data_item.status = compliance_result.status
-        non_compliance_data_item.description_en = compliance_result.explanation_en
-        non_compliance_data_item.description_fr = compliance_result.explanation_fr
+        non_compliance_data_item.description_en = compliance_result.explanation.en or ""
+        non_compliance_data_item.description_fr = compliance_result.explanation.fr or ""
         session.add(non_compliance_data_item)
 
     session.flush()
