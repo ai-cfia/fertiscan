@@ -76,6 +76,7 @@ class Settings(BaseSettings):
     AZURE_OPENAI_MODEL: str = "gpt-4o"
     COMPLIANCE_SEED_DATA_DIR: str = "app/data"
     PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
+    COMPLIANCE_PROMPT_TEMPLATE: str = "compliance_verification.md"
 
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod

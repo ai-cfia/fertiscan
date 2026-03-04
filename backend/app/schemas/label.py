@@ -7,6 +7,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
+from app.db.models.enums import ComplianceStatus
 from app.db.models.label import ReviewStatus
 from app.db.models.label_image import UploadStatus
 from app.schemas.label_data import FertilizerLabelData, LabelData
@@ -117,22 +118,6 @@ class LabelImageDetail(BaseModel):
     current_image_count: int | None = None
 
 
-# ============================== Non-compliance Data Item Schemas ==============================
-
-
-class NonComplianceDataItemCreate(BaseModel):
-    label_id: UUID
-    rule_id: UUID
-    note: str | None = None
-    description_en: str | None = None
-    description_fr: str | None = None
-    is_compliant: bool = False
-
-
-class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
-    id: UUID
-
-
 # ============================== Compliance AI result Schema ==============================
 
 
@@ -142,6 +127,10 @@ class ComplianceResults(BaseModel):
 
 
 class ComplianceResult(BaseModel):
+    status: ComplianceStatus = Field(
+        ...,
+        description="Outcome of the check: compliant, non_compliant, not_applicable, or inconclusive (requires human review).",
+    )
     explanation_en: str = Field(
         ...,
         description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in English",
@@ -149,10 +138,6 @@ class ComplianceResult(BaseModel):
     explanation_fr: str = Field(
         ...,
         description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in French",
-    )
-    is_compliant: bool = Field(
-        ...,
-        description="Whether the Label Data satisfies the requirements of the Regulation to Enforce.",
     )
 
 

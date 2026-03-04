@@ -26,6 +26,11 @@ class FertilizerLabelData(Base, TimestampMixin, table=True):
     caution_fr: str | None = Field(default=None)
     instructions_en: str | None = Field(default=None)
     instructions_fr: str | None = Field(default=None)
+    is_customer_formula: bool | None = Field(default=None)
+    intended_use_statements: list[str] | None = Field(default=None, sa_type=JSON)
+    processing_instruction_statements: list[str] | None = Field(
+        default=None, sa_type=JSON
+    )
     label: "Label" = Relationship(back_populates="fertilizer_label_data")
     meta: list["FertilizerLabelDataMeta"] = Relationship(
         back_populates="fertilizer_label_data", cascade_delete=True

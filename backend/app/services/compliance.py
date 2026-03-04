@@ -97,6 +97,8 @@ def get_requirement_provisions(requirement: Requirement) -> str:
         return ""
     sorted_provisions = sorted(requirement.provisions, key=lambda p: p.citation)
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
+    if requirement.guidance_en:
+        lines.append(f"\nGuidance: {requirement.guidance_en}")
     return "\n".join(lines)
 
 
@@ -105,9 +107,7 @@ def get_label_data_json(label: Label) -> str:
     Serialize the label and its associated technical data into a JSON string
     suitable for LLM evaluation.
     """
-    return LabelEvaluationContext.model_validate(label).model_dump_json(
-        exclude_none=True
-    )
+    return LabelEvaluationContext.model_validate(label).model_dump_json()
 
 
 def build_context(label: Label, requirement: Requirement) -> dict[str, str]:
@@ -130,7 +130,7 @@ def render_prompt(context: dict[str, str]) -> str:
     Render the LLM prompt using the provided template and gathered context.
     """
     return settings.prompt_template_env.get_template(
-        "compliance_verification.md"
+        settings.COMPLIANCE_PROMPT_TEMPLATE
     ).render(
         dictionary=context.get("dictionary", ""),
         global_exemptions=context.get("global_exemptions", ""),

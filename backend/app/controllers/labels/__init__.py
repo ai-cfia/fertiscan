@@ -17,10 +17,9 @@ from app.controllers.labels.fertilizer_label_data import (
 from app.controllers.labels.label import (
     create_label,
     delete_label,
-    # evaluate_non_compliance,
+    evaluate_non_compliance,
     get_label_detail,
     get_labels_query,
-    # update_is_compliant,
     update_label,
     update_label_review_status,
 )
@@ -52,10 +51,9 @@ __all__ = [
     # Label functions
     "create_label",
     "delete_label",
-    # "evaluate_non_compliance",
+    "evaluate_non_compliance",
     "get_label_detail",
     "get_labels_query",
-    # "update_is_compliant",
     "update_label",
     "update_label_review_status",
     # LabelImage functions

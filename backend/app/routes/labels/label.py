@@ -163,18 +163,15 @@ async def delete_label(
 @router.get("/{label_id}/evaluate-non-compliance", response_model=ComplianceResults)
 async def evaluate_non_compliance(
     label: CompletedLabelDep,
-    session: SessionDep,
     _: CurrentUser,
     instructor: InstructorDep,
     requirements: RequirementsDep,
 ) -> ComplianceResults:
     """Evaluate non-compliance of the label against specified rules."""
-    # TODO: Update this endpoint to support the new dependencies system and ensure it works with the updated label and requirement models
-    results = await label_controller.evaluate_non_compliance(  # type: ignore[call-arg]
-        session=session,
+    results = await label_controller.evaluate_non_compliance(
         instructor=instructor,
         label=label,
-        requirements=requirements,
+        rules=requirements,
     )
 
     return ComplianceResults(

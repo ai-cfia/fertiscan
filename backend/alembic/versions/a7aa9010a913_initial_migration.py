@@ -1,8 +1,8 @@
-"""initial migration
+"""initial_migration
 
-Revision ID: 8454daf83241
+Revision ID: a7aa9010a913
 Revises:
-Create Date: 2026-03-02 20:50:43.431974
+Create Date: 2026-03-04 09:15:42.245232
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '8454daf83241'
+revision: str = 'a7aa9010a913'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -206,6 +206,9 @@ def upgrade() -> None:
     sa.Column('caution_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('instructions_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('instructions_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('is_customer_formula', sa.Boolean(), nullable=True),
+    sa.Column('intended_use_statements', sa.JSON(), nullable=True),
+    sa.Column('processing_instruction_statements', sa.JSON(), nullable=True),
     sa.ForeignKeyConstraint(['label_id'], ['label.id'], name=op.f('fk_fertilizerlabeldata_label_id_label')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_fertilizerlabeldata'))
     )

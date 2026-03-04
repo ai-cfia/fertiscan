@@ -25,9 +25,8 @@ product's label data adheres to a specific regulatory requirement.
 - Support your conclusion with specific evidence from the Label Data.
 - Apply definitions from the Dictionary strictly — do not use colloquial
   interpretations of legal terms.
-- Inconclusive by default: If the provided context and label data are
-  insufficient to reach a definitive conclusion (Compliant, Non-Compliant, or
-  Not Applicable), you must return Inconclusive.
+- Return Inconclusive only when the Label Data is ambiguous, illegible, or
+  requires verification beyond the provided context.
 
 ## Dictionary
 

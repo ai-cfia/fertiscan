@@ -3,14 +3,13 @@
 from uuid import uuid4
 
 import pytest
-from app.db.models.rule import Rule
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from sqlmodel import select
 
 from app.config import settings
 from tests.factories.label import LabelFactory
 from tests.factories.NonComplianceDataItem import NonComplianceDataItemFactory
+from tests.factories.requirement import RequirementFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import (
     authentication_token_from_email,
@@ -34,17 +33,16 @@ class TestUpdateNonComplianceDataItem:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement = RequirementFactory.create(session=db)
+
         non_compliance_data_item = NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement.id,
             note="This is a note.",
             description_en="This is a description.",
             description_fr="Ceci est une description.",
-            is_compliant=True,
+            status="compliant",
         )
 
         update_data = {
@@ -55,7 +53,7 @@ class TestUpdateNonComplianceDataItem:
         }
 
         response = client.patch(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{requirement.id}",
             json=update_data,
             headers=headers,
         )
@@ -64,13 +62,13 @@ class TestUpdateNonComplianceDataItem:
         response_data = response.json()
         assert response_data["id"] == str(non_compliance_data_item.id)
         assert response_data["label_id"] == str(label.id)
-        assert response_data["rule_id"] == str(rule1.id)
+        assert response_data["requirement_id"] == str(requirement.id)
         assert response_data["note"] == "This is an updated note."
         assert response_data["description_en"] == "This is an updated description."
         assert (
             response_data["description_fr"] == "Ceci est une description mise à jour."
         )
-        assert response_data["is_compliant"] is False
+        assert response_data["status"] == "compliant"
 
     def test_update_non_compliance_data_item_not_found(
         self, db: Session, client: TestClient
@@ -83,19 +81,17 @@ class TestUpdateNonComplianceDataItem:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement = RequirementFactory.create(session=db)
 
         update_data = {
             "note": "This is an updated note.",
             "description_en": "This is an updated description.",
             "description_fr": "Ceci est une description mise à jour.",
-            "is_compliant": False,
+            "status": "non_compliant",
         }
 
         response = client.patch(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{requirement.id}",
             json=update_data,
             headers=headers,
         )
@@ -114,31 +110,29 @@ class TestUpdateNonComplianceDataItem:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement = RequirementFactory.create(session=db)
 
         update_data = {
             "note": "This is an updated note.",
             "description_en": "This is an updated description.",
             "description_fr": "Ceci est une description mise à jour.",
-            "is_compliant": False,
+            "status": "non_compliant",
         }
 
         response = client.patch(
-            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{requirement.id}",
             json=update_data,
             headers=headers,
         )
 
         assert response.status_code == 404
 
-    def test_update_non_compliance_data_item_invalid_rule(
+    def test_update_non_compliance_data_item_invalid_requirement(
         self,
         db: Session,
         client: TestClient,
     ) -> None:
-        """Test updating a non-compliance data item with an invalid rule."""
+        """Test updating a non-compliance data item with an invalid requirement."""
 
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
@@ -150,7 +144,7 @@ class TestUpdateNonComplianceDataItem:
             "note": "This is an updated note.",
             "description_en": "This is an updated description.",
             "description_fr": "Ceci est une description mise à jour.",
-            "is_compliant": False,
+            "status": "non_compliant",
         }
 
         response = client.patch(
@@ -168,12 +162,10 @@ class TestUpdateNonComplianceDataItem:
     ) -> None:
         """Test updating a non-compliance data item without authentication."""
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement = RequirementFactory.create(session=db)
 
         response = client.patch(
-            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{requirement.id}",
             json={},
         )
 
@@ -192,17 +184,16 @@ class TestUpdateNonComplianceDataItem:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement = RequirementFactory.create(session=db)
+
         non_compliance_data_item = NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement.id,
             note="This is a note.",
             description_en="This is a description.",
             description_fr="Ceci est une description.",
-            is_compliant=True,
+            status="compliant",
         )
 
         update_data = {
@@ -210,7 +201,7 @@ class TestUpdateNonComplianceDataItem:
         }
 
         response = client.patch(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{requirement.id}",
             json=update_data,
             headers=headers,
         )
@@ -219,8 +210,8 @@ class TestUpdateNonComplianceDataItem:
         response_data = response.json()
         assert response_data["id"] == str(non_compliance_data_item.id)
         assert response_data["label_id"] == str(label.id)
-        assert response_data["rule_id"] == str(rule1.id)
+        assert response_data["requirement_id"] == str(requirement.id)
         assert response_data["note"] == "This is an updated note."
         assert response_data["description_en"] == "This is a description."
         assert response_data["description_fr"] == "Ceci est une description."
-        assert response_data["is_compliant"] is True
+        assert response_data["status"] == "compliant"

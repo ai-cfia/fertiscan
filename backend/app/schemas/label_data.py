@@ -7,7 +7,8 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
 
-# ============================== Base/Shared Models ==============================
+# ============================== Base/Shared Models
+# ==============================
 
 
 class Contact(BaseModel):
@@ -69,7 +70,7 @@ class GuaranteedAnalysis(BaseModel):
     )
 
 
-# ============================== LabelData Schemas ==============================
+# ============================== LabelData Schemas =============================
 
 
 class LabelData(BaseModel):
@@ -123,7 +124,7 @@ class LabelDataFieldMetaResponse(BaseModel):
     ai_generated: bool
 
 
-# ============================== FertilizerLabelData Schemas ==============================
+# ======================== FertilizerLabelData Schemas ========================
 
 
 class FertilizerLabelData(BaseModel):
@@ -137,6 +138,9 @@ class FertilizerLabelData(BaseModel):
     caution_fr: str | None = None
     instructions_en: str | None = None
     instructions_fr: str | None = None
+    is_customer_formula: bool | None = None
+    intended_use_statements: list[str] | None = None
+    processing_instruction_statements: list[str] | None = None
 
     @field_serializer("n", "p", "k", when_used="json")
     def serialize_decimal(self, value: Decimal | None) -> str | None:
@@ -156,6 +160,9 @@ class FertilizerLabelDataCreate(BaseModel):
     caution_fr: str | None = None
     instructions_en: str | None = None
     instructions_fr: str | None = None
+    is_customer_formula: bool | None = None
+    intended_use_statements: list[str] | None = None
+    processing_instruction_statements: list[str] | None = None
 
 
 class FertilizerLabelDataUpdate(BaseModel):
@@ -168,6 +175,9 @@ class FertilizerLabelDataUpdate(BaseModel):
     caution_fr: str | None = None
     instructions_en: str | None = None
     instructions_fr: str | None = None
+    is_customer_formula: bool | None = None
+    intended_use_statements: list[str] | None = None
+    processing_instruction_statements: list[str] | None = None
 
 
 class FertilizerLabelDataMetaUpdate(BaseModel):
@@ -184,7 +194,7 @@ class FertilizerLabelDataMetaResponse(BaseModel):
     ai_generated: bool
 
 
-# ============================== Extraction Schemas ==============================
+# ============================= Extraction Schemas =============================
 
 
 class ExtractFieldsRequest(BaseModel):
@@ -229,6 +239,35 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     volume: str | None = Field(
         default=None, description="Volume with unit", examples=["1 L"]
     )
+    is_customer_formula: bool | None = Field(
+        default=None,
+        description=(
+            "A 'customer formula fertilizer' is a fertilizer prepared to the specifications of the purchaser and sold only to that purchaser. True if the label indicates this, False if clearly retail, None if unclear."
+        ),
+    )
+    intended_use_statements: list[str] | None = Field(
+        default=None,
+        description="Extract ALL raw statements on the label indicating intended use or target audience, not limited to the provided examples.",
+        examples=[
+            [
+                "For industrial use only",
+                "For manufacturing purposes",
+                "Not for retail sale",
+                "...",
+            ]
+        ],
+    )
+    processing_instruction_statements: list[str] | None = Field(
+        default=None,
+        description="Extract ALL raw statements indicating the product requires further treatment, other than simple mixing or repackaging, not limited to the provided examples.",
+        examples=[
+            [
+                "Requires further chemical processing",
+                "For use as an ingredient in XYZ manufacture",
+                "...",
+            ]
+        ],
+    )
     n: Decimal | None = Field(
         default=None,
         ge=0,
@@ -249,11 +288,11 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     ingredients: list[Ingredient] | None = Field(
         default=None,
-        description="List of ingredients with bilingual names, values and units",
+        description="Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.",
     )
     guaranteed_analysis: GuaranteedAnalysis | None = Field(
         default=None,
-        description="Guaranteed analysis section with bilingual title and nutrients",
+        description="The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.",
     )
     caution_en: str | None = Field(
         default=None,

@@ -2,7 +2,7 @@
 
 import logging
 
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from app.config import settings
 from app.core.security import get_password_hash
@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 def init_db(session: Session) -> None:
     """Initialize database: create first superuser, product types, and compliance data."""
     # Create first superuser
-    if user := session.query(User).filter_by(email=settings.FIRST_SUPERUSER).first():
+    if user := session.exec(
+        select(User).where(User.email == settings.FIRST_SUPERUSER)
+    ).first():
         logger.info(f"Superuser already exists: {user.email}")
     else:
         user = User(
@@ -41,7 +43,9 @@ def init_db(session: Session) -> None:
         logger.info(f"Superuser created: {user.email}")
 
     # Seed product types
-    if product_type := session.query(ProductType).filter_by(code="fertilizer").first():
+    if product_type := session.exec(
+        select(ProductType).where(ProductType.code == "fertilizer")
+    ).first():
         logger.info(f"ProductType 'fertilizer' already exists: {product_type.code}")
     else:
         product_type = ProductType(
@@ -60,11 +64,11 @@ def init_db(session: Session) -> None:
     # 1. UPSERT Legislations
     leg_map = {}
     for leg_data in seed_data.get("legislations", []):
-        leg = (
-            session.query(Legislation)
-            .filter_by(citation_reference=leg_data["citation_reference"])
-            .first()
-        )
+        leg = session.exec(
+            select(Legislation).where(
+                Legislation.citation_reference == leg_data["citation_reference"]
+            )
+        ).first()
         if not leg:
             leg = Legislation(**leg_data)
             session.add(leg)
@@ -82,11 +86,12 @@ def init_db(session: Session) -> None:
             )
             continue
 
-        definition = (
-            session.query(Definition)
-            .filter_by(legislation_id=leg.id, title_en=def_data["title_en"])
-            .first()
-        )
+        definition = session.exec(
+            select(Definition).where(
+                Definition.legislation_id == leg.id,
+                Definition.title_en == def_data["title_en"],
+            )
+        ).first()
         if not definition:
             definition = Definition(legislation_id=leg.id, **def_data)
             session.add(definition)
@@ -110,11 +115,12 @@ def init_db(session: Session) -> None:
 
         def_infos = prov_data.pop("definitions", [])
 
-        prov = (
-            session.query(Provision)
-            .filter_by(legislation_id=leg.id, citation=prov_data["citation"])
-            .first()
-        )
+        prov = session.exec(
+            select(Provision).where(
+                Provision.legislation_id == leg.id,
+                Provision.citation == prov_data["citation"],
+            )
+        ).first()
         if not prov:
             prov = Provision(legislation_id=leg.id, **prov_data)
             session.add(prov)
@@ -137,16 +143,20 @@ def init_db(session: Session) -> None:
                 )
                 continue
 
-            definition = (
-                session.query(Definition)
-                .filter_by(legislation_id=target_leg.id, title_en=term)
-                .first()
-            )
+            definition = session.exec(
+                select(Definition).where(
+                    Definition.legislation_id == target_leg.id,
+                    Definition.title_en == term,
+                )
+            ).first()
             if (
                 definition
-                and not session.query(ProvisionDefinition)
-                .filter_by(provision_id=prov.id, definition_id=definition.id)
-                .first()
+                and not session.exec(
+                    select(ProvisionDefinition).where(
+                        ProvisionDefinition.provision_id == prov.id,
+                        ProvisionDefinition.definition_id == definition.id,
+                    )
+                ).first()
             ):
                 session.add(
                     ProvisionDefinition(
@@ -174,9 +184,9 @@ def init_db(session: Session) -> None:
             )
             continue
 
-        req = (
-            session.query(Requirement).filter_by(title_en=req_data["title_en"]).first()
-        )
+        req = session.exec(
+            select(Requirement).where(Requirement.title_en == req_data["title_en"])
+        ).first()
         if not req:
             req = Requirement(legislation_id=primary_leg.id, **req_data)
             session.add(req)
@@ -198,16 +208,20 @@ def init_db(session: Session) -> None:
             if not target_leg:
                 continue
 
-            prov = (
-                session.query(Provision)
-                .filter_by(legislation_id=target_leg.id, citation=citation)
-                .first()
-            )
+            prov = session.exec(
+                select(Provision).where(
+                    Provision.legislation_id == target_leg.id,
+                    Provision.citation == citation,
+                )
+            ).first()
             if (
                 prov
-                and not session.query(RequirementProvision)
-                .filter_by(requirement_id=req.id, provision_id=prov.id)
-                .first()
+                and not session.exec(
+                    select(RequirementProvision).where(
+                        RequirementProvision.requirement_id == req.id,
+                        RequirementProvision.provision_id == prov.id,
+                    )
+                ).first()
             ):
                 session.add(
                     RequirementProvision(requirement_id=req.id, provision_id=prov.id)
@@ -222,20 +236,21 @@ def init_db(session: Session) -> None:
             if not target_leg:
                 continue
 
-            prov = (
-                session.query(Provision)
-                .filter_by(legislation_id=target_leg.id, citation=citation)
-                .first()
-            )
+            prov = session.exec(
+                select(Provision).where(
+                    Provision.legislation_id == target_leg.id,
+                    Provision.citation == citation,
+                )
+            ).first()
             if (
                 prov
-                and not session.query(RequirementModifier)
-                .filter_by(
-                    requirement_id=req.id,
-                    provision_id=prov.id,
-                    type=ModifierType(mod_type),
-                )
-                .first()
+                and not session.exec(
+                    select(RequirementModifier).where(
+                        RequirementModifier.requirement_id == req.id,
+                        RequirementModifier.provision_id == prov.id,
+                        RequirementModifier.type == ModifierType(mod_type),
+                    )
+                ).first()
             ):
                 session.add(
                     RequirementModifier(

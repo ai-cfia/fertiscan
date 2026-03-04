@@ -40,7 +40,7 @@ def ensure_Label_Has_No_Non_Compliance_Data(
     return NonComplianceDataItem(
         label_id=label.id,
         requirement_id=requirement.id,
-        is_compliant=payload.is_compliant,
+        status=payload.status,
         note=payload.note,
         description_en=payload.description_en,
         description_fr=payload.description_fr,

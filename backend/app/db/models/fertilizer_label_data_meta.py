@@ -24,6 +24,9 @@ class FertilizerLabelDataFieldName(str, Enum):
     caution_fr = "caution_fr"
     instructions_en = "instructions_en"
     instructions_fr = "instructions_fr"
+    is_customer_formula = "is_customer_formula"
+    intended_use_statements = "intended_use_statements"
+    processing_instruction_statements = "processing_instruction_statements"
 
 
 class FertilizerLabelDataMeta(Base, TimestampMixin, table=True):

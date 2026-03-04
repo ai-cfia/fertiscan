@@ -5,6 +5,8 @@ from uuid import UUID
 from fastapi import Query
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
+from app.db.models.enums import ComplianceStatus
+
 
 class NonComplianceDataItemCreate(BaseModel):
     label_id: UUID
@@ -12,7 +14,7 @@ class NonComplianceDataItemCreate(BaseModel):
     note: str | None = None
     description_en: str | None = None
     description_fr: str | None = None
-    is_compliant: bool = False
+    status: ComplianceStatus = ComplianceStatus.INCONCLUSIVE
 
 
 class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
@@ -24,7 +26,7 @@ class NonComplianceDataItemPayload(BaseModel):
     note: str | None = None
     description_en: str | None = None
     description_fr: str | None = None
-    is_compliant: bool = False
+    status: ComplianceStatus = ComplianceStatus.INCONCLUSIVE
 
 
 class NonComplianceDataItemParams(BaseModel):
@@ -33,7 +35,7 @@ class NonComplianceDataItemParams(BaseModel):
     note: str | None = Query(None, description="Note to filter by")
     description_en: str | None = Query(None, description="description_en to filter by")
     description_fr: str | None = Query(None, description="description_fr to filter by")
-    is_compliant: bool | None = Query(
+    status: ComplianceStatus | None = Query(
         None, description="Compliance status to filter by"
     )
     start_created_at: datetime | None = Query(None, description="Start created at")
@@ -52,4 +54,4 @@ class UpdateNonComplianceDataItemPayload(BaseModel):
     note: str | None = None
     description_en: str | None = None
     description_fr: str | None = None
-    is_compliant: bool | None = None
+    status: ComplianceStatus | None = None
