@@ -5,12 +5,11 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from sqlmodel import select
 
 from app.config import settings
-from app.db.models.rule import Rule
 from tests.factories.label import LabelFactory
 from tests.factories.NonComplianceDataItem import NonComplianceDataItemFactory
+from tests.factories.requirement import RequirementFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import (
     authentication_token_from_email,
@@ -33,12 +32,10 @@ class TestCreateCompliance:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule = db.scalars(stmt).first()
-        assert rule is not None
+        requirement = RequirementFactory.create(session=db)
         data = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -50,9 +47,9 @@ class TestCreateCompliance:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["rule_id"] == str(rule.id)
+        assert data["requirement_id"] == str(requirement.id)
         assert data["label_id"] == str(label.id)
-        assert data["is_compliant"] is False
+        assert data["status"] == "non_compliant"
         assert data["note"] == "This is a note."
         assert data["description_en"] == "This is a description in English."
         assert data["description_fr"] == "Ceci est une description en français."
@@ -62,7 +59,7 @@ class TestCreateCompliance:
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test to ensure that creating a non-compliance data item for a label and rule that already has one returns a 409 error."""
+        """Test to ensure that creating a non-compliance data item for a label and requirement that already has one returns a 409 error."""
 
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
@@ -70,20 +67,19 @@ class TestCreateCompliance:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule = db.scalars(stmt).first()
-        assert rule is not None
+        requirement = RequirementFactory.create(session=db)
         NonComplianceDataItemFactory.create(
+            session=db,
             label_id=label.id,
-            rule_id=rule.id,
-            is_compliant=False,
+            requirement_id=requirement.id,
+            status="non_compliant",
             note="This is a note.",
             description_en="This is a description in English.",
             description_fr="Ceci est une description en français.",
         )
         data = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -116,12 +112,10 @@ class TestCreateCompliance:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule = db.scalars(stmt).first()
-        assert rule is not None
+        requirement = RequirementFactory.create(session=db)
         data = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -133,12 +127,12 @@ class TestCreateCompliance:
         )
         assert response.status_code == 404
 
-    def test_rule_must_exist_to_create_compliance(
+    def test_requirement_must_exist_to_create_compliance(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that a non-compliance data item cannot be created for a rule that does not exist."""
+        """Test that a non-compliance data item cannot be created for a requirement that does not exist."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
@@ -146,8 +140,8 @@ class TestCreateCompliance:
         )
 
         data = {
-            "rule_id": str(uuid4()),
-            "is_compliant": False,
+            "requirement_id": str(uuid4()),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -164,7 +158,7 @@ class TestCreateCompliance:
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that creating two non-compliance data items for the same rule but different labels works."""
+        """Test that creating two non-compliance data items for the same requirement but different labels works."""
         user = UserFactory.create(session=db)
         label1 = LabelFactory.create(session=db, created_by=user)
         label2 = LabelFactory.create(session=db, created_by=user)
@@ -172,12 +166,10 @@ class TestCreateCompliance:
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule = db.scalars(stmt).first()
-        assert rule is not None
+        requirement = RequirementFactory.create(session=db)
         data1 = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -190,8 +182,8 @@ class TestCreateCompliance:
         assert response1.status_code == 200
 
         data2 = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",
@@ -208,19 +200,17 @@ class TestCreateCompliance:
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that creating two non-compliance data items for the same rule and same label returns a 409 error."""
+        """Test that creating two non-compliance data items for the same requirement and same label returns a 409 error."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule = db.scalars(stmt).first()
-        assert rule is not None
+        requirement = RequirementFactory.create(session=db)
         data = {
-            "rule_id": str(rule.id),
-            "is_compliant": False,
+            "requirement_id": str(requirement.id),
+            "status": "non_compliant",
             "note": "This is a note.",
             "description_en": "This is a description in English.",
             "description_fr": "Ceci est une description en français.",

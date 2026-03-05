@@ -15,7 +15,7 @@
           "type": "library",
           "name": "cyclonedx-library",
           "group": "@cyclonedx",
-          "version": "9.4.1",
+          "version": "10.0.0",
           "author": "Jan Kowalleck",
           "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
           "licenses": [
@@ -47,7 +47,7 @@
           "type": "application",
           "name": "cyclonedx-npm",
           "group": "@cyclonedx",
-          "version": "4.1.2",
+          "version": "4.2.0",
           "author": "Jan Kowalleck",
           "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
           "licenses": [
@@ -82,7 +82,6 @@
       "name": "frontend",
       "version": "0.0.0",
       "bom-ref": "frontend@0.0.0",
-      "purl": "pkg:npm/frontend@0.0.0",
       "properties": [
         {
           "name": "cdx:npm:package:path",
@@ -106,8 +105,8 @@
       "type": "library",
       "name": "code-frame",
       "group": "@babel",
-      "version": "7.27.1",
-      "bom-ref": "frontend@0.0.0|@babel/code-frame@7.27.1",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/code-frame@7.29.0",
       "licenses": [
         {
           "license": {
@@ -116,15 +115,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/code-frame@7.27.1",
+      "purl": "pkg:npm/%40babel/code-frame@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz",
+          "url": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "72343b66543432fddbe3b84006e4debf24ee60de22fa5a09286795f5f95c0a020adfb7025d187e2f56ddde20479729deae143b0610a49f604f6d050bfab1aa16"
+              "content": "f4d8427988eaf7edeec6076da76d0b4a225726f37415e0ad346a49c6e3056752afddc59435be833a127052f7150b328647ae9cc389e3c0cea1ac92ea80ec1b73"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -141,8 +140,8 @@
       "type": "library",
       "name": "compat-data",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/compat-data@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/compat-data@7.29.0",
       "licenses": [
         {
           "license": {
@@ -151,15 +150,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/compat-data@7.28.5",
+      "purl": "pkg:npm/%40babel/compat-data@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "eae157c826b2a1c45baa164e07ee9772e65b90c3629b07d51858e2f024d99c2cce1d51af0eacef8adbb5aded805392d13a58b3ede40f841f02a4032f9f1f448c"
+              "content": "4f534226a4ff8fdf9c9fc7ef92dee3b706cb05f2c2ff5cb573b36d09e5c5460cc64ec69f8baf0c46ff32ce46126a9067140e8bdd4d9549cd367220f3a0026126"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -180,8 +179,8 @@
       "type": "library",
       "name": "core",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/core@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/core@7.29.0",
       "licenses": [
         {
           "license": {
@@ -190,15 +189,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/core@7.28.5",
+      "purl": "pkg:npm/%40babel/core@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/core/-/core-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/core/-/core-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7bb8d3e03c58bc80cb935647994fe6fe6075f6b7b1f6cbf47367ed06d8d206ffa454cffdd367a1d1f20d5330fb5302cb351fa3539f391b1509f3f1017c03397f"
+              "content": "08639f389a968e0daa5bf31beb336c0e6faee6f150f03c577db334f73ebda7967afa61358a43f68d45f0fa3e363dfd574d8103d919e2e5ff799e961ebb030340"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -219,8 +218,8 @@
       "type": "library",
       "name": "generator",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/generator@7.28.5",
+      "version": "7.29.1",
+      "bom-ref": "frontend@0.0.0|@babel/generator@7.29.1",
       "licenses": [
         {
           "license": {
@@ -229,15 +228,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/generator@7.28.5",
+      "purl": "pkg:npm/%40babel/generator@7.29.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/generator/-/generator-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/generator/-/generator-7.29.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dc4c0b161677f09e15c883fa58db6dda451d5bd76891703d0abe08548147b82a59dc7f3f6053a5e498d91e2b2b9f57c04cf06628aa97cc316f87d7d4c07cfa09"
+              "content": "aac685fbd41c9b642ff1244830cb1c02f1b83b7949d05d46b8ca391d1fc1a74d8ba293609d9042fc491b7af1c5786b3896cfe83f3f6ff81b26cdb91b7bed1d53"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -254,8 +253,8 @@
       "type": "library",
       "name": "helper-compilation-targets",
       "group": "@babel",
-      "version": "7.27.2",
-      "bom-ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
       "licenses": [
         {
           "license": {
@@ -264,15 +263,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-compilation-targets@7.27.2",
+      "purl": "pkg:npm/%40babel/helper-compilation-targets@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.27.2.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dbed6d8465145968cb4d84c76562b59fc6206b48a3073d5702151770acbcd6b77983aca1ee11aa329e39bfb71a7526c41dcf46dce4efe394b29de44dde9b380d"
+              "content": "258b65b3786a8b5e5f731e4669234bed209327630d9a3ae41d7838152a4e03f82bc4af0ac326796ee6c7b02abc1570a4b9aeb186e69a062b7eddbefe55945f70"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -328,8 +327,8 @@
       "type": "library",
       "name": "helper-module-imports",
       "group": "@babel",
-      "version": "7.27.1",
-      "bom-ref": "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
       "licenses": [
         {
           "license": {
@@ -338,15 +337,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-module-imports@7.27.1",
+      "purl": "pkg:npm/%40babel/helper-module-imports@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.27.1.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d204855943cd5cda29aad20f42f943e56817608e4663690fd9c0afa13f247338db7dc7ee2258d36dc5abba50f50883c85f682dd708216c3cb4f32135a7efebdf"
+              "content": "9795e464aeebef06bd2ee706c3d2f0672c8252c71be31dfb2564cfcfbb30c0513fd05310006a62594667f2ef43ce448158470adb98e6bee6dfa70d9d9c031d6f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -363,8 +362,8 @@
       "type": "library",
       "name": "helper-module-transforms",
       "group": "@babel",
-      "version": "7.28.3",
-      "bom-ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
       "licenses": [
         {
           "license": {
@@ -373,15 +372,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helper-module-transforms@7.28.3",
+      "purl": "pkg:npm/%40babel/helper-module-transforms@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.3.tgz",
+          "url": "https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "832b5751bb3c936b174bd3e7429b73e68d109e92cbe754b001220e458e97681285f3c9ec393d19c3db332ea9521900cfff84e58c1003e72f7ca765357ea91db3"
+              "content": "ebba1714062bd9c0cb0d518b5d3100063741259e9dac4954488ed62a9ef436ba72212b28de9946f52006105eb2ef36e16bfc0ecd40725964c9bc40d534850670"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -550,8 +549,8 @@
       "type": "library",
       "name": "helpers",
       "group": "@babel",
-      "version": "7.28.4",
-      "bom-ref": "frontend@0.0.0|@babel/helpers@7.28.4",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/helpers@7.28.6",
       "licenses": [
         {
           "license": {
@@ -560,15 +559,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/helpers@7.28.4",
+      "purl": "pkg:npm/%40babel/helpers@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.4.tgz",
+          "url": "https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "1c5379f4c9905c61d5c9869d28b56e998b00f5d045ba7fe5758c62a448f3038d7dea3a4b65df148c41012e46c492f7d8ade0ea2616716005853edadf84da63e3"
+              "content": "c4e06fc2af3a1c7741ed65034df29f4ff56ec61ee012543e49fb62d82cbac8858d5b4e4ff2252c94e55c678fec29b13efe341aba4400773fe07f7ef6e2461dab"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -589,8 +588,8 @@
       "type": "library",
       "name": "parser",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/parser@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/parser@7.29.0",
       "licenses": [
         {
           "license": {
@@ -599,15 +598,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/parser@7.28.5",
+      "purl": "pkg:npm/%40babel/parser@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/parser/-/parser-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/parser/-/parser-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "28a054d5519847b391af702de4702d510f935774b34425e603ff0e7436622c3048671572cd7bb3b4f8df2dddc15753d10101823165921d884bd05f1de6e1c10d"
+              "content": "2320e0155e467835155f861d17fdc23d42ed5464975cc2e1d7154881d0a0c40a64b6a9d0574afbffc36ab6183ef182c6680b5dc88968daa21d66b6c2bf8fbbc3"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -815,8 +814,8 @@
       "type": "library",
       "name": "template",
       "group": "@babel",
-      "version": "7.27.2",
-      "bom-ref": "frontend@0.0.0|@babel/template@7.27.2",
+      "version": "7.28.6",
+      "bom-ref": "frontend@0.0.0|@babel/template@7.28.6",
       "licenses": [
         {
           "license": {
@@ -825,15 +824,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/template@7.27.2",
+      "purl": "pkg:npm/%40babel/template@7.28.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz",
+          "url": "https://registry.npmjs.org/@babel/template/-/template-7.28.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2cf0d9f39684272612775f3f0e48cd878ff2d67b641392b05075938aa811c6bbae64bd85d72b879628151cbbdc1d8daf3075edb4a169267e8bc1f23b730ece0f"
+              "content": "600e8c6b62ac09d19bf960ba5290551491972f9f0c0c0ea8c8e35b8f217ffb9b0183163f7709212e881b313d865d7c94f38fc8851c3fd83d4eb3507f822cfe05"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -850,8 +849,8 @@
       "type": "library",
       "name": "traverse",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/traverse@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/traverse@7.29.0",
       "licenses": [
         {
           "license": {
@@ -860,15 +859,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/traverse@7.28.5",
+      "purl": "pkg:npm/%40babel/traverse@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/traverse/-/traverse-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4c20a3e2de7953dd24865624555ff44df9099009148378d9140dcd79beee9d94fc08fa24ee28917da5f417e5a7a96aadecec613a7d2e04a5c2c3895b2fc5b469"
+              "content": "e073e242bd17efec1a1dfc973d9a563df58bfc9edd70dd66c7d80be9675054c6cf9c5dfe66148cb3cb42c4dee81dd74913d7e1344efe9717679727a629f251b8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -885,8 +884,8 @@
       "type": "library",
       "name": "types",
       "group": "@babel",
-      "version": "7.28.5",
-      "bom-ref": "frontend@0.0.0|@babel/types@7.28.5",
+      "version": "7.29.0",
+      "bom-ref": "frontend@0.0.0|@babel/types@7.29.0",
       "licenses": [
         {
           "license": {
@@ -895,15 +894,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40babel/types@7.28.5",
+      "purl": "pkg:npm/%40babel/types@7.29.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@babel/types/-/types-7.28.5.tgz",
+          "url": "https://registry.npmjs.org/@babel/types/-/types-7.29.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a90e66e3c788fcc14b4393f1423e0f15aa6b8f20932c8dfb12558c98db342bc2e4ddd55e39d36907792cf2373bc8ce420e6542ef778c564fedae4ddf826ad4a4"
+              "content": "2f07591e949c338433f17c3688a4b34be71f825673246be87d0202cbb5bbbf871aaeee046809b252e3ba046adbc90da6615d755b453c8f998185dd7875ddc1d0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3381,8 +3380,8 @@
       "type": "library",
       "name": "roboto",
       "group": "@fontsource",
-      "version": "5.2.9",
-      "bom-ref": "frontend@0.0.0|@fontsource/roboto@5.2.9",
+      "version": "5.2.10",
+      "bom-ref": "frontend@0.0.0|@fontsource/roboto@5.2.10",
       "licenses": [
         {
           "license": {
@@ -3391,15 +3390,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40fontsource/roboto@5.2.9",
+      "purl": "pkg:npm/%40fontsource/roboto@5.2.10",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.2.9.tgz",
+          "url": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.2.10.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "6539321e23e4ef807f6a3f016566ecc43e58bbe2eafa747ae1e578c22ae5ada736a9747b8d893687a2652d8b8eba8aee4e419058dc367ccb8a35abf0effae0d3"
+              "content": "f07940e45b527f3fffa054abd9e2fb1855c0884ede2247063adc7bb63b0b2aaf9ab3bd36c7df8653b2bde620de5856a91c2e0cda1bfd46ba572914c618123c66"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3842,8 +3841,8 @@
       "type": "library",
       "name": "checkbox",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/checkbox@5.0.4",
+      "version": "5.1.0",
+      "bom-ref": "frontend@0.0.0|@inquirer/checkbox@5.1.0",
       "licenses": [
         {
           "license": {
@@ -3852,15 +3851,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/checkbox@5.0.4",
+      "purl": "pkg:npm/%40inquirer/checkbox@5.1.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/checkbox/-/checkbox-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/checkbox/-/checkbox-5.1.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "0eb00c53760118c500a7a02bc13229ff6e42343b436f193b52322baed336e49555ae5558955cc78791d1d410c5bbd24cc94a19e196a7cde687a8d0edb5fde056"
+              "content": "fc78c5d4b3746b5878fce16c6c6287343b56202154fdda9709dca6ef5f47153c89a3d206eceb6bfb388659cf52d2242ea2145996587e5a9ad281de545b9170d2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3881,8 +3880,8 @@
       "type": "library",
       "name": "confirm",
       "group": "@inquirer",
-      "version": "6.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/confirm@6.0.4",
+      "version": "6.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/confirm@6.0.8",
       "licenses": [
         {
           "license": {
@@ -3891,15 +3890,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/confirm@6.0.4",
+      "purl": "pkg:npm/%40inquirer/confirm@6.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/confirm/-/confirm-6.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/confirm/-/confirm-6.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "59d68f7bb7e8527a0662f5f31f88e9e301ffde5f9d061677bb084a8d78f076bab9b442056803718faceb187c4b76c200d3228cd2414f55c11a94e657041e4848"
+              "content": "0e2e9d826899f7109253159445e593a83b5b8570ae1b63109b6c66812008aeecd0cc1a8d7f8f5bf04d3bfef6c2618e74ea40def018b025b7a05f0786f0cd6497"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3920,8 +3919,8 @@
       "type": "library",
       "name": "core",
       "group": "@inquirer",
-      "version": "11.1.1",
-      "bom-ref": "frontend@0.0.0|@inquirer/core@11.1.1",
+      "version": "11.1.5",
+      "bom-ref": "frontend@0.0.0|@inquirer/core@11.1.5",
       "licenses": [
         {
           "license": {
@@ -3930,15 +3929,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/core@11.1.1",
+      "purl": "pkg:npm/%40inquirer/core@11.1.5",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/core/-/core-11.1.1.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/core/-/core-11.1.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "855f68d795315f8e8ec9002d6a832a00ec4647c455975699b43c758c76c2b52272d6d05d4df2b12cf29feeeb6c138711cb8b5c982438faf755f9c6bea0dc6a34"
+              "content": "4103c05fe9646bc1b22dc67bbbb35bd61eaaef6899fe8cb46e58a50b7201da74add50ab1a7b6a4b7de09aa18bf0f3011b8ddc4a3d430251bed978b6655ee13e4"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3959,8 +3958,8 @@
       "type": "library",
       "name": "editor",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/editor@5.0.4",
+      "version": "5.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/editor@5.0.8",
       "licenses": [
         {
           "license": {
@@ -3969,15 +3968,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/editor@5.0.4",
+      "purl": "pkg:npm/%40inquirer/editor@5.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/editor/-/editor-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/editor/-/editor-5.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "408dc97ea72fe943b6fd525a10538d1fc226d6597ef979ff0094c19fd5dffaac7633e1fc29901d439b007b6bed625a3e98b5be77b25a309078a96b4ae011b7a7"
+              "content": "b0b7296dbf41dd7a94106ae3d4deba2b0843844724cd9e2723f5ba4af2d7c815fc5a27372c32c4365591be4386a423e8b1eada6def8cc5092988ca08f22aefc8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -3998,8 +3997,8 @@
       "type": "library",
       "name": "expand",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/expand@5.0.4",
+      "version": "5.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/expand@5.0.8",
       "licenses": [
         {
           "license": {
@@ -4008,15 +4007,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/expand@5.0.4",
+      "purl": "pkg:npm/%40inquirer/expand@5.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/expand/-/expand-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/expand/-/expand-5.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d08ff5e98c0f3cfd02a3b6b932ca269592e9721e3c37361f4e8caa600396b4199a5d207cd1188d43527ed31c76786f967f1b749c7b69116491afa0b33559ce1a"
+              "content": "422796dc5d69acdc378fe8713bbfcd2a41b5a64de8cfba4e07afb9529c2edce2300037cf5f4a19569a6caa52fe565fee0471c348e058d018ab2dcb4b9d7c061a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4115,8 +4114,8 @@
       "type": "library",
       "name": "input",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/input@5.0.4",
+      "version": "5.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/input@5.0.8",
       "licenses": [
         {
           "license": {
@@ -4125,15 +4124,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/input@5.0.4",
+      "purl": "pkg:npm/%40inquirer/input@5.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/input/-/input-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/input/-/input-5.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e01decde3bd34440c5bd75a2b7dd9873a8c5d5124c0f2d95a52a8ab66e167b6a1553ae583a1daccd8e7f1b5e21e1f1e5c907695266b353930f08564f449d003b"
+              "content": "a74209b25c3402679d2c490e53ecab117dc08f6453a50abb64e7fc9dcd432218f36b1456aeb81eb84e4aca1dfd7d5460b5c00268c5f1ffd58da3cf868e004e7f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4154,8 +4153,8 @@
       "type": "library",
       "name": "number",
       "group": "@inquirer",
-      "version": "4.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/number@4.0.4",
+      "version": "4.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/number@4.0.8",
       "licenses": [
         {
           "license": {
@@ -4164,15 +4163,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/number@4.0.4",
+      "purl": "pkg:npm/%40inquirer/number@4.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/number/-/number-4.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/number/-/number-4.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "0a6329f4b1791f013e1bfc56b02df7dd3942cd861b5cc91c00390acdc6b0878f5f8366b5af22dcec92f5349618b75949fbc7f8b258a436324cf5310bfc096361"
+              "content": "b862e241a87d03417d508bc9057e769b40a7aad2daca6d16a53f55e1866b8d9f98443299770c2810fcf4e8deb0f02844da5ae7b1dca163db0bf98ebdd0a87d81"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4193,8 +4192,8 @@
       "type": "library",
       "name": "password",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/password@5.0.4",
+      "version": "5.0.8",
+      "bom-ref": "frontend@0.0.0|@inquirer/password@5.0.8",
       "licenses": [
         {
           "license": {
@@ -4203,15 +4202,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/password@5.0.4",
+      "purl": "pkg:npm/%40inquirer/password@5.0.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/password/-/password-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/password/-/password-5.0.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "64210fc9562f1cae16e29d86cbab13a7d9eab1d1d009f88f5c83fd2db2555b8c828a79f12ff7430e63da119572b06ae3f2fc5545e467a5f4b67ce78e0def738e"
+              "content": "cedd6c1789582ddbcfaaf9af1dd9a33b3b94523b8243cf7ba5d5023bc45b5cc5032972534f239082d9f6de57be8f071bf8ca4797754016fcc87714407fa68f94"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4232,8 +4231,8 @@
       "type": "library",
       "name": "prompts",
       "group": "@inquirer",
-      "version": "8.2.0",
-      "bom-ref": "frontend@0.0.0|@inquirer/prompts@8.2.0",
+      "version": "8.3.0",
+      "bom-ref": "frontend@0.0.0|@inquirer/prompts@8.3.0",
       "licenses": [
         {
           "license": {
@@ -4242,15 +4241,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/prompts@8.2.0",
+      "purl": "pkg:npm/%40inquirer/prompts@8.3.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/prompts/-/prompts-8.2.0.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/prompts/-/prompts-8.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "aea4f33a9ac08f9e5adbb8dcb52def86f0c3273617b2bdf75974e33838153abbb6d4dbc1a3dc8880b2007fb481752574584455972ddd47a4d6ca9ed91e4bca14"
+              "content": "2408faea48dd1ff175f81ecb0a28230116f0b2db7748d50e4b331d8e9b2fc099b3ba72bcf2025e5e6726f792fd9f0d4aca7bc556e6384b35e1ff763496fb604a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4271,8 +4270,8 @@
       "type": "library",
       "name": "rawlist",
       "group": "@inquirer",
-      "version": "5.2.0",
-      "bom-ref": "frontend@0.0.0|@inquirer/rawlist@5.2.0",
+      "version": "5.2.4",
+      "bom-ref": "frontend@0.0.0|@inquirer/rawlist@5.2.4",
       "licenses": [
         {
           "license": {
@@ -4281,15 +4280,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/rawlist@5.2.0",
+      "purl": "pkg:npm/%40inquirer/rawlist@5.2.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/rawlist/-/rawlist-5.2.0.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/rawlist/-/rawlist-5.2.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "09c8aa1a839432b168e87c6f3ad539b8bf1f9230a6cf2781e9f1bb3b5bdd5406554a8a540581023b07af0c196a34bcb2626ce99b61ac9ffee72eba6bbb2f5116"
+              "content": "7d3b89e42abd5b6f3a8ac2f1c23e861b27d38f1d59764e2aa695443dec45b80eb28a80825d2e15d737caae842ac3b41d6c33cdef7c6cd83888025a39e7e901aa"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4310,8 +4309,8 @@
       "type": "library",
       "name": "search",
       "group": "@inquirer",
-      "version": "4.1.0",
-      "bom-ref": "frontend@0.0.0|@inquirer/search@4.1.0",
+      "version": "4.1.4",
+      "bom-ref": "frontend@0.0.0|@inquirer/search@4.1.4",
       "licenses": [
         {
           "license": {
@@ -4320,15 +4319,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/search@4.1.0",
+      "purl": "pkg:npm/%40inquirer/search@4.1.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/search/-/search-4.1.0.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/search/-/search-4.1.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "100cde99f88fe0816f22e5a7ac7a6066cf6502158303418cde5f45e2de264d0db6205b737eb93cc5b90c2dc00dee099530bf4efe2f87ceef32394c8068be8128"
+              "content": "f723d3c6aecb3e6623ac69f70d1b9a3ee3db982eaeddf89672c13d8207cb71d80efc8087620c6aee6132d72277f5bad5be05e1b4eb6f0d58c387db252711382d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4349,8 +4348,8 @@
       "type": "library",
       "name": "select",
       "group": "@inquirer",
-      "version": "5.0.4",
-      "bom-ref": "frontend@0.0.0|@inquirer/select@5.0.4",
+      "version": "5.1.0",
+      "bom-ref": "frontend@0.0.0|@inquirer/select@5.1.0",
       "licenses": [
         {
           "license": {
@@ -4359,15 +4358,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40inquirer/select@5.0.4",
+      "purl": "pkg:npm/%40inquirer/select@5.1.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@inquirer/select/-/select-5.0.4.tgz",
+          "url": "https://registry.npmjs.org/@inquirer/select/-/select-5.1.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b3c2a81a93d830443a597734753f5b957d8db48ba531d2ce3b72c0d5428e8afeca156ce527a78b9046130c1222f89932297ca7f2dfc20fa4e29f11a3c8bb79ee"
+              "content": "3b261b2a77214b5bbecd17b5e0ba58acdf12d301f5bc3d29db22884af4ac25d1f64e923cedf8787997569e975bac66ae091583a61dcdc314663383dc9bf871d5"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4420,84 +4419,6 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@inquirer/type"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "balanced-match",
-      "group": "@isaacs",
-      "version": "4.0.1",
-      "bom-ref": "frontend@0.0.0|@isaacs/balanced-match@4.0.1",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/%40isaacs/balanced-match@4.0.1",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "cb3313b7d9446fc1afef3462a148a54a0948d1cd2c999f64e43eb9ebbec32d62ed589697212dc2a9c1b250507260a967523e939232d5b39e1f065ebe4e21900d"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/@isaacs/balanced-match"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "brace-expansion",
-      "group": "@isaacs",
-      "version": "5.0.1",
-      "bom-ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.1",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/%40isaacs/brace-expansion@5.0.1",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/@isaacs/brace-expansion/-/brace-expansion-5.0.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "58ccfbd53d494badb89d68f69f67e7600b8fa2f86fec452193af51ea2f5db15cb3c6de5e3376e3c2f824f4bf803c4d5346c706cac0153003640748e1d0b419ad"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/@isaacs/brace-expansion"
         }
       ]
     },
@@ -6011,8 +5932,8 @@
       "type": "library",
       "name": "core-darwin-arm64",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6020,15 +5941,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-darwin-arm64@1.15.4",
+      "purl": "pkg:npm/%40swc/core-darwin-arm64@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "354fce7fe4a11461bf8b49572ac17a19a19e4c136cafd883f2e533757c457c66c48d37ae28d5dce425a7dff528e06af82cc0060f786c4701b626ae6204331a97"
+              "content": "fa622feee06e49acb03770bd2cdb96697d63249dd229f889b84e8baf76ddfbfd48bfca0c53ba0b06360c96e5f552b10fcf0376a82758e88a34c9589c001a02c1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6049,8 +5970,8 @@
       "type": "library",
       "name": "core-darwin-x64",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6058,15 +5979,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-darwin-x64@1.15.4",
+      "purl": "pkg:npm/%40swc/core-darwin-x64@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f685983191e211f1cbaa38d11ab5cbd7b23c1dd00ea562bf469b37e11290ef83be7a58b2822d48caad530d4cd8a945dc36fa8dd8ae5f1e0a0c2d12278b8d4295"
+              "content": "c1995ed1e690867cf1597e55ff6904388e99f6f97f9531440ba578116727fb9a438e17a60a942ff5efd30c9d06228882957f040d646fb99c21f99ddd84bd4d02"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6087,8 +6008,8 @@
       "type": "library",
       "name": "core-linux-arm-gnueabihf",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6098,15 +6019,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm-gnueabihf@1.15.4",
+      "purl": "pkg:npm/%40swc/core-linux-arm-gnueabihf@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "23574fc57962dcdd55afbd495e88144cb72ca4ce480a0098680d7a444f8929c863dd728a9b12e5623c001c0038961fc2cb8f3a8a4cc009a1baa4805c7a0a0692"
+              "content": "6a8eb51c65d5aab2451c070fb45e3f0de826c049150a8e070299e8b4b53ca209df994f31e7cf73efeb5c7f7854faa06253558e5d5e5f417e96f4dcecea18f10f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6127,8 +6048,8 @@
       "type": "library",
       "name": "core-linux-arm64-gnu",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6136,15 +6057,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm64-gnu@1.15.4",
+      "purl": "pkg:npm/%40swc/core-linux-arm64-gnu@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "886a6e4bfd8f0d9ebc8a8025864c62379338fa907db832689532a4e2667424cdbdb857fd608922ca4ec16ebdb2d50b660fcdab174b431e1a06f63b6757c99932"
+              "content": "df19dcb4e04b22ade48fc3f138280fac68c12cffe434e75dafa7f982e918b7fd48671b084d0694f530f28de5fa8c6f858822078c2b96b9f7ecc900cbe44c356e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6165,8 +6086,8 @@
       "type": "library",
       "name": "core-linux-arm64-musl",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6174,15 +6095,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-arm64-musl@1.15.4",
+      "purl": "pkg:npm/%40swc/core-linux-arm64-musl@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2f2f79c1cf955c3865d3ca630283d4855bb9bcd6ee3cc6d44649d165ae50399ba28b327a0e4692234ff3b04736e8fa42e874dce29acd2d8dc0455c19ee3fc825"
+              "content": "d1af8b8b1f854921c1481380d17ce709c1e8e7fd6703aa0b2e3727a1cbf35deaad7639cf6fe4af72122d1c8fa57de8ae8f5b029583c3bcf30b48bc9715a8882b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6203,8 +6124,8 @@
       "type": "library",
       "name": "core-linux-x64-gnu",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6212,15 +6133,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-x64-gnu@1.15.4",
+      "purl": "pkg:npm/%40swc/core-linux-x64-gnu@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ee9206d019da327e334e91de0a894fc32ad6a1363d0ebafe21265022060750a877a1a3ed342ad76f6f3d49c19b3cf3e32ec49f7064de3b2da95e635cccc0beca"
+              "content": "c06f49f2f45e525a5a1f3e0a383ff9504d405208ab8a65385054fda199aea540c4a1fc492986f599303f0eb323d2cefc6e4062348fbb168d8480fbaf3897ee00"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6241,8 +6162,8 @@
       "type": "library",
       "name": "core-linux-x64-musl",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6250,15 +6171,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-linux-x64-musl@1.15.4",
+      "purl": "pkg:npm/%40swc/core-linux-x64-musl@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a1aa93576e55f47f8fa5292f4dc2b6e6ae90e7a16f5dce9ddb106ee3ce9dbfd2c03c21d681e030a2b13c5a904b576ea0f2bb9b70de671a13b91f04ae9d703b5b"
+              "content": "e27c1b56f0a984ace2730356466bc3e6205a663f0962c4466b8c4ec4998ec8794c0e9b2fbc9d8e47670e0e5bd6c86147e8160bd4c7c800adeaa61de1a74033ea"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6279,8 +6200,8 @@
       "type": "library",
       "name": "core-win32-arm64-msvc",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6288,15 +6209,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-arm64-msvc@1.15.4",
+      "purl": "pkg:npm/%40swc/core-win32-arm64-msvc@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "55c3ee509c36ed86c6a351dc39a02b888e747693376597835b7c7670c9c95babed91ecb35059354c00e64f015ac74167fb289c0b185a5a39c5137780cc603121"
+              "content": "ce4d1160ef8b8e20426add914cc1f301668c932d1cadaf65a07e2846b2ca2cb36e2fe8daaf128b14303cc5365612408f2e3513c2544dedddbc7832cb320b5471"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6317,8 +6238,8 @@
       "type": "library",
       "name": "core-win32-ia32-msvc",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6326,15 +6247,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-ia32-msvc@1.15.4",
+      "purl": "pkg:npm/%40swc/core-win32-ia32-msvc@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "75112382101912e2802bd9d0cc91130220928a14a90154ba564f7ecb61256a87938faf2d341d6dc55fe6d514cf3c3ffe2a06f3e884cf3725d15b13dd90fe5a5f"
+              "content": "c95b93ad9d1171c0f9f8f124a5c2ce040b8f6d80574baaec94436f2177ef2465d2757e501a2d5e842e018c0325e4590a2e26a6e2424409423497b1eaed3d6fc2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6355,8 +6276,8 @@
       "type": "library",
       "name": "core-win32-x64-msvc",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.18",
       "scope": "optional",
       "licenses": [
         {
@@ -6364,15 +6285,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40swc/core-win32-x64-msvc@1.15.4",
+      "purl": "pkg:npm/%40swc/core-win32-x64-msvc@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a3fa1d201b90928c4a6d1c1e25638c23d2de45239e9c528ddb380f79a68d43f732b95936afa0c20286ca30ea1dbc37595a5327e8dd7126b95d7824524d922089"
+              "content": "ecd4661388665103426d85371e7f53cf9ee62bd42ae1cf7b652f9895a9a52baa86f456f983f041de03c37b488b949927b3fb18bf65564a49bc7373666c41a36e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6393,8 +6314,8 @@
       "type": "library",
       "name": "core",
       "group": "@swc",
-      "version": "1.15.4",
-      "bom-ref": "frontend@0.0.0|@swc/core@1.15.4",
+      "version": "1.15.18",
+      "bom-ref": "frontend@0.0.0|@swc/core@1.15.18",
       "licenses": [
         {
           "license": {
@@ -6403,15 +6324,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40swc/core@1.15.4",
+      "purl": "pkg:npm/%40swc/core@1.15.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@swc/core/-/core-1.15.4.tgz",
+          "url": "https://registry.npmjs.org/@swc/core/-/core-1.15.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7c7f3504fa3a12227b0546fa41ae5263f34b5884556a66ea537ef8d20d173c53c4cf92853e7cd162947ace875034e7046fd5d4b59cd13b56345b22093fb881c5"
+              "content": "cfceda17d1a9856a7ffdf9e446caafb58fa29cc54f8185b7cd29571f590916f453e47ff08809fe1b7daa5b9977a0493adca485d71dcebf405f1c239b0264fc44"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8741,8 +8662,8 @@
         {
           "type": "library",
           "name": "minimatch",
-          "version": "9.0.5",
-          "bom-ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.5",
+          "version": "9.0.9",
+          "bom-ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.9",
           "licenses": [
             {
               "license": {
@@ -8751,15 +8672,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@9.0.5",
+          "purl": "pkg:npm/minimatch@9.0.9",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-9.0.5.tgz",
+              "url": "https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "1ba4f4657e3cc60a33c7be7cee4a1e5fd62cd8d632e869affff3fcf6c12d7bd57dc2121aa4c345e2274ac675b642d09c2e24d695bff07c269b02d0055a1841a3"
+                  "content": "381c0137d00be1daa61139694b6cdab31faf4de59c956ce46e57d993b2930398f78de38e373fed4429d9a26532bcd83cdf02f966ff52b3a1cc2570202fc47662"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8898,8 +8819,8 @@
       "type": "library",
       "name": "plugin-react",
       "group": "@vitejs",
-      "version": "5.1.2",
-      "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
+      "version": "5.1.4",
+      "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
       "licenses": [
         {
           "license": {
@@ -8908,15 +8829,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitejs/plugin-react@5.1.2",
+      "purl": "pkg:npm/%40vitejs/plugin-react@5.1.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-5.1.2.tgz",
+          "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-5.1.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "11c034ee91c9a2ecb0a73b284d4a8d87937019aca5d8f3d51092944a29c6192c451989feb2161ba8c18183a1570ea817ba6f4ebbf79c6fee35d6cb30f0722625"
+              "content": "5487052dd462fd561153c38bfe9b8bed05cc61a7c79aa3a7c13658e7453524f942363df43f108cc7ae5ce3de1bd4af5b7bd857f37295b74fa04c4c1358ba93a0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8930,6 +8851,47 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@vitejs/plugin-react"
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "pluginutils",
+          "group": "@rolldown",
+          "version": "1.0.0-rc.3",
+          "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/%40rolldown/pluginutils@1.0.0-rc.3",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.3.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "7b26e4dd38f3cf357dec3963e5cf97ac1156e7b793361ce877aeb2f47ac197327a36c0ab582a7fda468f4b72bdc099aeac10b44ddc38c8f8d7299aa5ce78a6dd"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@vitejs/plugin-react/node_modules/@rolldown/pluginutils"
+            }
+          ]
         }
       ]
     },
@@ -9246,44 +9208,6 @@
     },
     {
       "type": "library",
-      "name": "acorn-walk",
-      "version": "8.3.4",
-      "bom-ref": "frontend@0.0.0|acorn-walk@8.3.4",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/acorn-walk@8.3.4",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/acorn-walk/-/acorn-walk-8.3.4.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "b9e11ea67ba3a6a79eda8e5a2189ef1d4e82d00e3630d76c2037aacb907276b92e0b947566e5059e6dbb11e1491a8107250827dee95e46f9935da2607d76ede2"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/acorn-walk"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "acorn",
       "version": "8.15.0",
       "bom-ref": "frontend@0.0.0|acorn@8.15.0",
@@ -9323,8 +9247,8 @@
     {
       "type": "library",
       "name": "ajv",
-      "version": "6.12.6",
-      "bom-ref": "frontend@0.0.0|ajv@6.12.6",
+      "version": "6.14.0",
+      "bom-ref": "frontend@0.0.0|ajv@6.14.0",
       "licenses": [
         {
           "license": {
@@ -9333,15 +9257,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/ajv@6.12.6",
+      "purl": "pkg:npm/ajv@6.14.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/ajv/-/ajv-6.12.6.tgz",
+          "url": "https://registry.npmjs.org/ajv/-/ajv-6.14.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8f77d52e0bd3a39dbb6a7c98c893864d825b1bebe79d062f1349b99a691cd532be9f1029a6408b3082f4699e1d6e55423681928619be933138654ca4068320e2"
+              "content": "216ae8b26ff2ae7e377a22aa91f9078aced08a80e579a5d01dd0d53ca834152c3077f0eebf25fbf5366714e9d8a41edd72c140326b45ced66e5cf0ef49e3e417"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -9739,8 +9663,8 @@
     {
       "type": "library",
       "name": "axios",
-      "version": "1.13.5",
-      "bom-ref": "frontend@0.0.0|axios@1.13.5",
+      "version": "1.13.6",
+      "bom-ref": "frontend@0.0.0|axios@1.13.6",
       "licenses": [
         {
           "license": {
@@ -9749,15 +9673,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/axios@1.13.5",
+      "purl": "pkg:npm/axios@1.13.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/axios/-/axios-1.13.5.tgz",
+          "url": "https://registry.npmjs.org/axios/-/axios-1.13.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "733e2eafb55bd314b8fca50dd2d3d67b8e1eab1ac8bb7d667be7db6a78378a388db1c135dbd3cece2a49240eb39e2ab60bf67ab090a33229a34bc2dcfc602cf1"
+              "content": "0a14c21cca2e11eda49fbd775876d019cb98aebe9f5d3062bb8eb4393c16ad6a1bd7a8356d79f8bedcf4ecea5eedec0ca332409c4aae2e4e655905ad06283d0d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -9883,8 +9807,8 @@
     {
       "type": "library",
       "name": "baseline-browser-mapping",
-      "version": "2.9.4",
-      "bom-ref": "frontend@0.0.0|baseline-browser-mapping@2.9.4",
+      "version": "2.10.0",
+      "bom-ref": "frontend@0.0.0|baseline-browser-mapping@2.10.0",
       "licenses": [
         {
           "license": {
@@ -9893,15 +9817,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/baseline-browser-mapping@2.9.4",
+      "purl": "pkg:npm/baseline-browser-mapping@2.10.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.9.4.tgz",
+          "url": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "64243d1845a5ef70559bc6eee45b6cf27b7b30775bb79bd8f5b3fa5869d487eaf797c33b0a07f24e5c2c8026cc0bae813713ebe97a1c7b78fae8cb3961441334"
+              "content": "948ca0d2ccd17d86e2cbaee3f4a37c232783eeaee1726aa727575d5a636dd7d22d1a934deb89a79659b150d14839d3a6e9bcbdee394beb07e94d326b9a78d600"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10295,8 +10219,8 @@
     {
       "type": "library",
       "name": "caniuse-lite",
-      "version": "1.0.30001759",
-      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001759",
+      "version": "1.0.30001775",
+      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001775",
       "licenses": [
         {
           "license": {
@@ -10305,15 +10229,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/caniuse-lite@1.0.30001759",
+      "purl": "pkg:npm/caniuse-lite@1.0.30001775",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001759.tgz",
+          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001775.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3f37f1f5f38aa0abdebd07fca025e8c8d450e50cb1263fb73b446ac76579a314fad4a1b1f3e9fa855fc853225e89f51c8b67259e698a569bed8aa4738225a34b"
+              "content": "b3742fecb86df736d5284f57a13c911bac150c229db4e1488c11a0dfe6219fa25acadb8d28f22304c4cc218d409ce1f7b1e2f99af17ec77de8180c8ade156ddc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -11737,8 +11661,8 @@
     {
       "type": "library",
       "name": "electron-to-chromium",
-      "version": "1.5.266",
-      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.266",
+      "version": "1.5.302",
+      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.302",
       "licenses": [
         {
           "license": {
@@ -11747,15 +11671,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/electron-to-chromium@1.5.266",
+      "purl": "pkg:npm/electron-to-chromium@1.5.302",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.266.tgz",
+          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.302.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9205848255ef9047cc1fbaf13f9392659c27683593ec9f44a190ae8e19e92db7e2d1b6cdb51920757d84de0b7451eaf5d5ceb5a82624b41de1c24012df6e6c26"
+              "content": "b0ce8700dd8bc8af362323c1a739c346a953400b6e49a3be4a1cc58964efa0c24b1f267e637f6bf1531f1f3c1b53c31507343859d9fce7ec25665d932c6225c2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -11769,44 +11693,6 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/electron-to-chromium"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "emoji-regex",
-      "version": "10.6.0",
-      "bom-ref": "frontend@0.0.0|emoji-regex@10.6.0",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/emoji-regex@10.6.0",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-10.6.0.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "b68508f38612e589b15b6d7d7ab9e2583d022153a8e3ac46282a2578d41180ecc3a2b8018b5bf80fbd7f385ce00fd18ed9418a22fd42dd2a7c0c09f4fa3e70ec"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/emoji-regex"
         }
       ]
     },
@@ -12814,6 +12700,120 @@
     },
     {
       "type": "library",
+      "name": "fast-string-truncated-width",
+      "version": "3.0.3",
+      "bom-ref": "frontend@0.0.0|fast-string-truncated-width@3.0.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-string-truncated-width@3.0.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fast-string-truncated-width/-/fast-string-truncated-width-3.0.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d238e32042fafb48da8379765d65a2cceeb8fda655b69886137b74660ab1bf40cfbb188c8ef077336e1f0b285950ee0aa262503e3dcb4d25270cfdc6a5dc02d2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-string-truncated-width"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-string-width",
+      "version": "3.0.2",
+      "bom-ref": "frontend@0.0.0|fast-string-width@3.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-string-width@3.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fast-string-width/-/fast-string-width-3.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "817f0baed34423986af035547d140c6ebe65a5a4b89cc21657eed711b5e4d9bf24890222ce09e5af5d81e1d037644c77df4f337b43b843547e707b6cf24c9426"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-string-width"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-wrap-ansi",
+      "version": "0.2.0",
+      "bom-ref": "frontend@0.0.0|fast-wrap-ansi@0.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-wrap-ansi@0.2.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fast-wrap-ansi/-/fast-wrap-ansi-0.2.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "acb57c247c53ca156615884126e32e8dcac7a8e4f67273b96718f7eea44e8f6dc23f7f465ee6c9441505174cfc2852bbed47344ae91951fec9661b15110ea7f3"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-wrap-ansi"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "fdir",
       "version": "6.5.0",
       "bom-ref": "frontend@0.0.0|fdir@6.5.0",
@@ -13294,8 +13294,8 @@
     {
       "type": "library",
       "name": "get-east-asian-width",
-      "version": "1.4.0",
-      "bom-ref": "frontend@0.0.0|get-east-asian-width@1.4.0",
+      "version": "1.5.0",
+      "bom-ref": "frontend@0.0.0|get-east-asian-width@1.5.0",
       "licenses": [
         {
           "license": {
@@ -13304,15 +13304,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/get-east-asian-width@1.4.0",
+      "purl": "pkg:npm/get-east-asian-width@1.5.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/get-east-asian-width/-/get-east-asian-width-1.4.0.tgz",
+          "url": "https://registry.npmjs.org/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4198e610e0be213d6e93a471d2c5f6d95eae1d65706dd6f17f57da3ea2754212dd1a0b11182668c9a4019bfa6245d272fc3dae9ba84cd543fb644790e0490ff9"
+              "content": "090f9b10ef93bdafea966c36e1d09e8ee94ae6933356750e14e8a356881ddca42cd3b1e7448829f131a2a6f082453d3ac5e6046e96e0c1a0b18251728ae21c98"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -13552,8 +13552,8 @@
     {
       "type": "library",
       "name": "glob",
-      "version": "13.0.0",
-      "bom-ref": "frontend@0.0.0|glob@13.0.0",
+      "version": "13.0.6",
+      "bom-ref": "frontend@0.0.0|glob@13.0.6",
       "licenses": [
         {
           "license": {
@@ -13562,15 +13562,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/glob@13.0.0",
+      "purl": "pkg:npm/glob@13.0.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/glob/-/glob-13.0.0.tgz",
+          "url": "https://registry.npmjs.org/glob/-/glob-13.0.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b6f660a6a93a7f3e0168d67ae99b116999db1ef3ff8c6dee289bc064ec045542f84530399c979e2d87f237dfd503c357fd5dc8046fa191eb86a4a8ef10b91584"
+              "content": "5a3972ae89669bcb83a66fe8806c976576f567e09ad81f0d6c9c2a0558346b12bd19b05ea12ef2195eaf8d79d87469ba5f9de27a112ec716f288aa7c42637857"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -13589,9 +13589,85 @@
       "components": [
         {
           "type": "library",
+          "name": "balanced-match",
+          "version": "4.0.4",
+          "bom-ref": "frontend@0.0.0|glob@13.0.6|balanced-match@4.0.4",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/balanced-match@4.0.4",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "04bae011c453c17da8ea01b118e08dc8cbc64a9df96287ee633c3d87520c4d198aaadb40659554ebb6dd6fd3ebdaf50703cfa3de2dad25f8cee82ebee26c864c"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/glob/node_modules/balanced-match"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "brace-expansion",
+          "version": "5.0.4",
+          "bom-ref": "frontend@0.0.0|glob@13.0.6|brace-expansion@5.0.4",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/brace-expansion@5.0.4",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.4.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "87e0c49e956fc667d579f6b88c56c27f91dd1f960c0d746c98a7e5a5fd6920b6564459536c9a71794e799c99784a6b791d0686ce0d68e911c53c968eaa79810e"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/glob/node_modules/brace-expansion"
+            }
+          ]
+        },
+        {
+          "type": "library",
           "name": "minimatch",
-          "version": "10.1.1",
-          "bom-ref": "frontend@0.0.0|glob@13.0.0|minimatch@10.1.1",
+          "version": "10.2.4",
+          "bom-ref": "frontend@0.0.0|glob@13.0.6|minimatch@10.2.4",
           "licenses": [
             {
               "license": {
@@ -13600,15 +13676,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@10.1.1",
+          "purl": "pkg:npm/minimatch@10.2.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.1.1.tgz",
+              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "7a722f2ef440159617273902606e512a63dfac502b74bbfe47e95b439dc198830b22bcbbe1b8cacd7ea21c09bc5986a626485248469bad63790fded79ca39b8d"
+                  "content": "a118d3c3ff7b69304dd111db60276d1753107efbac488050334219120ce5eb8dbafbc8d20b49c5d5afc69a754ba5f07dcb2afa83a153a96aa26556f1aed68222"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14170,8 +14246,8 @@
     {
       "type": "library",
       "name": "i18next-browser-languagedetector",
-      "version": "8.2.0",
-      "bom-ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
+      "version": "8.2.1",
+      "bom-ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
       "licenses": [
         {
           "license": {
@@ -14180,15 +14256,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next-browser-languagedetector@8.2.0",
+      "purl": "pkg:npm/i18next-browser-languagedetector@8.2.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.2.0.tgz",
+          "url": "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.2.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3fedf310a2e7385d2a9a27ac5b7f37bec2ddb505722ad08d03d7234a8282a694ca3d055f29dd96f216d5a39661349283a9e33b04e72f3682893a3a4787826cf6"
+              "content": "6d983cfb86dd99a3a20290fb37b04f4fd5bc30b646fa73d338594b889893f2ecca5c58e1c70e2fda27ab0973b0079b050ccb6e0391b8920619d00ce767143f73"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14204,8 +14280,8 @@
     {
       "type": "library",
       "name": "i18next-cli",
-      "version": "1.36.1",
-      "bom-ref": "frontend@0.0.0|i18next-cli@1.36.1",
+      "version": "1.49.2",
+      "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2",
       "licenses": [
         {
           "license": {
@@ -14214,15 +14290,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next-cli@1.36.1",
+      "purl": "pkg:npm/i18next-cli@1.49.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.36.1.tgz",
+          "url": "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.49.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ab8951baa54f4cd23a229e5814244d34689387fb3fe677e5d7c7283a78c3bbb09bd418897915d284518be537246b88a2d24e6774e323c48024a0d37a1170b0c9"
+              "content": "2de1e2428eb3348dde9581b6ef828eacf455ebb9dc1fa1b9c5b30408f8c3c7bed5c7ae0a841f2a21efffbcc0f96aaf34442e045ae8dbbde1901bd2e92496739f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14241,9 +14317,9 @@
       "components": [
         {
           "type": "library",
-          "name": "chalk",
-          "version": "5.6.2",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.36.1|chalk@5.6.2",
+          "name": "balanced-match",
+          "version": "4.0.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|balanced-match@4.0.4",
           "licenses": [
             {
               "license": {
@@ -14252,15 +14328,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/chalk@5.6.2",
+          "purl": "pkg:npm/balanced-match@4.0.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/chalk/-/chalk-5.6.2.tgz",
+              "url": "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "ecdcc12f4acde9f3145be7fb03a228e21e34a90946fb11a6b4cc5f6e71ff2bb4c0b6df094165502beea0d145ca31e549a3257912490db04ad0f29543ddb2c76c"
+                  "content": "04bae011c453c17da8ea01b118e08dc8cbc64a9df96287ee633c3d87520c4d198aaadb40659554ebb6dd6fd3ebdaf50703cfa3de2dad25f8cee82ebee26c864c"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14273,7 +14349,45 @@
             },
             {
               "name": "cdx:npm:package:path",
-              "value": "node_modules/i18next-cli/node_modules/chalk"
+              "value": "node_modules/i18next-cli/node_modules/balanced-match"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "brace-expansion",
+          "version": "5.0.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|brace-expansion@5.0.4",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/brace-expansion@5.0.4",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.4.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "87e0c49e956fc667d579f6b88c56c27f91dd1f960c0d746c98a7e5a5fd6920b6564459536c9a71794e799c99784a6b791d0686ce0d68e911c53c968eaa79810e"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/i18next-cli/node_modules/brace-expansion"
             }
           ]
         },
@@ -14281,7 +14395,7 @@
           "type": "library",
           "name": "chokidar",
           "version": "5.0.0",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.36.1|chokidar@5.0.0",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|chokidar@5.0.0",
           "licenses": [
             {
               "license": {
@@ -14317,9 +14431,47 @@
         },
         {
           "type": "library",
+          "name": "commander",
+          "version": "14.0.3",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|commander@14.0.3",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/commander@14.0.3",
+          "externalReferences": [
+            {
+              "url": "https://registry.npmjs.org/commander/-/commander-14.0.3.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "1fecb4268fd3d5167da8f3f8121d6991c41c2d1825ada25a48ba323ad1f1bba01aa648d6542cb64a2b75410e31dc39e0f2a0e54ac6447adee0e4fab4e8cbd383"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/i18next-cli/node_modules/commander"
+            }
+          ]
+        },
+        {
+          "type": "library",
           "name": "minimatch",
-          "version": "10.1.1",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.36.1|minimatch@10.1.1",
+          "version": "10.2.4",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|minimatch@10.2.4",
           "licenses": [
             {
               "license": {
@@ -14328,15 +14480,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@10.1.1",
+          "purl": "pkg:npm/minimatch@10.2.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.1.1.tgz",
+              "url": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "7a722f2ef440159617273902606e512a63dfac502b74bbfe47e95b439dc198830b22bcbbe1b8cacd7ea21c09bc5986a626485248469bad63790fded79ca39b8d"
+                  "content": "a118d3c3ff7b69304dd111db60276d1753107efbac488050334219120ce5eb8dbafbc8d20b49c5d5afc69a754ba5f07dcb2afa83a153a96aa26556f1aed68222"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14357,7 +14509,7 @@
           "type": "library",
           "name": "readdirp",
           "version": "5.0.0",
-          "bom-ref": "frontend@0.0.0|i18next-cli@1.36.1|readdirp@5.0.0",
+          "bom-ref": "frontend@0.0.0|i18next-cli@1.49.2|readdirp@5.0.0",
           "licenses": [
             {
               "license": {
@@ -14512,8 +14664,8 @@
     {
       "type": "library",
       "name": "i18next",
-      "version": "25.8.0",
-      "bom-ref": "frontend@0.0.0|i18next@25.8.0",
+      "version": "25.8.13",
+      "bom-ref": "frontend@0.0.0|i18next@25.8.13",
       "licenses": [
         {
           "license": {
@@ -14522,15 +14674,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next@25.8.0",
+      "purl": "pkg:npm/i18next@25.8.13",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.0.tgz",
+          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.13.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "babae0e0730514c419d9b6ca44aec867cfc24c4ec3f07e09465030a80d99c034457dd7742bfe1c75b34d2e07e7f66a3e23f87dc09bbad6a2731fb8c214085465"
+              "content": "134bf38c1635c8cfa7b05aed8248cb8524f6341922ae4bce56841ad0c4a5761b2e6778d481eed9369bb01b409f73be33c28e59c11ce0dee3a04fe31c067df688"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14694,8 +14846,8 @@
     {
       "type": "library",
       "name": "inquirer",
-      "version": "13.1.0",
-      "bom-ref": "frontend@0.0.0|inquirer@13.1.0",
+      "version": "13.3.0",
+      "bom-ref": "frontend@0.0.0|inquirer@13.3.0",
       "licenses": [
         {
           "license": {
@@ -14704,15 +14856,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/inquirer@13.1.0",
+      "purl": "pkg:npm/inquirer@13.3.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/inquirer/-/inquirer-13.1.0.tgz",
+          "url": "https://registry.npmjs.org/inquirer/-/inquirer-13.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e2fbf8192ffd1cb9e7d2b69dbe61e55d45e2364776818081438535af16560490e2b2ed99d3a6f350cf42154f2972ed6fc2e0108e8e8ef82162a8260db048baa9"
+              "content": "00f4eb65ef4886bb2c84bd2ed8f82610c2cfdc25c306367df71879751dbeb2bc8eb7947e2462f428db9a4d34f6956e7807d78d40332eb4f474e546132fb5dbd5"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -16675,8 +16827,8 @@
     {
       "type": "library",
       "name": "minimatch",
-      "version": "3.1.2",
-      "bom-ref": "frontend@0.0.0|minimatch@3.1.2",
+      "version": "3.1.5",
+      "bom-ref": "frontend@0.0.0|minimatch@3.1.5",
       "licenses": [
         {
           "license": {
@@ -16685,15 +16837,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/minimatch@3.1.2",
+      "purl": "pkg:npm/minimatch@3.1.5",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.2.tgz",
+          "url": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "27ba7ade1462023c35343130c355bb8b7efe07222b3963b95d0400cd9dd539c2f43cdc9bc297e657f374e73140cf043d512c84717eaddd43be2b96aa0503881f"
+              "content": "5608d652c9e74fa9fe35493a799abbef37857695b62d60f33facc51ab09b1d789836e9790f3aa4d871d0e6e147d83356e576e9f3e8d5cda78db7de2cb04125e3"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -16713,25 +16865,25 @@
     {
       "type": "library",
       "name": "minipass",
-      "version": "7.1.2",
-      "bom-ref": "frontend@0.0.0|minipass@7.1.2",
+      "version": "7.1.3",
+      "bom-ref": "frontend@0.0.0|minipass@7.1.3",
       "licenses": [
         {
           "license": {
-            "id": "ISC",
+            "id": "BlueOak-1.0.0",
             "acknowledgement": "declared"
           }
         }
       ],
-      "purl": "pkg:npm/minipass@7.1.2",
+      "purl": "pkg:npm/minipass@7.1.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/minipass/-/minipass-7.1.2.tgz",
+          "url": "https://registry.npmjs.org/minipass/-/minipass-7.1.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a8e3b34b57014d6605e011fc7d578f0c138ef62a6d327194119c0d73f70c5a74d5da754b67b56835610f1e461ccd9034a5da00edd97a7bb14beb9f675fd4b66b"
+              "content": "b44047a839c8a0cff5ad7304d738246bd83a43695ca029311cbb9cece0c9e41c5b3f977873667970682d5c092ee7ddb4d02c7b762b874ce61f4810fc9fa9a6f0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -17393,8 +17545,8 @@
     {
       "type": "library",
       "name": "ora",
-      "version": "9.0.0",
-      "bom-ref": "frontend@0.0.0|ora@9.0.0",
+      "version": "9.3.0",
+      "bom-ref": "frontend@0.0.0|ora@9.3.0",
       "licenses": [
         {
           "license": {
@@ -17403,15 +17555,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/ora@9.0.0",
+      "purl": "pkg:npm/ora@9.3.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/ora/-/ora-9.0.0.tgz",
+          "url": "https://registry.npmjs.org/ora/-/ora-9.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9b4a60db3b1c6d88166ea451e800606b9737b19744a27edb4a08e79570bae24c6dc4b3b28d171b6d490b8fb1c5cb2fc54c3f8fdb17415aef2c9c68582348dce0"
+              "content": "9415fbd8c58576e5847fbbfbb967f90c7a7d267e4123c6cd3c6b8582d5cc9abdae0f3d86cf6ef8f72dda9b76a04837648473c76269b110648a1fce592c6ce05f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -17432,7 +17584,7 @@
           "type": "library",
           "name": "chalk",
           "version": "5.6.2",
-          "bom-ref": "frontend@0.0.0|ora@9.0.0|chalk@5.6.2",
+          "bom-ref": "frontend@0.0.0|ora@9.3.0|chalk@5.6.2",
           "licenses": [
             {
               "license": {
@@ -17837,8 +17989,8 @@
     {
       "type": "library",
       "name": "path-scurry",
-      "version": "2.0.1",
-      "bom-ref": "frontend@0.0.0|path-scurry@2.0.1",
+      "version": "2.0.2",
+      "bom-ref": "frontend@0.0.0|path-scurry@2.0.2",
       "licenses": [
         {
           "license": {
@@ -17847,15 +17999,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/path-scurry@2.0.1",
+      "purl": "pkg:npm/path-scurry@2.0.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/path-scurry/-/path-scurry-2.0.1.tgz",
+          "url": "https://registry.npmjs.org/path-scurry/-/path-scurry-2.0.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a16c93e2020202efa4680ed05a4fe3bc21d66ab30a36cea95ce1962834ebedcc382067146d6f8f7937db69088b1a17854698e8e8ef49d0f9b231f40f8c7ef5a0"
+              "content": "dcefe2555b0900fb0e9e9c1621e0fe77acffecf9aa029c9078f52d0a77636ad8fff48e4bca51efb79aa5b856814f7239877af57a37d1d39e9cf850aff8d9cd5e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -17875,8 +18027,8 @@
         {
           "type": "library",
           "name": "lru-cache",
-          "version": "11.2.4",
-          "bom-ref": "frontend@0.0.0|path-scurry@2.0.1|lru-cache@11.2.4",
+          "version": "11.2.6",
+          "bom-ref": "frontend@0.0.0|path-scurry@2.0.2|lru-cache@11.2.6",
           "licenses": [
             {
               "license": {
@@ -17885,15 +18037,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/lru-cache@11.2.4",
+          "purl": "pkg:npm/lru-cache@11.2.6",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.2.4.tgz",
+              "url": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.2.6.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "079635e89afd2c1f5d1d5921e997af1bebc06ceb0d398097fac5ef15616eec1dc8cf99a28d6df375b33286c87c00d77699258161d2609ea8be98beff2eb38f62"
+                  "content": "1122f60ab912ff6c133dfb9e9dded9864ce8daed1d68627f03656e7093a043f0b8f12ff307c30c78c1d218a6295e12236cfc5fb9ecc84e46811f5c2abf4d030d"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18656,8 +18808,8 @@
     {
       "type": "library",
       "name": "react-error-boundary",
-      "version": "6.1.0",
-      "bom-ref": "frontend@0.0.0|react-error-boundary@6.1.0",
+      "version": "6.1.1",
+      "bom-ref": "frontend@0.0.0|react-error-boundary@6.1.1",
       "licenses": [
         {
           "license": {
@@ -18666,15 +18818,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react-error-boundary@6.1.0",
+      "purl": "pkg:npm/react-error-boundary@6.1.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.0.tgz",
+          "url": "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d3693d590fe652175b5e2af4b42d4d88c7ac1b344f682b0911653fe1b705adb63560c64eb474a1b593facf0d1226b05603fdf51f4293f7f16074bf3eb0f2a01c"
+              "content": "06b6303ce7578b99aa924e65c3e52fb744e11f1df6ac2b77064ba44b85f6dc0d802160cf4865fa89a593734cbd4d4fe61c303feaa39219e97e07611190ebc3d7"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18690,8 +18842,8 @@
     {
       "type": "library",
       "name": "react-hook-form",
-      "version": "7.71.1",
-      "bom-ref": "frontend@0.0.0|react-hook-form@7.71.1",
+      "version": "7.71.2",
+      "bom-ref": "frontend@0.0.0|react-hook-form@7.71.2",
       "licenses": [
         {
           "license": {
@@ -18700,15 +18852,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react-hook-form@7.71.1",
+      "purl": "pkg:npm/react-hook-form@7.71.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.1.tgz",
+          "url": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f5250928218aa3c1d44ac08efb2d02b6a92a2399cdb9a0ea4f1caa3ec64fa88c2e7698f8ac2ac0cff8d957e8e7e7b6f1e60b5928e8779de42ef780d731cfb0e7"
+              "content": "d421ef703633b9150d39f96de0c3aadd9338e80ae89cd26d4354bbb675fa60de32ef6aa1822508b6969c654010d13c9661c8b7cb3d57fab5da4b18ae126f3a3c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18724,8 +18876,8 @@
     {
       "type": "library",
       "name": "react-i18next",
-      "version": "16.5.3",
-      "bom-ref": "frontend@0.0.0|react-i18next@16.5.3",
+      "version": "16.5.5",
+      "bom-ref": "frontend@0.0.0|react-i18next@16.5.5",
       "licenses": [
         {
           "license": {
@@ -18734,15 +18886,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react-i18next@16.5.3",
+      "purl": "pkg:npm/react-i18next@16.5.5",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.3.tgz",
+          "url": "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7e8fbf34d721dfbceac4ece5058ad6331d2ecbfc889cf9117e34aecb896a29d69e711d7b9ef0879c452ddd0cb303c5e343607fd225bfe4185a1d1dd99ae9291b"
+              "content": "e59df97b624c00b351d7a14afcb0cd42801ab504d5b8eff89b8b87ac8cdec0e3d72327fbe60007cee34b496c268f99510c9c43bd74490c4093864c5648045e9e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18864,8 +19016,8 @@
     {
       "type": "library",
       "name": "react",
-      "version": "19.2.3",
-      "bom-ref": "frontend@0.0.0|react@19.2.3",
+      "version": "19.2.4",
+      "bom-ref": "frontend@0.0.0|react@19.2.4",
       "licenses": [
         {
           "license": {
@@ -18874,15 +19026,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/react@19.2.3",
+      "purl": "pkg:npm/react@19.2.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/react/-/react-19.2.3.tgz",
+          "url": "https://registry.npmjs.org/react/-/react-19.2.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2aefe18586d58ce4275c3645bf6f9189b98b146c0575e78a1c570e4e5aedef1a65067c9ae4e1a7fe12110eca8389251c7ce46c0c2ecc3f1c28ae4f23070b0858"
+              "content": "f677e9da16290b03a300dfbc4d914686d584c20bd61d7a84487f2a4fcf404ff956925a4b38ddb62dcf2912d9e9b19cfb5666b069b494d200a39e3f1a0b47ae1d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -19900,8 +20052,8 @@
     {
       "type": "library",
       "name": "stdin-discarder",
-      "version": "0.2.2",
-      "bom-ref": "frontend@0.0.0|stdin-discarder@0.2.2",
+      "version": "0.3.1",
+      "bom-ref": "frontend@0.0.0|stdin-discarder@0.3.1",
       "licenses": [
         {
           "license": {
@@ -19910,15 +20062,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/stdin-discarder@0.2.2",
+      "purl": "pkg:npm/stdin-discarder@0.3.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/stdin-discarder/-/stdin-discarder-0.2.2.tgz",
+          "url": "https://registry.npmjs.org/stdin-discarder/-/stdin-discarder-0.3.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "5210df1e603dd9802536709f866ab455e34be5b0db8991a0eec67622f3ec5ee6c692235af440beb544ec8c146c614033f3b6ed23aff5c1fe17a15bd0dee46799"
+              "content": "ade1314b59121a812591ec6d39c3e47a5e0d13df52d015b18d41d078316747c4bdf77271a4f5fb294e0c3663b5f4d5e1949a7ef1d99d09b29054d80b261dad78"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -19938,8 +20090,8 @@
     {
       "type": "library",
       "name": "string-width",
-      "version": "8.1.0",
-      "bom-ref": "frontend@0.0.0|string-width@8.1.0",
+      "version": "8.2.0",
+      "bom-ref": "frontend@0.0.0|string-width@8.2.0",
       "licenses": [
         {
           "license": {
@@ -19948,15 +20100,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/string-width@8.1.0",
+      "purl": "pkg:npm/string-width@8.2.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/string-width/-/string-width-8.1.0.tgz",
+          "url": "https://registry.npmjs.org/string-width/-/string-width-8.2.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2b197728919bfe0c6469430e8d1b10f08ad78865bbe4ee04dd13e314820d3951fc00c976490ff259d4f35b017715ebc85fd2dc3008c95be191c009406d349776"
+              "content": "ea124f43c3745743f748d98fea1d89f7d44bbb3ad6cf682f4fb5672b9b4abeb36a268c92f56e3f15bf26a37d5488fbf2d34cfb0d05e43f686728155abfbead87"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -19976,8 +20128,8 @@
     {
       "type": "library",
       "name": "strip-ansi",
-      "version": "7.1.2",
-      "bom-ref": "frontend@0.0.0|strip-ansi@7.1.2",
+      "version": "7.2.0",
+      "bom-ref": "frontend@0.0.0|strip-ansi@7.2.0",
       "licenses": [
         {
           "license": {
@@ -19986,15 +20138,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/strip-ansi@7.1.2",
+      "purl": "pkg:npm/strip-ansi@7.2.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.1.2.tgz",
+          "url": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.2.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "826046b25a68409b609cc02f395a86669133f5dca82930b3cb69dfcff9fc68816137f8c213fac299cc5a6c1ea338e1d5fb458d9f294ec5ac4140f4af71692584"
+              "content": "c833cc363a785b27d80641e78c844b7dc6b58ba28cc860adb1582829eff3d7eeafba481a10d76018166df9998a3dce206afbc46793a01df1ddadace180dc86ef"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -20195,47 +20347,9 @@
     },
     {
       "type": "library",
-      "name": "swc-walk",
-      "version": "1.0.1",
-      "bom-ref": "frontend@0.0.0|swc-walk@1.0.1",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/swc-walk@1.0.1",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/swc-walk/-/swc-walk-1.0.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "6c747466cf8c745c4a2aae505e63d9baf6d7c9b009878c15e7acd94fb9fb8500b9e5e1e91af2f54de787c4dc0be5795761201728ae7b1ac298d1a12db460ee59"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/swc-walk"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "swiper",
-      "version": "12.0.3",
-      "bom-ref": "frontend@0.0.0|swiper@12.0.3",
+      "version": "12.1.2",
+      "bom-ref": "frontend@0.0.0|swiper@12.1.2",
       "licenses": [
         {
           "license": {
@@ -20244,15 +20358,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/swiper@12.0.3",
+      "purl": "pkg:npm/swiper@12.1.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/swiper/-/swiper-12.0.3.tgz",
+          "url": "https://registry.npmjs.org/swiper/-/swiper-12.1.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "04777a53554f10892cad79725e33264563b4a2799d34f69300576ecea477a608ef8bb29f9940809bfd1c8f8f6ed83ec1d33363330d364d27977e29c2d610c25e"
+              "content": "e2020bac8def5d9aa8661ef52353c02eaba4085824fa0a4ec1ed6d3afcf9b84f641ed9768130f39987e5602c16bd1e0b3af0ab262e9410453e827b96e41b6481"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21024,8 +21138,8 @@
     {
       "type": "library",
       "name": "update-browserslist-db",
-      "version": "1.2.2",
-      "bom-ref": "frontend@0.0.0|update-browserslist-db@1.2.2",
+      "version": "1.2.3",
+      "bom-ref": "frontend@0.0.0|update-browserslist-db@1.2.3",
       "licenses": [
         {
           "license": {
@@ -21034,15 +21148,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/update-browserslist-db@1.2.2",
+      "purl": "pkg:npm/update-browserslist-db@1.2.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.2.tgz",
+          "url": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "13ce697cdccc43d8e92a403bf932408b84c937eb410ae5a1e6b51c4bfb2fe9c162fb5abd2d80f00c8e5da542f4bbfef710497243c7774c469e5b8b0f79d06a60"
+              "content": "26cd26f5cc7ea8e803c68d1e32214612e796cedcfe778f8cdeb1a598a3d3f93e084bf8cfe32970dcdc29bba7294d33fc4753000b5905e156dd2eddc045fdb4f7"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21391,122 +21505,6 @@
     },
     {
       "type": "library",
-      "name": "wrap-ansi",
-      "version": "9.0.2",
-      "bom-ref": "frontend@0.0.0|wrap-ansi@9.0.2",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/wrap-ansi@9.0.2",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-9.0.2.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "e3602d9a0aa357e5f556974e7f24c6398462d3fceca0baad5d07244e6a937b26d3f810c86ccfc6bb1a3bc77a44dafb69af5a24eb146a33d3a905ef89ca8ab2c3"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/wrap-ansi"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "ansi-styles",
-          "version": "6.2.3",
-          "bom-ref": "frontend@0.0.0|wrap-ansi@9.0.2|ansi-styles@6.2.3",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/ansi-styles@6.2.3",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-6.2.3.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "e038fa336f0907ea001fc9059132d4a3e6b68f038592ea9bdf2b9c53408035c45151bc52d1c3f49d96021a371cdc1357c1122c5159831a0cdac267bbcef247be"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/wrap-ansi/node_modules/ansi-styles"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "string-width",
-          "version": "7.2.0",
-          "bom-ref": "frontend@0.0.0|wrap-ansi@9.0.2|string-width@7.2.0",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/string-width@7.2.0",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/string-width/-/string-width-7.2.0.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "b6c693224296f5be0df80123f92540f96849cd5effccc85c4aeefc98b2964a4edc5cc3921ec04a15652cd1f5b0abc4322b73202414115fa19b8b89186ddbc691"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/wrap-ansi/node_modules/string-width"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "wsl-utils",
       "version": "0.3.0",
       "bom-ref": "frontend@0.0.0|wsl-utils@0.3.0",
@@ -21810,7 +21808,7 @@
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
         "frontend@0.0.0|@eslint/js@9.39.2",
-        "frontend@0.0.0|@fontsource/roboto@5.2.9",
+        "frontend@0.0.0|@fontsource/roboto@5.2.10",
         "frontend@0.0.0|@hey-api/openapi-ts@0.90.8",
         "frontend@0.0.0|@hookform/resolvers@5.2.2",
         "frontend@0.0.0|@mui/icons-material@7.3.7",
@@ -21826,8 +21824,8 @@
         "frontend@0.0.0|@types/node@25.0.10",
         "frontend@0.0.0|@types/react-dom@19.2.3",
         "frontend@0.0.0|@types/react@19.2.9",
-        "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
-        "frontend@0.0.0|axios@1.13.5",
+        "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
+        "frontend@0.0.0|axios@1.13.6",
         "frontend@0.0.0|date-fns@4.1.0",
         "frontend@0.0.0|dotenv@17.2.3",
         "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
@@ -21836,17 +21834,17 @@
         "frontend@0.0.0|form-data@4.0.5",
         "frontend@0.0.0|globals@17.0.0",
         "frontend@0.0.0|http-status-codes@2.3.0",
-        "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
-        "frontend@0.0.0|i18next-cli@1.36.1",
-        "frontend@0.0.0|i18next@25.8.0",
+        "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
+        "frontend@0.0.0|i18next-cli@1.49.2",
+        "frontend@0.0.0|i18next@25.8.13",
         "frontend@0.0.0|p-limit@7.2.0",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react-error-boundary@6.1.0",
-        "frontend@0.0.0|react-hook-form@7.71.1",
-        "frontend@0.0.0|react-i18next@16.5.3",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react-error-boundary@6.1.1",
+        "frontend@0.0.0|react-hook-form@7.71.2",
+        "frontend@0.0.0|react-i18next@16.5.5",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|rolldown-vite@7.3.1",
-        "frontend@0.0.0|swiper@12.0.3",
+        "frontend@0.0.0|swiper@12.1.2",
         "frontend@0.0.0|tailwindcss@4.1.18",
         "frontend@0.0.0|typescript-eslint@8.53.1",
         "frontend@0.0.0|typescript@5.9.3",
@@ -21856,7 +21854,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/code-frame@7.27.1",
+      "ref": "frontend@0.0.0|@babel/code-frame@7.29.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5",
         "frontend@0.0.0|js-tokens@4.0.0",
@@ -21864,20 +21862,20 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/compat-data@7.28.5"
+      "ref": "frontend@0.0.0|@babel/compat-data@7.29.0"
     },
     {
-      "ref": "frontend@0.0.0|@babel/core@7.28.5",
+      "ref": "frontend@0.0.0|@babel/core@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/generator@7.28.5",
-        "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
-        "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
-        "frontend@0.0.0|@babel/helpers@7.28.4",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
+        "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
+        "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
+        "frontend@0.0.0|@babel/helpers@7.28.6",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@jridgewell/remapping@2.3.5",
         "frontend@0.0.0|convert-source-map@2.0.0",
         "frontend@0.0.0|debug@4.4.3",
@@ -21887,19 +21885,19 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/generator@7.28.5",
+      "ref": "frontend@0.0.0|@babel/generator@7.29.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@jridgewell/gen-mapping@0.3.13",
         "frontend@0.0.0|@jridgewell/trace-mapping@0.3.31",
         "frontend@0.0.0|jsesc@3.1.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.27.2",
+      "ref": "frontend@0.0.0|@babel/helper-compilation-targets@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/compat-data@7.28.5",
+        "frontend@0.0.0|@babel/compat-data@7.29.0",
         "frontend@0.0.0|@babel/helper-validator-option@7.27.1",
         "frontend@0.0.0|browserslist@4.28.1",
         "frontend@0.0.0|lru-cache@5.1.1",
@@ -21910,19 +21908,19 @@
       "ref": "frontend@0.0.0|@babel/helper-globals@7.28.0"
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+      "ref": "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.3",
+      "ref": "frontend@0.0.0|@babel/helper-module-transforms@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5",
-        "frontend@0.0.0|@babel/traverse@7.28.5"
+        "frontend@0.0.0|@babel/traverse@7.29.0"
       ]
     },
     {
@@ -21938,43 +21936,43 @@
       "ref": "frontend@0.0.0|@babel/helper-validator-option@7.27.1"
     },
     {
-      "ref": "frontend@0.0.0|@babel/helpers@7.28.4",
+      "ref": "frontend@0.0.0|@babel/helpers@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/parser@7.28.5",
+      "ref": "frontend@0.0.0|@babel/parser@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-syntax-jsx@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-syntax-typescript@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-transform-react-jsx-self@7.27.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
     {
       "ref": "frontend@0.0.0|@babel/plugin-transform-react-jsx-source@7.27.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/helper-plugin-utils@7.28.6"
       ]
     },
@@ -21982,27 +21980,27 @@
       "ref": "frontend@0.0.0|@babel/runtime@7.28.4"
     },
     {
-      "ref": "frontend@0.0.0|@babel/template@7.27.2",
+      "ref": "frontend@0.0.0|@babel/template@7.28.6",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/traverse@7.28.5",
+      "ref": "frontend@0.0.0|@babel/traverse@7.29.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
-        "frontend@0.0.0|@babel/generator@7.28.5",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
         "frontend@0.0.0|@babel/helper-globals@7.28.0",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|debug@4.4.3"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@babel/types@7.28.5",
+      "ref": "frontend@0.0.0|@babel/types@7.29.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/helper-string-parser@7.27.1",
         "frontend@0.0.0|@babel/helper-validator-identifier@7.28.5"
@@ -22076,7 +22074,7 @@
     {
       "ref": "frontend@0.0.0|@emotion/babel-plugin@11.13.5",
       "dependsOn": [
-        "frontend@0.0.0|@babel/helper-module-imports@7.27.1",
+        "frontend@0.0.0|@babel/helper-module-imports@7.28.6",
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|@emotion/babel-plugin@11.13.5|convert-source-map@1.9.0",
         "frontend@0.0.0|@emotion/hash@0.9.2",
@@ -22125,7 +22123,7 @@
         "frontend@0.0.0|@emotion/utils@1.4.2",
         "frontend@0.0.0|@emotion/weak-memoize@0.4.0",
         "frontend@0.0.0|hoist-non-react-statics@3.3.2",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22151,7 +22149,7 @@
         "frontend@0.0.0|@emotion/serialize@1.3.3",
         "frontend@0.0.0|@emotion/use-insertion-effect-with-fallbacks@1.2.0",
         "frontend@0.0.0|@emotion/utils@1.4.2",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22160,7 +22158,7 @@
     {
       "ref": "frontend@0.0.0|@emotion/use-insertion-effect-with-fallbacks@1.2.0",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22262,7 +22260,7 @@
       "dependsOn": [
         "frontend@0.0.0|@eslint/object-schema@2.1.7",
         "frontend@0.0.0|debug@4.4.3",
-        "frontend@0.0.0|minimatch@3.1.2"
+        "frontend@0.0.0|minimatch@3.1.5"
       ]
     },
     {
@@ -22281,13 +22279,13 @@
       "ref": "frontend@0.0.0|@eslint/eslintrc@3.3.3",
       "dependsOn": [
         "frontend@0.0.0|@eslint/eslintrc@3.3.3|globals@14.0.0",
-        "frontend@0.0.0|ajv@6.12.6",
+        "frontend@0.0.0|ajv@6.14.0",
         "frontend@0.0.0|debug@4.4.3",
         "frontend@0.0.0|espree@10.4.0",
         "frontend@0.0.0|ignore@5.3.2",
         "frontend@0.0.0|import-fresh@3.3.1",
         "frontend@0.0.0|js-yaml@4.1.1",
-        "frontend@0.0.0|minimatch@3.1.2",
+        "frontend@0.0.0|minimatch@3.1.5",
         "frontend@0.0.0|strip-json-comments@3.1.1"
       ]
     },
@@ -22308,7 +22306,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@fontsource/roboto@5.2.9"
+      "ref": "frontend@0.0.0|@fontsource/roboto@5.2.10"
     },
     {
       "ref": "frontend@0.0.0|@hey-api/codegen-core@0.5.4",
@@ -22353,7 +22351,7 @@
       "ref": "frontend@0.0.0|@hookform/resolvers@5.2.2",
       "dependsOn": [
         "frontend@0.0.0|@standard-schema/utils@0.3.0",
-        "frontend@0.0.0|react-hook-form@7.71.1"
+        "frontend@0.0.0|react-hook-form@7.71.2"
       ]
     },
     {
@@ -22376,49 +22374,49 @@
       "ref": "frontend@0.0.0|@inquirer/ansi@2.0.3"
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/checkbox@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/checkbox@5.1.0",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/confirm@6.0.4",
+      "ref": "frontend@0.0.0|@inquirer/confirm@6.0.8",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/core@11.1.1",
+      "ref": "frontend@0.0.0|@inquirer/core@11.1.5",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10",
         "frontend@0.0.0|cli-width@4.1.0",
+        "frontend@0.0.0|fast-wrap-ansi@0.2.0",
         "frontend@0.0.0|mute-stream@3.0.0",
-        "frontend@0.0.0|signal-exit@4.1.0",
-        "frontend@0.0.0|wrap-ansi@9.0.2"
+        "frontend@0.0.0|signal-exit@4.1.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/editor@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/editor@5.0.8",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/external-editor@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/expand@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/expand@5.0.8",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
@@ -22435,68 +22433,68 @@
       "ref": "frontend@0.0.0|@inquirer/figures@2.0.3"
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/input@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/input@5.0.8",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/number@4.0.4",
+      "ref": "frontend@0.0.0|@inquirer/number@4.0.8",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/password@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/password@5.0.8",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/prompts@8.2.0",
+      "ref": "frontend@0.0.0|@inquirer/prompts@8.3.0",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/checkbox@5.0.4",
-        "frontend@0.0.0|@inquirer/confirm@6.0.4",
-        "frontend@0.0.0|@inquirer/editor@5.0.4",
-        "frontend@0.0.0|@inquirer/expand@5.0.4",
-        "frontend@0.0.0|@inquirer/input@5.0.4",
-        "frontend@0.0.0|@inquirer/number@4.0.4",
-        "frontend@0.0.0|@inquirer/password@5.0.4",
-        "frontend@0.0.0|@inquirer/rawlist@5.2.0",
-        "frontend@0.0.0|@inquirer/search@4.1.0",
-        "frontend@0.0.0|@inquirer/select@5.0.4",
+        "frontend@0.0.0|@inquirer/checkbox@5.1.0",
+        "frontend@0.0.0|@inquirer/confirm@6.0.8",
+        "frontend@0.0.0|@inquirer/editor@5.0.8",
+        "frontend@0.0.0|@inquirer/expand@5.0.8",
+        "frontend@0.0.0|@inquirer/input@5.0.8",
+        "frontend@0.0.0|@inquirer/number@4.0.8",
+        "frontend@0.0.0|@inquirer/password@5.0.8",
+        "frontend@0.0.0|@inquirer/rawlist@5.2.4",
+        "frontend@0.0.0|@inquirer/search@4.1.4",
+        "frontend@0.0.0|@inquirer/select@5.1.0",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/rawlist@5.2.0",
+      "ref": "frontend@0.0.0|@inquirer/rawlist@5.2.4",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/search@4.1.0",
+      "ref": "frontend@0.0.0|@inquirer/search@4.1.4",
       "dependsOn": [
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@inquirer/select@5.0.4",
+      "ref": "frontend@0.0.0|@inquirer/select@5.1.0",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
-        "frontend@0.0.0|@inquirer/core@11.1.1",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10"
@@ -22506,15 +22504,6 @@
       "ref": "frontend@0.0.0|@inquirer/type@4.0.3",
       "dependsOn": [
         "frontend@0.0.0|@types/node@25.0.10"
-      ]
-    },
-    {
-      "ref": "frontend@0.0.0|@isaacs/balanced-match@4.0.1"
-    },
-    {
-      "ref": "frontend@0.0.0|@isaacs/brace-expansion@5.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|@isaacs/balanced-match@4.0.1"
       ]
     },
     {
@@ -22556,7 +22545,7 @@
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|@mui/material@7.3.7",
         "frontend@0.0.0|@types/react@19.2.9",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22578,7 +22567,7 @@
         "frontend@0.0.0|react-dom@19.2.3",
         "frontend@0.0.0|react-is@19.2.3",
         "frontend@0.0.0|react-transition-group@4.4.5",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22588,7 +22577,7 @@
         "frontend@0.0.0|@mui/utils@7.3.7",
         "frontend@0.0.0|@types/react@19.2.9",
         "frontend@0.0.0|prop-types@15.8.1",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22602,7 +22591,7 @@
         "frontend@0.0.0|@emotion/styled@11.14.1",
         "frontend@0.0.0|csstype@3.2.3",
         "frontend@0.0.0|prop-types@15.8.1",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22619,7 +22608,7 @@
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|csstype@3.2.3",
         "frontend@0.0.0|prop-types@15.8.1",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22639,7 +22628,7 @@
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|prop-types@15.8.1",
         "frontend@0.0.0|react-is@19.2.3",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22656,7 +22645,7 @@
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|prop-types@15.8.1",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
       ]
     },
@@ -22665,7 +22654,7 @@
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|@mui/utils@7.3.7",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|reselect@5.1.1",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
       ]
@@ -22677,7 +22666,7 @@
         "frontend@0.0.0|@mui/utils@7.3.7",
         "frontend@0.0.0|@mui/x-internals@8.25.0",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22761,48 +22750,48 @@
       "ref": "frontend@0.0.0|@standard-schema/utils@0.3.0"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-darwin-arm64@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-darwin-x64@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.4"
+      "ref": "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.18"
     },
     {
-      "ref": "frontend@0.0.0|@swc/core@1.15.4",
+      "ref": "frontend@0.0.0|@swc/core@1.15.18",
       "dependsOn": [
-        "frontend@0.0.0|@swc/core-darwin-arm64@1.15.4",
-        "frontend@0.0.0|@swc/core-darwin-x64@1.15.4",
-        "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.4",
-        "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.4",
-        "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.4",
-        "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.4",
-        "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.4",
-        "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.4",
-        "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.4",
-        "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.4",
+        "frontend@0.0.0|@swc/core-darwin-arm64@1.15.18",
+        "frontend@0.0.0|@swc/core-darwin-x64@1.15.18",
+        "frontend@0.0.0|@swc/core-linux-arm-gnueabihf@1.15.18",
+        "frontend@0.0.0|@swc/core-linux-arm64-gnu@1.15.18",
+        "frontend@0.0.0|@swc/core-linux-arm64-musl@1.15.18",
+        "frontend@0.0.0|@swc/core-linux-x64-gnu@1.15.18",
+        "frontend@0.0.0|@swc/core-linux-x64-musl@1.15.18",
+        "frontend@0.0.0|@swc/core-win32-arm64-msvc@1.15.18",
+        "frontend@0.0.0|@swc/core-win32-ia32-msvc@1.15.18",
+        "frontend@0.0.0|@swc/core-win32-x64-msvc@1.15.18",
         "frontend@0.0.0|@swc/counter@0.1.3",
         "frontend@0.0.0|@swc/types@0.1.25"
       ]
@@ -22912,14 +22901,14 @@
       "dependsOn": [
         "frontend@0.0.0|@tanstack/query-devtools@5.92.0",
         "frontend@0.0.0|@tanstack/react-query@5.90.19",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
       "ref": "frontend@0.0.0|@tanstack/react-query@5.90.19",
       "dependsOn": [
         "frontend@0.0.0|@tanstack/query-core@5.90.19",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22929,7 +22918,7 @@
         "frontend@0.0.0|@tanstack/router-core@1.154.7",
         "frontend@0.0.0|@tanstack/router-devtools-core@1.154.7",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -22940,7 +22929,7 @@
         "frontend@0.0.0|@tanstack/router-core@1.154.7",
         "frontend@0.0.0|isbot@5.1.32",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|tiny-invariant@1.3.3",
         "frontend@0.0.0|tiny-warning@1.0.3"
       ]
@@ -22950,7 +22939,7 @@
       "dependsOn": [
         "frontend@0.0.0|@tanstack/store@0.8.0",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
       ]
     },
@@ -22998,12 +22987,12 @@
     {
       "ref": "frontend@0.0.0|@tanstack/router-plugin@1.154.7",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-syntax-jsx@7.28.6",
         "frontend@0.0.0|@babel/plugin-syntax-typescript@7.28.6",
-        "frontend@0.0.0|@babel/template@7.27.2",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/template@7.28.6",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@tanstack/react-router@1.154.7",
         "frontend@0.0.0|@tanstack/router-core@1.154.7",
         "frontend@0.0.0|@tanstack/router-generator@1.154.7",
@@ -23022,9 +23011,9 @@
     {
       "ref": "frontend@0.0.0|@tanstack/router-utils@1.154.7",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/generator@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/generator@7.29.1",
+        "frontend@0.0.0|@babel/parser@7.29.0",
         "frontend@0.0.0|ansis@4.2.0",
         "frontend@0.0.0|diff@8.0.3",
         "frontend@0.0.0|pathe@2.0.3",
@@ -23046,8 +23035,8 @@
     {
       "ref": "frontend@0.0.0|@types/babel__core@7.20.5",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0",
         "frontend@0.0.0|@types/babel__generator@7.27.0",
         "frontend@0.0.0|@types/babel__template@7.4.4",
         "frontend@0.0.0|@types/babel__traverse@7.28.0"
@@ -23056,20 +23045,20 @@
     {
       "ref": "frontend@0.0.0|@types/babel__generator@7.27.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__template@7.4.4",
       "dependsOn": [
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
       "ref": "frontend@0.0.0|@types/babel__traverse@7.28.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
@@ -23192,7 +23181,7 @@
         "frontend@0.0.0|@typescript-eslint/project-service@8.53.1",
         "frontend@0.0.0|@typescript-eslint/tsconfig-utils@8.53.1",
         "frontend@0.0.0|@typescript-eslint/types@8.53.1",
-        "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.5",
+        "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.9",
         "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|semver@7.7.3",
         "frontend@0.0.0|@typescript-eslint/visitor-keys@8.53.1",
         "frontend@0.0.0|debug@4.4.3",
@@ -23208,7 +23197,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.5",
+      "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.9",
       "dependsOn": [
         "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|brace-expansion@2.0.2"
       ]
@@ -23235,16 +23224,19 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.2",
+      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-self@7.27.1",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-source@7.27.1",
-        "frontend@0.0.0|@rolldown/pluginutils@1.0.0-beta.53",
         "frontend@0.0.0|@types/babel__core@7.20.5",
+        "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
         "frontend@0.0.0|react-refresh@0.18.0",
         "frontend@0.0.0|rolldown-vite@7.3.1"
       ]
+    },
+    {
+      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3"
     },
     {
       "ref": "frontend@0.0.0|@vitest/expect@4.0.17",
@@ -23304,16 +23296,10 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|acorn-walk@8.3.4",
-      "dependsOn": [
-        "frontend@0.0.0|acorn@8.15.0"
-      ]
-    },
-    {
       "ref": "frontend@0.0.0|acorn@8.15.0"
     },
     {
-      "ref": "frontend@0.0.0|ajv@6.12.6",
+      "ref": "frontend@0.0.0|ajv@6.14.0",
       "dependsOn": [
         "frontend@0.0.0|fast-deep-equal@3.1.3",
         "frontend@0.0.0|fast-json-stable-stringify@2.1.0",
@@ -23362,7 +23348,7 @@
       "ref": "frontend@0.0.0|asynckit@0.4.0"
     },
     {
-      "ref": "frontend@0.0.0|axios@1.13.5",
+      "ref": "frontend@0.0.0|axios@1.13.6",
       "dependsOn": [
         "frontend@0.0.0|follow-redirects@1.15.11",
         "frontend@0.0.0|form-data@4.0.5",
@@ -23372,10 +23358,10 @@
     {
       "ref": "frontend@0.0.0|babel-dead-code-elimination@1.0.12",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
-        "frontend@0.0.0|@babel/traverse@7.28.5",
-        "frontend@0.0.0|@babel/types@7.28.5"
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
+        "frontend@0.0.0|@babel/traverse@7.29.0",
+        "frontend@0.0.0|@babel/types@7.29.0"
       ]
     },
     {
@@ -23390,7 +23376,7 @@
       "ref": "frontend@0.0.0|balanced-match@1.0.2"
     },
     {
-      "ref": "frontend@0.0.0|baseline-browser-mapping@2.9.4"
+      "ref": "frontend@0.0.0|baseline-browser-mapping@2.10.0"
     },
     {
       "ref": "frontend@0.0.0|binary-extensions@2.3.0"
@@ -23411,11 +23397,11 @@
     {
       "ref": "frontend@0.0.0|browserslist@4.28.1",
       "dependsOn": [
-        "frontend@0.0.0|baseline-browser-mapping@2.9.4",
-        "frontend@0.0.0|caniuse-lite@1.0.30001759",
-        "frontend@0.0.0|electron-to-chromium@1.5.266",
+        "frontend@0.0.0|baseline-browser-mapping@2.10.0",
+        "frontend@0.0.0|caniuse-lite@1.0.30001775",
+        "frontend@0.0.0|electron-to-chromium@1.5.302",
         "frontend@0.0.0|node-releases@2.0.27",
-        "frontend@0.0.0|update-browserslist-db@1.2.2"
+        "frontend@0.0.0|update-browserslist-db@1.2.3"
       ]
     },
     {
@@ -23461,7 +23447,7 @@
       "ref": "frontend@0.0.0|callsites@3.1.0"
     },
     {
-      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001759"
+      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001775"
     },
     {
       "ref": "frontend@0.0.0|chai@6.2.2"
@@ -23635,10 +23621,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|electron-to-chromium@1.5.266"
-    },
-    {
-      "ref": "frontend@0.0.0|emoji-regex@10.6.0"
+      "ref": "frontend@0.0.0|electron-to-chromium@1.5.302"
     },
     {
       "ref": "frontend@0.0.0|enhanced-resolve@5.18.4",
@@ -23686,8 +23669,8 @@
     {
       "ref": "frontend@0.0.0|eslint-plugin-react-hooks@7.0.1",
       "dependsOn": [
-        "frontend@0.0.0|@babel/core@7.28.5",
-        "frontend@0.0.0|@babel/parser@7.28.5",
+        "frontend@0.0.0|@babel/core@7.29.0",
+        "frontend@0.0.0|@babel/parser@7.29.0",
         "frontend@0.0.0|eslint@9.39.2",
         "frontend@0.0.0|hermes-parser@0.25.1",
         "frontend@0.0.0|zod-validation-error@4.0.2",
@@ -23725,7 +23708,7 @@
         "frontend@0.0.0|@humanwhocodes/module-importer@1.0.1",
         "frontend@0.0.0|@humanwhocodes/retry@0.4.3",
         "frontend@0.0.0|@types/estree@1.0.8",
-        "frontend@0.0.0|ajv@6.12.6",
+        "frontend@0.0.0|ajv@6.14.0",
         "frontend@0.0.0|chalk@4.1.2",
         "frontend@0.0.0|cross-spawn@7.0.6",
         "frontend@0.0.0|debug@4.4.3",
@@ -23745,7 +23728,7 @@
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|json-stable-stringify-without-jsonify@1.0.1",
         "frontend@0.0.0|lodash.merge@4.6.2",
-        "frontend@0.0.0|minimatch@3.1.2",
+        "frontend@0.0.0|minimatch@3.1.5",
         "frontend@0.0.0|natural-compare@1.4.0",
         "frontend@0.0.0|optionator@0.9.4"
       ]
@@ -23818,6 +23801,21 @@
       "ref": "frontend@0.0.0|fast-levenshtein@2.0.6"
     },
     {
+      "ref": "frontend@0.0.0|fast-string-truncated-width@3.0.3"
+    },
+    {
+      "ref": "frontend@0.0.0|fast-string-width@3.0.2",
+      "dependsOn": [
+        "frontend@0.0.0|fast-string-truncated-width@3.0.3"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|fast-wrap-ansi@0.2.0",
+      "dependsOn": [
+        "frontend@0.0.0|fast-string-width@3.0.2"
+      ]
+    },
+    {
       "ref": "frontend@0.0.0|fdir@6.5.0",
       "dependsOn": [
         "frontend@0.0.0|picomatch@4.0.3"
@@ -23884,7 +23882,7 @@
       "ref": "frontend@0.0.0|gensync@1.0.0-beta.2"
     },
     {
-      "ref": "frontend@0.0.0|get-east-asian-width@1.4.0"
+      "ref": "frontend@0.0.0|get-east-asian-width@1.5.0"
     },
     {
       "ref": "frontend@0.0.0|get-intrinsic@1.3.0",
@@ -23939,17 +23937,26 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|glob@13.0.0",
+      "ref": "frontend@0.0.0|glob@13.0.6",
       "dependsOn": [
-        "frontend@0.0.0|glob@13.0.0|minimatch@10.1.1",
-        "frontend@0.0.0|minipass@7.1.2",
-        "frontend@0.0.0|path-scurry@2.0.1"
+        "frontend@0.0.0|glob@13.0.6|minimatch@10.2.4",
+        "frontend@0.0.0|minipass@7.1.3",
+        "frontend@0.0.0|path-scurry@2.0.2"
       ]
     },
     {
-      "ref": "frontend@0.0.0|glob@13.0.0|minimatch@10.1.1",
+      "ref": "frontend@0.0.0|glob@13.0.6|balanced-match@4.0.4"
+    },
+    {
+      "ref": "frontend@0.0.0|glob@13.0.6|brace-expansion@5.0.4",
       "dependsOn": [
-        "frontend@0.0.0|@isaacs/brace-expansion@5.0.1"
+        "frontend@0.0.0|glob@13.0.6|balanced-match@4.0.4"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|glob@13.0.6|minimatch@10.2.4",
+      "dependsOn": [
+        "frontend@0.0.0|glob@13.0.6|brace-expansion@5.0.4"
       ]
     },
     {
@@ -24016,55 +24023,64 @@
       "ref": "frontend@0.0.0|human-signals@8.0.1"
     },
     {
-      "ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.0",
+      "ref": "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.36.1",
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2",
       "dependsOn": [
         "frontend@0.0.0|@croct/json5-parser@0.2.2",
-        "frontend@0.0.0|@swc/core@1.15.4",
-        "frontend@0.0.0|commander@14.0.2",
+        "frontend@0.0.0|@swc/core@1.15.18",
         "frontend@0.0.0|execa@9.6.1",
-        "frontend@0.0.0|glob@13.0.0",
-        "frontend@0.0.0|i18next-cli@1.36.1|chalk@5.6.2",
-        "frontend@0.0.0|i18next-cli@1.36.1|chokidar@5.0.0",
-        "frontend@0.0.0|i18next-cli@1.36.1|minimatch@10.1.1",
+        "frontend@0.0.0|glob@13.0.6",
+        "frontend@0.0.0|i18next-cli@1.49.2|chokidar@5.0.0",
+        "frontend@0.0.0|i18next-cli@1.49.2|commander@14.0.3",
+        "frontend@0.0.0|i18next-cli@1.49.2|minimatch@10.2.4",
         "frontend@0.0.0|i18next-resources-for-ts@2.0.0",
-        "frontend@0.0.0|inquirer@13.1.0",
+        "frontend@0.0.0|inquirer@13.3.0",
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|jsonc-parser@3.3.1",
-        "frontend@0.0.0|ora@9.0.0",
-        "frontend@0.0.0|react-i18next@16.5.3",
-        "frontend@0.0.0|react@19.2.3",
-        "frontend@0.0.0|swc-walk@1.0.1"
+        "frontend@0.0.0|magic-string@0.30.21",
+        "frontend@0.0.0|ora@9.3.0",
+        "frontend@0.0.0|react-i18next@16.5.5",
+        "frontend@0.0.0|react@19.2.4",
+        "frontend@0.0.0|yaml@2.8.2"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.36.1|chalk@5.6.2"
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|balanced-match@4.0.4"
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.36.1|chokidar@5.0.0",
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|brace-expansion@5.0.4",
       "dependsOn": [
-        "frontend@0.0.0|i18next-cli@1.36.1|readdirp@5.0.0"
+        "frontend@0.0.0|i18next-cli@1.49.2|balanced-match@4.0.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.36.1|minimatch@10.1.1",
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|chokidar@5.0.0",
       "dependsOn": [
-        "frontend@0.0.0|@isaacs/brace-expansion@5.0.1"
+        "frontend@0.0.0|i18next-cli@1.49.2|readdirp@5.0.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|i18next-cli@1.36.1|readdirp@5.0.0"
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|commander@14.0.3"
+    },
+    {
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|minimatch@10.2.4",
+      "dependsOn": [
+        "frontend@0.0.0|i18next-cli@1.49.2|brace-expansion@5.0.4"
+      ]
+    },
+    {
+      "ref": "frontend@0.0.0|i18next-cli@1.49.2|readdirp@5.0.0"
     },
     {
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
-        "frontend@0.0.0|@swc/core@1.15.4",
+        "frontend@0.0.0|@swc/core@1.15.18",
         "frontend@0.0.0|i18next-resources-for-ts@2.0.0|chokidar@5.0.0",
         "frontend@0.0.0|yaml@2.8.2"
       ]
@@ -24079,7 +24095,7 @@
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0|readdirp@5.0.0"
     },
     {
-      "ref": "frontend@0.0.0|i18next@25.8.0",
+      "ref": "frontend@0.0.0|i18next@25.8.13",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|typescript@5.9.3"
@@ -24105,11 +24121,11 @@
       "ref": "frontend@0.0.0|imurmurhash@0.1.4"
     },
     {
-      "ref": "frontend@0.0.0|inquirer@13.1.0",
+      "ref": "frontend@0.0.0|inquirer@13.3.0",
       "dependsOn": [
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
-        "frontend@0.0.0|@inquirer/core@11.1.1",
-        "frontend@0.0.0|@inquirer/prompts@8.2.0",
+        "frontend@0.0.0|@inquirer/core@11.1.5",
+        "frontend@0.0.0|@inquirer/prompts@8.3.0",
         "frontend@0.0.0|@inquirer/type@4.0.3",
         "frontend@0.0.0|@types/node@25.0.10",
         "frontend@0.0.0|mute-stream@3.0.0",
@@ -24332,13 +24348,13 @@
       "ref": "frontend@0.0.0|mimic-function@5.0.1"
     },
     {
-      "ref": "frontend@0.0.0|minimatch@3.1.2",
+      "ref": "frontend@0.0.0|minimatch@3.1.5",
       "dependsOn": [
         "frontend@0.0.0|brace-expansion@1.1.12"
       ]
     },
     {
-      "ref": "frontend@0.0.0|minipass@7.1.2"
+      "ref": "frontend@0.0.0|minipass@7.1.3"
     },
     {
       "ref": "frontend@0.0.0|ms@2.1.3"
@@ -24420,21 +24436,20 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|ora@9.0.0",
+      "ref": "frontend@0.0.0|ora@9.3.0",
       "dependsOn": [
         "frontend@0.0.0|cli-cursor@5.0.0",
         "frontend@0.0.0|cli-spinners@3.4.0",
         "frontend@0.0.0|is-interactive@2.0.0",
         "frontend@0.0.0|is-unicode-supported@2.1.0",
         "frontend@0.0.0|log-symbols@7.0.1",
-        "frontend@0.0.0|ora@9.0.0|chalk@5.6.2",
-        "frontend@0.0.0|stdin-discarder@0.2.2",
-        "frontend@0.0.0|string-width@8.1.0",
-        "frontend@0.0.0|strip-ansi@7.1.2"
+        "frontend@0.0.0|ora@9.3.0|chalk@5.6.2",
+        "frontend@0.0.0|stdin-discarder@0.3.1",
+        "frontend@0.0.0|string-width@8.2.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|ora@9.0.0|chalk@5.6.2"
+      "ref": "frontend@0.0.0|ora@9.3.0|chalk@5.6.2"
     },
     {
       "ref": "frontend@0.0.0|p-limit@7.2.0",
@@ -24466,7 +24481,7 @@
     {
       "ref": "frontend@0.0.0|parse-json@5.2.0",
       "dependsOn": [
-        "frontend@0.0.0|@babel/code-frame@7.27.1",
+        "frontend@0.0.0|@babel/code-frame@7.29.0",
         "frontend@0.0.0|error-ex@1.3.4",
         "frontend@0.0.0|json-parse-even-better-errors@2.3.1",
         "frontend@0.0.0|lines-and-columns@1.2.4"
@@ -24485,14 +24500,14 @@
       "ref": "frontend@0.0.0|path-parse@1.0.7"
     },
     {
-      "ref": "frontend@0.0.0|path-scurry@2.0.1",
+      "ref": "frontend@0.0.0|path-scurry@2.0.2",
       "dependsOn": [
-        "frontend@0.0.0|minipass@7.1.2",
-        "frontend@0.0.0|path-scurry@2.0.1|lru-cache@11.2.4"
+        "frontend@0.0.0|minipass@7.1.3",
+        "frontend@0.0.0|path-scurry@2.0.2|lru-cache@11.2.6"
       ]
     },
     {
-      "ref": "frontend@0.0.0|path-scurry@2.0.1|lru-cache@11.2.4"
+      "ref": "frontend@0.0.0|path-scurry@2.0.2|lru-cache@11.2.6"
     },
     {
       "ref": "frontend@0.0.0|path-type@4.0.0"
@@ -24580,29 +24595,29 @@
     {
       "ref": "frontend@0.0.0|react-dom@19.2.3",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|scheduler@0.27.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|react-error-boundary@6.1.0",
+      "ref": "frontend@0.0.0|react-error-boundary@6.1.1",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|react-hook-form@7.71.1",
+      "ref": "frontend@0.0.0|react-hook-form@7.71.2",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|react-i18next@16.5.3",
+      "ref": "frontend@0.0.0|react-i18next@16.5.5",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.4",
         "frontend@0.0.0|html-parse-stringify@3.0.1",
-        "frontend@0.0.0|i18next@25.8.0",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|i18next@25.8.13",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|typescript@5.9.3",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
       ]
@@ -24621,11 +24636,11 @@
         "frontend@0.0.0|loose-envify@1.4.0",
         "frontend@0.0.0|prop-types@15.8.1",
         "frontend@0.0.0|react-dom@19.2.3",
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|react@19.2.3"
+      "ref": "frontend@0.0.0|react@19.2.4"
     },
     {
       "ref": "frontend@0.0.0|readdirp@3.6.0",
@@ -24768,17 +24783,17 @@
       "ref": "frontend@0.0.0|std-env@3.10.0"
     },
     {
-      "ref": "frontend@0.0.0|stdin-discarder@0.2.2"
+      "ref": "frontend@0.0.0|stdin-discarder@0.3.1"
     },
     {
-      "ref": "frontend@0.0.0|string-width@8.1.0",
+      "ref": "frontend@0.0.0|string-width@8.2.0",
       "dependsOn": [
-        "frontend@0.0.0|get-east-asian-width@1.4.0",
-        "frontend@0.0.0|strip-ansi@7.1.2"
+        "frontend@0.0.0|get-east-asian-width@1.5.0",
+        "frontend@0.0.0|strip-ansi@7.2.0"
       ]
     },
     {
-      "ref": "frontend@0.0.0|strip-ansi@7.1.2",
+      "ref": "frontend@0.0.0|strip-ansi@7.2.0",
       "dependsOn": [
         "frontend@0.0.0|ansi-regex@6.2.2"
       ]
@@ -24802,13 +24817,7 @@
       "ref": "frontend@0.0.0|supports-preserve-symlinks-flag@1.0.0"
     },
     {
-      "ref": "frontend@0.0.0|swc-walk@1.0.1",
-      "dependsOn": [
-        "frontend@0.0.0|acorn-walk@8.3.4"
-      ]
-    },
-    {
-      "ref": "frontend@0.0.0|swiper@12.0.3"
+      "ref": "frontend@0.0.0|swiper@12.1.2"
     },
     {
       "ref": "frontend@0.0.0|tailwindcss@4.1.18"
@@ -24931,7 +24940,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|update-browserslist-db@1.2.2",
+      "ref": "frontend@0.0.0|update-browserslist-db@1.2.3",
       "dependsOn": [
         "frontend@0.0.0|browserslist@4.28.1",
         "frontend@0.0.0|escalade@3.2.0",
@@ -24947,13 +24956,13 @@
     {
       "ref": "frontend@0.0.0|use-debounce@10.1.0",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
       "ref": "frontend@0.0.0|use-sync-external-store@1.6.0",
       "dependsOn": [
-        "frontend@0.0.0|react@19.2.3"
+        "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
@@ -25005,25 +25014,6 @@
       "ref": "frontend@0.0.0|word-wrap@1.2.5"
     },
     {
-      "ref": "frontend@0.0.0|wrap-ansi@9.0.2",
-      "dependsOn": [
-        "frontend@0.0.0|strip-ansi@7.1.2",
-        "frontend@0.0.0|wrap-ansi@9.0.2|ansi-styles@6.2.3",
-        "frontend@0.0.0|wrap-ansi@9.0.2|string-width@7.2.0"
-      ]
-    },
-    {
-      "ref": "frontend@0.0.0|wrap-ansi@9.0.2|ansi-styles@6.2.3"
-    },
-    {
-      "ref": "frontend@0.0.0|wrap-ansi@9.0.2|string-width@7.2.0",
-      "dependsOn": [
-        "frontend@0.0.0|emoji-regex@10.6.0",
-        "frontend@0.0.0|get-east-asian-width@1.4.0",
-        "frontend@0.0.0|strip-ansi@7.1.2"
-      ]
-    },
-    {
       "ref": "frontend@0.0.0|wsl-utils@0.3.0",
       "dependsOn": [
         "frontend@0.0.0|is-wsl@3.1.0",
@@ -25055,7 +25045,7 @@
       "ref": "frontend@0.0.0|zustand@5.0.10",
       "dependsOn": [
         "frontend@0.0.0|@types/react@19.2.9",
-        "frontend@0.0.0|react@19.2.3",
+        "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
       ]
     }

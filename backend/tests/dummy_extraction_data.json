@@ -1,8 +1,12 @@
 {
-  "brand_name_en": "GreenGrow",
-  "brand_name_fr": "CroissanceVerte",
-  "product_name_en": "Premium All-Purpose Fertilizer",
-  "product_name_fr": "Engrais Polyvalent Premium",
+  "brand_name": {
+    "en": "GreenGrow",
+    "fr": "CroissanceVerte"
+  },
+  "product_name": {
+    "en": "Premium All-Purpose Fertilizer",
+    "fr": "Engrais Polyvalent Premium"
+  },
   "contacts": [
     {
       "type": "manufacturer",
@@ -30,51 +34,73 @@
   "k": "5.0",
   "ingredients": [
     {
-      "name_en": "Urea",
-      "name_fr": "Urée",
+      "name": {
+        "en": "Urea",
+        "fr": "Urée"
+      },
       "value": "20.0",
       "unit": "%"
     },
     {
-      "name_en": "Triple Superphosphate",
-      "name_fr": "Triple Superphosphate",
+      "name": {
+        "en": "Triple Superphosphate",
+        "fr": "Triple Superphosphate"
+      },
       "value": "15.0",
       "unit": "%"
     },
     {
-      "name_en": "Potassium Chloride",
-      "name_fr": "Chlorure de Potassium",
+      "name": {
+        "en": "Potassium Chloride",
+        "fr": "Chlorure de Potassium"
+      },
       "value": "10.0",
       "unit": "%"
     }
   ],
   "guaranteed_analysis": {
-    "title_en": "Minimum Guaranteed Analysis",
-    "title_fr": "Analyse Garantie Minimale",
+    "title": {
+      "en": "Minimum Guaranteed Analysis",
+      "fr": "Analyse Garantie Minimale"
+    },
     "is_minimum": true,
     "nutrients": [
       {
-        "name_en": "Total Nitrogen (N)",
-        "name_fr": "Azote Total (N)",
+        "name": {
+          "en": "Total Nitrogen (N)",
+          "fr": "Azote Total (N)"
+        },
         "value": "10.0",
         "unit": "%"
       },
       {
-        "name_en": "Available Phosphate (P₂O₅)",
-        "name_fr": "Phosphate Disponible (P₂O₅)",
+        "name": {
+          "en": "Available Phosphate (P₂O₅)",
+          "fr": "Phosphate Disponible (P₂O₅)"
+        },
         "value": "5.0",
         "unit": "%"
       },
       {
-        "name_en": "Soluble Potash (K₂O)",
-        "name_fr": "Potasse Soluble (K₂O)",
+        "name": {
+          "en": "Soluble Potash (K₂O)",
+          "fr": "Potasse Soluble (K₂O)"
+        },
         "value": "5.0",
         "unit": "%"
       }
     ]
   },
-  "caution_en": "Keep out of reach of children. Avoid contact with skin and eyes.",
-  "caution_fr": "Tenir hors de la portée des enfants. Éviter le contact avec la peau et les yeux.",
-  "instructions_en": "Apply 2-3 cups per 100 square feet. Water thoroughly after application.",
-  "instructions_fr": "Appliquer 2-3 tasses par 100 pieds carrés. Arroser abondamment après l'application."
+  "precaution_statements": [
+    {
+      "en": "Keep out of reach of children. Avoid contact with skin and eyes.",
+      "fr": "Tenir hors de la portée des enfants. Éviter le contact avec la peau et les yeux."
+    }
+  ],
+  "directions_for_use_statements": [
+    {
+      "en": "Apply 2-3 cups per 100 square feet. Water thoroughly after application.",
+      "fr": "Appliquer 2-3 tasses par 100 pieds carrés. Arroser abondamment après l'application."
+    }
+  ]
 }

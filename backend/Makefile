@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell
+.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell
 
 help:
 	@echo "Available targets:"
@@ -23,6 +23,7 @@ help:
 	@echo "  clean            - Remove generated files"
 	@echo "  secret-key       - Generate a secure secret key"
 	@echo "  generate-sbom    - Generate SBOM (requires Docker)"
+	@echo "  generate-sbom-local - Generate SBOM locally (no Docker)"
 	@echo ""
 	@echo "Alembic Migration Commands:"
 	@echo "  alembic-current  - Show current database revision"
@@ -204,6 +205,13 @@ docker-test:
 generate-sbom:
 	bash scripts/generate-sbom.sh
 	rm -rf .venv && uv sync
+
+generate-sbom-local:
+	uv sync --group dev --group sbom
+	uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 \
+            --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
+	rm -rf .venv && uv sync
+
 
 clean:
 	rm -rf app/email-templates/build/*.html

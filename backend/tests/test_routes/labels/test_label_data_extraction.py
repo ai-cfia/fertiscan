@@ -185,7 +185,7 @@ class TestExtractFertilizerFieldsWithFieldNames:
         response = client.post(
             f"{settings.API_V1_STR}/labels/{label.id}/fertilizer-extract",
             headers=headers,
-            json={"field_names": ["brand_name_en", "caution_en"]},
+            json={"field_names": ["brand_name", "precaution_statements"]},
         )
         assert response.status_code == 200
 
@@ -270,9 +270,9 @@ class TestExtractFertilizerFieldsWithFieldNames:
             headers=headers,
             json={
                 "field_names": [
-                    "brand_name_en",
-                    "caution_en",
-                    "instructions_en",
+                    "brand_name",
+                    "precaution_statements",
+                    "directions_for_use_statements",
                     "n",
                 ]
             },
@@ -307,10 +307,8 @@ class TestExtractFertilizerFieldsWithFieldNames:
             headers=headers,
             json={
                 "field_names": [
-                    "caution_en",
-                    "caution_fr",
-                    "instructions_en",
-                    "instructions_fr",
+                    "precaution_statements",
+                    "directions_for_use_statements",
                 ]
             },
         )

@@ -10,6 +10,6 @@ class LabelDataFactory(BaseFactory):
 
     label = factory.SubFactory("tests.factories.label.LabelFactory")
     label_id = factory.LazyAttribute(lambda obj: obj.label.id)
-    brand_name_en = factory.Faker("company")
+    brand_name = factory.Dict({"en": factory.Faker("company")})
     registration_number = factory.Sequence(lambda n: f"REG-{n:06d}")
     lot_number: str | None = factory.Sequence(lambda n: f"LOT-{n:06d}")

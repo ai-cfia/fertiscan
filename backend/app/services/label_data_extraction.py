@@ -5,6 +5,7 @@ from typing import NamedTuple
 
 import instructor
 from openai.types.chat import (
+    ChatCompletion,
     ChatCompletionContentPartImageParam,
     ChatCompletionContentPartParam,
     ChatCompletionContentPartTextParam,
@@ -34,10 +35,14 @@ async def extract_fields_from_images[T: BaseModel](
     model: type[T],
     prompt: str,
     instructor: instructor.AsyncInstructor,
-) -> T:
-    """Extract field values from label images using AI."""
+) -> tuple[T, ChatCompletion | None]:
+    """Extract field values from label images using AI.
+
+    Returns a tuple of (parsed_response, raw_completion).
+    The completion is None when no images are provided.
+    """
     if not images:
-        return model.model_validate({})
+        return model.model_validate({}), None
     if len(images) > 10:
         raise ValueError("Maximum 10 images per request")
     data_uris = [to_data_uri(img) for img in images]
@@ -49,10 +54,10 @@ async def extract_fields_from_images[T: BaseModel](
         for u in data_uris
     ]
     message: ChatCompletionUserMessageParam = {"role": "user", "content": content}
-    response, _ = await instructor.chat.completions.create_with_completion(
+    response, completion = await instructor.chat.completions.create_with_completion(
         model=settings.AZURE_OPENAI_MODEL,
         messages=[message],
         response_model=model,
         max_completion_tokens=4000,
     )
-    return response
+    return response, completion

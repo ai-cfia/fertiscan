@@ -6,13 +6,11 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from sqlmodel import select
 
 from app.config import settings
-from app.db.models.rule import Rule
 from tests.factories.label import LabelFactory
 from tests.factories.NonComplianceDataItem import NonComplianceDataItemFactory
-from tests.factories.rule import RuleFactory
+from tests.factories.requirement import RequirementFactory
 from tests.factories.user import UserFactory
 from tests.utils.user import (
     authentication_token_from_email,
@@ -35,27 +33,33 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             note="This is a note.",
         )
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule2.id,
+            requirement_id=requirement2.id,
             note="This is a good day.",
         )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
+            requirement_id=requirement3.id,
             note="This is another note.",
         )
 
@@ -89,27 +93,33 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             note="This is a note.",
         )
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule2.id,
+            requirement_id=requirement2.id,
             note="This is a good day.",
         )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
+            requirement_id=requirement3.id,
             note="This is another note.",
         )
         response = client.get(
@@ -132,21 +142,27 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             description_en="This is a description.",
             description_fr="Ceci est une description.",
         )
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule2.id,
+            requirement_id=requirement2.id,
             description_en="This is a good day.",
             description_fr="C'est une bonne journée.",
         )
@@ -154,7 +170,7 @@ class TestFilterCompliances:
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
+            requirement_id=requirement3.id,
             description_en="This is another description.",
             description_fr="Ceci est une autre description.",
         )
@@ -184,53 +200,59 @@ class TestFilterCompliances:
         data = response.json()
         assert len(data["items"]) == 0
 
-    def test_filter_compliance_by_is_compliant(
+    def test_filter_compliance_by_status(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test filtering non-compliance data items by is_compliant."""
+        """Test filtering non-compliance data items by status."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-
-        NonComplianceDataItemFactory.create(
-            session=db,
-            label_id=label.id,
-            rule_id=rule1.id,
-            is_compliant=True,
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
         )
-        NonComplianceDataItemFactory.create(
-            session=db,
-            label_id=label.id,
-            rule_id=rule2.id,
-            is_compliant=False,
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
         )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
-            is_compliant=False,
+            requirement_id=requirement1.id,
+            status="compliant",
+        )
+        NonComplianceDataItemFactory.create(
+            session=db,
+            label_id=label.id,
+            requirement_id=requirement2.id,
+            status="non_compliant",
+        )
+
+        NonComplianceDataItemFactory.create(
+            session=db,
+            label_id=label.id,
+            requirement_id=requirement3.id,
+            status="non_compliant",
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?is_compliant=true",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?status=compliant",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
         assert len(data["items"]) == 1
-        assert data["items"][0]["is_compliant"] is True
+        assert data["items"][0]["status"] == "compliant"
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?is_compliant=false",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?status=non_compliant",
             headers=headers,
         )
         assert response.status_code == 200
@@ -238,7 +260,7 @@ class TestFilterCompliances:
         assert len(data["items"]) == 2
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?is_compliant=nonexistent",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?status=nonexistent",
             headers=headers,
         )
         assert response.status_code == 422
@@ -256,22 +278,28 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             created_at=datetime(2022, 1, 1),
             updated_at=datetime(2022, 2, 1),
         )
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule2.id,
-            is_compliant=False,
+            requirement_id=requirement2.id,
+            status="non_compliant",
             created_at=datetime(2022, 3, 1),
             updated_at=datetime(2022, 4, 1),
         )
@@ -279,8 +307,8 @@ class TestFilterCompliances:
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
-            is_compliant=False,
+            requirement_id=requirement3.id,
+            status="non_compliant",
             created_at=datetime(2022, 1, 2),
             updated_at=datetime(2022, 1, 3),
         )
@@ -344,34 +372,38 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             note="This is a note.",
             description_en="This is a description.",
             description_fr="Ceci est une description.",
-            is_compliant=True,
+            status="compliant",
             created_at=datetime(2022, 1, 1),
             updated_at=datetime(2022, 2, 1),
         )
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule2.id,
+            requirement_id=requirement2.id,
             note="This is another note.",
             description_en="This is another description.",
             description_fr="Ceci est une autre description.",
-            is_compliant=False,
+            status="non_compliant",
             created_at=datetime(2022, 3, 1),
             updated_at=datetime(2022, 4, 1),
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?note=note&description_en=description&is_compliant=true&start_created_at=2022-01-01T00:00:00&end_created_at=2022-01-31T23:59:59&start_updated_at=2022-01-01T00:00:00&end_updated_at=2022-02-28T23:59:59",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items?note=note&description_en=description&status=compliant&start_created_at=2022-01-01T00:00:00&end_created_at=2022-01-31T23:59:59&start_updated_at=2022-01-01T00:00:00&end_updated_at=2022-02-28T23:59:59",
             headers=headers,
         )
         assert response.status_code == 200
@@ -390,28 +422,34 @@ class TestFilterCompliances:
             client=client, email=user.email, db=db
         )
 
-        rule1 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule2 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-        rule3 = RuleFactory.create(session=db, reference_number=f"FzR: TEST-{uuid4()}")
-
-        NonComplianceDataItemFactory.create(
-            session=db,
-            label_id=label.id,
-            rule_id=rule1.id,
-            is_compliant=True,
+        requirement1 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
         )
-        NonComplianceDataItemFactory.create(
-            session=db,
-            label_id=label.id,
-            rule_id=rule2.id,
-            is_compliant=False,
+        requirement2 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
+        )
+        requirement3 = RequirementFactory.create(
+            session=db, reference_number=f"FzR: TEST-{uuid4()}"
         )
 
         NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule3.id,
-            is_compliant=False,
+            requirement_id=requirement1.id,
+            status="compliant",
+        )
+        NonComplianceDataItemFactory.create(
+            session=db,
+            label_id=label.id,
+            requirement_id=requirement2.id,
+            status="non_compliant",
+        )
+
+        NonComplianceDataItemFactory.create(
+            session=db,
+            label_id=label.id,
+            requirement_id=requirement3.id,
+            status="non_compliant",
         )
         # =======================================Pagination test========================================
         response = client.get(
@@ -434,53 +472,51 @@ class TestFilterCompliances:
 
 @pytest.mark.usefixtures("override_dependencies")
 class TestComplianceReadById:
-    """Tests for reading non-compliance data items by label and rule ids."""
+    """Tests for reading non-compliance data items by label and requirement ids."""
 
-    def test_read_compliance_by_label_and_rule_id(
+    def test_read_compliance_by_label_and_requirement_id(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test reading a non-compliance data item by label and rule ids."""
+        """Test reading a non-compliance data item by label and requirement ids."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement1 = RequirementFactory.create(session=db)
         non_compliance_data_item = NonComplianceDataItemFactory.create(
             session=db,
             label_id=label.id,
-            rule_id=rule1.id,
+            requirement_id=requirement1.id,
             note="This is a note.",
             description_en="This is a description.",
             description_fr="Ceci est une description.",
-            is_compliant=True,
+            status="compliant",
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{requirement1.id}",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
         assert data["id"] == str(non_compliance_data_item.id)
         assert data["label_id"] == str(label.id)
-        assert data["rule_id"] == str(rule1.id)
+        assert data["requirement_id"] == str(requirement1.id)
         assert data["note"] == "This is a note."
         assert data["description_en"] == "This is a description."
         assert data["description_fr"] == "Ceci est une description."
-        assert data["is_compliant"] is True
+        assert data["status"] == "compliant"
 
-    def test_read_compliance_by_label_and_rule_id_not_found(
+    def test_read_compliance_by_label_and_requirement_id_not_found(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test reading a non-compliance data item by label and rule ids that do not exist."""
+        """Test reading a non-compliance data item by label and requirement ids that do not exist."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
@@ -493,49 +529,43 @@ class TestComplianceReadById:
         )
         assert response.status_code == 404
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement1 = RequirementFactory.create(session=db)
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{requirement1.id}",
             headers=headers,
         )
         assert response.status_code == 404
 
-    def test_compliance_read_by_label_and_rule_id_authentication_required(
+    def test_compliance_read_by_label_and_requirement_id_authentication_required(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test that authentication is required to read a non-compliance data item by label and rule ids."""
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        """Test that authentication is required to read a non-compliance data item by label and requirement ids."""
+        requirement1 = RequirementFactory.create(session=db)
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{rule1.id}"
+            f"{settings.API_V1_STR}/labels/{uuid4()}/non_compliance_data_items/{requirement1.id}"
         )
         assert response.status_code == 401
 
-    def test_read_compliance_not_found_by_label_and_rule_id(
+    def test_read_compliance_not_found_by_label_and_requirement_id(
         self,
         client: TestClient,
         db: Session,
     ) -> None:
-        """Test reading a non-compliance data item by label and rule ids that do not exist."""
+        """Test reading a non-compliance data item by label and requirement ids that do not exist."""
         user = UserFactory.create(session=db)
         label = LabelFactory.create(session=db, created_by=user)
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
 
-        stmt = select(Rule).where(Rule.reference_number == "FzR: 15.(1)(i)")
-        rule1 = db.scalars(stmt).first()
-        assert rule1 is not None
+        requirement1 = RequirementFactory.create(session=db)
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{rule1.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/non_compliance_data_items/{requirement1.id}",
             headers=headers,
         )
         assert response.status_code == 404

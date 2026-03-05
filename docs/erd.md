@@ -20,7 +20,7 @@ erDiagram
         string code UK
         string name_en "nullable"
         string name_fr "nullable"
-        boolean is_active
+        boolean is_active "default true"
         timestamp created_at
         timestamp updated_at
     }
@@ -31,7 +31,7 @@ erDiagram
         uuid product_type_id FK
         string brand_name_en "nullable"
         string brand_name_fr "nullable"
-        string registration_number UK
+        string registration_number UK "nullable"
         string name_en "nullable"
         string name_fr "nullable"
         timestamp created_at
@@ -43,7 +43,7 @@ erDiagram
         uuid product_id FK "nullable"
         uuid product_type_id FK
         uuid created_by_id FK
-        string review_status
+        string review_status "not_started | in_progress | completed"
         timestamp created_at
         timestamp updated_at
     }
@@ -53,8 +53,8 @@ erDiagram
         uuid label_id FK
         string file_path
         string display_filename
-        int sequence_order
-        string status
+        int sequence_order "ge 1"
+        string status "pending | completed"
         timestamp created_at
         timestamp updated_at
     }
@@ -62,15 +62,16 @@ erDiagram
     LabelData {
         uuid id PK
         uuid label_id FK "unique"
-        string brand_name_en "nullable"
-        string brand_name_fr "nullable"
-        string product_name_en "nullable"
-        string product_name_fr "nullable"
-        jsonb contacts "nullable"
+        json brand_name "nullable"
+        json product_name "nullable"
+        json contacts "nullable"
         string registration_number "nullable"
+        json registration_claim "nullable"
         string lot_number "nullable"
         string net_weight "nullable"
         string volume "nullable"
+        json exemption_claim "nullable"
+        string country_of_origin "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -79,9 +80,9 @@ erDiagram
         uuid id PK
         uuid label_id FK
         string field_name
-        boolean needs_review
+        boolean needs_review "default false"
         string note "nullable"
-        boolean ai_generated
+        boolean ai_generated "default false"
         timestamp created_at
         timestamp updated_at
     }
@@ -92,12 +93,16 @@ erDiagram
         decimal n "nullable"
         decimal p "nullable"
         decimal k "nullable"
-        jsonb ingredients "nullable"
-        jsonb guaranteed_analysis "nullable"
-        string caution_en "nullable"
-        string caution_fr "nullable"
-        string instructions_en "nullable"
-        string instructions_fr "nullable"
+        json ingredients "nullable"
+        json guaranteed_analysis "nullable"
+        json precaution_statements "nullable"
+        json directions_for_use_statements "nullable"
+        json customer_formula_statements "nullable"
+        json intended_use_statements "nullable"
+        json processing_instruction_statements "nullable"
+        json experimental_statements "nullable"
+        json export_statements "nullable"
+        string product_classification "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -106,9 +111,9 @@ erDiagram
         uuid id PK
         uuid label_id FK
         string field_name
-        boolean needs_review
+        boolean needs_review "default false"
         string note "nullable"
-        boolean ai_generated
+        boolean ai_generated "default false"
         timestamp created_at
         timestamp updated_at
     }
@@ -118,8 +123,8 @@ erDiagram
         string email UK
         string first_name "nullable"
         string last_name "nullable"
-        boolean is_active
-        boolean is_superuser
+        boolean is_active "default true"
+        boolean is_superuser "default false"
         string hashed_password "nullable"
         string external_id UK "nullable"
         timestamp created_at
@@ -216,18 +221,15 @@ Labels track state through a single review status field:
 
 ### Bilingual Support
 
-- **Bilingual fields**: `brand_name` and `product_name` stored as separate
-  columns for English (`_en`) and French (`_fr`) to comply with Canadian
-  labeling requirements
 - **Product entity**: `brand_name_en`, `brand_name_fr`, `name_en`, `name_fr`
-- **LabelData entity**: `brand_name_en`, `brand_name_fr`, `product_name_en`,
-  `product_name_fr`
-- **FertilizerLabelData entity**: `caution_en`, `caution_fr`, `instructions_en`,
-  `instructions_fr`
-- **JSONB fields**: `ingredients` and `guaranteed_analysis` are single JSONB
-  fields (not separate `_en`/`_fr` versions)
-- **French fields nullable**: French versions are nullable as not all products
-  may have French labels, but English is typically required
+  (separate columns for English/French)
+- **LabelData entity**: `brand_name`, `product_name`, `registration_claim`,
+  `exemption_claim` stored as JSON dicts with `en`/`fr` keys
+- **FertilizerLabelData entity**: Statement arrays
+  (`precaution_statements`, `directions_for_use_statements`, etc.) store
+  bilingual text as JSON objects with `en`/`fr` keys
+- **JSON fields**: `ingredients`, `guaranteed_analysis`, and statement arrays
+  are JSON fields (structure accommodates bilingual content)
 
 ### Product Type Management
 
@@ -247,11 +249,12 @@ Labels track state through a single review status field:
 ### Product Type Separation
 
 - **Generic fields in LabelData**: Common fields shared across all product types
-  (brand_name_en/fr, product_name_en/fr, registration_number, lot_number,
-  contacts, net_weight, volume)
+  (brand_name, product_name, contacts, registration_number, registration_claim,
+  lot_number, net_weight, volume, exemption_claim, country_of_origin)
 - **Fertilizer-specific fields in FertilizerLabelData**: NPK values (n, p, k),
-  ingredients (JSONB), guaranteed_analysis (JSONB), caution_en/fr, and
-  instructions_en/fr specific to fertilizer products
+  ingredients (JSON), guaranteed_analysis (JSON), statement arrays
+  (precaution_statements, directions_for_use_statements, etc.), and
+  product_classification
 - **Metadata tables**: Each label data table has a corresponding meta table
   (`LabelDataFieldMeta`, `FertilizerLabelDataMeta`) for field-level review
   flags, notes, and AI generation tracking
@@ -268,12 +271,12 @@ Labels track state through a single review status field:
   - Type-specific tables provide queryability and type safety
   - ProductType table enables efficient filtering without relationship checks
 
-### Structured Data Fields (JSONB)
+### Structured Data Fields (JSON)
 
-**Note:** JSONB fields are temporary and may be normalized into separate tables
+**Note:** JSON fields are temporary and may be normalized into separate tables
 in the future for better queryability and structure.
 
-All JSONB fields follow a consistent structure. Expected formats:
+All JSON fields follow a consistent structure. Expected formats:
 
 #### `contacts` (in LabelData)
 
