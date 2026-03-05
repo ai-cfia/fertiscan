@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # Force Python to write logs immediately instead of buffering
 ENV PYTHONUNBUFFERED=1
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
 
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
-COPY --from=ghcr.io/astral-sh/uv:0.9.17 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.10.7 /uv /uvx /bin/
 
 # Place executables in the environment at the front of the path
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#using-the-environment

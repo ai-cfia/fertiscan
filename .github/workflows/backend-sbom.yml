@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.14"
       - uses: astral-sh/setup-uv@v7
       - name: Install dependencies
         run: uv sync --group dev --group sbom
@@ -64,7 +64,7 @@ jobs:
           fi
       - name: SBOM security scan
         id: scan
-        uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0
+        uses: anchore/scan-action@a00a05e63ba70a3938d40280dfe42bb5d8e16d19
         with:
           sbom: backend/sbom.json
           fail-build: false
