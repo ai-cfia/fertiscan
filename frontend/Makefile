@@ -11,7 +11,7 @@ help:
 	@echo "  test                   - Run tests (if configured)"
 	@echo "  generate-openapi-client - Generate OpenAPI TypeScript client"
 	@echo "  generate-sbom          - Generate SBOM (requires Docker)"
-	@echo "  generate-sbom-local    - Generate SBOM locally (no Docker)"
+	@echo "  generate-sbom-local    - Generate SBOM locally (no Docker, only on ubuntu)"
 	@echo "  i18n-status            - Show translation status"
 	@echo "  i18n-sync              - Sync translation files with primary language"
 	@echo "  i18n-lint              - Lint for hardcoded strings"

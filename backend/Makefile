@@ -23,7 +23,7 @@ help:
 	@echo "  clean            - Remove generated files"
 	@echo "  secret-key       - Generate a secure secret key"
 	@echo "  generate-sbom    - Generate SBOM (requires Docker)"
-	@echo "  generate-sbom-local - Generate SBOM locally (no Docker)"
+	@echo "  generate-sbom-local - Generate SBOM locally (no Docker, only on ubuntu)"
 	@echo ""
 	@echo "Alembic Migration Commands:"
 	@echo "  alembic-current  - Show current database revision"
