@@ -1037,23 +1037,23 @@
       "type": "library",
       "name": "biome",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/biome@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/biome@2.4.6",
       "licenses": [
         {
           "expression": "MIT OR Apache-2.0",
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/biome@2.4.4",
+      "purl": "pkg:npm/%40biomejs/biome@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/biome/-/biome-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/biome/-/biome-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b62830592e4a7c97f4700055779d8d55a5f2015bf8aa9517396275af114bf31175455a1e4b6abf2caf851e062828c725242b91a025803f2d485da37dfe64bad5"
+              "content": "4271def353ccb25a72de69e92fc0e73b63384b866760f92394608b581653ff747d33a6f975a02b58c32d11f3f9dbf9f5ef844a9f04487f7a13f3ec1cf628527d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1074,8 +1074,8 @@
       "type": "library",
       "name": "cli-darwin-arm64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1083,15 +1083,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-darwin-arm64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-darwin-arm64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8d9f9773aaaf0fab531f98cce9e297e3875c6f236a247b2c7e5da79f04fabe66ba075b23ed92d318893a379430541b39c46379dabdedae4e5f81ddec43d59ef4"
+              "content": "356d7c192cb1afef2c248aa0a06c15a7966a9b84802c7e1be207ed200d27eb63d3b81b3a1b6b479703403a3d15ab428a4aced27fcf158e39878743b7e849f3ad"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1112,8 +1112,8 @@
       "type": "library",
       "name": "cli-darwin-x64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1121,15 +1121,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-darwin-x64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-darwin-x64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-darwin-x64/-/cli-darwin-x64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-darwin-x64/-/cli-darwin-x64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "0e1d5affe5be49409784474bed3897dc0acf4c50902894c8d661a77193567cefbab2e93e81803894dc8970107ea70bc5e3dbb0d2911b512e3d06060e63887352"
+              "content": "e2e884ffdb6e23b7278ed63d6f4ed1812ee01b260e01f20019e5495847de0a701aace012eea566b91c97e9dec94cac36f3f9adfab53331ab18799fb447f53533"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1150,8 +1150,8 @@
       "type": "library",
       "name": "cli-linux-arm64-musl",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1159,15 +1159,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-linux-arm64-musl@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-linux-arm64-musl@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-linux-arm64-musl/-/cli-linux-arm64-musl-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-linux-arm64-musl/-/cli-linux-arm64-musl-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "fac3c05eaddbc661708551499d2c24485e51c3664024c1f7305e82f48bde00439d4a981a8cf8684216db00ad7649e84df63d90ac7a64e09fdc1ec6bf1ea59a61"
+              "content": "17f25d07b78ddb6b71893a873392a1215b748d5933670558add4d1d4edd8e1ab81390717c472b877150b7f8cf8dd0c99239b6c9d026b4411d9cbbc30b4bf81dc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1188,8 +1188,8 @@
       "type": "library",
       "name": "cli-linux-arm64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1197,15 +1197,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-linux-arm64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-linux-arm64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-linux-arm64/-/cli-linux-arm64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-linux-arm64/-/cli-linux-arm64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "57f3457db5a1b1453ac3e9b95986c17a7944033f1e6274aa44c0cc016dcafb7bf4b58564372667f155345cfc64fe53aa3572d2082ad5ec5995feedd28c205286"
+              "content": "90c2da23b385e4637543c0e8ca68eba353fcad5128cbb04a4002cdcfa7e247c202d5629dba8372b5e06d2651d3ec04882f40b1da347a55438121b701d41f297b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1226,8 +1226,8 @@
       "type": "library",
       "name": "cli-linux-x64-musl",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1235,15 +1235,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-linux-x64-musl@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-linux-x64-musl@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-linux-x64-musl/-/cli-linux-x64-musl-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-linux-x64-musl/-/cli-linux-x64-musl-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "806bc54c6a4e2100dbe42436542d27f59d9412a94fe3a73868d807980332b5889e4c611c7ea85f0859e1b3ac63b744b78a013aab918bb885ed750b77233a24fa"
+              "content": "0bdb3df083c3bbb0d86ab8e564dbb324a4e3547374dd152798757986dbeab31eaf1145c20d2279f433708ca543e57628492e0df81621ab74530402fc5fab2f12"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1264,8 +1264,8 @@
       "type": "library",
       "name": "cli-linux-x64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1273,15 +1273,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-linux-x64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-linux-x64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-linux-x64/-/cli-linux-x64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-linux-x64/-/cli-linux-x64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "478f99083b46f641c0adab3204ef94043ea3aff15c1424c7f1090d4ce0aed29449cc25b2582e04b596b60265190798777b48c3edb455d8abeb10d71ff2b9dd06"
+              "content": "a075e65051281fc2ea975c5f73742414b882d61191eea79dbf978a3650b5f39a2bfa8e3fe0789a53bbd8383007de979109fb2e2ebd60eafd9f2bd74514e61dcb"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1302,8 +1302,8 @@
       "type": "library",
       "name": "cli-win32-arm64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1311,15 +1311,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-win32-arm64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-win32-arm64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-win32-arm64/-/cli-win32-arm64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-win32-arm64/-/cli-win32-arm64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b6bcc2a8cef1f869fcdf6cd91e0af6f09a186a040d5f809991466131469cd98c6fbf20d12c90eb6f99bd200ec26992e55fa95342600355f2c428fd5eb7531ae1"
+              "content": "c734e19fcecf7f762b3864c438314638d9aa5e94f050dc68bd06fbda269439d730f2c052637fb7583f079bd2213182e73e2d27df6b372f735653af9e4a37ea16"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1340,8 +1340,8 @@
       "type": "library",
       "name": "cli-win32-x64",
       "group": "@biomejs",
-      "version": "2.4.4",
-      "bom-ref": "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.4",
+      "version": "2.4.6",
+      "bom-ref": "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.6",
       "scope": "optional",
       "licenses": [
         {
@@ -1349,15 +1349,15 @@
           "acknowledgement": "declared"
         }
       ],
-      "purl": "pkg:npm/%40biomejs/cli-win32-x64@2.4.4",
+      "purl": "pkg:npm/%40biomejs/cli-win32-x64@2.4.6",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@biomejs/cli-win32-x64/-/cli-win32-x64-2.4.4.tgz",
+          "url": "https://registry.npmjs.org/@biomejs/cli-win32-x64/-/cli-win32-x64-2.4.6.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8273872953c50003eba683eddadf90e8567b44faf2fc50d5dc6729539dcfdcfb4b3674230662b2376561fc9b6a5deb7e1f8a667bc082efaad27307630dc4f5fc"
+              "content": "efef97867b0f96bd470dba2be5a9a8bcf8ce1fabecac5382769f7788a5e1167e9b70c508eaca28763dd658a7e010ee89a2c294d56e67dee932dd65bd4654634e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4726,8 +4726,8 @@
       "type": "library",
       "name": "core-downloads-tracker",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/core-downloads-tracker@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/core-downloads-tracker@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4736,15 +4736,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/core-downloads-tracker@7.3.8",
+      "purl": "pkg:npm/%40mui/core-downloads-tracker@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b3d507668ed0255972ee0340ac46646dbb22987a89661125801a5720975e859e0e597b7e082af44810e05020c99d0aeaa5dd5d58ad9d2eae6b98ee26081988df"
+              "content": "30e90e0937db309c0bb2194108a279f55d85fee68b61f98a9cdefa924b23ea3946515748db903d1f3b34f26fb38c145d2effac2bb46a76c79f7bc5fb87fe8f0b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4761,8 +4761,8 @@
       "type": "library",
       "name": "icons-material",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/icons-material@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/icons-material@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4771,15 +4771,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/icons-material@7.3.8",
+      "purl": "pkg:npm/%40mui/icons-material@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/icons-material/-/icons-material-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/icons-material/-/icons-material-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f3cb1683f5097355fcd8e30ef88491e04dcfe7c237063155834aa4983bbb39694df158a39de643df294503e226c6e3e33075b7487a2c7d2258cb57f3b68cf47f"
+              "content": "053fb33c95ecb3c1e0fe810c4661e5d7b43dedb3c0086e2e7c549f184761884f7a8cec91e43cf5b72ed95add5f546474cb5a7eb12804c104ff30d6509a85830b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4796,8 +4796,8 @@
       "type": "library",
       "name": "material",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/material@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/material@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4806,15 +4806,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/material@7.3.8",
+      "purl": "pkg:npm/%40mui/material@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/material/-/material-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/material/-/material-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "40a7754610d713585fdac40335ac80f6273d8c690482f64e7f4b53909c6504f1bc9ecf1a4b8ad2f16c18511c36c79cb7ef7f69d076ae5175fd59b1fb52e7c52f"
+              "content": "23cc8edede13d32edbbc3891d6a84837a88159939305f54e9e62e533b2ba877771e585f66bbae792e5f373652465aaa1c58f4d8139c46dd3e5a2447547108d45"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4831,8 +4831,8 @@
       "type": "library",
       "name": "private-theming",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/private-theming@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/private-theming@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4841,15 +4841,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/private-theming@7.3.8",
+      "purl": "pkg:npm/%40mui/private-theming@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/private-theming/-/private-theming-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/private-theming/-/private-theming-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "76ee5d94f67d5cbdf15b66a91e81835c123e40bb725491ab5cd09f70d61f3ffa23933d51434ad157a546f51926d43a841511bc9a38d32fbce613506f9f5791e0"
+              "content": "12b232450bec89012aed8bdcbdfc3d5031e781aaa3332f4fdc90cf9d101a286e6a8699760b8b57fd6d52e3326fa6ef9f7a28666494ad8c8caf9efe8a0db22b97"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4866,8 +4866,8 @@
       "type": "library",
       "name": "styled-engine",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/styled-engine@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/styled-engine@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4876,15 +4876,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/styled-engine@7.3.8",
+      "purl": "pkg:npm/%40mui/styled-engine@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/styled-engine/-/styled-engine-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/styled-engine/-/styled-engine-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "24701e5d0cd2d2d27e16adc2e89e13543b16fb22a13b8baec6e88b6a8a4d4ad25e4180485025e9298c9409c817ca6e009a16f39d09eff51947cb0487e9bd053a"
+              "content": "26aba35ade5b5f8a248d43c6a55a1fffba6f80296a87b1ef21bb0804838e942876bb7c06fc1c29e3e1356dcd5d5d2c24ae4a7d59402835d2391c40bee472af33"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4901,8 +4901,8 @@
       "type": "library",
       "name": "system",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/system@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/system@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4911,15 +4911,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/system@7.3.8",
+      "purl": "pkg:npm/%40mui/system@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/system/-/system-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/system/-/system-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8681518f8670d8a9bc0cf599a7f9ca1be6a8e49c392d29369bf7b810673a337451c1728490c486e1382d7d5260edd4b6868991c2d75748c5be8913b4649e3e20"
+              "content": "68bd6af5a9bc5e946b49a6eff6a59fe511e1248089aa5df8c27adcd67cf432e3a094f45817f96237e73c56a65d4ef527f6a83e6634556ca7f8b095457c80ed9a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4936,8 +4936,8 @@
       "type": "library",
       "name": "types",
       "group": "@mui",
-      "version": "7.4.11",
-      "bom-ref": "frontend@0.0.0|@mui/types@7.4.11",
+      "version": "7.4.12",
+      "bom-ref": "frontend@0.0.0|@mui/types@7.4.12",
       "licenses": [
         {
           "license": {
@@ -4946,15 +4946,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/types@7.4.11",
+      "purl": "pkg:npm/%40mui/types@7.4.12",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/types/-/types-7.4.11.tgz",
+          "url": "https://registry.npmjs.org/@mui/types/-/types-7.4.12.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7d9db13bd0f4f0828ec4eda85018b59e754a1faa09503fbae1c9efe1801a1680b4139fa2d7e4b90076cdaaabd995862c6cf110eaa115c2e06a6378e5e56e06f9"
+              "content": "88a340176bbd3f34888f8d028ef2895b1157268d76da35d576b99d87484c61df8547e36e24c92bfcbf3c5f058b091889e4fd63faec9a736e7e2a9e980b886eeb"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4971,8 +4971,8 @@
       "type": "library",
       "name": "utils",
       "group": "@mui",
-      "version": "7.3.8",
-      "bom-ref": "frontend@0.0.0|@mui/utils@7.3.8",
+      "version": "7.3.9",
+      "bom-ref": "frontend@0.0.0|@mui/utils@7.3.9",
       "licenses": [
         {
           "license": {
@@ -4981,15 +4981,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/utils@7.3.8",
+      "purl": "pkg:npm/%40mui/utils@7.3.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/utils/-/utils-7.3.8.tgz",
+          "url": "https://registry.npmjs.org/@mui/utils/-/utils-7.3.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "91945c136eb6d02046afe5c8f18326c0f8fa5883f0485eee3098ef49fa9df335d5be5cf430225bcd145418d7fc3607e508bb617638b60dd4bae374dec89dfe9c"
+              "content": "53a49d65a19b7dbeb97ea4ec1f7579a097458fdb98c322c4d9656e36f99b8204d20c16fc407ac5b2a63c04dded68af6ddf227cfc13c70ff90dbcb3728f033b63"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5006,8 +5006,8 @@
       "type": "library",
       "name": "x-data-grid",
       "group": "@mui",
-      "version": "8.27.3",
-      "bom-ref": "frontend@0.0.0|@mui/x-data-grid@8.27.3",
+      "version": "8.27.4",
+      "bom-ref": "frontend@0.0.0|@mui/x-data-grid@8.27.4",
       "licenses": [
         {
           "license": {
@@ -5016,15 +5016,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40mui/x-data-grid@8.27.3",
+      "purl": "pkg:npm/%40mui/x-data-grid@8.27.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@mui/x-data-grid/-/x-data-grid-8.27.3.tgz",
+          "url": "https://registry.npmjs.org/@mui/x-data-grid/-/x-data-grid-8.27.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e098703012c6a5a4b283cb6a9d891e824e207d7a2fab14fe811966d8b6fc7f75831543ec5462f973f6cc8bb312464609da1d6919768b29a60e44b47adb1b9101"
+              "content": "49291c9bed1f02ffd3911c3362d0266e651eabbb6b36f743bf3aeb83b6f06daddcb87e8574fb307dcf1c68f989ed8c64320d4448562a02bfceddafaf62c9536c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5816,6 +5816,45 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@rolldown/binding-win32-x64-msvc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "pluginutils",
+      "group": "@rolldown",
+      "version": "1.0.0-rc.3",
+      "bom-ref": "frontend@0.0.0|@rolldown/pluginutils@1.0.0-rc.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/pluginutils@1.0.0-rc.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7b26e4dd38f3cf357dec3963e5cf97ac1156e7b793361ce877aeb2f47ac197327a36c0ab582a7fda468f4b72bdc099aeac10b44ddc38c8f8d7299aa5ce78a6dd"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/pluginutils"
         }
       ]
     },
@@ -7254,8 +7293,8 @@
       "type": "library",
       "name": "react-router-devtools",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/react-router-devtools@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/react-router-devtools@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7264,15 +7303,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/react-router-devtools@1.163.2",
+      "purl": "pkg:npm/%40tanstack/react-router-devtools@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/react-router-devtools/-/react-router-devtools-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/react-router-devtools/-/react-router-devtools-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "824fed0bebf1f1ea0d348336eef7dbfdb6535d08e9a29c3bb590385a445058b87d03c3c6dd5e908cc432b1b3dc4513b99bb2ad7426d3939d591b81118b427590"
+              "content": "11084541102bc314b43a32165860f9c1f35ba09abbac86026e2a07bdea606f181b94ab4d2d69d1af72c58f7e108574cfd5a42c3d86fdb7cf954e2dd56c5b807c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -7293,8 +7332,8 @@
       "type": "library",
       "name": "react-router",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/react-router@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/react-router@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7303,15 +7342,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/react-router@1.163.2",
+      "purl": "pkg:npm/%40tanstack/react-router@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d4ba2c525a4bda644c5b15195e6904839f81af93f98fd4eb2e782a4601d56d9a059239db723d71f5f40dd8e54bac1bfd369c3decd46c1de2658e7007fdcee84b"
+              "content": "a4a854b6bbd52e58635a1b079094ae2338752782dc3fef04adb22a44b3915fd26cf1d50530aa13d3ef281698be3fc411a6e866ffbaf38d88967dcc93b2a419b4"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -7363,8 +7402,8 @@
       "type": "library",
       "name": "router-core",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/router-core@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/router-core@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7373,15 +7412,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/router-core@1.163.2",
+      "purl": "pkg:npm/%40tanstack/router-core@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "983d0f6afea47294b7d7b5d224dfb00996b12cb9e00e19708333cd71ae7a7560a9f1828f12f8618ff65d97e2dd465250d9527904ecbb15b395d6112b73d363e5"
+              "content": "ce7dcd84434e017f53a10897d3bed4576387dda24a3af57664c3596716778031b78b75aa2fc35f59f1207ad1007cc377eff327b7dd0fa68b5881fec8caea0aa9"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -7398,8 +7437,8 @@
       "type": "library",
       "name": "router-devtools-core",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/router-devtools-core@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/router-devtools-core@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7408,15 +7447,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/router-devtools-core@1.163.2",
+      "purl": "pkg:npm/%40tanstack/router-devtools-core@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/router-devtools-core/-/router-devtools-core-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/router-devtools-core/-/router-devtools-core-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "22b6d22b7d00b4c3a008b5d36ef86756c53a0468e1c01f048df64840bb543c3bc5b0fd111f7ff66625910376b412c421c6497e7f121507254fef08324739193d"
+              "content": "29ef07aaebb03212d8a68ffa9f1360af38bd36cda5b0af6ec036dae96280f08d0aedfc98668014bbeec00fa81d11c554e0d17a2e3b4c3df5021e656d6184530f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -7437,8 +7476,8 @@
       "type": "library",
       "name": "router-generator",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/router-generator@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/router-generator@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7447,15 +7486,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/router-generator@1.163.2",
+      "purl": "pkg:npm/%40tanstack/router-generator@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e8b8d4dfef2228482df2239a6029829d00acd23b0e85cef3f1f6b5c806258f7b3cdae616bf7839081f66c2ff306576e55c14163a5fa15b83c8e963633ff08af7"
+              "content": "c1bbddc8fd4f28a40a93869594678af52e6e0f2f33a1d4ebded119da044a35abc92eeb176c45aab68a38d89c47145341e9db60b9e84532df0fc993c0b64816c1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -7476,7 +7515,7 @@
           "type": "library",
           "name": "source-map",
           "version": "0.7.6",
-          "bom-ref": "frontend@0.0.0|@tanstack/router-generator@1.163.2|source-map@0.7.6",
+          "bom-ref": "frontend@0.0.0|@tanstack/router-generator@1.166.2|source-map@0.7.6",
           "licenses": [
             {
               "license": {
@@ -7516,8 +7555,8 @@
       "type": "library",
       "name": "router-plugin",
       "group": "@tanstack",
-      "version": "1.163.2",
-      "bom-ref": "frontend@0.0.0|@tanstack/router-plugin@1.163.2",
+      "version": "1.166.2",
+      "bom-ref": "frontend@0.0.0|@tanstack/router-plugin@1.166.2",
       "licenses": [
         {
           "license": {
@@ -7526,15 +7565,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40tanstack/router-plugin@1.163.2",
+      "purl": "pkg:npm/%40tanstack/router-plugin@1.166.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.163.2.tgz",
+          "url": "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.166.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4ab5482cccff735e51616c48306f9b7ff8252db3ff3bd0d4c4e83413b6e8f69a2807118fbe0592944cc73638557a42e12b997b7e2b906732ac7e4b1578812a0c"
+              "content": "4e7c95ffbfff569e5f478f6698d6ce5871b3f482539b596a571ccf76da7383b0f93e3916d871662c52ed5b0a49833d91ec0249591e067b99083e60be7d567a79"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8020,8 +8059,8 @@
       "type": "library",
       "name": "node",
       "group": "@types",
-      "version": "25.3.2",
-      "bom-ref": "frontend@0.0.0|@types/node@25.3.2",
+      "version": "25.3.3",
+      "bom-ref": "frontend@0.0.0|@types/node@25.3.3",
       "licenses": [
         {
           "license": {
@@ -8030,15 +8069,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40types/node@25.3.2",
+      "purl": "pkg:npm/%40types/node@25.3.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@types/node/-/node-25.3.2.tgz",
+          "url": "https://registry.npmjs.org/@types/node/-/node-25.3.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "46957aaff8a3db6cd145dc813dcc4378a0331f8de985654a1232f68a4b2aa35573dc2b8152b8263e93e100b2a245f53b38c0a679e3bdbc408132c57484c4c6f1"
+              "content": "0e9cdbac7ef021c05a2626e92a8f679d240bd0c4d17675adb46c84e61686c0af3ac6030e9052e9eef1327d03c62ce261e70358889dd5f4f994303855f6ef2491"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8626,9 +8665,9 @@
         },
         {
           "type": "library",
-          "name": "minimatch",
-          "version": "9.0.9",
-          "bom-ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.9",
+          "name": "brace-expansion",
+          "version": "5.0.4",
+          "bom-ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|brace-expansion@5.0.4",
           "licenses": [
             {
               "license": {
@@ -8637,15 +8676,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@9.0.9",
+          "purl": "pkg:npm/brace-expansion@5.0.4",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz",
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.4.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "381c0137d00be1daa61139694b6cdab31faf4de59c956ce46e57d993b2930398f78de38e373fed4429d9a26532bcd83cdf02f966ff52b3a1cc2570202fc47662"
+                  "content": "87e0c49e956fc667d579f6b88c56c27f91dd1f960c0d746c98a7e5a5fd6920b6564459536c9a71794e799c99784a6b791d0686ce0d68e911c53c968eaa79810e"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8856,47 +8895,6 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@vitejs/plugin-react"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "pluginutils",
-          "group": "@rolldown",
-          "version": "1.0.0-rc.3",
-          "bom-ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/%40rolldown/pluginutils@1.0.0-rc.3",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.3.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "7b26e4dd38f3cf357dec3963e5cf97ac1156e7b793361ce877aeb2f47ac197327a36c0ab582a7fda468f4b72bdc099aeac10b44ddc38c8f8d7299aa5ce78a6dd"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/@vitejs/plugin-react/node_modules/@rolldown/pluginutils"
-            }
-          ]
         }
       ]
     },
@@ -9289,9 +9287,9 @@
     },
     {
       "type": "library",
-      "name": "ajv",
-      "version": "6.14.0",
-      "bom-ref": "frontend@0.0.0|ajv@6.14.0",
+      "name": "ansi-colors",
+      "version": "4.1.3",
+      "bom-ref": "frontend@0.0.0|ansi-colors@4.1.3",
       "licenses": [
         {
           "license": {
@@ -9300,15 +9298,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/ajv@6.14.0",
+      "purl": "pkg:npm/ansi-colors@4.1.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/ajv/-/ajv-6.14.0.tgz",
+          "url": "https://registry.npmjs.org/ansi-colors/-/ansi-colors-4.1.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "216ae8b26ff2ae7e377a22aa91f9078aced08a80e579a5d01dd0d53ca834152c3077f0eebf25fbf5366714e9d8a41edd72c140326b45ced66e5cf0ef49e3e417"
+              "content": "ffac3f0b6d4f9b503b6998ad948e4d8bfd89e8515037c8b50afcf79070010006f0f77bff365bca7553aacfb0825b3ff78affc9a6545210467cdd720e375e68bf"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10184,8 +10182,8 @@
     {
       "type": "library",
       "name": "caniuse-lite",
-      "version": "1.0.30001775",
-      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001775",
+      "version": "1.0.30001776",
+      "bom-ref": "frontend@0.0.0|caniuse-lite@1.0.30001776",
       "licenses": [
         {
           "license": {
@@ -10194,15 +10192,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/caniuse-lite@1.0.30001775",
+      "purl": "pkg:npm/caniuse-lite@1.0.30001776",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001775.tgz",
+          "url": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001776.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b3742fecb86df736d5284f57a13c911bac150c229db4e1488c11a0dfe6219fa25acadb8d28f22304c4cc218d409ce1f7b1e2f99af17ec77de8180c8ade156ddc"
+              "content": "b20d352433f367d8c6b21a8a49c90e42d8579d8c0e10fe748de54585a4856d970ecb4e538aeb9a7df0ce7dcc2d0a2b09f64350b8b04589b632c2fd81826f68b3"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -11582,8 +11580,8 @@
     {
       "type": "library",
       "name": "electron-to-chromium",
-      "version": "1.5.302",
-      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.302",
+      "version": "1.5.307",
+      "bom-ref": "frontend@0.0.0|electron-to-chromium@1.5.307",
       "licenses": [
         {
           "license": {
@@ -11592,15 +11590,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/electron-to-chromium@1.5.302",
+      "purl": "pkg:npm/electron-to-chromium@1.5.307",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.302.tgz",
+          "url": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.307.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b0ce8700dd8bc8af362323c1a739c346a953400b6e49a3be4a1cc58964efa0c24b1f267e637f6bf1531f1f3c1b53c31507343859d9fce7ec25665d932c6225c2"
+              "content": "e73dee14a0568e2351e389c57187647178ca31b83929735d722bbb9a14cfa3db41ecd6ea48d3f6b129c647e7ea9276520b02a404dfa8c6289a8d6b38753e8e46"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -11620,8 +11618,8 @@
     {
       "type": "library",
       "name": "enhanced-resolve",
-      "version": "5.19.0",
-      "bom-ref": "frontend@0.0.0|enhanced-resolve@5.19.0",
+      "version": "5.20.0",
+      "bom-ref": "frontend@0.0.0|enhanced-resolve@5.20.0",
       "licenses": [
         {
           "license": {
@@ -11630,15 +11628,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/enhanced-resolve@5.19.0",
+      "purl": "pkg:npm/enhanced-resolve@5.20.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz",
+          "url": "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.20.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a61bf71355e5e2d40e4a1a92b5edba0bb165f3813051d66cc8eb924a4f6ab401b2c90b36b378c9cc2a2687e01b7f8835f3b954500bc7f87dbaa26aea89ad9a1a"
+              "content": "fdc7bbfa34353d0eab557c1efa3284839856e5c8a2707c084146a0664a7a22e7c1a18dd80e07534d8d5acd5b34aa8460566bec341fab6e32c9c4301e1c7b70b1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12813,120 +12811,6 @@
     },
     {
       "type": "library",
-      "name": "fdir",
-      "version": "6.5.0",
-      "bom-ref": "frontend@0.0.0|fdir@6.5.0",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/fast-string-truncated-width@3.0.3",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/fast-string-truncated-width/-/fast-string-truncated-width-3.0.3.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "d238e32042fafb48da8379765d65a2cceeb8fda655b69886137b74660ab1bf40cfbb188c8ef077336e1f0b285950ee0aa262503e3dcb4d25270cfdc6a5dc02d2"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/fast-string-truncated-width"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "fast-string-width",
-      "version": "3.0.2",
-      "bom-ref": "frontend@0.0.0|fast-string-width@3.0.2",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/fast-string-width@3.0.2",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/fast-string-width/-/fast-string-width-3.0.2.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "817f0baed34423986af035547d140c6ebe65a5a4b89cc21657eed711b5e4d9bf24890222ce09e5af5d81e1d037644c77df4f337b43b843547e707b6cf24c9426"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/fast-string-width"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "fast-wrap-ansi",
-      "version": "0.2.0",
-      "bom-ref": "frontend@0.0.0|fast-wrap-ansi@0.2.0",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/fast-wrap-ansi@0.2.0",
-      "externalReferences": [
-        {
-          "url": "https://registry.npmjs.org/fast-wrap-ansi/-/fast-wrap-ansi-0.2.0.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "acb57c247c53ca156615884126e32e8dcac7a8e4f67273b96718f7eea44e8f6dc23f7f465ee6c9441505174cfc2852bbed47344ae91951fec9661b15110ea7f3"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/fast-wrap-ansi"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "figures",
       "version": "6.1.0",
       "bom-ref": "frontend@0.0.0|figures@6.1.0",
@@ -13152,8 +13036,8 @@
     {
       "type": "library",
       "name": "flatted",
-      "version": "3.3.3",
-      "bom-ref": "frontend@0.0.0|flatted@3.3.3",
+      "version": "3.3.4",
+      "bom-ref": "frontend@0.0.0|flatted@3.3.4",
       "licenses": [
         {
           "license": {
@@ -13162,15 +13046,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/flatted@3.3.3",
+      "purl": "pkg:npm/flatted@3.3.4",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/flatted/-/flatted-3.3.3.tgz",
+          "url": "https://registry.npmjs.org/flatted/-/flatted-3.3.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "197fb2b30e0f042cf43f3a2c1c37a964600d12e14230bae7453884cbd31c1a39a409063046ae00fd7efce86fdf8ccffe3a3b16494d59ad8e6ac8045998efeec2"
+              "content": "dfe98c95dad300f76d6b99235f61b627b897e33c6d9f0a5d03c4ebd994a39323d26a7bdb640732e9f966b675db1326c7ac3714f7ae35971acc7c5b94c55cfdbc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -13781,8 +13665,8 @@
     {
       "type": "library",
       "name": "globals",
-      "version": "17.3.0",
-      "bom-ref": "frontend@0.0.0|globals@17.3.0",
+      "version": "17.4.0",
+      "bom-ref": "frontend@0.0.0|globals@17.4.0",
       "licenses": [
         {
           "license": {
@@ -13791,15 +13675,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/globals@17.3.0",
+      "purl": "pkg:npm/globals@17.4.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/globals/-/globals-17.3.0.tgz",
+          "url": "https://registry.npmjs.org/globals/-/globals-17.4.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "c8ca865105550a40f8b6a8ce25fdd39ebbda6870cc629e1595448e6db9088ae08f7bfa1f74c0452007016c24911563a7a2ceaa4624d54ad0f0a8f2d47256b123"
+              "content": "863acdcedc3f55a8d0c0e2ec30d4f571b2621f69ae3b73913821e76de85cf1e6392720f682acf801c3073ea81a391e7d0e38148d80182de1faf7d83f7968b68f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -14739,8 +14623,8 @@
     {
       "type": "library",
       "name": "i18next",
-      "version": "25.8.13",
-      "bom-ref": "frontend@0.0.0|i18next@25.8.13",
+      "version": "25.8.14",
+      "bom-ref": "frontend@0.0.0|i18next@25.8.14",
       "licenses": [
         {
           "license": {
@@ -14749,15 +14633,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/i18next@25.8.13",
+      "purl": "pkg:npm/i18next@25.8.14",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.13.tgz",
+          "url": "https://registry.npmjs.org/i18next/-/i18next-25.8.14.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "134bf38c1635c8cfa7b05aed8248cb8524f6341922ae4bce56841ad0c4a5761b2e6778d481eed9369bb01b409f73be33c28e59c11ce0dee3a04fe31c067df688"
+              "content": "a5a3146247d624cb163de13f1de8dcc3e5cb847ad03de85e9bee30328fae10b9ef230bc21b4d7d2fdb002258f08c298432d15040edd87a2b4963c29cb5e8b788"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -17164,8 +17048,8 @@
     {
       "type": "library",
       "name": "node-releases",
-      "version": "2.0.27",
-      "bom-ref": "frontend@0.0.0|node-releases@2.0.27",
+      "version": "2.0.36",
+      "bom-ref": "frontend@0.0.0|node-releases@2.0.36",
       "licenses": [
         {
           "license": {
@@ -17174,15 +17058,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/node-releases@2.0.27",
+      "purl": "pkg:npm/node-releases@2.0.36",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.27.tgz",
+          "url": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.36.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9e687794291867782b66fa9c087f9f8e643b5fe1f439e6603f8d0e89eac4680a6d5f85e87cc87993035b5a1ee505db94cc2715ffc919f8d0cb0b09b68a8ac894"
+              "content": "4dd0bc152807cfc330b70f60e4be2047f4a1f578523ffd031244317c41573a98ae9792221e01da9f65616186fa6a00d27e9e0abaf96d98602973c1cc814ac890"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18479,8 +18363,8 @@
     {
       "type": "library",
       "name": "postcss",
-      "version": "8.5.6",
-      "bom-ref": "frontend@0.0.0|postcss@8.5.6",
+      "version": "8.5.8",
+      "bom-ref": "frontend@0.0.0|postcss@8.5.8",
       "licenses": [
         {
           "license": {
@@ -18489,15 +18373,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/postcss@8.5.6",
+      "purl": "pkg:npm/postcss@8.5.8",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz",
+          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.8.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dd86e2d6d02ec003fdb34af5510d89e27e58d06d396c99295083b4fdb23d321c260fbd12e5a4d66d7181c311eb7a54fe5ccd64e9d334a64f92c0d9294d137b3e"
+              "content": "396feb5fc3bf8d79e6f36132d64e38a4e6cfb5d6e57e2b969eb77c5fb189ede9889823acb6e9c66d7529a7b1dd06b1505faac9ce7dec3d3dfded6a79682c021e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -22036,24 +21920,24 @@
     {
       "ref": "frontend@0.0.0",
       "dependsOn": [
-        "frontend@0.0.0|@biomejs/biome@2.4.4",
+        "frontend@0.0.0|@biomejs/biome@2.4.6",
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
         "frontend@0.0.0|@eslint/js@9.39.3",
         "frontend@0.0.0|@fontsource/roboto@5.2.10",
         "frontend@0.0.0|@hey-api/openapi-ts@0.90.10",
         "frontend@0.0.0|@hookform/resolvers@5.2.2",
-        "frontend@0.0.0|@mui/icons-material@7.3.8",
-        "frontend@0.0.0|@mui/material@7.3.8",
-        "frontend@0.0.0|@mui/x-data-grid@8.27.3",
+        "frontend@0.0.0|@mui/icons-material@7.3.9",
+        "frontend@0.0.0|@mui/material@7.3.9",
+        "frontend@0.0.0|@mui/x-data-grid@8.27.4",
         "frontend@0.0.0|@playwright/test@1.58.2",
         "frontend@0.0.0|@tailwindcss/vite@4.2.1",
         "frontend@0.0.0|@tanstack/react-query-devtools@5.91.3",
         "frontend@0.0.0|@tanstack/react-query@5.90.21",
-        "frontend@0.0.0|@tanstack/react-router-devtools@1.163.2",
-        "frontend@0.0.0|@tanstack/react-router@1.163.2",
-        "frontend@0.0.0|@tanstack/router-plugin@1.163.2",
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@tanstack/react-router-devtools@1.166.2",
+        "frontend@0.0.0|@tanstack/react-router@1.166.2",
+        "frontend@0.0.0|@tanstack/router-plugin@1.166.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|@types/react-dom@19.2.3",
         "frontend@0.0.0|@types/react@19.2.14",
         "frontend@0.0.0|@vitejs/plugin-react@5.1.4",
@@ -22064,11 +21948,11 @@
         "frontend@0.0.0|eslint-plugin-react-refresh@0.4.26",
         "frontend@0.0.0|eslint@9.39.3",
         "frontend@0.0.0|form-data@4.0.5",
-        "frontend@0.0.0|globals@17.3.0",
+        "frontend@0.0.0|globals@17.4.0",
         "frontend@0.0.0|http-status-codes@2.3.0",
         "frontend@0.0.0|i18next-browser-languagedetector@8.2.1",
         "frontend@0.0.0|i18next-cli@1.49.2",
-        "frontend@0.0.0|i18next@25.8.13",
+        "frontend@0.0.0|i18next@25.8.14",
         "frontend@0.0.0|p-limit@7.3.0",
         "frontend@0.0.0|react-dom@19.2.4",
         "frontend@0.0.0|react-error-boundary@6.1.1",
@@ -22248,41 +22132,41 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/biome@2.4.4",
+      "ref": "frontend@0.0.0|@biomejs/biome@2.4.6",
       "dependsOn": [
-        "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.4",
-        "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.4"
+        "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.6",
+        "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.6"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-darwin-arm64@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-darwin-x64@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-linux-arm64-musl@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-linux-arm64@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-linux-x64-musl@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-linux-x64@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-win32-arm64@2.4.6"
     },
     {
-      "ref": "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.4"
+      "ref": "frontend@0.0.0|@biomejs/cli-win32-x64@2.4.6"
     },
     {
       "ref": "frontend@0.0.0|@croct/json@2.1.0"
@@ -22618,7 +22502,7 @@
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22626,7 +22510,7 @@
       "dependsOn": [
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22635,7 +22519,7 @@
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|cli-width@4.1.0",
         "frontend@0.0.0|fast-wrap-ansi@0.2.0",
         "frontend@0.0.0|mute-stream@3.0.0",
@@ -22648,7 +22532,7 @@
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/external-editor@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22656,13 +22540,13 @@
       "dependsOn": [
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
       "ref": "frontend@0.0.0|@inquirer/external-editor@2.0.3",
       "dependsOn": [
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|chardet@2.1.1",
         "frontend@0.0.0|iconv-lite@0.7.2"
       ]
@@ -22675,7 +22559,7 @@
       "dependsOn": [
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22683,7 +22567,7 @@
       "dependsOn": [
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22692,7 +22576,7 @@
         "frontend@0.0.0|@inquirer/ansi@2.0.3",
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22708,7 +22592,7 @@
         "frontend@0.0.0|@inquirer/rawlist@5.2.4",
         "frontend@0.0.0|@inquirer/search@4.1.4",
         "frontend@0.0.0|@inquirer/select@5.1.0",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22716,7 +22600,7 @@
       "dependsOn": [
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22725,7 +22609,7 @@
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22735,13 +22619,13 @@
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/figures@2.0.3",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
       "ref": "frontend@0.0.0|@inquirer/type@4.0.3",
       "dependsOn": [
-        "frontend@0.0.0|@types/node@25.3.2"
+        "frontend@0.0.0|@types/node@25.3.3"
       ]
     },
     {
@@ -22775,27 +22659,27 @@
       "ref": "frontend@0.0.0|@jsdevtools/ono@7.1.3"
     },
     {
-      "ref": "frontend@0.0.0|@mui/core-downloads-tracker@7.3.8"
+      "ref": "frontend@0.0.0|@mui/core-downloads-tracker@7.3.9"
     },
     {
-      "ref": "frontend@0.0.0|@mui/icons-material@7.3.8",
+      "ref": "frontend@0.0.0|@mui/icons-material@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@mui/material@7.3.8",
+        "frontend@0.0.0|@mui/material@7.3.9",
         "frontend@0.0.0|@types/react@19.2.14",
         "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/material@7.3.8",
+      "ref": "frontend@0.0.0|@mui/material@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
-        "frontend@0.0.0|@mui/core-downloads-tracker@7.3.8",
-        "frontend@0.0.0|@mui/system@7.3.8",
-        "frontend@0.0.0|@mui/types@7.4.11",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/core-downloads-tracker@7.3.9",
+        "frontend@0.0.0|@mui/system@7.3.9",
+        "frontend@0.0.0|@mui/types@7.4.12",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|@popperjs/core@2.11.8",
         "frontend@0.0.0|@types/react-transition-group@4.4.12",
         "frontend@0.0.0|@types/react@19.2.14",
@@ -22809,17 +22693,17 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/private-theming@7.3.8",
+      "ref": "frontend@0.0.0|@mui/private-theming@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|@types/react@19.2.14",
         "frontend@0.0.0|prop-types@15.8.1",
         "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/styled-engine@7.3.8",
+      "ref": "frontend@0.0.0|@mui/styled-engine@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|@emotion/cache@11.14.0",
@@ -22833,15 +22717,15 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/system@7.3.8",
+      "ref": "frontend@0.0.0|@mui/system@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
-        "frontend@0.0.0|@mui/private-theming@7.3.8",
-        "frontend@0.0.0|@mui/styled-engine@7.3.8",
-        "frontend@0.0.0|@mui/types@7.4.11",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/private-theming@7.3.9",
+        "frontend@0.0.0|@mui/styled-engine@7.3.9",
+        "frontend@0.0.0|@mui/types@7.4.12",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|@types/react@19.2.14",
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|csstype@3.2.3",
@@ -22850,17 +22734,17 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/types@7.4.11",
+      "ref": "frontend@0.0.0|@mui/types@7.4.12",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|@types/react@19.2.14"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/utils@7.3.8",
+      "ref": "frontend@0.0.0|@mui/utils@7.3.9",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@mui/types@7.4.11",
+        "frontend@0.0.0|@mui/types@7.4.12",
         "frontend@0.0.0|@types/prop-types@15.7.15",
         "frontend@0.0.0|@types/react@19.2.14",
         "frontend@0.0.0|clsx@2.1.1",
@@ -22870,14 +22754,14 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@mui/x-data-grid@8.27.3",
+      "ref": "frontend@0.0.0|@mui/x-data-grid@8.27.4",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|@emotion/react@11.14.0",
         "frontend@0.0.0|@emotion/styled@11.14.1",
-        "frontend@0.0.0|@mui/material@7.3.8",
-        "frontend@0.0.0|@mui/system@7.3.8",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/material@7.3.9",
+        "frontend@0.0.0|@mui/system@7.3.9",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|@mui/x-internals@8.26.0",
         "frontend@0.0.0|@mui/x-virtualizer@0.3.3",
         "frontend@0.0.0|clsx@2.1.1",
@@ -22891,7 +22775,7 @@
       "ref": "frontend@0.0.0|@mui/x-internals@8.26.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|reselect@5.1.1",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
@@ -22901,7 +22785,7 @@
       "ref": "frontend@0.0.0|@mui/x-virtualizer@0.3.3",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@mui/utils@7.3.8",
+        "frontend@0.0.0|@mui/utils@7.3.9",
         "frontend@0.0.0|@mui/x-internals@8.26.0",
         "frontend@0.0.0|react-dom@19.2.4",
         "frontend@0.0.0|react@19.2.4"
@@ -22971,6 +22855,9 @@
     },
     {
       "ref": "frontend@0.0.0|@rolldown/binding-win32-x64-msvc@1.0.0-beta.53"
+    },
+    {
+      "ref": "frontend@0.0.0|@rolldown/pluginutils@1.0.0-rc.3"
     },
     {
       "ref": "frontend@0.0.0|@sec-ant/readable-stream@0.4.1"
@@ -23044,7 +22931,7 @@
       "ref": "frontend@0.0.0|@tailwindcss/node@4.2.1",
       "dependsOn": [
         "frontend@0.0.0|@jridgewell/remapping@2.3.5",
-        "frontend@0.0.0|enhanced-resolve@5.19.0",
+        "frontend@0.0.0|enhanced-resolve@5.20.0",
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|lightningcss@1.31.1",
         "frontend@0.0.0|magic-string@0.30.21",
@@ -23147,21 +23034,21 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/react-router-devtools@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/react-router-devtools@1.166.2",
       "dependsOn": [
-        "frontend@0.0.0|@tanstack/react-router@1.163.2",
-        "frontend@0.0.0|@tanstack/router-core@1.163.2",
-        "frontend@0.0.0|@tanstack/router-devtools-core@1.163.2",
+        "frontend@0.0.0|@tanstack/react-router@1.166.2",
+        "frontend@0.0.0|@tanstack/router-core@1.166.2",
+        "frontend@0.0.0|@tanstack/router-devtools-core@1.166.2",
         "frontend@0.0.0|react-dom@19.2.4",
         "frontend@0.0.0|react@19.2.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/react-router@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/react-router@1.166.2",
       "dependsOn": [
         "frontend@0.0.0|@tanstack/history@1.161.4",
         "frontend@0.0.0|@tanstack/react-store@0.9.1",
-        "frontend@0.0.0|@tanstack/router-core@1.163.2",
+        "frontend@0.0.0|@tanstack/router-core@1.166.2",
         "frontend@0.0.0|isbot@5.1.35",
         "frontend@0.0.0|react-dom@19.2.4",
         "frontend@0.0.0|react@19.2.4",
@@ -23179,7 +23066,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/router-core@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/router-core@1.166.2",
       "dependsOn": [
         "frontend@0.0.0|@tanstack/history@1.161.4",
         "frontend@0.0.0|@tanstack/store@0.9.1",
@@ -23191,9 +23078,9 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/router-devtools-core@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/router-devtools-core@1.166.2",
       "dependsOn": [
-        "frontend@0.0.0|@tanstack/router-core@1.163.2",
+        "frontend@0.0.0|@tanstack/router-core@1.166.2",
         "frontend@0.0.0|clsx@2.1.1",
         "frontend@0.0.0|csstype@3.2.3",
         "frontend@0.0.0|goober@2.1.18",
@@ -23201,10 +23088,10 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/router-generator@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/router-generator@1.166.2",
       "dependsOn": [
-        "frontend@0.0.0|@tanstack/router-core@1.163.2",
-        "frontend@0.0.0|@tanstack/router-generator@1.163.2|source-map@0.7.6",
+        "frontend@0.0.0|@tanstack/router-core@1.166.2",
+        "frontend@0.0.0|@tanstack/router-generator@1.166.2|source-map@0.7.6",
         "frontend@0.0.0|@tanstack/router-utils@1.161.4",
         "frontend@0.0.0|@tanstack/virtual-file-routes@1.161.4",
         "frontend@0.0.0|prettier@3.8.1",
@@ -23214,10 +23101,10 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/router-generator@1.163.2|source-map@0.7.6"
+      "ref": "frontend@0.0.0|@tanstack/router-generator@1.166.2|source-map@0.7.6"
     },
     {
-      "ref": "frontend@0.0.0|@tanstack/router-plugin@1.163.2",
+      "ref": "frontend@0.0.0|@tanstack/router-plugin@1.166.2",
       "dependsOn": [
         "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-syntax-jsx@7.28.6",
@@ -23225,9 +23112,9 @@
         "frontend@0.0.0|@babel/template@7.28.6",
         "frontend@0.0.0|@babel/traverse@7.29.0",
         "frontend@0.0.0|@babel/types@7.29.0",
-        "frontend@0.0.0|@tanstack/react-router@1.163.2",
-        "frontend@0.0.0|@tanstack/router-core@1.163.2",
-        "frontend@0.0.0|@tanstack/router-generator@1.163.2",
+        "frontend@0.0.0|@tanstack/react-router@1.166.2",
+        "frontend@0.0.0|@tanstack/router-core@1.166.2",
+        "frontend@0.0.0|@tanstack/router-generator@1.166.2",
         "frontend@0.0.0|@tanstack/router-utils@1.161.4",
         "frontend@0.0.0|@tanstack/virtual-file-routes@1.161.4",
         "frontend@0.0.0|chokidar@3.6.0",
@@ -23308,7 +23195,7 @@
       "ref": "frontend@0.0.0|@types/json-schema@7.0.15"
     },
     {
-      "ref": "frontend@0.0.0|@types/node@25.3.2",
+      "ref": "frontend@0.0.0|@types/node@25.3.3",
       "dependsOn": [
         "frontend@0.0.0|undici-types@7.18.2"
       ]
@@ -23424,7 +23311,7 @@
       "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|balanced-match@4.0.4"
     },
     {
-      "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.53.1|minimatch@9.0.9",
+      "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|brace-expansion@5.0.4",
       "dependsOn": [
         "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|balanced-match@4.0.4"
       ]
@@ -23432,7 +23319,7 @@
     {
       "ref": "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|minimatch@10.2.4",
       "dependsOn": [
-        "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|brace-expansion@5.0.3"
+        "frontend@0.0.0|@typescript-eslint/typescript-estree@8.56.1|brace-expansion@5.0.4"
       ]
     },
     {
@@ -23462,14 +23349,11 @@
         "frontend@0.0.0|@babel/core@7.29.0",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-self@7.27.1",
         "frontend@0.0.0|@babel/plugin-transform-react-jsx-source@7.27.1",
+        "frontend@0.0.0|@rolldown/pluginutils@1.0.0-rc.3",
         "frontend@0.0.0|@types/babel__core@7.20.5",
-        "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3",
         "frontend@0.0.0|react-refresh@0.18.0",
         "frontend@0.0.0|rolldown-vite@7.3.1"
       ]
-    },
-    {
-      "ref": "frontend@0.0.0|@vitejs/plugin-react@5.1.4|@rolldown/pluginutils@1.0.0-rc.3"
     },
     {
       "ref": "frontend@0.0.0|@vitest/expect@4.0.18",
@@ -23628,9 +23512,9 @@
       "ref": "frontend@0.0.0|browserslist@4.28.1",
       "dependsOn": [
         "frontend@0.0.0|baseline-browser-mapping@2.10.0",
-        "frontend@0.0.0|caniuse-lite@1.0.30001775",
-        "frontend@0.0.0|electron-to-chromium@1.5.302",
-        "frontend@0.0.0|node-releases@2.0.27",
+        "frontend@0.0.0|caniuse-lite@1.0.30001776",
+        "frontend@0.0.0|electron-to-chromium@1.5.307",
+        "frontend@0.0.0|node-releases@2.0.36",
         "frontend@0.0.0|update-browserslist-db@1.2.3"
       ]
     },
@@ -23677,7 +23561,7 @@
       "ref": "frontend@0.0.0|callsites@3.1.0"
     },
     {
-      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001775"
+      "ref": "frontend@0.0.0|caniuse-lite@1.0.30001776"
     },
     {
       "ref": "frontend@0.0.0|chai@6.2.2"
@@ -23845,10 +23729,10 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|electron-to-chromium@1.5.302"
+      "ref": "frontend@0.0.0|electron-to-chromium@1.5.307"
     },
     {
-      "ref": "frontend@0.0.0|enhanced-resolve@5.19.0",
+      "ref": "frontend@0.0.0|enhanced-resolve@5.20.0",
       "dependsOn": [
         "frontend@0.0.0|graceful-fs@4.2.11",
         "frontend@0.0.0|tapable@2.3.0"
@@ -24077,12 +23961,6 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|fdir@6.5.0",
-      "dependsOn": [
-        "frontend@0.0.0|fast-string-width@3.0.2"
-      ]
-    },
-    {
       "ref": "frontend@0.0.0|figures@6.1.0",
       "dependsOn": [
         "frontend@0.0.0|is-unicode-supported@2.1.0"
@@ -24113,12 +23991,12 @@
     {
       "ref": "frontend@0.0.0|flat-cache@4.0.1",
       "dependsOn": [
-        "frontend@0.0.0|flatted@3.3.3",
+        "frontend@0.0.0|flatted@3.3.4",
         "frontend@0.0.0|keyv@4.5.4"
       ]
     },
     {
-      "ref": "frontend@0.0.0|flatted@3.3.3"
+      "ref": "frontend@0.0.0|flatted@3.3.4"
     },
     {
       "ref": "frontend@0.0.0|follow-redirects@1.15.11"
@@ -24221,7 +24099,7 @@
       ]
     },
     {
-      "ref": "frontend@0.0.0|globals@17.3.0"
+      "ref": "frontend@0.0.0|globals@17.4.0"
     },
     {
       "ref": "frontend@0.0.0|goober@2.1.18",
@@ -24303,8 +24181,6 @@
         "frontend@0.0.0|inquirer@13.3.0",
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|jsonc-parser@3.3.1",
-        "frontend@0.0.0|ora@9.3.0",
-        "frontend@0.0.0|react-i18next@16.5.4",
         "frontend@0.0.0|magic-string@0.30.21",
         "frontend@0.0.0|ora@9.3.0",
         "frontend@0.0.0|react-i18next@16.5.5",
@@ -24343,7 +24219,7 @@
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
-        "frontend@0.0.0|@swc/core@1.15.17",
+        "frontend@0.0.0|@swc/core@1.15.18",
         "frontend@0.0.0|i18next-resources-for-ts@2.0.0|chokidar@5.0.0",
         "frontend@0.0.0|yaml@2.8.2"
       ]
@@ -24358,7 +24234,7 @@
       "ref": "frontend@0.0.0|i18next-resources-for-ts@2.0.0|readdirp@5.0.0"
     },
     {
-      "ref": "frontend@0.0.0|i18next@25.8.13",
+      "ref": "frontend@0.0.0|i18next@25.8.14",
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|typescript@5.9.3"
@@ -24390,7 +24266,7 @@
         "frontend@0.0.0|@inquirer/core@11.1.5",
         "frontend@0.0.0|@inquirer/prompts@8.3.0",
         "frontend@0.0.0|@inquirer/type@4.0.3",
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|mute-stream@3.0.0",
         "frontend@0.0.0|run-async@4.0.6",
         "frontend@0.0.0|rxjs@7.8.2"
@@ -24635,7 +24511,7 @@
       "ref": "frontend@0.0.0|node-fetch-native@1.6.7"
     },
     {
-      "ref": "frontend@0.0.0|node-releases@2.0.27"
+      "ref": "frontend@0.0.0|node-releases@2.0.36"
     },
     {
       "ref": "frontend@0.0.0|normalize-path@3.0.0"
@@ -24809,7 +24685,7 @@
       "ref": "frontend@0.0.0|playwright@1.58.2|fsevents@2.3.2"
     },
     {
-      "ref": "frontend@0.0.0|postcss@8.5.6",
+      "ref": "frontend@0.0.0|postcss@8.5.8",
       "dependsOn": [
         "frontend@0.0.0|nanoid@3.3.11",
         "frontend@0.0.0|picocolors@1.1.1",
@@ -24879,7 +24755,7 @@
       "dependsOn": [
         "frontend@0.0.0|@babel/runtime@7.28.6",
         "frontend@0.0.0|html-parse-stringify@3.0.1",
-        "frontend@0.0.0|i18next@25.8.13",
+        "frontend@0.0.0|i18next@25.8.14",
         "frontend@0.0.0|react@19.2.4",
         "frontend@0.0.0|typescript@5.9.3",
         "frontend@0.0.0|use-sync-external-store@1.6.0"
@@ -24952,12 +24828,12 @@
       "ref": "frontend@0.0.0|rolldown-vite@7.3.1",
       "dependsOn": [
         "frontend@0.0.0|@oxc-project/runtime@0.101.0",
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|esbuild@0.27.3",
         "frontend@0.0.0|fsevents@2.3.3",
         "frontend@0.0.0|jiti@2.6.1",
         "frontend@0.0.0|lightningcss@1.31.1",
-        "frontend@0.0.0|postcss@8.5.6",
+        "frontend@0.0.0|postcss@8.5.8",
         "frontend@0.0.0|rolldown-vite@7.3.1|fdir@6.5.0",
         "frontend@0.0.0|rolldown-vite@7.3.1|picomatch@4.0.3",
         "frontend@0.0.0|rolldown@1.0.0-beta.53",
@@ -25219,7 +25095,7 @@
     {
       "ref": "frontend@0.0.0|vitest@4.0.18",
       "dependsOn": [
-        "frontend@0.0.0|@types/node@25.3.2",
+        "frontend@0.0.0|@types/node@25.3.3",
         "frontend@0.0.0|@vitest/expect@4.0.18",
         "frontend@0.0.0|@vitest/mocker@4.0.18",
         "frontend@0.0.0|@vitest/pretty-format@4.0.18",
