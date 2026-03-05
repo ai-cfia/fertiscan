@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.db.models.enums import ModifierType
+from app.dependencies.labels import get_label_by_id
 from app.services.compliance import (
     build_context,
     get_applicability_conditions,
@@ -315,6 +316,28 @@ class TestGetRequirementProvisions:
 
 class TestGetLabelDataJson:
     """Tests for the get_label_data_json helper function."""
+
+    def test_prompt_contains_label_data_and_fertilizer_data_when_from_get_label_by_id(
+        self, db: Session
+    ) -> None:
+        """Prompt built from label via get_label_by_id (CompletedLabelDep path) contains
+        both label_data and fertilizer_label_data."""
+        label_data = LabelDataFactory.create(
+            brand_name={"en": "PromptBrandXYZ"},
+            registration_number="REG-PROMPT-999",
+        )
+        FertilizerLabelDataFactory.create(label=label_data.label, n=10, p=5, k=5)
+        db.flush()
+        db.expire_all()
+        label = get_label_by_id(db, label_data.label.id)
+        requirement = RequirementFactory.create()
+        db.refresh(requirement)
+        context = build_context(label, requirement)
+        prompt = render_prompt(context)
+        assert "PromptBrandXYZ" in prompt
+        assert "REG-PROMPT-999" in prompt
+        assert '"n"' in prompt
+        assert '"10"' in prompt
 
     def test_get_label_data_json_basic(self, db: Session) -> None:
         """Test that label data is correctly serialized to JSON."""

@@ -117,13 +117,6 @@ class LabelImageDetail(BaseModel):
 
 
 # ============================== Compliance AI result Schema ==============================
-
-
-class ComplianceResults(BaseModel):
-    total: int
-    results: dict[UUID, "ComplianceResult"]
-
-
 class ComplianceResult(BaseModel):
     status: ComplianceStatus = Field(
         ...,
@@ -133,6 +126,11 @@ class ComplianceResult(BaseModel):
         ...,
         description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
     )
+
+
+class ComplianceResults(BaseModel):
+    total: int
+    results: dict[UUID, ComplianceResult]
 
 
 class LabelEvaluationContext(BaseModel):
