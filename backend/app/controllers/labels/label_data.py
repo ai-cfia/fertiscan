@@ -6,7 +6,7 @@ from pydantic import validate_call
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
-from app.db.models.label import Label, ReviewStatus
+from app.db.models import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.label_data_field_meta import LabelDataFieldMeta
 from app.schemas.label_data import (

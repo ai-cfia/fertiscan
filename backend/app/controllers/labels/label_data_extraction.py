@@ -8,8 +8,7 @@ import instructor
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import BaseModel, create_model, validate_call
 
-from app.db.models.label import Label
-from app.db.models.label_image import UploadStatus
+from app.db.models import Label, UploadStatus
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services.label_data_extraction import ImageData, extract_fields_from_images
 from app.storage import download_file

@@ -9,7 +9,7 @@ from pydantic import StringConstraints
 
 from app.controllers import compliance as compliance_controller
 from app.controllers.labels import label as label_controller
-from app.db.models.label import ReviewStatus
+from app.db.models import ReviewStatus
 from app.dependencies import (
     CompletedLabelDep,
     CurrentUser,

@@ -7,9 +7,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
-from app.db.models.enums import ComplianceStatus
-from app.db.models.label import ReviewStatus
-from app.db.models.label_image import UploadStatus
+from app.db.models import ComplianceStatus, ReviewStatus, UploadStatus
 from app.schemas.label_data import BilingualText, FertilizerLabelData, LabelData
 from app.schemas.product_type import ProductTypePublic
 from app.schemas.user import UserPublic
