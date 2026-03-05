@@ -124,7 +124,7 @@ class ComplianceResult(BaseModel):
     )
     explanation: BilingualText = Field(
         ...,
-        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
+        description="Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
     )
 
 
