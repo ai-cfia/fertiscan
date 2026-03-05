@@ -74,6 +74,12 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_KEY: SecretStr | None = None
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
+
+    AZURE_AGENT_ENDPOINT: str | None = None
+    AZURE_AGENT_API_KEY: SecretStr | None = None
+    AZURE_AGENT_API_VERSION: str = "2024-02-22-preview"
+    AZURE_AGENT_MODEL: str = "gemma3:27B"
+
     RULE_SEED_DATA_PATH: str = "app/data/rule_data.json"
     PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
 

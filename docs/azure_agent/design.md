@@ -1,5 +1,11 @@
 # Design Azure Agent
 
+## Summarize
+
+Two suggestion how the AI ​​agent can help :
+    - The agent adjust the prompt and give all information the llm needed
+    - The agent do everything to evaluate
+
 ## Adjust prompt only
 
 ```mermaid
@@ -47,4 +53,32 @@ db -->> ag: return data needed for evaluate
 ag -->> be : evaluation answer in the Compliance Results
 be -->> fe : 200 Ok (with Compliance Results)
 fe -->> us : Display Compliance Result
+```
+
+## Structure of the AI agent
+
+```mermaid
+%%{init: { "sequence": { "mirrorActors": false } }}%%
+flowchart TD
+    am[agent_manager]
+    aa[Azure_agent]
+    mc[mcp_client]
+    ms[mcp_server]
+    oa[orm_agent]
+    db[(Database)]
+
+    am -->|"init"| aa
+    am -->|"use MCP"| mc
+
+    aa -->|"query"|mc
+    mc -->|"request"| ms
+    ms -->|"access"| oa
+    oa -->|"read"| db
+
+    db -->|"return data"| oa
+    oa -->|"response"| ms
+    ms -->|"result"| mc
+    mc -->|"data"| aa
+
+    aa -->|"evaluation result"| am
 ```

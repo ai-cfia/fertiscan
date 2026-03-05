@@ -1,5 +1,6 @@
 import json
 from collections.abc import Generator
+from contextlib import contextmanager
 from decimal import Decimal
 from functools import lru_cache
 
@@ -45,6 +46,7 @@ def get_sessionmaker() -> sessionmaker[Session]:
     )
 
 
+@contextmanager
 def get_session() -> Generator[Session, None, None]:
     with get_sessionmaker()() as session:
         try:

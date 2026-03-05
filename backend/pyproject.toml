@@ -19,6 +19,7 @@ dependencies = [
     "aioboto3",
     "openai",
     "instructor",
+    "mcp[cli]>=1.26.0",
 ]
 
 [dependency-groups]
