@@ -8,8 +8,7 @@ from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
 
-# ============================== Base/Shared Models
-# ==============================
+# ============================== Base/Shared Models ==============================
 
 
 class Contact(BaseModel):
