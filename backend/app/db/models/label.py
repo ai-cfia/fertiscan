@@ -1,6 +1,5 @@
 """Label ORM model."""
 
-from enum import Enum
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID, uuid4
 
@@ -9,6 +8,7 @@ from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base, TimestampMixin
+from app.db.models.enums import ReviewStatus
 from app.db.models.product_type import ProductType
 from app.db.models.user import User
 
@@ -18,12 +18,6 @@ if TYPE_CHECKING:
     from app.db.models.label_image import LabelImage
     from app.db.models.non_compliance_data_item import NonComplianceDataItem
     from app.db.models.product import Product
-
-
-class ReviewStatus(str, Enum):
-    not_started = "not_started"
-    in_progress = "in_progress"
-    completed = "completed"
 
 
 class Label(Base, TimestampMixin, table=True):

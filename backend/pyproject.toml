@@ -51,7 +51,7 @@ packages = ["app"]
 
 [tool.ruff]
 target-version = "py312"
-exclude = ["alembic"]
+exclude = ["alembic", "app/data"]
 
 [tool.ruff.lint]
 select = [
@@ -78,7 +78,7 @@ keep-runtime-typing = true
 
 [tool.mypy]
 strict = true
-exclude = ["venv", ".venv", "alembic"]
+exclude = ["venv", ".venv", "alembic", "app/data"]
 plugins = ["sqlalchemy.ext.mypy.plugin"]
 
 [tool.coverage.run]

@@ -6,7 +6,7 @@ from uuid import UUID
 from fastapi import Depends
 from sqlmodel import Session, select
 
-from app.db.models.label_image import LabelImage, UploadStatus
+from app.db.models import LabelImage, UploadStatus
 from app.dependencies.auth import SessionDep
 from app.dependencies.labels import EditableLabelDep, LabelDep, S3ClientDep
 from app.exceptions import (

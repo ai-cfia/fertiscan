@@ -15,15 +15,16 @@ if TYPE_CHECKING:
 class LabelDataFieldName(str, Enum):
     """Valid field names for LabelDataFieldMeta."""
 
-    brand_name_en = "brand_name_en"
-    brand_name_fr = "brand_name_fr"
-    product_name_en = "product_name_en"
-    product_name_fr = "product_name_fr"
+    brand_name = "brand_name"
+    product_name = "product_name"
     contacts = "contacts"
     registration_number = "registration_number"
+    registration_claim = "registration_claim"
     lot_number = "lot_number"
     net_weight = "net_weight"
     volume = "volume"
+    exemption_claim = "exemption_claim"
+    country_of_origin = "country_of_origin"
 
 
 class LabelDataFieldMeta(Base, TimestampMixin, table=True):

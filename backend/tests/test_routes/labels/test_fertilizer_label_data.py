@@ -62,14 +62,12 @@ class TestCreateFertilizerLabelData:
         )
         ingredients_data = [
             {
-                "name_en": "Urea",
-                "name_fr": "Urée",
+                "name": {"en": "Urea", "fr": "Urée"},
                 "value": "46.0",
                 "unit": "%",
             },
             {
-                "name_en": "Ammonium Phosphate",
-                "name_fr": "Phosphate d'Ammonium",
+                "name": {"en": "Ammonium Phosphate", "fr": "Phosphate d'Ammonium"},
                 "value": "20.0",
                 "unit": "%",
             },
@@ -83,13 +81,13 @@ class TestCreateFertilizerLabelData:
             json=data_in,
             headers=headers,
         )
-        assert response.status_code == 201
+        assert response.status_code == 201, response.json()
         data = response.json()
         assert data["n"] == "10"
         assert "ingredients" in data
         assert isinstance(data["ingredients"], list)
         assert len(data["ingredients"]) == 2
-        assert data["ingredients"][0]["name_en"] == "Urea"
+        assert data["ingredients"][0]["name"]["en"] == "Urea"
         try:
             Ingredient.model_validate(data["ingredients"][0])
             Ingredient.model_validate(data["ingredients"][1])
@@ -109,19 +107,22 @@ class TestCreateFertilizerLabelData:
             client=client, email=user.email, db=db
         )
         analysis_data = {
-            "title_en": "Minimum Guaranteed Analysis",
-            "title_fr": "Analyse Garantie Minimale",
+            "title": {
+                "en": "Minimum Guaranteed Analysis",
+                "fr": "Analyse Garantie Minimale",
+            },
             "is_minimum": True,
             "nutrients": [
                 {
-                    "name_en": "Total Nitrogen (N)",
-                    "name_fr": "Azote Total (N)",
+                    "name": {"en": "Total Nitrogen (N)", "fr": "Azote Total (N)"},
                     "value": "10.0",
                     "unit": "%",
                 },
                 {
-                    "name_en": "Available Phosphate (P₂O₅)",
-                    "name_fr": "Phosphate Disponible (P₂O₅)",
+                    "name": {
+                        "en": "Available Phosphate (P₂O₅)",
+                        "fr": "Phosphate Disponible (P₂O₅)",
+                    },
                     "value": "20.0",
                     "unit": "%",
                 },
@@ -141,7 +142,9 @@ class TestCreateFertilizerLabelData:
         assert data["n"] == "10"
         assert "guaranteed_analysis" in data
         assert isinstance(data["guaranteed_analysis"], dict)
-        assert data["guaranteed_analysis"]["title_en"] == "Minimum Guaranteed Analysis"
+        assert (
+            data["guaranteed_analysis"]["title"]["en"] == "Minimum Guaranteed Analysis"
+        )
         assert data["guaranteed_analysis"]["is_minimum"] is True
         assert len(data["guaranteed_analysis"]["nutrients"]) == 2
         try:
@@ -252,8 +255,7 @@ class TestReadFertilizerLabelData:
         label = LabelFactory(created_by=user, product=product)
         ingredients_data = [
             {
-                "name_en": "Urea",
-                "name_fr": "Urée",
+                "name": {"en": "Urea", "fr": "Urée"},
                 "value": "46.0",
                 "unit": "%",
             }
@@ -276,7 +278,7 @@ class TestReadFertilizerLabelData:
         assert "ingredients" in data
         assert isinstance(data["ingredients"], list)
         assert len(data["ingredients"]) == 1
-        assert data["ingredients"][0]["name_en"] == "Urea"
+        assert data["ingredients"][0]["name"]["en"] == "Urea"
         try:
             Ingredient.model_validate(data["ingredients"][0])
         except Exception as e:
@@ -368,8 +370,7 @@ class TestUpdateFertilizerLabelData:
         )
         new_ingredients = [
             {
-                "name_en": "Ammonium Nitrate",
-                "name_fr": "Nitrate d'Ammonium",
+                "name": {"en": "Ammonium Nitrate", "fr": "Nitrate d'Ammonium"},
                 "value": "34.0",
                 "unit": "%",
             }
@@ -386,7 +387,7 @@ class TestUpdateFertilizerLabelData:
         assert "ingredients" in data
         assert isinstance(data["ingredients"], list)
         assert len(data["ingredients"]) == 1
-        assert data["ingredients"][0]["name_en"] == "Ammonium Nitrate"
+        assert data["ingredients"][0]["name"]["en"] == "Ammonium Nitrate"
         try:
             Ingredient.model_validate(data["ingredients"][0])
         except Exception as e:

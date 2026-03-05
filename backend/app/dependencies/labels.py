@@ -9,10 +9,13 @@ from sqlmodel import select
 
 from app.config import settings
 from app.controllers import labels as label_controller
-from app.db.models.fertilizer_label_data import FertilizerLabelData
-from app.db.models.label import Label, ReviewStatus
-from app.db.models.label_data import LabelData
-from app.db.models.label_image import UploadStatus
+from app.db.models import (
+    FertilizerLabelData,
+    Label,
+    LabelData,
+    ReviewStatus,
+    UploadStatus,
+)
 from app.dependencies.auth import SessionDep
 from app.exceptions import (
     ImageCountLimitExceeded,
