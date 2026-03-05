@@ -7,9 +7,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
-from app.db.models.label import ReviewStatus
-from app.db.models.label_image import UploadStatus
-from app.schemas.label_data import FertilizerLabelData, LabelData
+from app.db.models import ComplianceStatus, ReviewStatus, UploadStatus
+from app.schemas.label_data import BilingualText, FertilizerLabelData, LabelData
 from app.schemas.product_type import ProductTypePublic
 from app.schemas.user import UserPublic
 
@@ -55,10 +54,10 @@ class UploadCompletionRequest(BaseModel):
 
 
 class LabelDataLite(BaseModel):
-    brand_name_en: str | None = None
-    brand_name_fr: str | None = None
-    product_name_en: str | None = None
-    product_name_fr: str | None = None
+    model_config = ConfigDict(from_attributes=True)
+    brand_name: BilingualText | None = None
+    product_name: BilingualText | None = None
+    registration_number: str | None = None
 
 
 class LabelCreate(BaseModel):
@@ -117,43 +116,21 @@ class LabelImageDetail(BaseModel):
     current_image_count: int | None = None
 
 
-# ============================== Non-compliance Data Item Schemas ==============================
-
-
-class NonComplianceDataItemCreate(BaseModel):
-    label_id: UUID
-    rule_id: UUID
-    note: str | None = None
-    description_en: str | None = None
-    description_fr: str | None = None
-    is_compliant: bool = False
-
-
-class NonComplianceDataItemPublic(NonComplianceDataItemCreate):
-    id: UUID
-
-
 # ============================== Compliance AI result Schema ==============================
+class ComplianceResult(BaseModel):
+    status: ComplianceStatus = Field(
+        ...,
+        description="Outcome of the check: compliant, non_compliant, not_applicable, or inconclusive (requires human review).",
+    )
+    explanation: BilingualText = Field(
+        ...,
+        description="Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
+    )
 
 
 class ComplianceResults(BaseModel):
     total: int
-    results: dict[UUID, "ComplianceResult"]
-
-
-class ComplianceResult(BaseModel):
-    explanation_en: str = Field(
-        ...,
-        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in English",
-    )
-    explanation_fr: str = Field(
-        ...,
-        description="Step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements. in French",
-    )
-    is_compliant: bool = Field(
-        ...,
-        description="Whether the Label Data satisfies the requirements of the Regulation to Enforce.",
-    )
+    results: dict[UUID, ComplianceResult]
 
 
 class LabelEvaluationContext(BaseModel):

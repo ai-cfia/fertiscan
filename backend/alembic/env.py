@@ -11,7 +11,10 @@ import app.db.models.label_data  # noqa: F401
 import app.db.models.label_data_field_meta  # noqa: F401
 import app.db.models.fertilizer_label_data  # noqa: F401
 import app.db.models.fertilizer_label_data_meta  # noqa: F401
-import app.db.models.rule  # noqa: F401
+import app.db.models.legislation  # noqa: F401
+import app.db.models.provision  # noqa: F401
+import app.db.models.definition  # noqa: F401
+import app.db.models.requirement  # noqa: F401
 import app.db.models.non_compliance_data_item  # noqa: F401
 from alembic import context
 from app.config import settings

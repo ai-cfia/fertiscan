@@ -6,9 +6,12 @@ from pydantic import validate_call
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
-from app.db.models.fertilizer_label_data import FertilizerLabelData
-from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataMeta
-from app.db.models.label import Label, ReviewStatus
+from app.db.models import (
+    FertilizerLabelData,
+    FertilizerLabelDataMeta,
+    Label,
+    ReviewStatus,
+)
 from app.schemas.label_data import (
     FertilizerLabelDataCreate,
     FertilizerLabelDataMetaUpdate,

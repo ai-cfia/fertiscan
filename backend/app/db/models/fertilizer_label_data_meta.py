@@ -20,10 +20,14 @@ class FertilizerLabelDataFieldName(str, Enum):
     k = "k"
     ingredients = "ingredients"
     guaranteed_analysis = "guaranteed_analysis"
-    caution_en = "caution_en"
-    caution_fr = "caution_fr"
-    instructions_en = "instructions_en"
-    instructions_fr = "instructions_fr"
+    precaution_statements = "precaution_statements"
+    directions_for_use_statements = "directions_for_use_statements"
+    customer_formula_statements = "customer_formula_statements"
+    intended_use_statements = "intended_use_statements"
+    processing_instruction_statements = "processing_instruction_statements"
+    experimental_statements = "experimental_statements"
+    export_statements = "export_statements"
+    product_classification = "product_classification"
 
 
 class FertilizerLabelDataMeta(Base, TimestampMixin, table=True):

@@ -6,7 +6,7 @@ from pydantic import validate_call
 from sqlalchemy.orm import Session
 from sqlmodel import select
 
-from app.db.models.label import Label, ReviewStatus
+from app.db.models import Label, ReviewStatus
 from app.db.models.label_data import LabelData
 from app.db.models.label_data_field_meta import LabelDataFieldMeta
 from app.schemas.label_data import (
@@ -23,7 +23,7 @@ def create_label_data(
     data_in: LabelDataCreate,
 ) -> LabelData:
     """Create LabelData record."""
-    label_data = LabelData(label_id=label_id, **data_in.model_dump())
+    label_data = LabelData(label_id=label_id, **data_in.model_dump(mode="json"))
     session.add(label_data)
     session.flush()
     session.refresh(label_data)
@@ -49,7 +49,7 @@ def update_label_data(
     data_in: LabelDataUpdate,
 ) -> LabelData:
     """Partial update LabelData fields."""
-    if not (update_data := data_in.model_dump(exclude_unset=True)):
+    if not (update_data := data_in.model_dump(exclude_unset=True, mode="json")):
         return label_data
     label_data.sqlmodel_update(update_data)
     # Auto-transition Label review_status from not_started → in_progress

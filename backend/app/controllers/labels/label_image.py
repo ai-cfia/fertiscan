@@ -6,8 +6,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 
-from app.db.models.label import Label
-from app.db.models.label_image import LabelImage, UploadStatus
+from app.db.models import Label, LabelImage, UploadStatus
 from app.schemas.label import (
     PresignedDownloadUrlResponse,
     PresignedUrlRequest,

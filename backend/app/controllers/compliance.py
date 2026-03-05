@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from sqlmodel import or_, select
 from sqlmodel.sql.expression import SelectOfScalar
 
+from app.db.models.enums import ComplianceStatus
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.schemas.non_compliance_data_item import (
     UpdateNonComplianceDataItemPayload,
@@ -43,17 +44,10 @@ def _apply_compliance_sorting(
         "createdAt": NonComplianceDataItem.created_at,
         "updated_at": NonComplianceDataItem.updated_at,
         "updatedAt": NonComplianceDataItem.updated_at,
+        "status": NonComplianceDataItem.status,
         "note": func.coalesce(
             NonComplianceDataItem.note,
             "",
-        ),
-        "description_en": func.coalesce(
-            NonComplianceDataItem.description_en,
-            NonComplianceDataItem.description_fr,
-        ),
-        "description_fr": func.coalesce(
-            NonComplianceDataItem.description_fr,
-            NonComplianceDataItem.description_en,
         ),
     }
 
@@ -66,13 +60,14 @@ def _apply_compliance_sorting(
     return stmt
 
 
+# TODO: Update this controller to be good with the new dependencies system and ensure it works with the updated label and requirement models
 @validate_call(config={"arbitrary_types_allowed": True})
 def get_compliances_query(
     label_id: UUID,
     note: str | None = None,
     description_en: str | None = None,
     description_fr: str | None = None,
-    is_compliant: bool | None = None,
+    status: ComplianceStatus | None = None,
     start_created_at: datetime | None = None,
     end_created_at: datetime | None = None,
     start_updated_at: datetime | None = None,
@@ -97,8 +92,8 @@ def get_compliances_query(
         search_conditions.append(
             NonComplianceDataItem.description_fr.ilike(f"%{description_fr}%")  # type: ignore[union-attr]
         )
-    if is_compliant is not None:
-        search_conditions.append(NonComplianceDataItem.is_compliant == is_compliant)
+    if status is not None:
+        search_conditions.append(NonComplianceDataItem.status == status)
 
     if search_conditions:
         stmt = stmt.where(or_(*search_conditions))

@@ -1,6 +1,5 @@
 """LabelImage ORM model."""
 
-from enum import Enum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
@@ -9,14 +8,10 @@ from sqlalchemy import Enum as sa_Enum
 from sqlmodel import Field, Relationship
 
 from app.db.base import Base, TimestampMixin
+from app.db.models.enums import UploadStatus
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
-
-
-class UploadStatus(str, Enum):
-    pending = "pending"
-    completed = "completed"
 
 
 class LabelImage(Base, TimestampMixin, table=True):

@@ -20,7 +20,6 @@ from app.controllers.labels.label import (
     evaluate_non_compliance,
     get_label_detail,
     get_labels_query,
-    update_is_compliant,
     update_label,
     update_label_review_status,
 )
@@ -55,7 +54,6 @@ __all__ = [
     "evaluate_non_compliance",
     "get_label_detail",
     "get_labels_query",
-    "update_is_compliant",
     "update_label",
     "update_label_review_status",
     # LabelImage functions

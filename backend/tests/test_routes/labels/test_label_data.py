@@ -30,8 +30,8 @@ class TestCreateLabelData:
             client=client, email=user.email, db=db
         )
         data_in = {
-            "brand_name_en": "Test Brand",
-            "product_name_en": "Test Product",
+            "brand_name": {"en": "Test Brand"},
+            "product_name": {"en": "Test Product"},
             "registration_number": "REG-123456",
         }
         response = client.post(
@@ -41,8 +41,8 @@ class TestCreateLabelData:
         )
         assert response.status_code == 201
         data = response.json()
-        assert data["brand_name_en"] == "Test Brand"
-        assert data["product_name_en"] == "Test Product"
+        assert data["brand_name"]["en"] == "Test Brand"
+        assert data["product_name"]["en"] == "Test Product"
         assert data["registration_number"] == "REG-123456"
         assert "id" not in data
 
@@ -74,7 +74,7 @@ class TestCreateLabelData:
             },
         ]
         data_in = {
-            "brand_name_en": "Test Brand",
+            "brand_name": {"en": "Test Brand"},
             "contacts": contacts_data,
         }
         response = client.post(
@@ -84,7 +84,7 @@ class TestCreateLabelData:
         )
         assert response.status_code == 201
         data = response.json()
-        assert data["brand_name_en"] == "Test Brand"
+        assert data["brand_name"]["en"] == "Test Brand"
         assert "contacts" in data
         assert isinstance(data["contacts"], list)
         assert len(data["contacts"]) == 2
@@ -112,7 +112,7 @@ class TestCreateLabelData:
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        data_in = {"brand_name_en": "Test Brand"}
+        data_in = {"brand_name": {"en": "Test Brand"}}
         response = client.post(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=data_in,
@@ -131,7 +131,7 @@ class TestCreateLabelData:
         user = UserFactory()
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
-        data_in = {"brand_name_en": "Test Brand"}
+        data_in = {"brand_name": {"en": "Test Brand"}}
         response = client.post(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=data_in,
@@ -150,7 +150,7 @@ class TestCreateLabelData:
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        data_in = {"brand_name_en": "Test Brand"}
+        data_in = {"brand_name": {"en": "Test Brand"}}
         response = client.post(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=data_in,
@@ -175,8 +175,8 @@ class TestReadLabelData:
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(
             label=label,
-            brand_name_en="Test Brand",
-            product_name_en="Test Product",
+            brand_name={"en": "Test Brand"},
+            product_name={"en": "Test Product"},
             registration_number="REG-123456",
         )
         headers = authentication_token_from_email(
@@ -190,8 +190,8 @@ class TestReadLabelData:
             f"Expected 200, got {response.status_code}: {response.text}"
         )
         data = response.json()
-        assert data["brand_name_en"] == "Test Brand"
-        assert data["product_name_en"] == "Test Product"
+        assert data["brand_name"]["en"] == "Test Brand"
+        assert data["product_name"]["en"] == "Test Product"
         assert data["registration_number"] == "REG-123456"
         assert "id" not in data
 
@@ -221,7 +221,7 @@ class TestReadLabelData:
         ]
         LabelDataFactory(
             label=label,
-            brand_name_en="Test Brand",
+            brand_name={"en": "Test Brand"},
             contacts=contacts_data,
         )
         headers = authentication_token_from_email(
@@ -233,7 +233,7 @@ class TestReadLabelData:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["brand_name_en"] == "Test Brand"
+        assert data["brand_name"]["en"] == "Test Brand"
         assert "contacts" in data
         assert isinstance(data["contacts"], list)
         assert len(data["contacts"]) == 2
@@ -306,13 +306,13 @@ class TestUpdateLabelData:
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(
             label=label,
-            brand_name_en="Original Brand",
-            product_name_en="Original Product",
+            brand_name={"en": "Original Brand"},
+            product_name={"en": "Original Product"},
         )
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        update_data = {"brand_name_en": "Updated Brand"}
+        update_data = {"brand_name": {"en": "Updated Brand"}}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=update_data,
@@ -320,8 +320,8 @@ class TestUpdateLabelData:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["brand_name_en"] == "Updated Brand"
-        assert data["product_name_en"] == "Original Product"
+        assert data["brand_name"]["en"] == "Updated Brand"
+        assert data["product_name"]["en"] == "Original Product"
 
     def test_update_label_data_with_contacts_json_field(
         self,
@@ -341,7 +341,7 @@ class TestUpdateLabelData:
         ]
         LabelDataFactory(
             label=label,
-            brand_name_en="Test Brand",
+            brand_name={"en": "Test Brand"},
             contacts=original_contacts,
         )
         headers = authentication_token_from_email(
@@ -363,7 +363,7 @@ class TestUpdateLabelData:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["brand_name_en"] == "Test Brand"
+        assert data["brand_name"]["en"] == "Test Brand"
         assert "contacts" in data
         assert isinstance(data["contacts"], list)
         assert len(data["contacts"]) == 1
@@ -389,7 +389,7 @@ class TestUpdateLabelData:
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(
             label=label,
-            brand_name_en="Original Brand",
+            brand_name={"en": "Original Brand"},
         )
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -401,7 +401,7 @@ class TestUpdateLabelData:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["brand_name_en"] == "Original Brand"
+        assert data["brand_name"]["en"] == "Original Brand"
 
     def test_update_label_data_not_found(
         self,
@@ -415,7 +415,7 @@ class TestUpdateLabelData:
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        update_data = {"brand_name_en": "Updated Brand"}
+        update_data = {"brand_name": {"en": "Updated Brand"}}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=update_data,
@@ -433,7 +433,7 @@ class TestUpdateLabelData:
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(label=label)
-        update_data = {"brand_name_en": "Updated Brand"}
+        update_data = {"brand_name": {"en": "Updated Brand"}}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=update_data,
@@ -451,12 +451,12 @@ class TestUpdateLabelData:
         label = LabelFactory(created_by=user, product=product, completed=True)
         LabelDataFactory(
             label=label,
-            brand_name_en="Original Brand",
+            brand_name={"en": "Original Brand"},
         )
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        update_data = {"brand_name_en": "Updated Brand"}
+        update_data = {"brand_name": {"en": "Updated Brand"}}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
             json=update_data,

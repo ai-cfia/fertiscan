@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
 
+from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
 
@@ -22,28 +23,33 @@ class Contact(BaseModel):
     website: str | None = Field(default=None, description="Website URL")
 
 
+class BilingualText(BaseModel):
+    en: str | None = Field(
+        default=None,
+        description="The English text verbatim. Leave as null if not present.",
+    )
+    fr: str | None = Field(
+        default=None,
+        description="The French text verbatim. Leave as null if not present.",
+    )
+
+
 class Ingredient(BaseModel):
-    name_en: str = Field(
-        description="Ingredient name in English as it appears on the label"
-    )
-    name_fr: str | None = Field(
-        default=None, description="Ingredient name in French as it appears on the label"
-    )
+    name: BilingualText = Field(description="Ingredient name verbatim")
     value: str = Field(description="Ingredient percentage or amount.")
     unit: str = Field(
         description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg", "mm"]
     )
+    registration_number: str | None = Field(
+        default=None,
+        description="Registration number of this component ingredient, not the product. If a number applies to a group, assign it to each.",
+    )
 
 
 class Nutrient(BaseModel):
-    name_en: str = Field(
-        description="Nutrient name in English as it appears on the label",
-        examples=["Total Nitrogen (N)", "Available Phosphate (P₂O₅)"],
-    )
-    name_fr: str | None = Field(
-        default=None,
-        description="Nutrient name in French as it appears on the label",
-        examples=["Azote Total (N)", "Phosphate Disponible (P₂O₅)"],
+    name: BilingualText = Field(
+        description="Nutrient name verbatim",
+        examples=[{"en": "Total Nitrogen (N)"}],
     )
     value: Decimal = Field(ge=0, description="Nutrient percentage value")
     unit: str = Field(
@@ -52,14 +58,8 @@ class Nutrient(BaseModel):
 
 
 class GuaranteedAnalysis(BaseModel):
-    title_en: str = Field(
-        description="Section title in English from label",
-        examples=["Minimum Guaranteed Analysis", "Guaranteed Analysis"],
-    )
-    title_fr: str | None = Field(
-        default=None,
-        description="Section title in French from label",
-        examples=["Analyse Garantie Minimale", "Analyse Garantie"],
+    title: BilingualText = Field(
+        examples=[{"en": "Minimum Guaranteed Analysis"}],
     )
     is_minimum: bool = Field(
         description="True if title contains 'Minimum', false otherwise"
@@ -69,44 +69,47 @@ class GuaranteedAnalysis(BaseModel):
     )
 
 
-# ============================== LabelData Schemas ==============================
+# ============================== LabelData Schemas =============================
 
 
 class LabelData(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    brand_name_en: str | None = None
-    brand_name_fr: str | None = None
-    product_name_en: str | None = None
-    product_name_fr: str | None = None
+    brand_name: BilingualText | None = None
+    product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
     registration_number: str | None = None
+    registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
     volume: str | None = None
+    exemption_claim: BilingualText | None = None
+    country_of_origin: str | None = None
 
 
 class LabelDataCreate(BaseModel):
-    brand_name_en: str | None = None
-    brand_name_fr: str | None = None
-    product_name_en: str | None = None
-    product_name_fr: str | None = None
+    brand_name: BilingualText | None = None
+    product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
     registration_number: str | None = None
+    registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
     volume: str | None = None
+    exemption_claim: BilingualText | None = None
+    country_of_origin: str | None = None
 
 
 class LabelDataUpdate(BaseModel):
-    brand_name_en: str | None = None
-    brand_name_fr: str | None = None
-    product_name_en: str | None = None
-    product_name_fr: str | None = None
+    brand_name: BilingualText | None = None
+    product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
     registration_number: str | None = None
+    registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
     volume: str | None = None
+    exemption_claim: BilingualText | None = None
+    country_of_origin: str | None = None
 
 
 class LabelDataFieldMetaUpdate(BaseModel):
@@ -123,7 +126,7 @@ class LabelDataFieldMetaResponse(BaseModel):
     ai_generated: bool
 
 
-# ============================== FertilizerLabelData Schemas ==============================
+# ======================== FertilizerLabelData Schemas ========================
 
 
 class FertilizerLabelData(BaseModel):
@@ -133,10 +136,14 @@ class FertilizerLabelData(BaseModel):
     k: Decimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
-    caution_en: str | None = None
-    caution_fr: str | None = None
-    instructions_en: str | None = None
-    instructions_fr: str | None = None
+    precaution_statements: list[BilingualText] | None = None
+    directions_for_use_statements: list[BilingualText] | None = None
+    customer_formula_statements: list[BilingualText] | None = None
+    intended_use_statements: list[BilingualText] | None = None
+    processing_instruction_statements: list[BilingualText] | None = None
+    experimental_statements: list[BilingualText] | None = None
+    export_statements: list[BilingualText] | None = None
+    product_classification: ProductClassification | None = None
 
     @field_serializer("n", "p", "k", when_used="json")
     def serialize_decimal(self, value: Decimal | None) -> str | None:
@@ -152,10 +159,14 @@ class FertilizerLabelDataCreate(BaseModel):
     k: Decimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
-    caution_en: str | None = None
-    caution_fr: str | None = None
-    instructions_en: str | None = None
-    instructions_fr: str | None = None
+    precaution_statements: list[BilingualText] | None = None
+    directions_for_use_statements: list[BilingualText] | None = None
+    customer_formula_statements: list[BilingualText] | None = None
+    intended_use_statements: list[BilingualText] | None = None
+    processing_instruction_statements: list[BilingualText] | None = None
+    experimental_statements: list[BilingualText] | None = None
+    export_statements: list[BilingualText] | None = None
+    product_classification: ProductClassification | None = None
 
 
 class FertilizerLabelDataUpdate(BaseModel):
@@ -164,10 +175,14 @@ class FertilizerLabelDataUpdate(BaseModel):
     k: Decimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
-    caution_en: str | None = None
-    caution_fr: str | None = None
-    instructions_en: str | None = None
-    instructions_fr: str | None = None
+    precaution_statements: list[BilingualText] | None = None
+    directions_for_use_statements: list[BilingualText] | None = None
+    customer_formula_statements: list[BilingualText] | None = None
+    intended_use_statements: list[BilingualText] | None = None
+    processing_instruction_statements: list[BilingualText] | None = None
+    experimental_statements: list[BilingualText] | None = None
+    export_statements: list[BilingualText] | None = None
+    product_classification: ProductClassification | None = None
 
 
 class FertilizerLabelDataMetaUpdate(BaseModel):
@@ -184,7 +199,7 @@ class FertilizerLabelDataMetaResponse(BaseModel):
     ai_generated: bool
 
 
-# ============================== Extraction Schemas ==============================
+# ============================= Extraction Schemas =============================
 
 
 class ExtractFieldsRequest(BaseModel):
@@ -195,21 +210,15 @@ class ExtractFieldsRequest(BaseModel):
 
 
 class ExtractFertilizerFieldsOutput(BaseModel):
-    brand_name_en: str | None = Field(
-        default=None, description="Brand name in English", examples=["GreenGrow"]
-    )
-    brand_name_fr: str | None = Field(
-        default=None, description="Brand name in French", examples=["CroissanceVerte"]
-    )
-    product_name_en: str | None = Field(
+    brand_name: BilingualText | None = Field(
         default=None,
-        description="Product name in English",
-        examples=["Premium All-Purpose Fertilizer"],
+        description="Brand name verbatim",
+        examples=[{"en": "GreenGrow"}],
     )
-    product_name_fr: str | None = Field(
+    product_name: BilingualText | None = Field(
         default=None,
-        description="Product name in French",
-        examples=["Engrais Polyvalent Premium"],
+        description="Product name verbatim",
+        examples=[{"en": "Premium All-Purpose Fertilizer"}],
     )
     contacts: list[Contact] | None = Field(
         default=None,
@@ -217,8 +226,15 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     registration_number: str | None = Field(
         default=None,
-        description="Product registration number",
+        description="Registration number of the product itself (not its individual ingredients).",
         examples=["REG-2024-12345"],
+    )
+    registration_claim: BilingualText | None = Field(
+        default=None,
+        description=(
+            "Verbatim text where the product claims to be registered, "
+            "even if no registration number is present."
+        ),
     )
     lot_number: str | None = Field(
         default=None, description="Lot or batch number", examples=["LOT-2024-001"]
@@ -228,6 +244,80 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     volume: str | None = Field(
         default=None, description="Volume with unit", examples=["1 L"]
+    )
+    exemption_claim: BilingualText | None = Field(
+        default=None,
+        description="Verbatim claim of registration exemption (e.g., Section 18 mixture claims).",
+        examples=[{"en": "All ingredients in this mixture are registered"}],
+    )
+    country_of_origin: str | None = Field(
+        default=None,
+        description="Country where the product was manufactured or from which it was imported.",
+        examples=["Canada", "United States"],
+    )
+    product_classification: ProductClassification | None = Field(
+        default=None,
+        description=(
+            "Classify the product. "
+            "'fertilizer': contains N/P/K or plant food, sold as plant nutrient. "
+            "'supplement': improves soil or aids growth, but is not a fertilizer. "
+            "'growing_medium': a medium (e.g., potting mix) containing fertilizers/supplements. "
+            "'treated_seed': seeds treated with fertilizers/supplements."
+        ),
+    )
+    customer_formula_statements: list[BilingualText] | None = Field(
+        default=None,
+        description=(
+            "A 'customer formula fertilizer' is a fertilizer prepared to the specifications of the purchaser "
+            "and sold only to that purchaser. Extract verbatim text identifying the product as such, "
+            "including the purchaser's name or any signature references."
+        ),
+    )
+    intended_use_statements: list[BilingualText] | None = Field(
+        default=None,
+        description="Verbatim statements indicating intended use or target audience.",
+        examples=[
+            [
+                {"en": "For industrial use only"},
+                {"en": "Not for retail sale"},
+            ]
+        ],
+    )
+    processing_instruction_statements: list[BilingualText] | None = Field(
+        default=None,
+        description="Verbatim statements indicating the product requires further treatment, other than simple mixing or repackaging.",
+        examples=[
+            [
+                {"en": "Requires further chemical processing"},
+                {"en": "For use as an ingredient in XYZ manufacture"},
+            ]
+        ],
+    )
+    experimental_statements: list[BilingualText] | None = Field(
+        default=None,
+        description=(
+            "Verbatim statements indicating the product is for experimental, research, or trial purposes, "
+            "including instructions to destroy the product or plants upon completion."
+        ),
+        examples=[
+            [
+                {"en": "For experimental purposes only"},
+                {"en": "Residual product and plants must be destroyed after trial"},
+            ]
+        ],
+    )
+    export_statements: list[BilingualText] | None = Field(
+        default=None,
+        description=(
+            "Verbatim statements indicating that the product is not intended for sale or use in Canada "
+            "and is intended for export only."
+        ),
+        examples=[
+            [
+                {"en": "For export only"},
+                {"en": "Not for sale or use in Canada"},
+            ]
+        ],
     )
     n: Decimal | None = Field(
         default=None,
@@ -249,29 +339,19 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     ingredients: list[Ingredient] | None = Field(
         default=None,
-        description="List of ingredients with bilingual names, values and units",
+        description="Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.",
     )
     guaranteed_analysis: GuaranteedAnalysis | None = Field(
         default=None,
-        description="Guaranteed analysis section with bilingual title and nutrients",
+        description="The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.",
     )
-    caution_en: str | None = Field(
+    precaution_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Caution statements in English",
-        examples=["Keep out of reach of children"],
+        description="Precaution statements verbatim",
+        examples=[[{"en": "Keep out of reach of children"}]],
     )
-    caution_fr: str | None = Field(
+    directions_for_use_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Caution statements in French",
-        examples=["Tenir hors de la portée des enfants"],
-    )
-    instructions_en: str | None = Field(
-        default=None,
-        description="Usage instructions in English",
-        examples=["Apply 2-3 cups per 100 square feet"],
-    )
-    instructions_fr: str | None = Field(
-        default=None,
-        description="Usage instructions in French",
-        examples=["Appliquer 2-3 tasses par 100 pieds carrés"],
+        description="Directions for use verbatim",
+        examples=[[{"en": "Apply 2-3 cups per 100 square feet"}]],
     )

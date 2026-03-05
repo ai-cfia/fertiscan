@@ -32,14 +32,14 @@ class TestReadLabelDataMeta:
         label_data = LabelDataFactory(label=label)
         meta1 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
             note="Test note",
             ai_generated=True,
         )
         meta2 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.product_name_en,
+            field_name=LabelDataFieldName.product_name,
             needs_review=False,
         )
         db.add(meta1)
@@ -56,8 +56,8 @@ class TestReadLabelDataMeta:
         assert isinstance(data, list)
         assert len(data) == 2
         field_names = [m["field_name"] for m in data]
-        assert "brand_name_en" in field_names
-        assert "product_name_en" in field_names
+        assert "brand_name" in field_names
+        assert "product_name" in field_names
 
     def test_read_label_data_meta_filter_by_field_name(
         self,
@@ -71,12 +71,12 @@ class TestReadLabelDataMeta:
         label_data = LabelDataFactory(label=label)
         meta1 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
         )
         meta2 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.product_name_en,
+            field_name=LabelDataFieldName.product_name,
             needs_review=False,
         )
         db.add(meta1)
@@ -86,13 +86,13 @@ class TestReadLabelDataMeta:
         )
         response = client.get(
             f"{settings.API_V1_STR}/labels/{label.id}/data/meta",
-            params={"field_name": "brand_name_en"},
+            params={"field_name": "brand_name"},
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
         assert len(data) == 1
-        assert data[0]["field_name"] == "brand_name_en"
+        assert data[0]["field_name"] == "brand_name"
         assert data[0]["needs_review"] is True
 
     def test_read_label_data_meta_filter_by_needs_review(
@@ -107,12 +107,12 @@ class TestReadLabelDataMeta:
         label_data = LabelDataFactory(label=label)
         meta1 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=True,
         )
         meta2 = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.product_name_en,
+            field_name=LabelDataFieldName.product_name,
             needs_review=False,
         )
         db.add(meta1)
@@ -128,7 +128,7 @@ class TestReadLabelDataMeta:
         assert response.status_code == 200
         data = response.json()
         assert len(data) == 1
-        assert data[0]["field_name"] == "brand_name_en"
+        assert data[0]["field_name"] == "brand_name"
         assert data[0]["needs_review"] is True
 
     def test_read_label_data_meta_empty(
@@ -184,7 +184,7 @@ class TestUpdateLabelDataMeta:
             client=client, email=user.email, db=db
         )
         meta_in = {
-            "field_name": "brand_name_en",
+            "field_name": "brand_name",
             "needs_review": True,
             "note": "Test note",
             "ai_generated": True,
@@ -196,7 +196,7 @@ class TestUpdateLabelDataMeta:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["field_name"] == "brand_name_en"
+        assert data["field_name"] == "brand_name"
         assert data["needs_review"] is True
         assert data["note"] == "Test note"
         assert data["ai_generated"] is True
@@ -215,7 +215,7 @@ class TestUpdateLabelDataMeta:
 
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=False,
             note="Original note",
         )
@@ -224,7 +224,7 @@ class TestUpdateLabelDataMeta:
             client=client, email=user.email, db=db
         )
         meta_in = {
-            "field_name": "brand_name_en",
+            "field_name": "brand_name",
             "needs_review": True,
             "note": "Updated note",
         }
@@ -235,7 +235,7 @@ class TestUpdateLabelDataMeta:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["field_name"] == "brand_name_en"
+        assert data["field_name"] == "brand_name"
         assert data["needs_review"] is True
         assert data["note"] == "Updated note"
 
@@ -253,7 +253,7 @@ class TestUpdateLabelDataMeta:
 
         meta = LabelDataFieldMeta(
             label_id=label_data.id,
-            field_name=LabelDataFieldName.brand_name_en,
+            field_name=LabelDataFieldName.brand_name,
             needs_review=False,
             note="Original note",
             ai_generated=False,
@@ -263,7 +263,7 @@ class TestUpdateLabelDataMeta:
             client=client, email=user.email, db=db
         )
         meta_in = {
-            "field_name": "brand_name_en",
+            "field_name": "brand_name",
             "needs_review": True,
         }
         response = client.patch(
@@ -287,7 +287,7 @@ class TestUpdateLabelDataMeta:
         product = ProductFactory(created_by=user)
         label = LabelFactory(created_by=user, product=product)
         LabelDataFactory(label=label)
-        meta_in = {"field_name": "brand_name_en", "needs_review": True}
+        meta_in = {"field_name": "brand_name", "needs_review": True}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data/meta",
             json=meta_in,
@@ -307,7 +307,7 @@ class TestUpdateLabelDataMeta:
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
         )
-        meta_in = {"field_name": "brand_name_en", "needs_review": True}
+        meta_in = {"field_name": "brand_name", "needs_review": True}
         response = client.patch(
             f"{settings.API_V1_STR}/labels/{label.id}/data/meta",
             json=meta_in,
