@@ -43,7 +43,8 @@ class Ingredient(BaseModel):
     )
     registration_number: str | None = Field(
         default=None,
-        description="Registration number of this component ingredient, not the product. If a number applies to a group, assign it to each.",
+        description="Registration number of the product itself (not its individual ingredients).",
+        examples=["1234567F"],
     )
 
 
