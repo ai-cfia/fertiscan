@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 from pydantic import BeforeValidator, StringConstraints
 
 
-def _spaces_to_empty(v: str | None):
+def _spaces_to_empty(v: str) -> str:
     if isinstance(v, str) and v.strip() == "":
         return ""
     return v
