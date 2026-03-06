@@ -18,7 +18,7 @@ class TestProductCreate:
         """Test successful product creation."""
         data = {
             "product_type": "fertilizer",
-            "registration_number": "REG123456",
+            "registration_number": "2018161F",
             "brand_name_en": "Test Brand EN",
             "brand_name_fr": "Test Brand FR",
             "name_en": "Test Product EN",
@@ -39,7 +39,7 @@ class TestProductCreate:
         """Test creating a product with an existing registration number."""
         data = {
             "product_type": "fertilizer",
-            "registration_number": "REG123456",
+            "registration_number": "2018161F",
         }
         client.post(self.PROD_URL, headers=auth_headers, json=data)
         response = client.post(self.PROD_URL, headers=auth_headers, json=data)
@@ -51,7 +51,9 @@ class TestProductCreate:
         """Test required fields validation (e.g. product_type)."""
         # Missing product_type
         response = client.post(
-            self.PROD_URL, headers=auth_headers, json={"registration_number": "REG123"}
+            self.PROD_URL,
+            headers=auth_headers,
+            json={"registration_number": "2018161F"},
         )
         assert response.status_code == 422
 
@@ -65,7 +67,7 @@ class TestProductCreate:
         """Test creating a product with an invalid product type."""
         data = {
             "product_type": "nonexistent_type",
-            "registration_number": "REG123",
+            "registration_number": "2018161F",
         }
         response = client.post(self.PROD_URL, headers=auth_headers, json=data)
         assert response.status_code == 400

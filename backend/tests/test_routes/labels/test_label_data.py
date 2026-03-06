@@ -32,7 +32,7 @@ class TestCreateLabelData:
         data_in = {
             "brand_name": {"en": "Test Brand"},
             "product_name": {"en": "Test Product"},
-            "registration_number": "REG-123456",
+            "registration_number": "2018161p",
         }
         response = client.post(
             f"{settings.API_V1_STR}/labels/{label.id}/data",
@@ -43,8 +43,26 @@ class TestCreateLabelData:
         data = response.json()
         assert data["brand_name"]["en"] == "Test Brand"
         assert data["product_name"]["en"] == "Test Product"
-        assert data["registration_number"] == "REG-123456"
+        assert data["registration_number"] == "2018161P"
         assert "id" not in data
+
+        second_label = LabelFactory(created_by=user, product=product)
+
+        data_in = {
+            "brand_name": {"en": "Test Brand 2"},
+            "product_name": {"en": "Test Product 2"},
+            "registration_number": None,
+        }
+        response = client.post(
+            f"{settings.API_V1_STR}/labels/{second_label.id}/data",
+            json=data_in,
+            headers=headers,
+        )
+        assert response.status_code == 201
+        data = response.json()
+        assert data["brand_name"]["en"] == "Test Brand 2"
+        assert data["product_name"]["en"] == "Test Product 2"
+        assert data["registration_number"] is None
 
     def test_create_label_data_with_contacts(
         self,
@@ -177,7 +195,7 @@ class TestReadLabelData:
             label=label,
             brand_name={"en": "Test Brand"},
             product_name={"en": "Test Product"},
-            registration_number="REG-123456",
+            registration_number="1234567f",
         )
         headers = authentication_token_from_email(
             client=client, email=user.email, db=db
@@ -192,7 +210,7 @@ class TestReadLabelData:
         data = response.json()
         assert data["brand_name"]["en"] == "Test Brand"
         assert data["product_name"]["en"] == "Test Product"
-        assert data["registration_number"] == "REG-123456"
+        assert data["registration_number"] == "1234567F"
         assert "id" not in data
 
     def test_read_label_data_with_contacts_json_field(

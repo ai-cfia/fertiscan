@@ -81,33 +81,34 @@ class TestProductList:
         self, client: TestClient, user, auth_headers: dict
     ) -> None:
         """Test registration number filtering (exact, partial, no match, invalid)."""
-        ProductFactory(registration_number="REG-12345", created_by=user)
-        ProductFactory(registration_number="ABC-67890", created_by=user)
+        ProductFactory(registration_number="1234567F", created_by=user)
+        ProductFactory(registration_number="1234567G", created_by=user)
 
         # Exact match
         response = client.get(
-            f"{self.PROD_URL}?registration_number=REG-12345", headers=auth_headers
+            f"{self.PROD_URL}?registration_number=1234567F", headers=auth_headers
         )
         assert response.json()["total"] == 1
-        assert response.json()["items"][0]["registration_number"] == "REG-12345"
+        assert response.json()["items"][0]["registration_number"] == "1234567F"
 
         # Partial match
         response = client.get(
-            f"{self.PROD_URL}?registration_number=REG", headers=auth_headers
+            f"{self.PROD_URL}?registration_number=1234567", headers=auth_headers
         )
-        assert response.json()["total"] == 1
+        assert response.json()["total"] == 2
 
         # No match
         response = client.get(
-            f"{self.PROD_URL}?registration_number=NONEXISTENT", headers=auth_headers
+            f"{self.PROD_URL}?registration_number=7654321M", headers=auth_headers
         )
         assert response.json()["total"] == 0
 
-        # Invalid pattern
+        # Non-matching free-text filter (list endpoint accepts arbitrary search text)
         response = client.get(
             f"{self.PROD_URL}?registration_number=REG@123", headers=auth_headers
         )
-        assert response.status_code == 422
+        assert response.status_code == 200
+        assert response.json()["total"] == 0
 
     def test_list_products_name_filters(
         self, client: TestClient, user, auth_headers: dict
@@ -192,7 +193,7 @@ class TestProductList:
     ) -> None:
         """Test combining multiple filters and SQL injection mitigation."""
         ProductFactory(
-            registration_number="REG-1",
+            registration_number="7654321M",
             brand_name_en="Complex Brand",
             name_en="Complex Prod",
             created_by=user,
@@ -223,8 +224,8 @@ class TestProductList:
         self, client: TestClient, user, auth_headers: dict
     ) -> None:
         """Test sorting products by registration number."""
-        ProductFactory(registration_number="REG-A", created_by=user)
-        ProductFactory(registration_number="REG-B", created_by=user)
+        ProductFactory(registration_number="1234567F", created_by=user)
+        ProductFactory(registration_number="1234567G", created_by=user)
 
         # ASC
         response = client.get(
@@ -233,7 +234,7 @@ class TestProductList:
         )
         assert response.status_code == 200
         items = response.json()["items"]
-        assert [i["registration_number"] for i in items] == ["REG-A", "REG-B"]
+        assert [i["registration_number"] for i in items] == ["1234567F", "1234567G"]
 
         # DESC
         response = client.get(
@@ -242,7 +243,7 @@ class TestProductList:
         )
         assert response.status_code == 200
         items = response.json()["items"]
-        assert [i["registration_number"] for i in items] == ["REG-B", "REG-A"]
+        assert [i["registration_number"] for i in items] == ["1234567G", "1234567F"]
 
     def test_list_products_sort_by_brand(
         self, client: TestClient, user, auth_headers: dict
