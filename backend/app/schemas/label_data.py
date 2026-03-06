@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
 from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
+from app.schemas.type import RegistrationNumber
 
 # ============================== Base/Shared Models ==============================
 
@@ -42,7 +43,8 @@ class Ingredient(BaseModel):
     )
     registration_number: str | None = Field(
         default=None,
-        description="Registration number of this component ingredient, not the product. If a number applies to a group, assign it to each.",
+        description="Registration number of the product itself (not its individual ingredients).",
+        examples=["1234567F"],
     )
 
 
@@ -77,7 +79,7 @@ class LabelData(BaseModel):
     brand_name: BilingualText | None = None
     product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
-    registration_number: str | None = None
+    registration_number: RegistrationNumber | None = None
     registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
@@ -87,10 +89,11 @@ class LabelData(BaseModel):
 
 
 class LabelDataCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     brand_name: BilingualText | None = None
     product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
-    registration_number: str | None = None
+    registration_number: RegistrationNumber | None = None
     registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
@@ -100,10 +103,11 @@ class LabelDataCreate(BaseModel):
 
 
 class LabelDataUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     brand_name: BilingualText | None = None
     product_name: BilingualText | None = None
     contacts: list[Contact] | None = None
-    registration_number: str | None = None
+    registration_number: RegistrationNumber | None = None
     registration_claim: BilingualText | None = None
     lot_number: str | None = None
     net_weight: str | None = None
@@ -227,7 +231,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     registration_number: str | None = Field(
         default=None,
         description="Registration number of the product itself (not its individual ingredients).",
-        examples=["REG-2024-12345"],
+        examples=["1234567F"],
     )
     registration_claim: BilingualText | None = Field(
         default=None,

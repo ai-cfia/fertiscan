@@ -324,7 +324,7 @@ class TestGetLabelDataJson:
         both label_data and fertilizer_label_data."""
         label_data = LabelDataFactory.create(
             brand_name={"en": "PromptBrandXYZ"},
-            registration_number="REG-PROMPT-999",
+            registration_number="1234567F",
         )
         FertilizerLabelDataFactory.create(label=label_data.label, n=10, p=5, k=5)
         db.flush()
@@ -335,7 +335,7 @@ class TestGetLabelDataJson:
         context = build_context(label, requirement)
         prompt = render_prompt(context)
         assert "PromptBrandXYZ" in prompt
-        assert "REG-PROMPT-999" in prompt
+        assert "1234567F" in prompt
         assert '"n"' in prompt
         assert '"10"' in prompt
 
@@ -343,13 +343,13 @@ class TestGetLabelDataJson:
         """Test that label data is correctly serialized to JSON."""
         label_data = LabelDataFactory.create(
             brand_name={"en": "GreenGrow"},
-            registration_number="REG-123",
+            registration_number="1234567F",
         )
         label = label_data.label
         FertilizerLabelDataFactory.create(label=label, n=10, p=5, k=5)
         result_json = get_label_data_json(label)
         assert "GreenGrow" in result_json
-        assert "REG-123" in result_json
+        assert "1234567F" in result_json
         assert '"n"' in result_json
         assert '"10"' in result_json
         # Check for the bilingual structure in the output

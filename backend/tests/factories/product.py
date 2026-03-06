@@ -8,7 +8,9 @@ class ProductFactory(BaseFactory):
     class Meta:
         model = Product
 
-    registration_number = factory.Faker("uuid4")
+    registration_number: str | None = factory.Sequence(
+        lambda n: f"{n:07d}{'FPGHMS'[n % 6]}"
+    )
     name_en = factory.Faker("sentence", nb_words=3)
     name_fr = None
     brand_name_en = factory.Faker("company")
