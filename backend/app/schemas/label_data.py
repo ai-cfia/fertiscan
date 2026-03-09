@@ -1,8 +1,16 @@
 """Label data API schemas."""
 
+import re
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_serializer,
+    model_validator,
+)
 
 from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
@@ -213,6 +221,23 @@ class ExtractFieldsRequest(BaseModel):
     )
 
 
+WEIGHT_SEGMENT_RE = re.compile(
+    r"(?ix)\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|µg|ug|lb|lbs|oz)\b(?:\s*\([^)]*\))?"
+)
+VOLUME_SEGMENT_RE = re.compile(
+    r"(?ix)\b\d+(?:[.,]\d+)?\s*(?:l|ml|µl|ul|liter(?:s)?|litre(?:s)?|usgal|gal(?:lon)?(?:s)?)\b(?:\s*\([^)]*\))?"
+)
+
+
+def _extract_first_segment(value: str | None, pattern: re.Pattern[str]) -> str | None:
+    if not value:
+        return None
+    match = pattern.search(value)
+    if not match:
+        return None
+    return match.group(0).strip(" -,:;/")
+
+
 class ExtractFertilizerFieldsOutput(BaseModel):
     brand_name: BilingualText | None = Field(
         default=None,
@@ -228,100 +253,71 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None,
         description="List of contact information (manufacturer, distributor, etc.)",
     )
+
     registration_number: str | None = Field(
         default=None,
-        description="Registration number of the product itself (not its individual ingredients).",
+        max_length=8,
+        min_length=8,
+        description=(
+            "Registration number as read on label (raw). "
+            "Must be 7 digits + 1 letter; otherwise return '' or None. "
+            "Keep verbatim if the format is correct."
+        ),
         examples=["1234567F"],
     )
+
     registration_claim: BilingualText | None = Field(
         default=None,
-        description=(
-            "Verbatim text where the product claims to be registered, "
-            "even if no registration number is present."
-        ),
+        description="Verbatim: product registration claim text.",
     )
-    lot_number: str | None = Field(
-        default=None, description="Lot or batch number", examples=["LOT-2024-001"]
-    )
+    lot_number: str | None = Field(default=None, description="Lot/batch number.")
     net_weight: str | None = Field(
-        default=None, description="Net weight with unit", examples=["10 kg"]
+        default=None,
+        description=(
+            "Net weight only, with weight units (g, kg, mg, µg, lb, oz). "
+            "If a source line contains both weight and volume, keep only the weight part here."
+        ),
+        examples=["500 g"],
     )
     volume: str | None = Field(
-        default=None, description="Volume with unit", examples=["1 L"]
+        default=None,
+        description=(
+            "Volume only, with volume units (L, mL, µL, gal). "
+            "If a source line contains both weight and volume, keep only the volume part here."
+        ),
+        examples=["500 mL"],
     )
     exemption_claim: BilingualText | None = Field(
         default=None,
-        description="Verbatim claim of registration exemption (e.g., Section 18 mixture claims).",
-        examples=[{"en": "All ingredients in this mixture are registered"}],
+        description="Verbatim: claim of registration exemption.",
     )
     country_of_origin: str | None = Field(
         default=None,
-        description="Country where the product was manufactured or from which it was imported.",
-        examples=["Canada", "United States"],
+        description="Country: manufactured or imported from.",
     )
     product_classification: ProductClassification | None = Field(
         default=None,
-        description=(
-            "Classify the product. "
-            "'fertilizer': contains N/P/K or plant food, sold as plant nutrient. "
-            "'supplement': improves soil or aids growth, but is not a fertilizer. "
-            "'growing_medium': a medium (e.g., potting mix) containing fertilizers/supplements. "
-            "'treated_seed': seeds treated with fertilizers/supplements."
-        ),
+        description="Classify: fertilizer (N/P/K plant food) | supplement | growing_medium | treated_seed.",
     )
     customer_formula_statements: list[BilingualText] | None = Field(
         default=None,
-        description=(
-            "A 'customer formula fertilizer' is a fertilizer prepared to the specifications of the purchaser "
-            "and sold only to that purchaser. Extract verbatim text identifying the product as such, "
-            "including the purchaser's name or any signature references."
-        ),
+        description="Verbatim text: custom fertilizer prepared per purchaser specs, sold only to that buyer.",
     )
     intended_use_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Verbatim statements indicating intended use or target audience.",
-        examples=[
-            [
-                {"en": "For industrial use only"},
-                {"en": "Not for retail sale"},
-            ]
-        ],
+        description="Verbatim: intended use or target audience.",
     )
     processing_instruction_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Verbatim statements indicating the product requires further treatment, other than simple mixing or repackaging.",
-        examples=[
-            [
-                {"en": "Requires further chemical processing"},
-                {"en": "For use as an ingredient in XYZ manufacture"},
-            ]
-        ],
+        description="Verbatim: requires further treatment beyond mixing/repackaging.",
     )
     experimental_statements: list[BilingualText] | None = Field(
         default=None,
-        description=(
-            "Verbatim statements indicating the product is for experimental, research, or trial purposes, "
-            "including instructions to destroy the product or plants upon completion."
-        ),
-        examples=[
-            [
-                {"en": "For experimental purposes only"},
-                {"en": "Residual product and plants must be destroyed after trial"},
-            ]
-        ],
+        description="Verbatim: experimental/research use; destruction instructions if present.",
     )
     export_statements: list[BilingualText] | None = Field(
         default=None,
-        description=(
-            "Verbatim statements indicating that the product is not intended for sale or use in Canada "
-            "and is intended for export only."
-        ),
-        examples=[
-            [
-                {"en": "For export only"},
-                {"en": "Not for sale or use in Canada"},
-            ]
-        ],
+        description="Verbatim: product for export only, not for sale/use in Canada.",
     )
     n: Decimal | None = Field(
         default=None,
@@ -343,19 +339,40 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     ingredients: list[Ingredient] | None = Field(
         default=None,
-        description="Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.",
+        description="Source materials/compounds (NOT guaranteed analysis).",
     )
     guaranteed_analysis: GuaranteedAnalysis | None = Field(
         default=None,
-        description="The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.",
+        description="Nutrient declaration section (NOT ingredient list).",
     )
     precaution_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Precaution statements verbatim",
-        examples=[[{"en": "Keep out of reach of children"}]],
+        description="Precaution statements verbatim.",
     )
     directions_for_use_statements: list[BilingualText] | None = Field(
         default=None,
-        description="Directions for use verbatim",
-        examples=[[{"en": "Apply 2-3 cups per 100 square feet"}]],
+        description="Directions for use verbatim.",
     )
+
+    @model_validator(mode="after")
+    def split_weight_and_volume(self) -> "ExtractFertilizerFieldsOutput":
+        """Normalize mixed quantity strings into dedicated weight/volume fields."""
+        # First, normalize each field if a mixed value was returned.
+        weight_from_weight = _extract_first_segment(self.net_weight, WEIGHT_SEGMENT_RE)
+        volume_from_weight = _extract_first_segment(self.net_weight, VOLUME_SEGMENT_RE)
+        weight_from_volume = _extract_first_segment(self.volume, WEIGHT_SEGMENT_RE)
+        volume_from_volume = _extract_first_segment(self.volume, VOLUME_SEGMENT_RE)
+
+        # Keep the weight token in net_weight when present.
+        if weight_from_weight:
+            self.net_weight = weight_from_weight
+        elif weight_from_volume and not self.net_weight:
+            self.net_weight = weight_from_volume
+
+        # Keep the volume token in volume when present.
+        if volume_from_volume:
+            self.volume = volume_from_volume
+        elif volume_from_weight and not self.volume:
+            self.volume = volume_from_weight
+
+        return self
