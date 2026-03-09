@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from instructor import AsyncInstructor
+from openai.types.chat import ChatCompletion
 
 if TYPE_CHECKING:
     from app.db.models.definition import Definition
@@ -145,17 +146,20 @@ async def evaluate_requirement(
     instructor_client: AsyncInstructor,
     label: Label,
     requirement: Requirement,
-) -> ComplianceResult:
+) -> tuple[ComplianceResult, ChatCompletion]:
     """
     Execute the full compliance evaluation flow for a single requirement.
     """
     context = build_context(label, requirement)
     prompt = render_prompt(context=context)
 
-    response, _ = await instructor_client.chat.completions.create_with_completion(
+    (
+        response,
+        completion,
+    ) = await instructor_client.chat.completions.create_with_completion(
         model=settings.AZURE_OPENAI_MODEL,
         response_model=ComplianceResult,
         messages=[{"role": "user", "content": prompt}],
     )
 
-    return response
+    return response, completion

@@ -1,0 +1,73 @@
+{
+  "brand_name": {
+    "en": "Nature's Aid",
+    "fr": null
+  },
+  "product_name": {
+    "en": "Super Crop® Foliar Booster",
+    "fr": "Super CropMD Stimulateur foliaire"
+  },
+  "contacts": [
+    {
+      "type": "manufacturer",
+      "name": "Diamond Fertilizers",
+      "address": "P.O. Box 5508, High River, AB, Canada T1V 1M6",
+      "phone": "1 (866) 337-2943",
+      "email": null,
+      "website": "www.SOIL-AID.com"
+    }
+  ],
+  "registration_number": "2018070F",
+  "registration_claim": null,
+  "lot_number": null,
+  "net_weight": "10.2 kg (22.5 lbs)",
+  "volume": "10 Liter (2.64 USgal)",
+  "exemption_claim": null,
+  "country_of_origin": null,
+  "product_classification": null,
+  "customer_formula_statements": null,
+  "intended_use_statements": null,
+  "processing_instruction_statements": null,
+  "experimental_statements": null,
+  "export_statements": null,
+  "n": null,
+  "p": null,
+  "k": null,
+  "ingredients": null,
+  "guaranteed_analysis": {
+    "title": {
+      "en": "Guaranteed Minimum Analysis",
+      "fr": "Analyse minimale garantie"
+    },
+    "is_minimum": true,
+    "nutrients": [
+      {
+        "name": {
+          "en": "Seaweed Extract (Ascophyllum nodosum)",
+          "fr": "Extraits d’algues (ascophyllum nodosum)"
+        },
+        "value": "8.5",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Humic Acid",
+          "fr": "Acide humique"
+        },
+        "value": "0.6",
+        "unit": "%"
+      }
+    ]
+  },
+  "precaution_statements": null,
+  "directions_for_use_statements": [
+    {
+      "en": "310 ml per ha (125 ml/ac) State treats approx. 160 ac. Apply with 200 to 100 liters water per hectare (2-10 gal/ac). Apply 1–3 times to FOLIAGE of crops (grains, oilseeds, legumes, etc.) during growth stage of plant (2-leaf to flower). NOTE: Applying to flowering stages (filling and maturity) could trigger ripen and deteriorates the condition of the plant.",
+      "fr": "310 ml par ha (125 ml/ac) avec une caisse, on traite environ 40 acres. Répandre sur LE FEUILLAGE de vos cultures (céréales, oléagineux, légumineuses, etc.) de 1 à 3 fois, durant des étapes de croissance de la plante (de l’apparition des 2 feuilles jusqu’à la floraison). NOTE : une application durant les étapes de floraison (remplissage et maturation) pourrait détériorer l’état de la plante."
+    },
+    {
+      "en": "410 ml per ha (165 ml/ac) State treats approx. 120 ac. Apply with 200 to 100 liters water per hectare (2-10 gal/ac). Apply 1–3 times to FOLIAGE of crops (grains, oilseeds, legumes, etc.) during growth stage of plant (2-leaf to flower). NOTE: Applying to flowering stages (filling and maturity) could trigger ripen and deteriorates the condition of the plant.",
+      "fr": "410 ml par ha (165 ml/ac) avec une caisse, on traite environ 40 acres. Répandre sur LE FEUILLAGE de vos cultures (céréales, oléagineux, légumineuses, etc.) de 1 à 3 fois, durant des étapes de croissance de la plante (de l’apparition des 2 feuilles jusqu’à la floraison). NOTE : une application durant les étapes de floraison (remplissage et maturation) pourrait détériorer l’état de la plante."
+    }
+  ]
+}

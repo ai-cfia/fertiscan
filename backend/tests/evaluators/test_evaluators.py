@@ -44,7 +44,7 @@ class TestEvaluateRequirement:
             return_value=(mock_response, MagicMock())
         )
 
-        result = await evaluate_requirement(mock_instructor, label, requirement)
+        result, _ = await evaluate_requirement(mock_instructor, label, requirement)
 
         assert result.status == ComplianceStatus.COMPLIANT
         assert result.explanation.en == "Valid organic matter."
@@ -88,7 +88,7 @@ class TestRealComplianceIntegration:
         )
         db.flush()
 
-        result = await evaluate_requirement(get_instructor(), label, requirement)
+        result, _ = await evaluate_requirement(get_instructor(), label, requirement)
         logger.info(f"Guaranteed Analysis Result: {result.status}")
         logger.info(f"Explanation: {result.explanation.en}")
 
@@ -112,7 +112,7 @@ class TestRealComplianceIntegration:
         )
         db.flush()
 
-        result = await evaluate_requirement(get_instructor(), label, requirement)
+        result, _ = await evaluate_requirement(get_instructor(), label, requirement)
         logger.info(f"Lot Number Result: {result.status}")
         logger.info(f"Explanation: {result.explanation.en}")
 

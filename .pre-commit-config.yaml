@@ -6,6 +6,7 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-added-large-files
+        exclude: ^backend/scripts/observe-services/
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer

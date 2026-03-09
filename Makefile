@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-reset-local backend-db-seed backend-db-shell frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-reset-local backend-db-seed backend-db-shell backend-observe-list-requirements backend-observe-extract backend-observe backend-observe-compliance backend-observe-full frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -63,6 +63,13 @@ help:
 	@echo ""
 	@echo "Backend commands (delegated to backend/Makefile):"
 	@echo "  backend-help             - Show backend-specific help"
+	@echo ""
+	@echo "Observe Services (extraction + compliance → markdown):"
+	@echo "  backend-observe-list-requirements - List requirement IDs and titles"
+	@echo "  backend-observe-extract           - Extraction only (IMAGES_DIR optional)"
+	@echo "  backend-observe                   - Extraction only"
+	@echo "  backend-observe-compliance        - Compliance only (OUTPUT_DIR, REQUIREMENT_IDS)"
+	@echo "  backend-observe-full              - Extraction + compliance (IMAGES_DIR, REQUIREMENT_IDS)"
 	@echo "  backend-dev              - Run backend development server"
 	@echo "  backend-test             - Run backend tests"
 	@echo "  backend-sync             - Install/update backend dependencies"
@@ -128,6 +135,16 @@ backend-db-seed:
 	@$(MAKE) -C backend db-seed
 backend-db-shell:
 	@$(MAKE) -C backend db-shell
+backend-observe-list-requirements:
+	@$(MAKE) -C backend observe-list-requirements
+backend-observe-extract:
+	@$(MAKE) -C backend observe-extract IMAGES_DIR="$(patsubst backend/%,%,$(IMAGES_DIR))"
+backend-observe:
+	@$(MAKE) -C backend observe
+backend-observe-compliance:
+	@$(MAKE) -C backend observe-compliance OUTPUT_DIR="$(OUTPUT_DIR)" REQUIREMENT_IDS="$(REQUIREMENT_IDS)"
+backend-observe-full:
+	@$(MAKE) -C backend observe-full IMAGES_DIR="$(patsubst backend/%,%,$(IMAGES_DIR))" REQUIREMENT_IDS="$(REQUIREMENT_IDS)"
 
 frontend-%:
 	@$(MAKE) -C frontend $(patsubst frontend-%,%,$@)
