@@ -4,10 +4,10 @@
 
 ![img_001.png](../../label_003/img_001.png)
 
-
 ## Extraction
 
 ### Result
+
 ```json
 {
   "brand_name": {
@@ -32,7 +32,7 @@
   "registration_claim": null,
   "lot_number": "18538",
   "net_weight": "1000 kg",
-  "volume": null,
+  "volume": "97.46 L",
   "exemption_claim": null,
   "country_of_origin": null,
   "product_classification": null,
@@ -63,7 +63,7 @@
       {
         "name": {
           "en": null,
-          "fr": "ACIDE PHOSPHORIQUE ASSIMILABLE (P2O5)"
+          "fr": "ACIDE PHOSPHORIQUE ASSIMILABLE (P₂O₅)"
         },
         "value": "22",
         "unit": "%"
@@ -71,7 +71,7 @@
       {
         "name": {
           "en": null,
-          "fr": "POTASSE SOLUBLE (K2O)"
+          "fr": "POTASSE SOLUBLE (K₂O)"
         },
         "value": "6",
         "unit": "%"
@@ -126,14 +126,9 @@
       }
     ]
   },
-  "precaution_statements": [
-    {
-      "en": null,
-      "fr": "Cet engrais renferme du B,Zn et ne doit être employé que de la manière recommandée. Il peut être nocif s'il est employé mal à propos."
-    }
-  ],
+  "precaution_statements": null,
   "directions_for_use_statements": null
 }
 ```
 
-### Usage: prompt_tokens=8251 completion_tokens=734 total=8985 elapsed=12.0s
+### Usage: prompt_tokens=8598 completion_tokens=656 total=9254 elapsed=12.4s

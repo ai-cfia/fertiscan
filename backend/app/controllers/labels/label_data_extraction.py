@@ -53,10 +53,6 @@ async def extract_fertilizer_fields(
         response_model,
         (
             "Extract fertilizer label information from these label images exactly as written. "
-            "Keep values verbatim, but map quantities to the correct field: "
-            "net_weight must contain only weight units (g/kg/mg/lb/oz), "
-            "and volume must contain only volume units (L/mL/uL/gal). "
-            "If one source phrase contains both (for example '13.4 kg - 10 L'), split it across both fields."
         ),
         instructor,
     )

@@ -1,6 +1,5 @@
 """Label data API schemas."""
 
-import re
 from decimal import Decimal
 
 from pydantic import (
@@ -9,7 +8,6 @@ from pydantic import (
     EmailStr,
     Field,
     field_serializer,
-    model_validator,
 )
 
 from app.db.models.enums import ProductClassification
@@ -221,24 +219,16 @@ class ExtractFieldsRequest(BaseModel):
     )
 
 
-WEIGHT_SEGMENT_RE = re.compile(
-    r"(?ix)\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|µg|ug|lb|lbs|oz)\b(?:\s*\([^)]*\))?"
-)
-VOLUME_SEGMENT_RE = re.compile(
-    r"(?ix)\b\d+(?:[.,]\d+)?\s*(?:l|ml|µl|ul|liter(?:s)?|litre(?:s)?|usgal|gal(?:lon)?(?:s)?)\b(?:\s*\([^)]*\))?"
-)
-
-
-def _extract_first_segment(value: str | None, pattern: re.Pattern[str]) -> str | None:
-    if not value:
-        return None
-    match = pattern.search(value)
-    if not match:
-        return None
-    return match.group(0).strip(" -,:;/")
-
-
 class ExtractFertilizerFieldsOutput(BaseModel):
+    model_config = ConfigDict(
+        json_schema_extra={
+            "description": (
+                "Extract all fields from fertilizer labels. Keep verbatim label text where requested, "
+                "use metric units only for quantities, and return null when a field is not present."
+            )
+        }
+    )
+
     brand_name: BilingualText | None = Field(
         default=None,
         description="Brand name verbatim",
@@ -254,16 +244,14 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         description="List of contact information (manufacturer, distributor, etc.)",
     )
 
-    registration_number: str | None = Field(
+    registration_number: RegistrationNumber | None = Field(
         default=None,
-        max_length=8,
-        min_length=8,
         description=(
             "Registration number as read on label (raw). "
             "Must be 7 digits + 1 letter; otherwise return '' or None. "
             "Keep verbatim if the format is correct."
         ),
-        examples=["1234567F"],
+        examples=["1234567F", "9876543P", "5603491H", "3141592M", "7500001S", "", None],
     )
 
     registration_claim: BilingualText | None = Field(
@@ -274,7 +262,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     net_weight: str | None = Field(
         default=None,
         description=(
-            "Net weight only, with weight units (g, kg, mg, µg, lb, oz). "
+            "Net weight only, with metric weight units (g, kg, mg, µg). "
             "If a source line contains both weight and volume, keep only the weight part here."
         ),
         examples=["500 g"],
@@ -282,7 +270,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     volume: str | None = Field(
         default=None,
         description=(
-            "Volume only, with volume units (L, mL, µL, gal). "
+            "Volume only, with metric volume units (L, mL, µL). "
             "If a source line contains both weight and volume, keep only the volume part here."
         ),
         examples=["500 mL"],
@@ -353,26 +341,3 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None,
         description="Directions for use verbatim.",
     )
-
-    @model_validator(mode="after")
-    def split_weight_and_volume(self) -> "ExtractFertilizerFieldsOutput":
-        """Normalize mixed quantity strings into dedicated weight/volume fields."""
-        # First, normalize each field if a mixed value was returned.
-        weight_from_weight = _extract_first_segment(self.net_weight, WEIGHT_SEGMENT_RE)
-        volume_from_weight = _extract_first_segment(self.net_weight, VOLUME_SEGMENT_RE)
-        weight_from_volume = _extract_first_segment(self.volume, WEIGHT_SEGMENT_RE)
-        volume_from_volume = _extract_first_segment(self.volume, VOLUME_SEGMENT_RE)
-
-        # Keep the weight token in net_weight when present.
-        if weight_from_weight:
-            self.net_weight = weight_from_weight
-        elif weight_from_volume and not self.net_weight:
-            self.net_weight = weight_from_volume
-
-        # Keep the volume token in volume when present.
-        if volume_from_volume:
-            self.volume = volume_from_volume
-        elif volume_from_weight and not self.volume:
-            self.volume = volume_from_weight
-
-        return self
