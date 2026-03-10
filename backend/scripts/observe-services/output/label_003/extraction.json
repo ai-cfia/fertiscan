@@ -4,117 +4,180 @@
     "fr": null
   },
   "product_name": {
-    "en": null,
-    "fr": "15-22-6 vedette"
+    "en": "15-22-6 vedette",
+    "fr": null
   },
   "contacts": [
     {
       "type": "manufacturer",
       "name": "Novago Coopérative",
-      "address": "939, rue Papineau, Joliette, QC, J6E 2L6",
+      "address": "319, rue Papineau, Papineauville, QC, J0V 1R0",
       "phone": null,
       "email": null,
       "website": null
     }
   ],
   "registration_number": null,
-  "registration_claim": null,
+  "registration_claim": {
+    "en": "15-22-6 vedette",
+    "fr": null
+  },
   "lot_number": "18538",
   "net_weight": "1000 kg",
-  "volume": "97.46 L",
-  "exemption_claim": null,
-  "country_of_origin": null,
-  "product_classification": null,
-  "customer_formula_statements": null,
-  "intended_use_statements": null,
-  "processing_instruction_statements": null,
+  "volume": null,
+  "exemption_claim": {
+    "en": "Mise en garde: ce produit ne contient pas de B.Z.N.",
+    "fr": "Mise en garde: ce produit ne contient pas de B.Z.N."
+  },
+  "country_of_origin": "Canada",
+  "product_classification": "fertilizer",
+  "customer_formula_statements": [
+    {
+      "en": "15-22-6 vedette",
+      "fr": "15-22-6 vedette"
+    }
+  ],
+  "intended_use_statements": [
+    {
+      "en": "ANALYSE GARANTIE MINIMALE",
+      "fr": "ANALYSE GARANTIE MINIMALE"
+    }
+  ],
+  "processing_instruction_statements": [
+    {
+      "en": "Mise en garde: Ce mélange contient du B.Z.N.",
+      "fr": "Mise en garde: Ce mélange contient du B.Z.N."
+    }
+  ],
   "experimental_statements": null,
   "export_statements": null,
-  "n": "15",
-  "p": "22",
-  "k": "6",
-  "ingredients": null,
+  "n": "15.0",
+  "p": "22.0",
+  "k": "6.0",
+  "ingredients": [
+    {
+      "name": {
+        "en": "Bore",
+        "fr": "Bore"
+      },
+      "value": "0.02",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Soufre",
+        "fr": "Soufre"
+      },
+      "value": "1.2",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Calcium",
+        "fr": "Calcium"
+      },
+      "value": "1.2",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Fer",
+        "fr": "Fer"
+      },
+      "value": "0.74",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Zinc",
+        "fr": "Zinc"
+      },
+      "value": "0.14",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Matière organique",
+        "fr": "Matière organique"
+      },
+      "value": "0.5",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Humidité",
+        "fr": "Humidité"
+      },
+      "value": "37.46",
+      "unit": "kg",
+      "registration_number": null
+    }
+  ],
   "guaranteed_analysis": {
     "title": {
-      "en": null,
+      "en": "Guaranteed Analysis",
       "fr": "ANALYSE GARANTIE MINIMALE"
     },
     "is_minimum": true,
     "nutrients": [
       {
         "name": {
-          "en": null,
+          "en": "Total Nitrogen (N)",
           "fr": "AZOTE TOTALE (N)"
         },
-        "value": "15",
+        "value": "15.0",
         "unit": "%"
       },
       {
         "name": {
-          "en": null,
-          "fr": "ACIDE PHOSPHORIQUE ASSIMILABLE (P₂O₅)"
+          "en": "Available Phosphoric Acid (P2O5)",
+          "fr": "ACIDE PHOSPHORIQUE ASSIMILABLE (P2O5)"
         },
-        "value": "22",
+        "value": "22.0",
         "unit": "%"
       },
       {
         "name": {
-          "en": null,
-          "fr": "POTASSE SOLUBLE (K₂O)"
+          "en": "Soluble Potash (K2O)",
+          "fr": "POTASSE SOLUBLE (K2O)"
         },
-        "value": "6",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "Magnésium"
-        },
-        "value": "1.21",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "Calcium"
-        },
-        "value": "1.24",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "Bore"
-        },
-        "value": "0.12",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "Zinc"
-        },
-        "value": "0.55",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "Soufre"
-        },
-        "value": "6.36",
-        "unit": "%"
-      },
-      {
-        "name": {
-          "en": null,
-          "fr": "% de matière"
-        },
-        "value": "0.5",
+        "value": "6.0",
         "unit": "%"
       }
     ]
   },
-  "precaution_statements": null,
-  "directions_for_use_statements": null
+  "precaution_statements": [
+    {
+      "en": "Keep out of reach of children.",
+      "fr": "Garder hors de la portée des enfants."
+    },
+    {
+      "en": "May be harmful if swallowed.",
+      "fr": "Peut être nocif en cas d'ingestion."
+    },
+    {
+      "en": "Avoid contact with skin, eyes, and clothing.",
+      "fr": "Éviter le contact avec la peau, les yeux et les vêtements."
+    },
+    {
+      "en": "Wash thoroughly after handling.",
+      "fr": "Bien se laver après manipulation."
+    }
+  ],
+  "directions_for_use_statements": [
+    {
+      "en": "NET: 1000 Kg",
+      "fr": "NET: 1000 Kg"
+    },
+    {
+      "en": "Dos: 97,46 kg/ha",
+      "fr": "Dos: 97,46 kg/ha"
+    }
+  ]
 }

@@ -11,15 +11,15 @@ import instructor
 from openai import AsyncAzureOpenAI
 
 from app.config import settings
+from app.controllers.labels.label_data_extraction import (
+    FIELD_GROUPS,
+    create_subset_model,
+)
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services.label_data_extraction import ImageData, extract_fields_from_images
 
 EXTRACTION_PROMPT = (
     "Extract fertilizer label information from these label images exactly as written. "
-    "Keep values verbatim, but map quantities to the correct field: "
-    "net_weight must contain only weight units (g/kg/mg/lb/oz), "
-    "and volume must contain only volume units (L/mL/uL/gal). "
-    "If one source phrase contains both (for example '13.4 kg - 10 L'), split it across both fields."
 )
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg"}
 
@@ -89,23 +89,26 @@ def _append_images_section(
                     rel = p
         lines.append(f"![{p.name}]({rel})")
         lines.append("")
-    lines.append("")
 
 
 def _append_extraction_section(
     result: ExtractFertilizerFieldsOutput,
-    completion: object | None,
+    completions: list[object | None],
     elapsed: float,
     lines: list[str],
 ) -> None:
     lines.append("## Extraction")
     lines.append("")
     lines.append("### Result")
+    lines.append("")
     lines.append("```json")
     lines.append(result.model_dump_json(indent=2))
     lines.append("```")
     lines.append("")
-    lines.append(f"### Usage: {format_completion(completion)} elapsed={elapsed:.1f}s")
+    for i, completion in enumerate(completions, 1):
+        lines.append(f"### Call {i} usage: {format_completion(completion)}")
+        lines.append("")
+    lines.append(f"### Total elapsed: {elapsed:.1f}s")
     lines.append("")
 
 
@@ -135,18 +138,34 @@ async def main() -> None:
     images = [img for _, img in image_tuples]
     _append_images_section(output_path, image_paths, lines)
     t0 = time.perf_counter()
-    result, completion = await extract_fields_from_images(
-        images,
-        ExtractFertilizerFieldsOutput,
-        EXTRACTION_PROMPT,
-        instructor_client,
+    pairs = await asyncio.gather(
+        *[
+            extract_fields_from_images(
+                images,
+                create_subset_model(ExtractFertilizerFieldsOutput, group),
+                EXTRACTION_PROMPT,
+                instructor_client,
+            )
+            for group in FIELD_GROUPS
+        ]
     )
     elapsed = time.perf_counter() - t0
+    merged: dict = {}
+    completions: list[object | None] = []
+    for r, c in pairs:
+        merged.update(r.model_dump())
+        completions.append(c)
+    result = ExtractFertilizerFieldsOutput.model_validate(merged)
     json_path.write_text(result.model_dump_json(indent=2), encoding="utf-8")
-    _append_extraction_section(result, completion, elapsed, lines)
+    _append_extraction_section(result, completions, elapsed, lines)
     output_path.write_text("\n".join(lines), encoding="utf-8")
+    total_tokens = sum(
+        getattr(getattr(c, "usage", None), "total_tokens", 0) or 0 for c in completions
+    )
+    calls_summary = " | ".join(format_completion(c) for c in completions)
     sys.stdout.write(
-        f"Extraction usage: {format_completion(completion)} elapsed={elapsed:.1f}s\n"
+        f"Extraction ({len(FIELD_GROUPS)} parallel calls): [{calls_summary}]\n"
+        f"Total tokens: {total_tokens} elapsed={elapsed:.1f}s\n"
     )
     sys.stdout.write(f"Wrote {output_path} {json_path}\n")
 

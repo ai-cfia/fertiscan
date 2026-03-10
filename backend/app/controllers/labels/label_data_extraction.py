@@ -2,7 +2,6 @@
 
 import asyncio
 import mimetypes
-from typing import cast
 
 import instructor
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
@@ -13,15 +12,67 @@ from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services.label_data_extraction import ImageData, extract_fields_from_images
 from app.storage import download_file
 
+# Field groups for parallel extraction (one LLM call per group when field_names is None).
+# Group 1: core product identification and registration fields.
+# Group 2: packaging, exemption, origin, and classification fields.
+# Group 3: composition and safety analysis fields (includes the heaviest field,
+# precaution_statements, to better balance generation across parallel calls).
+# Group 4: usage, processing, experimental, export, and directions statements.
+FIELD_GROUPS: list[list[str]] = [
+    [
+        "brand_name",
+        "product_name",
+        "contacts",
+        "registration_number",
+        "registration_claim",
+    ],
+    [
+        "lot_number",
+        "net_weight",
+        "volume",
+        "exemption_claim",
+        "country_of_origin",
+        "product_classification",
+    ],
+    [
+        "n",
+        "p",
+        "k",
+        "ingredients",
+        "guaranteed_analysis",
+        "precaution_statements",
+    ],
+    [
+        "customer_formula_statements",
+        "intended_use_statements",
+        "processing_instruction_statements",
+        "experimental_statements",
+        "export_statements",
+        "directions_for_use_statements",
+    ],
+]
+
+_EXTRACTION_PROMPT = (
+    "Extract fertilizer label information from these label images exactly as written. "
+)
+
 
 def create_subset_model(
     base_model: type[BaseModel], field_names: list[str]
 ) -> type[BaseModel]:
-    """Create a new model with only the specified fields from the base model."""
+    """Create a new model with only the specified fields from the base model.
+
+    The generated subset model intentionally strips verbose field metadata
+    (descriptions/examples) to keep response-model schemas compact for LLM calls.
+    """
     field_definitions = {
         field_name: (
             base_model.model_fields[field_name].annotation,
-            base_model.model_fields[field_name],
+            (
+                ...
+                if base_model.model_fields[field_name].is_required()
+                else base_model.model_fields[field_name].default
+            ),
         )
         for field_name in field_names
         if field_name in base_model.model_fields
@@ -40,22 +91,35 @@ async def extract_fertilizer_fields(
     field_names: list[str] | None = None,
 ) -> ExtractFertilizerFieldsOutput:
     """Extract specified fields (or all fields if none specified) for fertilizer
-    labels."""
+    labels.
+
+    When no specific fields are requested, runs parallel LLM calls over
+    FIELD_GROUPS to reduce latency compared to a single full-schema call.
+    """
     paths = [i.file_path for i in label.images if i.status == UploadStatus.completed]
     imgs = await asyncio.gather(*[download_file(s3_client, path) for path in paths])
     content_types = [mimetypes.guess_type(path)[0] or "image/jpeg" for path in paths]
     images = [ImageData(b, t) for b, t in zip(imgs, content_types, strict=True)]
-    response_model: type[BaseModel] = ExtractFertilizerFieldsOutput
+
     if field_names:
         response_model = create_subset_model(ExtractFertilizerFieldsOutput, field_names)
-    result, _completion = await extract_fields_from_images(
-        images,
-        response_model,
-        (
-            "Extract fertilizer label information from these label images exactly as written. "
-        ),
-        instructor,
-    )
-    if field_names:
+        result, _completion = await extract_fields_from_images(
+            images, response_model, _EXTRACTION_PROMPT, instructor
+        )
         return ExtractFertilizerFieldsOutput.model_validate(result.model_dump())
-    return cast(ExtractFertilizerFieldsOutput, result)
+
+    pairs = await asyncio.gather(
+        *[
+            extract_fields_from_images(
+                images,
+                create_subset_model(ExtractFertilizerFieldsOutput, group),
+                _EXTRACTION_PROMPT,
+                instructor,
+            )
+            for group in FIELD_GROUPS
+        ]
+    )
+    merged: dict = {}
+    for result, _completion in pairs:
+        merged.update(result.model_dump())
+    return ExtractFertilizerFieldsOutput.model_validate(merged)

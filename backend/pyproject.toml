@@ -19,6 +19,7 @@ dependencies = [
     "aioboto3",
     "openai",
     "instructor",
+    "pillow>=11.0.0",
 ]
 
 [dependency-groups]

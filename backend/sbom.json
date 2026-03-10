@@ -3649,6 +3649,59 @@
       "version": "1.0.3"
     },
     {
+      "bom-ref": "pillow==12.1.1",
+      "description": "Python Imaging Library (fork)",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://pillow.readthedocs.io"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Mastodon",
+          "type": "other",
+          "url": "https://fosstodon.org/@pillow"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source",
+          "type": "other",
+          "url": "https://github.com/python-pillow/Pillow"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Release notes",
+          "type": "other",
+          "url": "https://pillow.readthedocs.io/en/stable/releasenotes/index.html"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Funding",
+          "type": "other",
+          "url": "https://tidelift.com/subscription/pkg/pypi-pillow?utm_source=pypi-pillow&utm_medium=pypi"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Changelog",
+          "type": "release-notes",
+          "url": "https://github.com/python-pillow/Pillow/releases"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Homepage",
+          "type": "website",
+          "url": "https://python-pillow.github.io"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "acknowledgement": "declared",
+            "id": "MIT-CMU"
+          }
+        }
+      ],
+      "name": "pillow",
+      "purl": "pkg:pypi/pillow@12.1.1",
+      "type": "library",
+      "version": "12.1.1"
+    },
+    {
       "bom-ref": "pip-requirements-parser==32.0.1",
       "description": "pip requirements parser - a mostly correct pip requirements parsing library because it uses pip's own code.",
       "externalReferences": [
@@ -6338,7 +6391,8 @@
         "Faker==40.1.0",
         "SQLAlchemy==2.0.45",
         "coverage==7.13.1",
-        "mypy==1.19.1"
+        "mypy==1.19.1",
+        "pillow==12.1.1"
       ],
       "ref": "factory_boy==3.3.3"
     },
@@ -6630,6 +6684,17 @@
     },
     {
       "dependsOn": [
+        "coverage==7.13.1",
+        "defusedxml==0.7.1",
+        "packaging==25.0",
+        "pytest-cov==7.0.0",
+        "pytest-xdist==3.8.0",
+        "pytest==9.0.2"
+      ],
+      "ref": "pillow==12.1.1"
+    },
+    {
+      "dependsOn": [
         "packaging==25.0",
         "pyparsing==3.3.1",
         "pytest-xdist==3.8.0",
@@ -6870,6 +6935,7 @@
         "fastapi==0.128.0",
         "instructor==1.14.4",
         "openai==2.15.0",
+        "pillow==12.1.1",
         "psycopg==3.3.2",
         "pydantic-settings==2.12.0",
         "python-dotenv==1.2.1",

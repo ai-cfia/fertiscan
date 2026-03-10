@@ -1,6 +1,7 @@
 """Label field extraction service."""
 
 import base64
+from io import BytesIO
 from typing import NamedTuple
 
 import instructor
@@ -11,9 +12,13 @@ from openai.types.chat import (
     ChatCompletionContentPartTextParam,
     ChatCompletionUserMessageParam,
 )
+from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, validate_call
 
 from app.config import settings
+
+MAX_IMAGE_DIMENSION = 1600
+JPEG_QUALITY = 80
 
 
 class ImageData(NamedTuple):
@@ -21,6 +26,34 @@ class ImageData(NamedTuple):
 
     bytes: bytes
     content_type: str
+
+
+def optimize_image(image_data: ImageData) -> ImageData:
+    """Downscale and recompress images before sending them to the model."""
+    try:
+        with Image.open(BytesIO(image_data.bytes)) as source_image:
+            image = source_image.copy()
+    except (UnidentifiedImageError, OSError):
+        return image_data
+
+    if image.mode not in ("RGB", "L"):
+        background = Image.new("RGB", image.size, "white")
+        alpha = image.getchannel("A") if "A" in image.getbands() else None
+        background.paste(image.convert("RGB"), mask=alpha)
+        image = background
+    elif image.mode == "L":
+        image = image.convert("RGB")
+
+    image.thumbnail((MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION))
+
+    output = BytesIO()
+    image.save(output, format="JPEG", quality=JPEG_QUALITY, optimize=True)
+    optimized_bytes = output.getvalue()
+
+    if len(optimized_bytes) >= len(image_data.bytes):
+        return image_data
+
+    return ImageData(bytes=optimized_bytes, content_type="image/jpeg")
 
 
 def to_data_uri(image_data: ImageData) -> str:
@@ -45,12 +78,15 @@ async def extract_fields_from_images[T: BaseModel](
         return model.model_validate({}), None
     if len(images) > 10:
         raise ValueError("Maximum 10 images per request")
-    data_uris = [to_data_uri(img) for img in images]
+    data_uris = [to_data_uri(optimize_image(img)) for img in images]
     content: list[ChatCompletionContentPartParam] = [
         ChatCompletionContentPartTextParam(type="text", text=prompt)
     ]
     content += [
-        ChatCompletionContentPartImageParam(type="image_url", image_url={"url": u})
+        ChatCompletionContentPartImageParam(
+            type="image_url",
+            image_url={"url": u, "detail": settings.AZURE_OPENAI_IMAGE_DETAIL},
+        )
         for u in data_uris
     ]
     message: ChatCompletionUserMessageParam = {"role": "user", "content": content}
