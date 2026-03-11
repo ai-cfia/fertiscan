@@ -21,8 +21,8 @@
   "contacts": [
     {
       "type": "manufacturer",
-      "name": "Novago Coopérative",
-      "address": "319, rue Papineau, Papineauville, QC, J0V 1R0",
+      "name": "Novago Cooperative",
+      "address": "939, rue Papineau, Joliette, QC, J6E 2L6",
       "phone": null,
       "email": null,
       "website": null
@@ -30,17 +30,21 @@
   ],
   "registration_number": null,
   "registration_claim": {
-    "en": "15-22-6 vedette",
+    "en": "AZOTE TOTALE (N) 15,0%\nACIDE PHOSPHORIQUE ASSIMILABLE (P2O5)
+    22,0%\nPOTASSE SOLUBLE (K2O) 6,0%",
     "fr": null
   },
   "lot_number": "18538",
   "net_weight": "1000 kg",
   "volume": null,
   "exemption_claim": {
-    "en": "Mise en garde: ce produit ne contient pas de B.Z.N.",
-    "fr": "Mise en garde: ce produit ne contient pas de B.Z.N."
+    "en": "WARNING: This fertilizer contains B, ZN and should be used as
+     recommended. It may be harmful if misused.",
+    "fr": "MISE EN GARDE : Cet engrais renferme du B, ZN et ne doit être
+     employé que de la manière recommandée. Il peut être nocif s'il est
+     employé mal à propos."
   },
-  "country_of_origin": "Canada",
+  "country_of_origin": null,
   "product_classification": "fertilizer",
   "customer_formula_statements": [
     {
@@ -48,16 +52,14 @@
       "fr": "15-22-6 vedette"
     }
   ],
-  "intended_use_statements": [
-    {
-      "en": "ANALYSE GARANTIE MINIMALE",
-      "fr": "ANALYSE GARANTIE MINIMALE"
-    }
-  ],
+  "intended_use_statements": null,
   "processing_instruction_statements": [
     {
-      "en": "Mise en garde: Ce mélange contient du B.Z.N.",
-      "fr": "Mise en garde: Ce mélange contient du B.Z.N."
+      "en": "WARNING: This fertilizer contains B,Zn and should only be used as
+      recommended. It can be harmful if misused.",
+      "fr": "MISE EN GARDE : Cet engrais renferme du B,Zn et ne doit être
+      employé que de la manière recommandée. Il peut être nocif s'il est
+      employé mal à propos."
     }
   ],
   "experimental_statements": null,
@@ -68,19 +70,10 @@
   "ingredients": [
     {
       "name": {
-        "en": "Bore",
-        "fr": "Bore"
+        "en": "Magnesium",
+        "fr": "Magnésium"
       },
-      "value": "0.02",
-      "unit": "%",
-      "registration_number": null
-    },
-    {
-      "name": {
-        "en": "Soufre",
-        "fr": "Soufre"
-      },
-      "value": "1.2",
+      "value": "1.21",
       "unit": "%",
       "registration_number": null
     },
@@ -89,16 +82,16 @@
         "en": "Calcium",
         "fr": "Calcium"
       },
-      "value": "1.2",
+      "value": "1.24",
       "unit": "%",
       "registration_number": null
     },
     {
       "name": {
-        "en": "Fer",
-        "fr": "Fer"
+        "en": "Boron",
+        "fr": "Bore"
       },
-      "value": "0.74",
+      "value": "0.12",
       "unit": "%",
       "registration_number": null
     },
@@ -107,32 +100,32 @@
         "en": "Zinc",
         "fr": "Zinc"
       },
-      "value": "0.14",
+      "value": "0.55",
       "unit": "%",
       "registration_number": null
     },
     {
       "name": {
-        "en": "Matière organique",
-        "fr": "Matière organique"
+        "en": "Sulfur",
+        "fr": "Soufre"
+      },
+      "value": "6.36",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Organic Matter",
+        "fr": "% de matière"
       },
       "value": "0.5",
       "unit": "%",
-      "registration_number": null
-    },
-    {
-      "name": {
-        "en": "Humidité",
-        "fr": "Humidité"
-      },
-      "value": "37.46",
-      "unit": "kg",
       "registration_number": null
     }
   ],
   "guaranteed_analysis": {
     "title": {
-      "en": "Guaranteed Analysis",
+      "en": "MINIMUM GUARANTEED ANALYSIS",
       "fr": "ANALYSE GARANTIE MINIMALE"
     },
     "is_minimum": true,
@@ -160,46 +153,84 @@
         },
         "value": "6.0",
         "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Magnesium (Mg)",
+          "fr": "Magnésium (Mg)"
+        },
+        "value": "1.21",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Calcium (Ca)",
+          "fr": "Calcium (Ca)"
+        },
+        "value": "1.24",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Boron (B)",
+          "fr": "Bore (B)"
+        },
+        "value": "0.12",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Zinc (Zn)",
+          "fr": "Zinc (Zn)"
+        },
+        "value": "0.55",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Sulfur (S)",
+          "fr": "Soufre (S)"
+        },
+        "value": "6.36",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Organic Matter",
+          "fr": "% de matière"
+        },
+        "value": "0.5",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Molybdenum (Mo)",
+          "fr": "Molybdène (Mo)"
+        },
+        "value": "0.5",
+        "unit": "%"
       }
     ]
   },
   "precaution_statements": [
     {
-      "en": "Keep out of reach of children.",
-      "fr": "Garder hors de la portée des enfants."
-    },
-    {
-      "en": "May be harmful if swallowed.",
-      "fr": "Peut être nocif en cas d'ingestion."
-    },
-    {
-      "en": "Avoid contact with skin, eyes, and clothing.",
-      "fr": "Éviter le contact avec la peau, les yeux et les vêtements."
-    },
-    {
-      "en": "Wash thoroughly after handling.",
-      "fr": "Bien se laver après manipulation."
+      "en": "WARNING: This fertilizer contains B, Zn and should be used as
+      recommended. It may be harmful if misused.",
+      "fr": "MISE EN GARDE : Cet engrais renferme du B, ZN et ne doit être
+      employé que de la manière recommandée. Il peut être nocif s'il est
+      employé mal à propos."
     }
   ],
-  "directions_for_use_statements": [
-    {
-      "en": "NET: 1000 Kg",
-      "fr": "NET: 1000 Kg"
-    },
-    {
-      "en": "Dos: 97,46 kg/ha",
-      "fr": "Dos: 97,46 kg/ha"
-    }
-  ]
+  "directions_for_use_statements": null
 }
 ```
 
-### Call 1 usage: prompt_tokens=1980 completion_tokens=209 total=2189
+### Call 1 usage: prompt_tokens=1288 completion_tokens=146 total=1434 | elapsed=13.30s
 
-### Call 2 usage: prompt_tokens=350 completion_tokens=67 total=417
+### Call 2 usage: prompt_tokens=1030 completion_tokens=100 total=1130 | elapsed=6.64s
 
-### Call 3 usage: prompt_tokens=788 completion_tokens=441 total=1229
+### Call 3 usage: prompt_tokens=1519 completion_tokens=609 total=2128 | elapsed=26.45s
 
-### Call 4 usage: prompt_tokens=683 completion_tokens=151 total=834
+### Call 4 usage: prompt_tokens=1363 completion_tokens=108 total=1471 | elapsed=3.88s
 
-### Total elapsed: 5.8s
+### Total elapsed: 26.5s

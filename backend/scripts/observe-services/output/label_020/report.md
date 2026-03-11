@@ -28,7 +28,7 @@
     {
       "type": "manufacturer",
       "name": "Nousbo Co., Ltd.",
-      "address": "6-325, 89 Seoho-ro, Gwonseon-gu, Suwon-si, Gyeonggi-do,
+      "address": "#6-325, 89 Seoho-ro, Gwonseon-gu, Suwon-si, Gyeonggi-do,
       South Korea",
       "phone": null,
       "email": null,
@@ -36,151 +36,32 @@
     }
   ],
   "registration_number": null,
-  "registration_claim": {
-    "en": "Registration Number:",
-    "fr": "Numéro d'enregistrement:"
+  "registration_claim": null,
+  "exemption_claim": {
+    "en": "This fertilizer coating supplement allows controlled release of
+    nutrient. This supplement is intended for use as a coating for the
+     following fertilizer materials: urea, diammonium phosphate, mono-ammonium
+      phosphate, potassium chloride, potassium sulfate, or ammonium nitrate, or
+       any other compound fertilizers in the form of either homogeneous or blend
+       . This fertilizer coating supplement is intended for coating nutrients
+       only and should not be applied to crops independently.",
+    "fr": "Ce complément de revêtement pour engrais permet une libération
+    contrôlée des nutriments. Ce complément est destiné à être utilisé comme
+     revêtement pour les matières fertilisantes suivantes : urée, phosphate
+      diammonique, phosphate monoammonique, chlorure de potassium, sulfate de
+       potassium, nitrate d'ammonium, ou tout autre engrais composé sous forme
+        homogène ou mélangée. Ce complément de revêtement est destiné uniquement
+         à l'enrobage des nutriments et ne doit pas être appliqué directement
+          sur les cultures."
   },
   "lot_number": null,
-  "net_weight": null,
-  "volume": null,
-  "exemption_claim": {
-    "en": "This fertilizer coating supplement allows controlled release
-    of nutrient.",
-    "fr": "Ce complément de revêtement pour engrais permet une libération
-    contrôlée des nutriments."
-  },
   "country_of_origin": "South Korea",
   "product_classification": "supplement",
-  "customer_formula_statements": [
-    {
-      "en": "Polyethylene -------------------- 2.6%",
-      "fr": "Polyéthylène -------------------- 2,6%"
-    },
-    {
-      "en": "Ethylene-vinyl acetate ----------- 1.2%",
-      "fr": "Éthylène-acétate de vinyle ----------- 1,2%"
-    }
-  ],
-  "intended_use_statements": [
-    {
-      "en": "This fertilizer coating supplement allows controlled release of
-       nutrient.",
-      "fr": "Ce complément de revêtement pour engrais permet une libération
-      contrôlée des nutriments."
-    },
-    {
-      "en": "This supplement is intended as a coating for the following
-      fertilizer materials: urea, diammonium phosphate, monoammonium
-      phosphate, potassium chloride, potassium sulfate, or ammonium nitrate,
-      or any other fertilizer as a minor coating.",
-      "fr": "Ce complément est destiné à être utilisé comme revêtement pour
-      les matières fertilisantes suivantes : urée, phosphate diammonique,
-      phosphate de monoammonium, chlorure de potassium, sulfate de potassium
-      ou nitrate d'ammonium, ou tout autre engrais comme revêtement mineur."
-    },
-    {
-      "en": "This fertilizer coating supplement is intended for coating
-      nutrients only and should not be applied to crops independently.",
-      "fr": "Ce complément de revêtement est destiné uniquement à
-      l'enrobage des nutriments et ne doit pas être appliqué directement
-      sur les cultures."
-    }
-  ],
-  "processing_instruction_statements": [
-    {
-      "en": "First-aid measures",
-      "fr": "Premiers secours"
-    },
-    {
-      "en": "Contact with eyes",
-      "fr": "Contact avec les yeux"
-    },
-    {
-      "en": "If in contact with a substance, immediately flush eyes
-      with running water for at least 20 minutes.",
-      "fr": "En cas de contact avec la substance, rincez immédiatement
-      les yeux à l'eau courante pendant au moins 20 minutes."
-    },
-    {
-      "en": "Contact with skin",
-      "fr": "Contact avec la peau"
-    },
-    {
-      "en": "Do not rub into your eyes.",
-      "fr": "Ne pas frotter dans vos yeux."
-    },
-    {
-      "en": "If in contact with a substance, immediately flush
-      skin with running water for at least 20 minutes.",
-      "fr": "En cas de contact avec la substance, rincez immédiatement
-      la peau à l'eau courante pendant au moins 20 minutes."
-    },
-    {
-      "en": "Inhalation",
-      "fr": "Inhalation"
-    },
-    {
-      "en": "Seek medical treatment is urgent.",
-      "fr": "Un traitement médical spécifique est urgent."
-    },
-    {
-      "en": "Precautions for safe handling",
-      "fr": "Précautions pour une manipulation sécurisée"
-    },
-    {
-      "en": "Wash your hands thoroughly after handling.",
-      "fr": "Lavez-vous soigneusement les mains après avoir manipulé le produit."
-    },
-    {
-      "en": "Please work with reference to engineering controls and
-       personal protective equipment.",
-      "fr": "Travaillez en référence aux dispositifs de contrôle
-      technique et aux équipements de protection individuelle."
-    },
-    {
-      "en": "Be careful to high temperature.",
-      "fr": "Soyez prudent à haute température."
-    },
-    {
-      "en": "Eye protection",
-      "fr": "Protection des yeux"
-    },
-    {
-      "en": "Wear an eye mask and safety shower station should be
-      available nearby.",
-      "fr": "Portez un masque facial et une douche de sécurité doit
-       être disponible à proximité."
-    },
-    {
-      "en": "Body protection",
-      "fr": "Protection du corps"
-    },
-    {
-      "en": "Wear appropriate protective clothing by considering
-      physical and chemical properties of chemicals.",
-      "fr": "Portez des vêtements de protection appropriés en tenant
-       compte des propriétés physiques et chimiques des produits chimiques."
-    }
-  ],
-  "experimental_statements": null,
-  "export_statements": [
-    {
-      "en": "Manufactured by Nousbo Co., Ltd.",
-      "fr": "Fabriqué par Nousbo Co., Ltd."
-    },
-    {
-      "en": "6-325, 89 Seoho-ro, Gwonseon-gu, Suwon-si, Gyeonggi-do, South Korea",
-      "fr": "6-325, 89 Seoho-ro, Gwonseon-gu, Suwon-si, Gyeonggi-do, South Korea"
-    },
-    {
-      "en": "Package weight:",
-      "fr": "Poids du paquet:"
-    }
-  ],
+  "net_weight": null,
+  "volume": null,
   "n": null,
   "p": null,
   "k": null,
-  "ingredients": null,
   "guaranteed_analysis": {
     "title": {
       "en": "MINIMUM GUARANTEED ANALYSIS",
@@ -206,25 +87,68 @@
       }
     ]
   },
-  "precaution_statements": [
+  "ingredients": null,
+  "precaution_statements": null,
+  "intended_use_statements": [
     {
-      "en": "In case of contact with a substance, immediately flush eyes
-      with running water for at least 20 minutes.",
-      "fr": "En cas de contact avec la substance, rincez immédiatement
-       les yeux à l'eau courante pendant au moins 20 minutes."
+      "en": "This fertilizer coating supplement allows controlled release
+       of nutrient.",
+      "fr": "Ce complément de revêtement pour engrais permet une libération
+      contrôlée des nutriments."
     },
     {
-      "en": "Do not induce vomiting.",
-      "fr": "Ne pas induire le vomissement."
+      "en": "This supplement is intended for use as a coating for the following
+      fertilizer materials: urea, diammonium phosphate, mono-ammonium phosphate,
+       potassium chloride, potassium sulfate, or ammonium nitrate, or any other
+       compound fertilizers in the form of either homogeneous or blend.",
+      "fr": "Ce complément est destiné à être utilisé comme revêtement pour les
+       matières fertilisantes suivantes : urée, phosphate diammonique, phosphate
+        monoammonique, chlorure de potassium, sulfate de potassium, nitrate
+         d'ammonium, ou tout autre engrais composé sous forme homogène ou
+         mélangée."
     },
     {
-      "en": "In case of contact with a substance, immediately flush skin
-      with running water for at least 20 minutes.",
+      "en": "This fertilizer coating supplement is intended for coating
+      nutrients only and should not be applied to crops independently.",
+      "fr": "Ce complément de revêtement est destiné uniquement à l'enrobage
+       des nutriments et ne doit pas être appliqué directement sur les cultures."
+    }
+  ],
+  "processing_instruction_statements": null,
+  "customer_formula_statements": null,
+  "experimental_statements": null,
+  "export_statements": null,
+  "directions_for_use_statements": [
+    {
+      "en": "Store in a dry, cool place. This product is moisture absorbent
+       and needs to stay dry. Store unused fertilizer in the bag and seal
+       tightly.",
+      "fr": "Stockez dans un endroit sec et frais. Ce produit absorbe
+      l'humidité et doit rester sec. Conservez l'engrais non utilisé dans le
+       sac et fermez hermétiquement."
+    },
+    {
+      "en": "Dispose of according to local regulations.",
+      "fr": "Éliminez conformément aux réglementations locales."
+    },
+    {
+      "en": "In case of contact with substance, immediately flush eyes with
+      running water at least 20 minutes.",
+      "fr": "En cas de contact avec la substance, rincez immédiatement les
+       yeux à l'eau courante pendant au moins 20 minutes."
+    },
+    {
+      "en": "Do not rub your eyes.",
+      "fr": "Ne frottez pas vos yeux."
+    },
+    {
+      "en": "In case of contact with substance, immediately flush skin with
+       running water at least 20 minutes.",
       "fr": "En cas de contact avec la substance, rincez immédiatement la
       peau à l'eau courante pendant au moins 20 minutes."
     },
     {
-      "en": "Seek medical treatment is urgent.",
+      "en": "Get immediate medical advice/attention.",
       "fr": "Consultez immédiatement un médecin."
     },
     {
@@ -237,44 +161,46 @@
     },
     {
       "en": "Please work with reference to engineering controls and personal
-       protective equipment.",
-      "fr": "Travaillez en référence aux dispositifs de contrôle technique
-       et aux équipements de protection individuelle."
+      protective equipment.",
+      "fr": "Travaillez en référence aux dispositifs de contrôle d'ingénierie
+      et équipements de protection individuelle."
     },
     {
       "en": "Be careful to high temperature.",
       "fr": "Soyez prudent à haute température."
     },
     {
-      "en": "Wear appropriate protective clothing by considering physical
-       and chemical properties of chemicals.",
-      "fr": "Portez des vêtements de protection appropriés en tenant
-      compte des propriétés physiques et chimiques des produits chimiques."
-    }
-  ],
-  "directions_for_use_statements": [
-    {
-      "en": "Use in a dry, cool place. This product is moisture absorbent
-      and needs to stay dry. Store unused fertilizer in the bag and reseal
-      after using.",
-      "fr": "Stockez dans un endroit sec et frais. Ce produit absorbe l'humidité
-      et doit rester sec. Conservez l'engrais non utilisé dans le sac et
-      refermez après utilisation."
+      "en": "Wear facepiece with goggles to protect.",
+      "fr": "Portez un masque facial avec des lunettes de protection."
     },
     {
-      "en": "Eliminate confinement according with reglementations locales.",
-      "fr": "Éliminez confinement conformément aux réglementations locales."
+      "en": "An eye wash unit and safety shower station should be available
+      nearby work place.",
+      "fr": "Une station de lavage des yeux et une douche de sécurité devraient
+      être disponibles à proximité du lieu de travail."
+    },
+    {
+      "en": "Wear appropriate protective gloves by considering physical and
+      chemical properties of chemicals.",
+      "fr": "Portez des gants de protection adaptés en considérant les
+      propriétés physiques et chimiques des produits chimiques."
+    },
+    {
+      "en": "Wear appropriate protective clothing by considering physical
+      and chemical properties of chemicals.",
+      "fr": "Portez des vêtements de protection appropriés en tenant compte
+       des propriétés physiques et chimiques des produits chimiques."
     }
   ]
 }
 ```
 
-### Call 1 usage: prompt_tokens=863 completion_tokens=110 total=973
+### Call 1 usage: prompt_tokens=3583 completion_tokens=94 total=3677 | elapsed=3.89s
 
-### Call 2 usage: prompt_tokens=605 completion_tokens=52 total=657
+### Call 2 usage: prompt_tokens=3325 completion_tokens=230 total=3555 | elapsed=5.58s
 
-### Call 3 usage: prompt_tokens=1043 completion_tokens=387 total=1430
+### Call 3 usage: prompt_tokens=3814 completion_tokens=106 total=3920 | elapsed=16.38s
 
-### Call 4 usage: prompt_tokens=938 completion_tokens=881 total=1819
+### Call 4 usage: prompt_tokens=3658 completion_tokens=727 total=4385 | elapsed=12.92s
 
-### Total elapsed: 9.7s
+### Total elapsed: 16.6s

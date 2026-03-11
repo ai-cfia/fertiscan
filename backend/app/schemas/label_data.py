@@ -47,7 +47,7 @@ class Ingredient(BaseModel):
     unit: str = Field(
         description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg", "mm"]
     )
-    registration_number: str | None = Field(
+    registration_number: RegistrationNumber | None = Field(
         default=None,
         description="Registration number of the product itself (not its individual ingredients).",
         examples=["1234567F"],

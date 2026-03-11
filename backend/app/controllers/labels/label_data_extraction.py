@@ -12,21 +12,15 @@ from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services.label_data_extraction import ImageData, extract_fields_from_images
 from app.storage import download_file
 
-# Field groups for parallel extraction (one LLM call per group when field_names is None).
-# Group 1: core product identification and registration fields.
-# Group 2: packaging, exemption, origin, and classification fields.
-# Group 3: composition and safety analysis fields (includes the heaviest field,
-# precaution_statements, to better balance generation across parallel calls).
-# Group 4: usage, processing, experimental, export, and directions statements.
-FIELD_GROUPS: list[list[str]] = [
-    [
+FIELD_GROUPS = [
+    [  # 1 — product identity
         "brand_name",
         "product_name",
         "contacts",
         "registration_number",
         "registration_claim",
     ],
-    [
+    [  # 2 — packaging & classification
         "lot_number",
         "net_weight",
         "volume",
@@ -34,7 +28,7 @@ FIELD_GROUPS: list[list[str]] = [
         "country_of_origin",
         "product_classification",
     ],
-    [
+    [  # 3 — composition (heaviest schemas: ingredients + guaranteed_analysis)
         "n",
         "p",
         "k",
@@ -42,7 +36,7 @@ FIELD_GROUPS: list[list[str]] = [
         "guaranteed_analysis",
         "precaution_statements",
     ],
-    [
+    [  # 4 — usage & regulatory statements
         "customer_formula_statements",
         "intended_use_statements",
         "processing_instruction_statements",
@@ -119,7 +113,7 @@ async def extract_fertilizer_fields(
             for group in FIELD_GROUPS
         ]
     )
-    merged: dict = {}
+    merged: dict[str, object] = {}
     for result, _completion in pairs:
         merged.update(result.model_dump())
     return ExtractFertilizerFieldsOutput.model_validate(merged)

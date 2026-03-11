@@ -6,9 +6,11 @@ import mimetypes
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 import instructor
 from openai import AsyncAzureOpenAI
+from pydantic import BaseModel
 
 from app.config import settings
 from app.controllers.labels.label_data_extraction import (
@@ -94,6 +96,7 @@ def _append_images_section(
 def _append_extraction_section(
     result: ExtractFertilizerFieldsOutput,
     completions: list[object | None],
+    call_elapsed: list[float],
     elapsed: float,
     lines: list[str],
 ) -> None:
@@ -105,11 +108,31 @@ def _append_extraction_section(
     lines.append(result.model_dump_json(indent=2))
     lines.append("```")
     lines.append("")
-    for i, completion in enumerate(completions, 1):
-        lines.append(f"### Call {i} usage: {format_completion(completion)}")
+    for i, (completion, call_s) in enumerate(
+        zip(completions, call_elapsed, strict=False), 1
+    ):
+        lines.append(
+            f"### Call {i} usage: {format_completion(completion)} | elapsed={call_s:.2f}s"
+        )
         lines.append("")
     lines.append(f"### Total elapsed: {elapsed:.1f}s")
     lines.append("")
+
+
+async def _timed_extract_group(
+    images: list[ImageData],
+    group: list[str],
+    instructor_client: instructor.AsyncInstructor,
+) -> tuple[BaseModel, Any, float]:
+    t0 = time.perf_counter()
+    result, completion = await extract_fields_from_images(
+        images,
+        create_subset_model(ExtractFertilizerFieldsOutput, group),
+        EXTRACTION_PROMPT,
+        instructor_client,
+    )
+    call_elapsed = time.perf_counter() - t0
+    return result, completion, call_elapsed
 
 
 async def main() -> None:
@@ -140,29 +163,29 @@ async def main() -> None:
     t0 = time.perf_counter()
     pairs = await asyncio.gather(
         *[
-            extract_fields_from_images(
-                images,
-                create_subset_model(ExtractFertilizerFieldsOutput, group),
-                EXTRACTION_PROMPT,
-                instructor_client,
-            )
+            _timed_extract_group(images, group, instructor_client)
             for group in FIELD_GROUPS
         ]
     )
     elapsed = time.perf_counter() - t0
-    merged: dict = {}
+    merged: dict[str, object] = {}
     completions: list[object | None] = []
-    for r, c in pairs:
+    call_elapsed: list[float] = []
+    for r, c, call_s in pairs:
         merged.update(r.model_dump())
         completions.append(c)
+        call_elapsed.append(call_s)
     result = ExtractFertilizerFieldsOutput.model_validate(merged)
     json_path.write_text(result.model_dump_json(indent=2), encoding="utf-8")
-    _append_extraction_section(result, completions, elapsed, lines)
+    _append_extraction_section(result, completions, call_elapsed, elapsed, lines)
     output_path.write_text("\n".join(lines), encoding="utf-8")
     total_tokens = sum(
         getattr(getattr(c, "usage", None), "total_tokens", 0) or 0 for c in completions
     )
-    calls_summary = " | ".join(format_completion(c) for c in completions)
+    calls_summary = " | ".join(
+        f"{format_completion(c)} elapsed={t:.2f}s"
+        for c, t in zip(completions, call_elapsed, strict=False)
+    )
     sys.stdout.write(
         f"Extraction ({len(FIELD_GROUPS)} parallel calls): [{calls_summary}]\n"
         f"Total tokens: {total_tokens} elapsed={elapsed:.1f}s\n"
