@@ -1,4 +1,4 @@
-.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell
+.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell observe observe-list-requirements observe-extract observe-compliance observe-full
 
 help:
 	@echo "Available targets:"
@@ -46,6 +46,13 @@ help:
 	@echo "  db-reset-local   - Reset local database (drop schema and recreate)"
 	@echo "  db-seed          - Seed database with initial data"
 	@echo "  db-shell         - Open database shell (psql)"
+	@echo ""
+	@echo "Observe Services (extraction + compliance → markdown):"
+	@echo "  observe-list-requirements - List requirement IDs and titles"
+	@echo "  observe-extract           - Extraction only (IMAGES_DIR=label_001)"
+	@echo "  observe                   - Alias for observe-extract"
+	@echo "  observe-compliance        - Compliance only (OUTPUT_DIR=label_001, REQUIREMENT_IDS)"
+	@echo "  observe-full              - Extraction + compliance (IMAGES_DIR, REQUIREMENT_IDS)"
 
 env:
 	@if [ ! -f .env ]; then \
@@ -212,6 +219,35 @@ generate-sbom-local:
             --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
 	rm -rf .venv && uv sync
 
+
+observe-list-requirements:
+	uv run python scripts/observe-services/compliance.py --list-requirements
+
+observe-extract:
+	@if [ -z "$(IMAGES_DIR)" ]; then \
+		uv run python scripts/observe-services/extract.py label_001; \
+	else \
+		uv run python scripts/observe-services/extract.py $(IMAGES_DIR); \
+	fi
+
+observe: observe-extract
+
+observe-compliance:
+	@if [ -z "$(OUTPUT_DIR)" ] || [ -z "$(REQUIREMENT_IDS)" ]; then \
+		echo "Usage: make observe-compliance OUTPUT_DIR=label_001 REQUIREMENT_IDS=uuid1,uuid2"; \
+		echo "Run 'make observe-list-requirements' to get requirement IDs."; \
+		exit 1; \
+	fi
+	uv run python scripts/observe-services/compliance.py $(OUTPUT_DIR) --requirement-ids "$(REQUIREMENT_IDS)"
+
+observe-full:
+	@if [ -z "$(IMAGES_DIR)" ] || [ -z "$(REQUIREMENT_IDS)" ]; then \
+		echo "Usage: make observe-full IMAGES_DIR=label_001 REQUIREMENT_IDS=uuid1,uuid2"; \
+		echo "Run 'make observe-list-requirements' to get requirement IDs."; \
+		exit 1; \
+	fi
+	$(MAKE) observe-extract IMAGES_DIR="$(IMAGES_DIR)"
+	$(MAKE) observe-compliance OUTPUT_DIR="$(IMAGES_DIR)" REQUIREMENT_IDS="$(REQUIREMENT_IDS)"
 
 clean:
 	rm -rf app/email-templates/build/*.html

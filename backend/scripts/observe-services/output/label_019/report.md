@@ -1,0 +1,204 @@
+# Observe: label_019
+
+## Images
+
+![img_001.png](../../label_019/img_001.png)
+
+![img_002.png](../../label_019/img_002.png)
+
+![img_003.png](../../label_019/img_003.png)
+
+![img_004.png](../../label_019/img_004.png)
+
+## Extraction
+
+### Result
+
+```json
+{
+  "brand_name": {
+    "en": "Plant Response",
+    "fr": "Plant Response"
+  },
+  "product_name": {
+    "en": "PowerCoat Microbial Inoculant",
+    "fr": "PowerCoat Inoculant Microbien"
+  },
+  "contacts": [
+    {
+      "type": "Manufacturer",
+      "name": "Plant Response",
+      "address": "111 E. Tever St., Plant City, FL, USA 33563",
+      "phone": "813-719-7284",
+      "email": null,
+      "website": "www.plantresponse.com"
+    }
+  ],
+  "registration_number": "2018028B",
+  "registration_claim": {
+    "en": "Improves Nutrient Cycling and Root Development",
+    "fr": "Améliore le cycle des nutriments et le développement racinaire"
+  },
+  "exemption_claim": {
+    "en": "Improves Nutrient Cycling and Root Development",
+    "fr": "Améliore le cycle des nutriments et le développement racinaire"
+  },
+  "lot_number": null,
+  "country_of_origin": "Canada",
+  "product_classification": "fertilizer",
+  "net_weight": "2,178 lbs / 987.93 kg",
+  "volume": "275 gal / 1,041 L",
+  "n": null,
+  "p": null,
+  "k": null,
+  "guaranteed_analysis": {
+    "title": {
+      "en": "Guaranteed Minimum Analysis",
+      "fr": "Analyse Minimale Garantie"
+    },
+    "is_minimum": true,
+    "nutrients": [
+      {
+        "name": {
+          "en": "Bacillus subtilis",
+          "fr": "Bacillus subtilis"
+        },
+        "value": "10000000",
+        "unit": "cfu/g"
+      },
+      {
+        "name": {
+          "en": "Bacillus amyloliquefaciens",
+          "fr": "Bacillus amyloliquefaciens"
+        },
+        "value": "10000000",
+        "unit": "cfu/g"
+      },
+      {
+        "name": {
+          "en": "Bacillus methylotrophicus",
+          "fr": "Bacillus methylotrophicus"
+        },
+        "value": "10000000",
+        "unit": "cfu/g"
+      },
+      {
+        "name": {
+          "en": "Bacillus pumilus",
+          "fr": "Bacillus pumilus"
+        },
+        "value": "10000000",
+        "unit": "cfu/g"
+      }
+    ]
+  },
+  "ingredients": [
+    {
+      "name": {
+        "en": "Bacillus subtilis",
+        "fr": "Bacillus subtilis"
+      },
+      "value": "1x10^7",
+      "unit": "cfu/g",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Bacillus amyloliquefaciens",
+        "fr": "Bacillus amyloliquefaciens"
+      },
+      "value": "1x10^7",
+      "unit": "cfu/g",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Bacillus methylotrophicus",
+        "fr": "Bacillus methylotrophicus"
+      },
+      "value": "1x10^7",
+      "unit": "cfu/g",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Bacillus pumilus",
+        "fr": "Bacillus pumilus"
+      },
+      "value": "1x10^7",
+      "unit": "cfu/g",
+      "registration_number": null
+    }
+  ],
+  "precaution_statements": [
+    {
+      "en": "Refer to application methods, rates & frequency table provided in
+       the directions for use section of this label.",
+      "fr": "Se référer aux méthodes d'application, aux doses et au tableau de
+       fréquence fournis dans la section mode d'emploi de cette étiquette."
+    },
+    {
+      "en": "Avoid breathing dust or spray mist.",
+      "fr": "Éviter de respirer la poussière ou le brouillard de pulvérisation."
+    },
+    {
+      "en": "Avoid contact with skin, eyes, or clothing.",
+      "fr": "Éviter le contact avec la peau, les yeux ou les vêtements."
+    },
+    {
+      "en": "Wash thoroughly with soap and water after handling.",
+      "fr": "Se laver soigneusement avec du savon et de l'eau après manipulation."
+    },
+    {
+      "en": "Remove contaminated clothing and wash before reuse.",
+      "fr": "Retirer les vêtements contaminés et laver avant de réutiliser."
+    }
+  ],
+  "intended_use_statements": null,
+  "processing_instruction_statements": null,
+  "customer_formula_statements": [
+    {
+      "en": "Improves Nutrient Cycling and Root Development",
+      "fr": "Améliore le cycle des nutriments et le développement racinaire"
+    }
+  ],
+  "experimental_statements": null,
+  "export_statements": null,
+  "directions_for_use_statements": [
+    {
+      "en": "Effective Impregnation Rates: When using batch mixers, it is
+      recommended to add enough water volume to maintain an effective slurry.
+      Apply 1.5 fl. oz. (45 mL) of product per 1000 lb. of seed. For in-furrow
+       application, apply 1.5 fl. oz. (45 mL) of product per acre. For drench
+       application, apply 1.5 fl. oz. (45 mL) of product per 1000 ft. of row.
+       For transplant water application, apply 1.5 fl. oz. (45 mL) of product
+       per 1000 plants. For hydroponic application, apply 1.5 fl. oz. (45 mL)
+       of product per 1000 gal. of water. For foliar application, apply 1.5 fl.
+        oz. (45 mL) of product per acre. For other application methods, consult
+         your Plant Response representative for specific recommendations.",
+      "fr": "Doses d'imprégnation efficaces: Lors de l'utilisation de mélangeurs
+       par lots, il est recommandé d'ajouter suffisamment de volume d'eau pour
+       maintenir une bouillie efficace. Appliquer 1,5 fl. oz. (45 mL) de produit
+        par 1000 lb. de semences. Pour l'application en sillon, appliquer 1,5 fl.
+         oz. (45 mL) de produit par acre. Pour l'application par trempage,
+         appliquer 1,5 fl. oz. (45 mL) de produit par 1000 pieds de rang. Pour
+         l'application d'eau de transplantation, appliquer 1,5 fl. oz. (45 mL)
+         de produit par 1000 plantes. Pour l'application hydroponique, appliquer
+          1,5 fl. oz. (45 mL) de produit par 1000 gal. d'eau. Pour l'application
+           foliaire, appliquer 1,5 fl. oz. (45 mL) de produit par acre. Pour
+           d'autres méthodes d'application, consultez votre représentant Plant
+            Response pour des recommandations spécifiques."
+    }
+  ]
+}
+```
+
+### Call 1 usage: prompt_tokens=703 completion_tokens=131 total=834 | elapsed=16.37s
+
+### Call 2 usage: prompt_tokens=578 completion_tokens=78 total=656 | elapsed=17.54s
+
+### Call 3 usage: prompt_tokens=3641 completion_tokens=1030 total=4671 | elapsed=33.72s
+
+### Call 4 usage: prompt_tokens=776 completion_tokens=479 total=1255 | elapsed=7.96s
+
+### Total elapsed: 34.0s

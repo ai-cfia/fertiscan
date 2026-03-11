@@ -1,0 +1,236 @@
+# Observe: label_003
+
+## Images
+
+![img_001.png](../../label_003/img_001.png)
+
+## Extraction
+
+### Result
+
+```json
+{
+  "brand_name": {
+    "en": "Novago",
+    "fr": null
+  },
+  "product_name": {
+    "en": "15-22-6 vedette",
+    "fr": null
+  },
+  "contacts": [
+    {
+      "type": "manufacturer",
+      "name": "Novago Cooperative",
+      "address": "939, rue Papineau, Joliette, QC, J6E 2L6",
+      "phone": null,
+      "email": null,
+      "website": null
+    }
+  ],
+  "registration_number": null,
+  "registration_claim": {
+    "en": "AZOTE TOTALE (N) 15,0%\nACIDE PHOSPHORIQUE ASSIMILABLE (P2O5)
+    22,0%\nPOTASSE SOLUBLE (K2O) 6,0%",
+    "fr": null
+  },
+  "lot_number": "18538",
+  "net_weight": "1000 kg",
+  "volume": null,
+  "exemption_claim": {
+    "en": "WARNING: This fertilizer contains B, ZN and should be used as
+     recommended. It may be harmful if misused.",
+    "fr": "MISE EN GARDE : Cet engrais renferme du B, ZN et ne doit être
+     employé que de la manière recommandée. Il peut être nocif s'il est
+     employé mal à propos."
+  },
+  "country_of_origin": null,
+  "product_classification": "fertilizer",
+  "customer_formula_statements": [
+    {
+      "en": "15-22-6 vedette",
+      "fr": "15-22-6 vedette"
+    }
+  ],
+  "intended_use_statements": null,
+  "processing_instruction_statements": [
+    {
+      "en": "WARNING: This fertilizer contains B,Zn and should only be used as
+      recommended. It can be harmful if misused.",
+      "fr": "MISE EN GARDE : Cet engrais renferme du B,Zn et ne doit être
+      employé que de la manière recommandée. Il peut être nocif s'il est
+      employé mal à propos."
+    }
+  ],
+  "experimental_statements": null,
+  "export_statements": null,
+  "n": "15.0",
+  "p": "22.0",
+  "k": "6.0",
+  "ingredients": [
+    {
+      "name": {
+        "en": "Magnesium",
+        "fr": "Magnésium"
+      },
+      "value": "1.21",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Calcium",
+        "fr": "Calcium"
+      },
+      "value": "1.24",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Boron",
+        "fr": "Bore"
+      },
+      "value": "0.12",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Zinc",
+        "fr": "Zinc"
+      },
+      "value": "0.55",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Sulfur",
+        "fr": "Soufre"
+      },
+      "value": "6.36",
+      "unit": "%",
+      "registration_number": null
+    },
+    {
+      "name": {
+        "en": "Organic Matter",
+        "fr": "% de matière"
+      },
+      "value": "0.5",
+      "unit": "%",
+      "registration_number": null
+    }
+  ],
+  "guaranteed_analysis": {
+    "title": {
+      "en": "MINIMUM GUARANTEED ANALYSIS",
+      "fr": "ANALYSE GARANTIE MINIMALE"
+    },
+    "is_minimum": true,
+    "nutrients": [
+      {
+        "name": {
+          "en": "Total Nitrogen (N)",
+          "fr": "AZOTE TOTALE (N)"
+        },
+        "value": "15.0",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Available Phosphoric Acid (P2O5)",
+          "fr": "ACIDE PHOSPHORIQUE ASSIMILABLE (P2O5)"
+        },
+        "value": "22.0",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Soluble Potash (K2O)",
+          "fr": "POTASSE SOLUBLE (K2O)"
+        },
+        "value": "6.0",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Magnesium (Mg)",
+          "fr": "Magnésium (Mg)"
+        },
+        "value": "1.21",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Calcium (Ca)",
+          "fr": "Calcium (Ca)"
+        },
+        "value": "1.24",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Boron (B)",
+          "fr": "Bore (B)"
+        },
+        "value": "0.12",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Zinc (Zn)",
+          "fr": "Zinc (Zn)"
+        },
+        "value": "0.55",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Sulfur (S)",
+          "fr": "Soufre (S)"
+        },
+        "value": "6.36",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Organic Matter",
+          "fr": "% de matière"
+        },
+        "value": "0.5",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Molybdenum (Mo)",
+          "fr": "Molybdène (Mo)"
+        },
+        "value": "0.5",
+        "unit": "%"
+      }
+    ]
+  },
+  "precaution_statements": [
+    {
+      "en": "WARNING: This fertilizer contains B, Zn and should be used as
+      recommended. It may be harmful if misused.",
+      "fr": "MISE EN GARDE : Cet engrais renferme du B, ZN et ne doit être
+      employé que de la manière recommandée. Il peut être nocif s'il est
+      employé mal à propos."
+    }
+  ],
+  "directions_for_use_statements": null
+}
+```
+
+### Call 1 usage: prompt_tokens=1288 completion_tokens=146 total=1434 | elapsed=13.30s
+
+### Call 2 usage: prompt_tokens=1030 completion_tokens=100 total=1130 | elapsed=6.64s
+
+### Call 3 usage: prompt_tokens=1519 completion_tokens=609 total=2128 | elapsed=26.45s
+
+### Call 4 usage: prompt_tokens=1363 completion_tokens=108 total=1471 | elapsed=3.88s
+
+### Total elapsed: 26.5s

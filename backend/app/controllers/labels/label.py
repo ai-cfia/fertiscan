@@ -188,7 +188,7 @@ async def evaluate_non_compliance(
 
     results = await asyncio.gather(*tasks)
 
-    return dict(zip([r.id for r in rules], results, strict=True))
+    return dict(zip([r.id for r in rules], [res[0] for res in results], strict=True))
 
 
 @validate_call(config={"arbitrary_types_allowed": True})

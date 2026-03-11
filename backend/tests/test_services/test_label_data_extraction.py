@@ -1,13 +1,20 @@
 """Tests for label data extraction service."""
 
+import base64
+from io import BytesIO
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from PIL import Image
 from pydantic import BaseModel
 
 from app.controllers.labels.label_data_extraction import create_subset_model
 from app.schemas.label_data import BilingualText, ExtractFertilizerFieldsOutput
-from app.services.label_data_extraction import ImageData, extract_fields_from_images
+from app.services.label_data_extraction import (
+    ImageData,
+    extract_fields_from_images,
+    optimize_image,
+)
 from tests.conftest import DUMMY_EXTRACTION_DATA
 
 
@@ -37,7 +44,7 @@ class TestExtractFieldsFromImages:
         assert result.brand_name.fr == "CroissanceVerte"
         assert result.product_name.en == "Premium All-Purpose Fertilizer"
         assert result.product_name.fr == "Engrais Polyvalent Premium"
-        assert result.registration_number == "REG-2024-12345"
+        assert result.registration_number == "1234567F"
         assert result.lot_number == "LOT-2024-001"
         assert result.net_weight == "10 kg"
         assert result.n is not None
@@ -80,6 +87,32 @@ class TestExtractFieldsFromImages:
         assert messages[0]["content"][0]["type"] == "text"
         assert messages[0]["content"][0]["text"] == "test prompt"
         assert messages[0]["content"][1]["type"] == "image_url"
+        assert messages[0]["content"][1]["image_url"]["detail"] == "low"
+
+    async def test_optimizes_image_before_sending(
+        self, mock_instructor: MagicMock
+    ) -> None:
+        """Test that valid images are recompressed before being sent."""
+        image = Image.new("RGB", (2400, 2400), color="red")
+        image_bytes = BytesIO()
+        image.save(image_bytes, format="PNG")
+        original = ImageData(bytes=image_bytes.getvalue(), content_type="image/png")
+
+        await extract_fields_from_images(
+            [original],
+            ExtractFertilizerFieldsOutput,
+            "test prompt",
+            mock_instructor,
+        )
+
+        call_args = mock_instructor.chat.completions.create_with_completion.call_args
+        messages = call_args.kwargs["messages"]
+        data_uri = messages[0]["content"][1]["image_url"]["url"]
+        assert data_uri.startswith("data:image/jpeg;base64,")
+
+        encoded = data_uri.split(",", maxsplit=1)[1]
+        optimized_bytes = base64.b64decode(encoded)
+        assert len(optimized_bytes) < len(original.bytes)
 
     async def test_works_with_different_model(
         self, mock_instructor: MagicMock, sample_image_data: ImageData
@@ -222,6 +255,13 @@ class TestExtractFieldsFromImagesWithFieldNames:
         assert isinstance(result, subset_model)
         full_result = ExtractFertilizerFieldsOutput.model_validate(result.model_dump())
         assert full_result.brand_name is None
+
+
+class TestOptimizeImage:
+    def test_returns_original_for_invalid_bytes(self) -> None:
+        image_data = ImageData(bytes=b"not an image", content_type="image/jpeg")
+
+        assert optimize_image(image_data) == image_data
 
     async def test_returns_all_dummy_fields(
         self, mock_instructor: MagicMock, sample_image_data: ImageData

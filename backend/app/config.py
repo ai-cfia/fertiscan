@@ -74,6 +74,7 @@ class Settings(BaseSettings):
     AZURE_OPENAI_API_KEY: SecretStr | None = None
     AZURE_OPENAI_API_VERSION: str = "2024-02-15-preview"
     AZURE_OPENAI_MODEL: str = "gpt-4o"
+    AZURE_OPENAI_IMAGE_DETAIL: Literal["auto", "low", "high"] = "auto"
     COMPLIANCE_SEED_DATA_DIR: str = "app/data"
     PROMPT_TEMPLATES_DIR: str = "app/prompt_templates"
     COMPLIANCE_PROMPT_TEMPLATE: str = "compliance_verification.md"
