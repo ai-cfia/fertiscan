@@ -1,0 +1,62 @@
+# Reusable workflow for frontend lint and test.
+# Called by ci.yml
+name: Frontend
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Check if test script exists
+        id: check-tests
+        run: |
+          if npm run test --if-present 2>&1 | grep -q "Missing script"; then
+            echo "has_tests=false" >> $GITHUB_OUTPUT
+            echo "## ⚠️ No test script configured" >> $GITHUB_STEP_SUMMARY
+            echo "Add a test script to package.json (e.g., vitest) to enable this check." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Run tests
+        if: steps.check-tests.outputs.has_tests == 'true'
+        run: npm test
+
+  translations:
+    name: Validate Translations
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Validate translation files
+        run: npm run i18n:validate

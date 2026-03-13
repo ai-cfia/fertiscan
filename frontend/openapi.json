@@ -1,0 +1,3619 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FertiScan", "version": "0.1.0" },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Liveness",
+        "description": "Liveness probe - is the application running?",
+        "operationId": "health_liveness",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Health" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Readiness",
+        "description": "Readiness probe - can the application handle requests?",
+        "operationId": "health_readiness",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Readiness" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/access-token": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Login Access Token",
+        "description": "OAuth2 compatible token login, get an access token for future requests.",
+        "operationId": "login_login_access_token",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_login_access_token"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Token" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/test-token": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Test Token",
+        "description": "Test access token.",
+        "operationId": "login_test_token",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/password-recovery/{email}": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Recover Password",
+        "description": "Password Recovery.",
+        "operationId": "login_recover_password",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reset-password/": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Reset Password",
+        "description": "Reset password.",
+        "operationId": "login_reset_password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NewPassword" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/password-recovery-html-content/{email}": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Recover Password Html Content",
+        "description": "HTML Content for Password Recovery (dev/testing only).",
+        "operationId": "login_recover_password_html_content",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "text/html": { "schema": { "type": "string" } } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Read Users",
+        "description": "List all users (superuser only).",
+        "operationId": "users_read_users",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 100, "title": "Limit" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UsersPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "Create User",
+        "description": "Create new user (superuser only).",
+        "operationId": "users_create_user",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Read User Me",
+        "description": "Get current user.",
+        "operationId": "users_read_user_me",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete User Me",
+        "description": "Delete current user.",
+        "operationId": "users_delete_user_me",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      },
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update User Me",
+        "description": "Update current user.",
+        "operationId": "users_update_user_me",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserUpdateMe" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/users/me/password": {
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update Password Me",
+        "description": "Update current user password.",
+        "operationId": "users_update_password_me",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatePassword" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/users/{user_id}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Read User By Id",
+        "description": "Get user by ID (superuser only).",
+        "operationId": "users_read_user_by_id",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update User",
+        "description": "Update user (superuser only).",
+        "operationId": "users_update_user",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid", "title": "User Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete User",
+        "description": "Delete user (superuser only).",
+        "operationId": "users_delete_user",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label",
+        "description": "Create a new label.",
+        "operationId": "labels_create_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelCreated" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Labels",
+        "description": "List labels with optional filters and sorting.",
+        "operationId": "labels_read_labels",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "review_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/ReviewStatus" },
+                { "type": "null" }
+              ],
+              "description": "Filter by review status",
+              "title": "Review Status"
+            },
+            "description": "Filter by review status"
+          },
+          {
+            "name": "unlinked",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter labels not linked to a product (product_id is null)",
+              "title": "Unlinked"
+            },
+            "description": "Filter labels not linked to a product (product_id is null)"
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Field to sort by",
+              "default": "created_at",
+              "title": "Order By"
+            },
+            "description": "Field to sort by"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sort direction (asc or desc)",
+              "default": "desc",
+              "title": "Order"
+            },
+            "description": "Sort direction (asc or desc)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          },
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_LabelListItem_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label",
+        "description": "Get label detail with images (without presigned URLs).",
+        "operationId": "labels_read_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label",
+        "description": "Update Label (partial update, excludes review_status).",
+        "operationId": "labels_update_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["labels"],
+        "summary": "Delete Label",
+        "description": "Delete a label and its associated storage files.",
+        "operationId": "labels_delete_label",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/review-status": {
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Review Status",
+        "description": "Update Label review_status (allowed even when completed).",
+        "operationId": "labels_update_label_review_status",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelReviewStatusUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/verify": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Verify Rule",
+        "description": "Verify non-compliance data item of the label.",
+        "operationId": "labels_verify_rule",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonComplianceDataItemsList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label Image",
+        "description": "Create pending LabelImage record.",
+        "operationId": "labels_create_label_image",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PresignedUrlRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Images",
+        "description": "Get label images (without presigned URLs).",
+        "operationId": "labels_read_label_images",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LabelImageDetail" },
+                  "title": "Response Labels Read Label Images"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/{image_id}": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Image",
+        "description": "Get single label image (without presigned URL).",
+        "operationId": "labels_read_label_image",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["labels"],
+        "summary": "Delete Label Image",
+        "description": "Delete a label image, its storage file, and renumber remaining images.",
+        "operationId": "labels_delete_label_image",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/complete": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Complete Label Image Upload",
+        "description": "Complete upload by updating LabelImage status from pending to completed.",
+        "operationId": "labels_complete_label_image_upload",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelImageDetail" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/{image_id}/presigned-upload-url": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Get Label Image Presigned Upload Url",
+        "description": "Get presigned upload URL for a pending label image.",
+        "operationId": "labels_get_label_image_presigned_upload_url",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "content_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Content type (image/png, image/jpeg, image/webp)",
+              "title": "Content Type"
+            },
+            "description": "Content type (image/png, image/jpeg, image/webp)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUploadUrlResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/images/{image_id}/presigned-download-url": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Get Label Image Presigned Download Url",
+        "description": "Get presigned download URL for a completed label image.",
+        "operationId": "labels_get_label_image_presigned_download_url",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Id"
+            }
+          },
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedDownloadUrlResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/data": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Label Data",
+        "description": "Create LabelData for label.",
+        "operationId": "labels_create_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelDataCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Data",
+        "description": "Get LabelData for label.",
+        "operationId": "labels_read_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Data",
+        "description": "Update LabelData (partial update).",
+        "operationId": "labels_update_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LabelDataUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/data/meta": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Label Data Meta",
+        "description": "Get LabelDataFieldMeta records for label.",
+        "operationId": "labels_read_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "field_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Filter by field name",
+              "title": "Field Name"
+            },
+            "description": "Filter by field name"
+          },
+          {
+            "name": "needs_review",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter by needs_review flag",
+              "title": "Needs Review"
+            },
+            "description": "Filter by needs_review flag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDataFieldMetaResponse"
+                  },
+                  "title": "Response Labels Read Label Data Meta"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Label Data Meta",
+        "description": "Update LabelDataFieldMeta (upsert).",
+        "operationId": "labels_update_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelDataFieldMetaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelDataFieldMetaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-data": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Fertilizer Label Data",
+        "description": "Create FertilizerLabelData for label.",
+        "operationId": "labels_create_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Fertilizer Label Data",
+        "description": "Get FertilizerLabelData for label.",
+        "operationId": "labels_read_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Fertilizer Label Data",
+        "description": "Update FertilizerLabelData (partial update).",
+        "operationId": "labels_update_fertilizer_label_data",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FertilizerLabelData" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-data/meta": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Fertilizer Label Data Meta",
+        "description": "Get FertilizerLabelDataMeta records for label.",
+        "operationId": "labels_read_fertilizer_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "field_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Filter by field name",
+              "title": "Field Name"
+            },
+            "description": "Filter by field name"
+          },
+          {
+            "name": "needs_review",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+              "description": "Filter by needs_review flag",
+              "title": "Needs Review"
+            },
+            "description": "Filter by needs_review flag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FertilizerLabelDataMetaResponse"
+                  },
+                  "title": "Response Labels Read Fertilizer Label Data Meta"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Fertilizer Label Data Meta",
+        "description": "Update FertilizerLabelDataMeta (upsert).",
+        "operationId": "labels_update_fertilizer_label_data_meta",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FertilizerLabelDataMetaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FertilizerLabelDataMetaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/fertilizer-extract": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Extract Fertilizer Fields",
+        "description": "Extract specified fields (or all fields if none specified) for fertilizer labels.",
+        "operationId": "labels_extract_fertilizer_fields",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ExtractFieldsRequest" },
+                  { "type": "null" }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractFertilizerFieldsOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Read Products",
+        "description": "List products with optional filters.",
+        "operationId": "products_read_products",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          },
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          },
+          {
+            "name": "registration_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 50,
+                  "pattern": "^[a-zA-Z0-9\\s-]+$"
+                },
+                { "type": "null" }
+              ],
+              "title": "Registration Number"
+            }
+          },
+          {
+            "name": "brand_name_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Brand Name En"
+            }
+          },
+          {
+            "name": "brand_name_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Brand Name Fr"
+            }
+          },
+          {
+            "name": "name_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Name En"
+            }
+          },
+          {
+            "name": "name_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Name Fr"
+            }
+          },
+          {
+            "name": "start_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Created At"
+            }
+          },
+          {
+            "name": "end_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Created At"
+            }
+          },
+          {
+            "name": "start_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Updated At"
+            }
+          },
+          {
+            "name": "end_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Updated At"
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Order By"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "desc", "title": "Order" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_ProductPublic_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["products"],
+        "summary": "Create Product",
+        "description": "Create a new product.",
+        "operationId": "products_create_product",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProductCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_id}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Read Product By Id",
+        "description": "Get product by ID.",
+        "operationId": "products_read_product_by_id",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["products"],
+        "summary": "Delete Product",
+        "description": "Delete a product",
+        "operationId": "products_delete_product",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Product Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/private/users/": {
+      "post": {
+        "tags": ["private"],
+        "summary": "Create User No Verification",
+        "description": "Create user without email verification - for testing only.",
+        "operationId": "private_create_user_no_verification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PrivateUserCreate" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_login_login_access_token": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              { "type": "string", "pattern": "^password$" },
+              { "type": "null" }
+            ],
+            "title": "Grant Type"
+          },
+          "username": { "type": "string", "title": "Username" },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "title": "Password"
+          },
+          "scope": { "type": "string", "title": "Scope", "default": "" },
+          "client_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "format": "password",
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "Body_login_login_access_token"
+      },
+      "Contact": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Type of contact",
+            "examples": ["manufacturer", "distributor", "importer"]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Company or organization name"
+          },
+          "address": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Address",
+            "description": "Full mailing address"
+          },
+          "phone": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Phone",
+            "description": "Phone number in any format"
+          },
+          "email": {
+            "anyOf": [
+              { "type": "string", "format": "email" },
+              { "type": "null" }
+            ],
+            "title": "Email",
+            "description": "Email address"
+          },
+          "website": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Website",
+            "description": "Website URL"
+          }
+        },
+        "type": "object",
+        "required": ["type", "name"],
+        "title": "Contact"
+      },
+      "ExtractFertilizerFieldsOutput": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En",
+            "description": "Brand name in English",
+            "examples": ["GreenGrow"]
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr",
+            "description": "Brand name in French",
+            "examples": ["CroissanceVerte"]
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En",
+            "description": "Product name in English",
+            "examples": ["Premium All-Purpose Fertilizer"]
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr",
+            "description": "Product name in French",
+            "examples": ["Engrais Polyvalent Premium"]
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts",
+            "description": "List of contact information (manufacturer, distributor, etc.)"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number",
+            "description": "Product registration number",
+            "examples": ["REG-2024-12345"]
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number",
+            "description": "Lot or batch number",
+            "examples": ["LOT-2024-001"]
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight",
+            "description": "Net weight with unit",
+            "examples": ["10 kg"]
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume",
+            "description": "Volume with unit",
+            "examples": ["1 L"]
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N",
+            "description": "Nitrogen percentage (NPK analysis)",
+            "examples": ["10.0"]
+          },
+          "p": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P",
+            "description": "Phosphorus percentage (NPK analysis)",
+            "examples": ["5.0"]
+          },
+          "k": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K",
+            "description": "Potassium percentage (NPK analysis)",
+            "examples": ["5.0"]
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients",
+            "description": "List of ingredients with bilingual names, values and units"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Output" },
+              { "type": "null" }
+            ],
+            "description": "Guaranteed analysis section with bilingual title and nutrients"
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En",
+            "description": "Caution statements in English",
+            "examples": ["Keep out of reach of children"]
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr",
+            "description": "Caution statements in French",
+            "examples": ["Tenir hors de la port\u00e9e des enfants"]
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En",
+            "description": "Usage instructions in English",
+            "examples": ["Apply 2-3 cups per 100 square feet"]
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr",
+            "description": "Usage instructions in French",
+            "examples": ["Appliquer 2-3 tasses par 100 pieds carr\u00e9s"]
+          }
+        },
+        "type": "object",
+        "title": "ExtractFertilizerFieldsOutput"
+      },
+      "ExtractFieldsRequest": {
+        "properties": {
+          "field_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "anyOf": [
+                    { "$ref": "#/components/schemas/LabelDataFieldName" },
+                    {
+                      "$ref": "#/components/schemas/FertilizerLabelDataFieldName"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Field Names",
+            "description": "List of field names to extract. If None or empty, extract all fields."
+          }
+        },
+        "type": "object",
+        "title": "ExtractFieldsRequest"
+      },
+      "FertilizerLabelData": {
+        "properties": {
+          "n": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Output" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelData"
+      },
+      "FertilizerLabelDataCreate": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Input" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelDataCreate"
+      },
+      "FertilizerLabelDataFieldName": {
+        "type": "string",
+        "enum": [
+          "n",
+          "p",
+          "k",
+          "ingredients",
+          "guaranteed_analysis",
+          "caution_en",
+          "caution_fr",
+          "instructions_en",
+          "instructions_fr"
+        ],
+        "title": "FertilizerLabelDataFieldName",
+        "description": "Valid field names for FertilizerLabelDataMeta."
+      },
+      "FertilizerLabelDataMetaResponse": {
+        "properties": {
+          "field_name": { "type": "string", "title": "Field Name" },
+          "needs_review": { "type": "boolean", "title": "Needs Review" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": { "type": "boolean", "title": "Ai Generated" }
+        },
+        "type": "object",
+        "required": ["field_name", "needs_review", "note", "ai_generated"],
+        "title": "FertilizerLabelDataMetaResponse"
+      },
+      "FertilizerLabelDataMetaUpdate": {
+        "properties": {
+          "field_name": {
+            "$ref": "#/components/schemas/FertilizerLabelDataFieldName"
+          },
+          "needs_review": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Needs Review"
+          },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Ai Generated"
+          }
+        },
+        "type": "object",
+        "required": ["field_name"],
+        "title": "FertilizerLabelDataMetaUpdate"
+      },
+      "FertilizerLabelDataUpdate": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "N"
+          },
+          "p": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "P"
+          },
+          "k": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              { "type": "null" }
+            ],
+            "title": "K"
+          },
+          "ingredients": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Ingredient" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Ingredients"
+          },
+          "guaranteed_analysis": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/GuaranteedAnalysis-Input" },
+              { "type": "null" }
+            ]
+          },
+          "caution_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution En"
+          },
+          "caution_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Caution Fr"
+          },
+          "instructions_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions En"
+          },
+          "instructions_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instructions Fr"
+          }
+        },
+        "type": "object",
+        "title": "FertilizerLabelDataUpdate"
+      },
+      "GuaranteedAnalysis-Input": {
+        "properties": {
+          "title_en": {
+            "type": "string",
+            "title": "Title En",
+            "description": "Section title in English from label",
+            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr",
+            "description": "Section title in French from label",
+            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          },
+          "is_minimum": {
+            "type": "boolean",
+            "title": "Is Minimum",
+            "description": "True if title contains 'Minimum', false otherwise"
+          },
+          "nutrients": {
+            "items": { "$ref": "#/components/schemas/Nutrient-Input" },
+            "type": "array",
+            "title": "Nutrients",
+            "description": "List of nutrients with bilingual names, values and units"
+          }
+        },
+        "type": "object",
+        "required": ["title_en", "is_minimum", "nutrients"],
+        "title": "GuaranteedAnalysis"
+      },
+      "GuaranteedAnalysis-Output": {
+        "properties": {
+          "title_en": {
+            "type": "string",
+            "title": "Title En",
+            "description": "Section title in English from label",
+            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr",
+            "description": "Section title in French from label",
+            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          },
+          "is_minimum": {
+            "type": "boolean",
+            "title": "Is Minimum",
+            "description": "True if title contains 'Minimum', false otherwise"
+          },
+          "nutrients": {
+            "items": { "$ref": "#/components/schemas/Nutrient-Output" },
+            "type": "array",
+            "title": "Nutrients",
+            "description": "List of nutrients with bilingual names, values and units"
+          }
+        },
+        "type": "object",
+        "required": ["title_en", "is_minimum", "nutrients"],
+        "title": "GuaranteedAnalysis"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": { "status": { "type": "string", "title": "Status" } },
+        "type": "object",
+        "required": ["status"],
+        "title": "Health"
+      },
+      "Ingredient": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Ingredient name in English as it appears on the label"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Ingredient name in French as it appears on the label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Ingredient percentage or amount."
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg", "mm"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Ingredient"
+      },
+      "LabelCreate": {
+        "properties": {
+          "product_type": { "type": "string", "title": "Product Type" },
+          "product_id": {
+            "anyOf": [
+              { "type": "string", "format": "uuid" },
+              { "type": "null" }
+            ],
+            "title": "Product Id"
+          }
+        },
+        "type": "object",
+        "required": ["product_type"],
+        "title": "LabelCreate"
+      },
+      "LabelCreated": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["id"],
+        "title": "LabelCreated",
+        "description": "Response schema for label creation."
+      },
+      "LabelData": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelData"
+      },
+      "LabelDataCreate": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataCreate"
+      },
+      "LabelDataFieldMetaResponse": {
+        "properties": {
+          "field_name": { "type": "string", "title": "Field Name" },
+          "needs_review": { "type": "boolean", "title": "Needs Review" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": { "type": "boolean", "title": "Ai Generated" }
+        },
+        "type": "object",
+        "required": ["field_name", "needs_review", "note", "ai_generated"],
+        "title": "LabelDataFieldMetaResponse"
+      },
+      "LabelDataFieldMetaUpdate": {
+        "properties": {
+          "field_name": { "$ref": "#/components/schemas/LabelDataFieldName" },
+          "needs_review": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Needs Review"
+          },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "ai_generated": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Ai Generated"
+          }
+        },
+        "type": "object",
+        "required": ["field_name"],
+        "title": "LabelDataFieldMetaUpdate"
+      },
+      "LabelDataFieldName": {
+        "type": "string",
+        "enum": [
+          "brand_name_en",
+          "brand_name_fr",
+          "product_name_en",
+          "product_name_fr",
+          "contacts",
+          "registration_number",
+          "lot_number",
+          "net_weight",
+          "volume"
+        ],
+        "title": "LabelDataFieldName",
+        "description": "Valid field names for LabelDataFieldMeta."
+      },
+      "LabelDataLite": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataLite"
+      },
+      "LabelDataUpdate": {
+        "properties": {
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "product_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name En"
+          },
+          "product_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Product Name Fr"
+          },
+          "contacts": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Contact" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Contacts"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "lot_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Lot Number"
+          },
+          "net_weight": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Net Weight"
+          },
+          "volume": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "title": "LabelDataUpdate"
+      },
+      "LabelDetail": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "product_id": {
+            "anyOf": [
+              { "type": "string", "format": "uuid" },
+              { "type": "null" }
+            ],
+            "title": "Product Id"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          },
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "product_type": { "$ref": "#/components/schemas/ProductTypePublic" },
+          "created_by": { "$ref": "#/components/schemas/UserPublic" },
+          "images": {
+            "items": { "$ref": "#/components/schemas/LabelImageDetail" },
+            "type": "array",
+            "title": "Images"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_by_id",
+          "review_status",
+          "created_at",
+          "updated_at",
+          "product_type",
+          "created_by"
+        ],
+        "title": "LabelDetail"
+      },
+      "LabelImageDetail": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "label_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Label Id"
+          },
+          "display_filename": { "type": "string", "title": "Display Filename" },
+          "file_path": { "type": "string", "title": "File Path" },
+          "sequence_order": { "type": "integer", "title": "Sequence Order" },
+          "status": { "$ref": "#/components/schemas/UploadStatus" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "current_image_count": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Current Image Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label_id",
+          "display_filename",
+          "file_path",
+          "sequence_order",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "LabelImageDetail"
+      },
+      "LabelListItem": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "label_data": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/LabelDataLite" },
+              { "type": "null" }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["id", "review_status", "created_at", "updated_at"],
+        "title": "LabelListItem",
+        "description": "Schema for label list items."
+      },
+      "LabelReviewStatusUpdate": {
+        "properties": {
+          "review_status": { "$ref": "#/components/schemas/ReviewStatus" }
+        },
+        "type": "object",
+        "required": ["review_status"],
+        "title": "LabelReviewStatusUpdate"
+      },
+      "LabelUpdate": {
+        "properties": {
+          "product_id": {
+            "anyOf": [
+              { "type": "string", "format": "uuid" },
+              { "type": "null" }
+            ],
+            "title": "Product Id"
+          }
+        },
+        "type": "object",
+        "title": "LabelUpdate"
+      },
+      "LimitOffsetPage_LabelListItem_": {
+        "properties": {
+          "items": {
+            "items": { "$ref": "#/components/schemas/LabelListItem" },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[LabelListItem]"
+      },
+      "LimitOffsetPage_ProductPublic_": {
+        "properties": {
+          "items": {
+            "items": { "$ref": "#/components/schemas/ProductPublic" },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[ProductPublic]"
+      },
+      "Message": {
+        "properties": { "message": { "type": "string", "title": "Message" } },
+        "type": "object",
+        "required": ["message"],
+        "title": "Message"
+      },
+      "NewPassword": {
+        "properties": {
+          "token": { "type": "string", "title": "Token" },
+          "new_password": { "type": "string", "title": "New Password" }
+        },
+        "type": "object",
+        "required": ["token", "new_password"],
+        "title": "NewPassword"
+      },
+      "NonComplianceDataItemPublic": {
+        "properties": {
+          "label_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Label Id"
+          },
+          "rule_id": { "type": "string", "format": "uuid", "title": "Rule Id" },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "is_compliant": {
+            "type": "boolean",
+            "title": "Is Compliant",
+            "default": false
+          },
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["label_id", "rule_id", "id"],
+        "title": "NonComplianceDataItemPublic"
+      },
+      "NonComplianceDataItemsList": {
+        "properties": {
+          "total": { "type": "integer", "title": "Total" },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NonComplianceDataItemPublic"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["total", "items"],
+        "title": "NonComplianceDataItemsList"
+      },
+      "Nutrient-Input": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Nutrient name in English as it appears on the label",
+            "examples": [
+              "Total Nitrogen (N)",
+              "Available Phosphate (P\u2082O\u2085)"
+            ]
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Nutrient name in French as it appears on the label",
+            "examples": [
+              "Azote Total (N)",
+              "Phosphate Disponible (P\u2082O\u2085)"
+            ]
+          },
+          "value": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Value",
+            "description": "Nutrient percentage value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Nutrient"
+      },
+      "Nutrient-Output": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En",
+            "description": "Nutrient name in English as it appears on the label",
+            "examples": [
+              "Total Nitrogen (N)",
+              "Available Phosphate (P\u2082O\u2085)"
+            ]
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr",
+            "description": "Nutrient name in French as it appears on the label",
+            "examples": [
+              "Azote Total (N)",
+              "Phosphate Disponible (P\u2082O\u2085)"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Value",
+            "description": "Nutrient percentage value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Unit of measurement",
+            "examples": ["%", "ppm", "mg/kg", "g/kg"]
+          }
+        },
+        "type": "object",
+        "required": ["name_en", "value", "unit"],
+        "title": "Nutrient"
+      },
+      "PresignedDownloadUrlResponse": {
+        "properties": {
+          "presigned_url": { "type": "string", "title": "Presigned Url" }
+        },
+        "type": "object",
+        "required": ["presigned_url"],
+        "title": "PresignedDownloadUrlResponse",
+        "description": "Response schema for presigned download URL request."
+      },
+      "PresignedUploadUrlResponse": {
+        "properties": {
+          "url": { "type": "string", "title": "Url" },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": ["url", "expires_at"],
+        "title": "PresignedUploadUrlResponse",
+        "description": "Response schema for presigned upload URL request."
+      },
+      "PresignedUrlRequest": {
+        "properties": {
+          "display_filename": { "type": "string", "title": "Display Filename" },
+          "content_type": {
+            "type": "string",
+            "enum": ["image/png", "image/jpeg", "image/webp"],
+            "title": "Content Type"
+          },
+          "sequence_order": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sequence Order"
+          }
+        },
+        "type": "object",
+        "required": ["display_filename", "content_type", "sequence_order"],
+        "title": "PresignedUrlRequest",
+        "description": "Request schema for individual presigned URL generation."
+      },
+      "PrivateUserCreate": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "password": { "type": "string", "title": "Password" },
+          "first_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Last Name"
+          }
+        },
+        "type": "object",
+        "required": ["email", "password"],
+        "title": "PrivateUserCreate"
+      },
+      "ProductCreate": {
+        "properties": {
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "product_type": { "type": "string", "title": "Product Type" },
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr"
+          }
+        },
+        "type": "object",
+        "required": ["product_type"],
+        "title": "ProductCreate"
+      },
+      "ProductPublic": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "brand_name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name En"
+          },
+          "brand_name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Brand Name Fr"
+          },
+          "name_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name Fr"
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at"],
+        "title": "ProductPublic"
+      },
+      "ProductTypePublic": {
+        "properties": {
+          "code": { "type": "string", "maxLength": 255, "title": "Code" },
+          "name_en": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Name En"
+          },
+          "name_fr": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Name Fr"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          },
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": ["code", "id", "created_at", "updated_at"],
+        "title": "ProductTypePublic"
+      },
+      "Readiness": {
+        "properties": {
+          "status": { "type": "string", "title": "Status" },
+          "database": { "type": "string", "title": "Database" }
+        },
+        "type": "object",
+        "required": ["status", "database"],
+        "title": "Readiness"
+      },
+      "ReviewStatus": {
+        "type": "string",
+        "enum": ["not_started", "in_progress", "completed"],
+        "title": "ReviewStatus"
+      },
+      "Token": {
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          }
+        },
+        "type": "object",
+        "required": ["access_token"],
+        "title": "Token"
+      },
+      "UpdatePassword": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 8,
+            "format": "password",
+            "title": "Current Password",
+            "writeOnly": true
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 8,
+            "format": "password",
+            "title": "New Password",
+            "writeOnly": true
+          }
+        },
+        "type": "object",
+        "required": ["current_password", "new_password"],
+        "title": "UpdatePassword"
+      },
+      "UploadCompletionRequest": {
+        "properties": {
+          "storage_file_path": {
+            "type": "string",
+            "title": "Storage File Path"
+          }
+        },
+        "type": "object",
+        "required": ["storage_file_path"],
+        "title": "UploadCompletionRequest",
+        "description": "Request schema for upload completion notification."
+      },
+      "UploadStatus": {
+        "type": "string",
+        "enum": ["pending", "completed"],
+        "title": "UploadStatus"
+      },
+      "UserCreate": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 255,
+            "format": "email",
+            "title": "Email"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          },
+          "is_superuser": {
+            "type": "boolean",
+            "title": "Is Superuser",
+            "default": false
+          },
+          "first_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Last Name"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 8,
+            "format": "password",
+            "title": "Password",
+            "writeOnly": true
+          }
+        },
+        "type": "object",
+        "required": ["email", "password"],
+        "title": "UserCreate"
+      },
+      "UserPublic": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 255,
+            "format": "email",
+            "title": "Email"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          },
+          "is_superuser": {
+            "type": "boolean",
+            "title": "Is Superuser",
+            "default": false
+          },
+          "first_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Last Name"
+          },
+          "id": { "type": "string", "format": "uuid", "title": "Id" }
+        },
+        "type": "object",
+        "required": ["email", "id"],
+        "title": "UserPublic"
+      },
+      "UserUpdate": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255, "format": "email" },
+              { "type": "null" }
+            ],
+            "title": "Email"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 8,
+                "format": "password",
+                "writeOnly": true
+              },
+              { "type": "null" }
+            ],
+            "title": "Password"
+          },
+          "is_active": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Is Active"
+          },
+          "is_superuser": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Is Superuser"
+          },
+          "first_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Last Name"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdate"
+      },
+      "UserUpdateMe": {
+        "properties": {
+          "first_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255 },
+              { "type": "null" }
+            ],
+            "title": "Last Name"
+          },
+          "email": {
+            "anyOf": [
+              { "type": "string", "maxLength": 255, "format": "email" },
+              { "type": "null" }
+            ],
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdateMe"
+      },
+      "UsersPublic": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/UserPublic" },
+            "type": "array",
+            "title": "Data"
+          },
+          "count": { "type": "integer", "title": "Count" }
+        },
+        "type": "object",
+        "required": ["data", "count"],
+        "title": "UsersPublic"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": { "scopes": {}, "tokenUrl": "/api/v1/login/access-token" }
+        }
+      }
+    }
+  }
+}

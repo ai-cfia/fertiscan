@@ -1,0 +1,139 @@
+{
+  "admin": {
+    "addUser": "Add User",
+    "pageTitle": "Admin - Label Inspection",
+    "pagination": {
+      "loading": "Loading...",
+      "page": "Page {{current}} of {{total}}"
+    },
+    "table": {
+      "actions": "Actions",
+      "active": "Active",
+      "email": "Email",
+      "fullName": "Full name",
+      "inactive": "Inactive",
+      "notAvailable": "N/A",
+      "role": "Role",
+      "status": "Status",
+      "superuser": "Superuser",
+      "user": "User",
+      "you": "You"
+    },
+    "usersManagement": "Users Management"
+  },
+  "app": {
+    "title": "Label Inspection"
+  },
+  "aria": {
+    "navigation": "navigation",
+    "openDrawer": "open drawer"
+  },
+  "backend": {
+    "unavailable": "Backend unavailable. Some features may not work. Please try again later."
+  },
+  "button": {
+    "clearAll": "Clear All",
+    "dismiss": "Dismiss",
+    "goBack": "Go Back",
+    "label": "Label",
+    "next": "Next",
+    "previous": "Previous",
+    "retry": "Retry",
+    "upload": "Upload Files",
+    "uploading": "Uploading...",
+    "viewAll": "View All"
+  },
+  "labels": {
+    "errorOccurred": "An error occurred",
+    "loadFailed": "Failed to load labels",
+    "loadFailedRetry": "Failed to load labels. Please try again."
+  },
+  "language": {
+    "en": {
+      "ariaLabel": "Switch to English"
+    },
+    "fr": {
+      "ariaLabel": "Switch to French"
+    },
+    "switcher": {
+      "ariaLabel": "Language switcher"
+    }
+  },
+  "notFound": {
+    "message": "The page you are looking for was not found.",
+    "title": "Oops!"
+  },
+  "products": {
+    "create": {
+      "form": {
+        "brandNameEn": {
+          "helperText": "The brand name in English (optional)",
+          "label": "Brand Name (EN)",
+          "maxLength": "Brand name (EN) must be 100 characters or less"
+        },
+        "brandNameFr": {
+          "helperText": "The brand name in French (optional)",
+          "label": "Brand Name (FR)",
+          "maxLength": "Brand name (FR) must be 100 characters or less"
+        },
+        "cancel": "Cancel",
+        "cancelDialog": {
+          "discard": "Discard Changes",
+          "keepEditing": "Keep Editing",
+          "message": "You have unsaved changes. Are you sure you want to leave this page?",
+          "title": "Discard Changes?"
+        },
+        "error": "Failed to create product. Please try again.",
+        "nameEn": {
+          "helperText": "The product name in English (optional)",
+          "label": "Product Name (EN)",
+          "maxLength": "Product name (EN) must be 200 characters or less"
+        },
+        "nameFr": {
+          "helperText": "The product name in French (optional)",
+          "label": "Product Name (FR)",
+          "maxLength": "Product name (FR) must be 200 characters or less"
+        },
+        "registrationNumber": {
+          "checking": "Checking...",
+          "duplicate": "A product with this registration number already exists.",
+          "helperText": "The official registration number assigned to this product",
+          "invalidFormat": "Registration number can only contain letters, numbers, spaces, and hyphens",
+          "label": "Registration Number",
+          "maxLength": "Registration number must be 50 characters or less",
+          "required": "Registration number is required"
+        },
+        "submit": "Create Product",
+        "success": "Product created successfully"
+      },
+      "pageTitle": "Create New Product",
+      "title": "Create New Product"
+    },
+    "createNew": "Product"
+  },
+  "settings": {
+    "pageTitle": "Settings - Label Inspection",
+    "sections": {
+      "appearance": "Appearance",
+      "changePassword": "Change Password",
+      "deleteAccount": "Delete Account",
+      "userInformation": "User Information"
+    },
+    "tabs": {
+      "appearance": "Appearance",
+      "dangerZone": "Danger zone",
+      "myProfile": "My profile",
+      "password": "Password"
+    },
+    "title": "User Settings"
+  },
+  "sidebar": {
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "labels": "Labels",
+    "loggedInAs": "Logged in as: {{email}}",
+    "logOut": "Log Out",
+    "products": "Products",
+    "userSettings": "User Settings"
+  }
+}

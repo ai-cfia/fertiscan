@@ -1,7 +1,5 @@
 # Testing
 
-To run the tests, use the following command:
+This monorepo contains multiple components. See component-specific testing documentation:
 
-```sh
-python -m unittest discover
-```
+- [Backend Testing](./backend/TESTING.md)

@@ -1,0 +1,153 @@
+# Local copy of ai-cfia/github-workflows workflow with continue-on-error
+# TODO: Remove this once the upstream workflow supports non-blocking builds
+name: Build and Push Container
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        required: false
+        type: string
+        default: "."
+      container-name:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+      release-version:
+        required: false
+        type: string
+        default: "latest"
+      registry:
+        required: true
+        type: string
+      dockerfile-folder-path:
+        required: false
+        type: string
+
+jobs:
+  build-push-image:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v6
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to the github container registry (GCR)
+        uses: docker/login-action@3227f5311cb93ffd14d13e65d8cc400d30f4dd8a
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-buildx
+      - name: Extract branch name
+        shell: bash
+        id: extract_branch_name
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          CLEAN_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/[\/\\]/-/g')
+          echo "clean_branch_name=$CLEAN_BRANCH_NAME" >> $GITHUB_ENV
+          echo "clean_branch_name=$CLEAN_BRANCH_NAME" >> $GITHUB_OUTPUT
+      - name: Build and push (unmerged)
+        id: docker_build_and_tag_unmerged
+        if: github.event.pull_request.merged == false
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ github.event.number || github.run_number }}
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.tag }}
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ steps.extract_branch_name.outputs.clean_branch_name }}
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.release-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+      - name: Build and push (merged)
+        id: docker_build_and_tag_merged
+        if: github.event.pull_request.merged == true
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.tag }}
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ github.event.pull_request.base.ref }}
+            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.release-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+      - name: Refresh Cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Image digest
+        run: |
+          if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+            echo "${{ steps.docker_build_and_tag_merged.outputs.digest }}"
+          else
+            echo "${{ steps.docker_build_and_tag_unmerged.outputs.digest }}"
+          fi
+      - name: Generate build summary
+        run: |
+          echo "🐳 Docker image built and pushed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "📋 **Image Details:**" >> $GITHUB_STEP_SUMMARY
+          echo "- **Registry:** ${{ inputs.registry }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image:** ${{ inputs.container-name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tags:** ${{ inputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  remove-old-image:
+    name: Remove Old Image
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: build-push-image
+    if: needs.build-push-image.result == 'success'
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.14
+      - name: Install remove-previous-image
+        run: |
+          python -m pip install --user \
+            git+https://$USER:$USER_TOKEN@github.com/ai-cfia/devops.git@main
+        env:
+          USER: ${{ secrets.USER }}
+          USER_TOKEN: ${{ secrets.USER_TOKEN }}
+      - name: Access user site-packages
+        run: |
+          USER_SITE=$(python -m site --user-site)
+          echo "Path to site-packages is $USER_SITE"
+          echo "USER_SITE=$USER_SITE" >> $GITHUB_ENV
+      - name: Delete the previous image (unmerged)
+        if: github.event.pull_request.merged == false
+        continue-on-error: true
+        run: python $USER_SITE/remove-previous-image/remove_previous_image.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY: ${{ inputs.registry }}
+          CONTAINER_NAME: ${{ inputs.container-name }}
+          UNIQUE_TAG: ${{ github.event.number }}
+          USER: ${{ github.actor }}
+          CURRENT_COMMIT: ${{ inputs.tag }}
+      - name: Delete the previous image (merged)
+        if: github.event.pull_request.merged == true
+        continue-on-error: true
+        run: python $USER_SITE/remove-previous-image/remove_previous_image.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY: ${{ inputs.registry }}
+          CONTAINER_NAME: ${{ inputs.container-name }}
+          UNIQUE_TAG: ${{ github.event.pull_request.base.ref }}
+          USER: ${{ github.actor }}
+          CURRENT_COMMIT: ${{ inputs.tag }}

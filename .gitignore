@@ -4,14 +4,27 @@ __pycache__/
 *$py.class
 
 # Samples
-samples/*
-logs/
+/samples/
+/logs/
 
 # VS Code
 .vscode
 
+# Cursor IDE
+.cursor/
+# .cursorignore
+
+# Tasks folder
+/tasks/
+
+# Experiments folder
+/experiments/
+
 # Upload folder
-uploads/
+/uploads/
+
+# Labels folder
+/labels/
 
 # C extensions
 *.so
@@ -19,6 +32,7 @@ uploads/
 # Distribution / packaging
 .Python
 build/
+!app/email-templates/build/
 develop-eggs/
 dist/
 downloads/
@@ -133,6 +147,7 @@ celerybeat.pid
 
 # Environments
 .env
+!.env.example
 .env.secrets
 .venv
 env/
@@ -176,3 +191,9 @@ cython_debug/
 end_to_end_pipeline_artifacts
 
 .DS_Store
+
+/template/
+
+# Local scripts (not version controlled)
+backend/scripts-local/
+frontend/scripts-local/

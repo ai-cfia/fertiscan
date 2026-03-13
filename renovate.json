@@ -1,13 +1,19 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "packageRules": [
-    {
-      "matchDatasources": ["github-releases"],
-      "matchDepNames": ["ai-cfia/ailab-datastore"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-fertiscan-datastore$"
-    }
-  ]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended",
+		":semanticCommits",
+		"mergeConfidence:all-badges"
+	],
+	"prCreation": "immediate",
+	"rebaseWhen": "behind-base-branch",
+	"dependencyDashboard": true,
+	"labels": ["dependencies"],
+	"docker": { "pinDigests": true },
+	"github-actions": { "pinDigests": true },
+	"packageRules": [
+		{ "matchPaths": ["frontend/**"], "labels": ["area:frontend"] },
+		{ "matchPaths": ["backend/**"], "labels": ["area:backend"] },
+		{ "matchPaths": [".github/**"], "labels": ["area:ci"] }
+	]
 }

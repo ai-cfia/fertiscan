@@ -1,0 +1,106 @@
+{
+  "brand_name": {
+    "en": "GreenGrow",
+    "fr": "CroissanceVerte"
+  },
+  "product_name": {
+    "en": "Premium All-Purpose Fertilizer",
+    "fr": "Engrais Polyvalent Premium"
+  },
+  "contacts": [
+    {
+      "type": "manufacturer",
+      "name": "GreenGrow Industries Inc.",
+      "address": "123 Agriculture Way, Ottawa, ON K1A 0B1",
+      "phone": "1-800-555-0123",
+      "email": "info@greengrow.ca",
+      "website": "www.greengrow.ca"
+    },
+    {
+      "type": "distributor",
+      "name": "Canadian Fertilizer Distributors Ltd.",
+      "address": "456 Farm Road, Toronto, ON M5H 2N2",
+      "phone": "1-416-555-0456",
+      "email": "sales@cfdl.ca",
+      "website": null
+    }
+  ],
+  "registration_number": "REG-2024-12345",
+  "lot_number": "LOT-2024-001",
+  "net_weight": "10 kg",
+  "volume": null,
+  "n": "10.0",
+  "p": "5.0",
+  "k": "5.0",
+  "ingredients": [
+    {
+      "name": {
+        "en": "Urea",
+        "fr": "Urée"
+      },
+      "value": "20.0",
+      "unit": "%"
+    },
+    {
+      "name": {
+        "en": "Triple Superphosphate",
+        "fr": "Triple Superphosphate"
+      },
+      "value": "15.0",
+      "unit": "%"
+    },
+    {
+      "name": {
+        "en": "Potassium Chloride",
+        "fr": "Chlorure de Potassium"
+      },
+      "value": "10.0",
+      "unit": "%"
+    }
+  ],
+  "guaranteed_analysis": {
+    "title": {
+      "en": "Minimum Guaranteed Analysis",
+      "fr": "Analyse Garantie Minimale"
+    },
+    "is_minimum": true,
+    "nutrients": [
+      {
+        "name": {
+          "en": "Total Nitrogen (N)",
+          "fr": "Azote Total (N)"
+        },
+        "value": "10.0",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Available Phosphate (P₂O₅)",
+          "fr": "Phosphate Disponible (P₂O₅)"
+        },
+        "value": "5.0",
+        "unit": "%"
+      },
+      {
+        "name": {
+          "en": "Soluble Potash (K₂O)",
+          "fr": "Potasse Soluble (K₂O)"
+        },
+        "value": "5.0",
+        "unit": "%"
+      }
+    ]
+  },
+  "precaution_statements": [
+    {
+      "en": "Keep out of reach of children. Avoid contact with skin and eyes.",
+      "fr": "Tenir hors de la portée des enfants. Éviter le contact avec la peau et les yeux."
+    }
+  ],
+  "directions_for_use_statements": [
+    {
+      "en": "Apply 2-3 cups per 100 square feet. Water thoroughly after application.",
+      "fr": "Appliquer 2-3 tasses par 100 pieds carrés. Arroser abondamment après l'application."
+    }
+  ]
+}

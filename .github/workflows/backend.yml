@@ -1,0 +1,79 @@
+# Reusable workflow for backend lint and test.
+# Called by ci.yml
+name: Backend
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.7"
+      - name: Install dependencies
+        working-directory: backend
+        run: uv sync --all-groups
+      - name: Run linting
+        working-directory: backend
+        run: bash scripts/lint.sh
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: changethis
+          POSTGRES_DB: app
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      ENVIRONMENT: testing
+      USE_MOCKED_STORAGE: "true"
+      SECRET_KEY: test-secret-key-min-32-chars-long-for-testing
+      FIRST_SUPERUSER: admin@example.com
+      FIRST_SUPERUSER_PASSWORD: changethis
+      POSTGRES_SERVER: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changethis
+      POSTGRES_DB: app
+      STORAGE_ENDPOINT: localhost:9000
+      STORAGE_BUCKET_NAME: fertiscan
+      STORAGE_REGION: ca-central-1
+      MINIO_ROOT_USER: changethis
+      MINIO_ROOT_PASSWORD: changethis
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.7"
+      - name: Install dependencies
+        working-directory: backend
+        run: uv sync --all-groups
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm install -g mjml
+      - name: Build email templates
+        working-directory: backend
+        run: bash scripts/build-email-templates.sh
+      - name: Run tests with coverage
+        working-directory: backend
+        run: bash scripts/test-cov.sh

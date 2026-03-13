@@ -1,0 +1,91 @@
+# Reusable workflow for E2E tests.
+# Called by ci.yml after backend/frontend pass.
+name: E2E
+
+on:
+  workflow_call:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Create backend .env
+        run: |
+          cat > backend/.env << 'EOF'
+          ENVIRONMENT=testing
+          SECRET_KEY=test-secret-key-min-32-chars-long-for-testing
+          FIRST_SUPERUSER=admin@example.com
+          FIRST_SUPERUSER_PASSWORD=changethis
+          POSTGRES_SERVER=db
+          POSTGRES_USER=postgres
+          POSTGRES_PASSWORD=changethis
+          POSTGRES_DB=app
+          STORAGE_ENDPOINT=minio:9000
+          STORAGE_BUCKET_NAME=fertiscan
+          MINIO_ROOT_USER=changethis
+          MINIO_ROOT_PASSWORD=changethis
+          EOF
+
+      - name: Start services
+        run: |
+          docker compose up -d --build --wait
+          echo "Waiting for services to be healthy..."
+          sleep 10
+
+      - name: Check services are running
+        run: |
+          docker compose ps
+          curl -f http://localhost:8000/healthz || exit 1
+          curl -f http://localhost:5173 || exit 1
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Check if E2E tests exist
+        id: check-tests
+        working-directory: frontend
+        run: |
+          if [ -d "tests" ] && [ "$(ls -A tests 2>/dev/null)" ]; then
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_tests=false" >> $GITHUB_OUTPUT
+            echo "## ⚠️ No E2E tests found" >> $GITHUB_STEP_SUMMARY
+            echo "Create tests in frontend/tests/ to enable E2E testing." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Run E2E tests
+        if: steps.check-tests.outputs.has_tests == 'true'
+        working-directory: frontend
+        run: npx playwright test --project=chromium
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: failure() && steps.check-tests.outputs.has_tests == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 7
+
+      - name: Collect logs on failure
+        if: failure()
+        run: |
+          echo "## Docker Compose Logs" >> $GITHUB_STEP_SUMMARY
+          docker compose logs --tail=100
+
+      - name: Stop services
+        if: always()
+        run: docker compose down -v

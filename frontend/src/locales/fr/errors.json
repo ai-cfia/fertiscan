@@ -1,0 +1,10 @@
+{
+  "fileType": {
+    "invalidTitle": "Types de fichiers invalides :"
+  },
+  "labels": {
+    "errorOccurred": "Une erreur s'est produite",
+    "loadFailed": "Échec du chargement des étiquettes",
+    "loadFailedRetry": "Échec du chargement des étiquettes. Veuillez réessayer."
+  }
+}

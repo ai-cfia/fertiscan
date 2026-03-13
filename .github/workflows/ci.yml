@@ -1,0 +1,132 @@
+# CI orchestrator - single entry point for all PR checks.
+# Calls reusable workflows based on changed paths.
+name: CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  actions: write
+  security-events: write
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend-workflow: ${{ steps.filter.outputs.backend-workflow }}
+      frontend-workflow: ${{ steps.filter.outputs.frontend-workflow }}
+      ci: ${{ steps.filter.outputs.ci }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+            backend-workflow:
+              - '.github/workflows/backend.yml'
+              - '.github/workflows/backend-build.yml'
+              - '.github/workflows/backend-sbom.yml'
+            frontend-workflow:
+              - '.github/workflows/frontend.yml'
+              - '.github/workflows/frontend-build.yml'
+              - '.github/workflows/frontend-sbom.yml'
+            ci:
+              - '.github/workflows/ci.yml'
+              - '.github/workflows/e2e.yml'
+              - '.github/workflows/build-push-container.yml'
+
+  secrets-scan:
+    uses: ./.github/workflows/secrets-scan.yml
+    secrets: inherit
+
+  repo-standard:
+    uses: ./.github/workflows/repo-standard.yml
+    secrets: inherit
+
+  auto-label:
+    uses: ./.github/workflows/auto-label-pr.yml
+
+  backend:
+    needs: changes
+    if: |
+      needs.changes.outputs.backend == 'true' ||
+      needs.changes.outputs.backend-workflow == 'true' ||
+      needs.changes.outputs.ci == 'true'
+    uses: ./.github/workflows/backend.yml
+    secrets: inherit
+
+  frontend:
+    needs: changes
+    if: |
+      needs.changes.outputs.frontend == 'true' ||
+      needs.changes.outputs.frontend-workflow == 'true' ||
+      needs.changes.outputs.ci == 'true'
+    uses: ./.github/workflows/frontend.yml
+    secrets: inherit
+
+  e2e:
+    needs: [backend, frontend]
+    if: |
+      always() &&
+      (needs.backend.result == 'success' || needs.frontend.result == 'success') &&
+      (needs.backend.result == 'success' || needs.backend.result == 'skipped') &&
+      (needs.frontend.result == 'success' || needs.frontend.result == 'skipped')
+    uses: ./.github/workflows/e2e.yml
+    secrets: inherit
+
+  backend-build:
+    name: Backend Build
+    needs: [changes, backend]
+    if: |
+      always() &&
+      needs.backend.result == 'success' &&
+      (needs.changes.outputs.backend == 'true' || needs.changes.outputs.backend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/backend-build.yml
+    secrets: inherit
+
+  frontend-build:
+    name: Frontend Build
+    needs: [changes, frontend]
+    if: |
+      always() &&
+      needs.frontend.result == 'success' &&
+      (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.frontend-workflow == 'true' || needs.changes.outputs.ci == 'true')
+    uses: ./.github/workflows/frontend-build.yml
+    secrets: inherit
+
+  backend-sbom:
+    name: Backend SBOM
+    needs: [changes]
+    if: |
+      needs.changes.outputs.backend == 'true' ||
+      needs.changes.outputs.backend-workflow == 'true' ||
+      needs.changes.outputs.ci == 'true'
+    uses: ./.github/workflows/backend-sbom.yml
+    secrets: inherit
+
+  frontend-sbom:
+    name: Frontend SBOM
+    needs: [changes]
+    if: |
+      needs.changes.outputs.frontend == 'true' ||
+      needs.changes.outputs.frontend-workflow == 'true' ||
+      needs.changes.outputs.ci == 'true'
+    uses: ./.github/workflows/frontend-sbom.yml
+    secrets: inherit
