@@ -63,7 +63,7 @@ jobs:
           fi
       - name: SBOM security scan
         id: scan
-        uses: anchore/scan-action@a00a05e63ba70a3938d40280dfe42bb5d8e16d19
+        uses: anchore/scan-action@f63dc5910033de4782c37de5c6d7c7767852844e
         with:
           sbom: frontend/sbom.json
           fail-build: false
