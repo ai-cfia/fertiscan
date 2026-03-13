@@ -6,25 +6,28 @@ on:
   workflow_call:
 
 jobs:
-  sbom-generation:
-      uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-backend-sbom.yml@main
-      secrets: inherit
-
-  sbom-scan:
-    name: SBOM Scan
-    needs: sbom-generation
+  sbom-check:
+    name: SBOM Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     continue-on-error: true
     permissions:
       security-events: write
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v6
-      - name: Check SBOM exists
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync --group dev --group sbom
+      - name: Generate SBOM
         run: |
-          if [ ! -f backend/sbom.json ]; then
-            echo "SBOM not found, skipping scan"
-            exit 0
-          fi
+          uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 \
+            --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
       - name: SBOM security scan
         id: scan
         uses: anchore/scan-action@f63dc5910033de4782c37de5c6d7c7767852844e
