@@ -6,26 +6,27 @@ on:
   workflow_call:
 
 jobs:
-  sbom-generation:
-    needs: [versions]
-    uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-frontend-sbom.yml@main
-    secrets: inherit
-
-  sbom-scan:
-    name: SBOM Scan
-    needs: sbom-generation
+  sbom-check:
+    name: SBOM Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     continue-on-error: true
     permissions:
       security-events: write
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v6
-      - name: Check SBOM exists
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Generate SBOM
         run: |
-          if [ ! -f frontend/sbom.json ]; then
-            echo "SBOM not found, skipping scan"
-            exit 0
-          fi
+          npx @cyclonedx/cyclonedx-npm package-lock.json \
+            --output-reproducible --package-lock-only -v --sv 1.6 -o sbom.json
+          echo "" >> sbom.json
       - name: SBOM security scan
         id: scan
         uses: anchore/scan-action@f63dc5910033de4782c37de5c6d7c7767852844e
