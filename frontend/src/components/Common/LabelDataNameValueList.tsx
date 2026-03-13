@@ -51,6 +51,7 @@ interface LabelDataNameValueListProps<
   valueLabel: string
   unitLabel: string
   valueType?: "number" | "text"
+  registrationNumberLabel?: string
 }
 
 // ============================== Component ==============================
@@ -78,6 +79,7 @@ export default function LabelDataNameValueList<
   valueLabel,
   unitLabel,
   valueType = "number",
+  registrationNumberLabel,
 }: LabelDataNameValueListProps<TFieldValues, TName>) {
   const { t } = useTranslation(["labels", "common"])
   const { fields, append, remove, replace } = useFieldArray({
@@ -104,10 +106,10 @@ export default function LabelDataNameValueList<
   const displayHelperText = error ? errorMessage : helperText
   const handleAdd = () => {
     append({
-      name_en: "",
-      name_fr: "",
+      name: { en: "", fr: "" },
       value: "",
       unit: "",
+      ...(registrationNumberLabel ? { registration_number: "" } : {}),
     } as Parameters<typeof append>[0])
   }
   return (
@@ -225,7 +227,7 @@ export default function LabelDataNameValueList<
                     }}
                   >
                     <Controller
-                      name={`${fieldName}.${index}.name_en` as any}
+                      name={`${fieldName}.${index}.name.en` as any}
                       control={control}
                       render={({ field }) => (
                         <TextField
@@ -251,7 +253,7 @@ export default function LabelDataNameValueList<
                     }}
                   >
                     <Controller
-                      name={`${fieldName}.${index}.name_fr` as any}
+                      name={`${fieldName}.${index}.name.fr` as any}
                       control={control}
                       render={({ field }) => (
                         <TextField
@@ -338,6 +340,37 @@ export default function LabelDataNameValueList<
                       )}
                     />
                   </Box>
+                  {registrationNumberLabel && (
+                    <Box
+                      sx={{
+                        flex: 0.5,
+                        minWidth: "120px",
+                      }}
+                    >
+                      <Controller
+                        name={
+                          `${fieldName}.${index}.registration_number` as any
+                        }
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label={registrationNumberLabel}
+                            fullWidth
+                            size="small"
+                            disabled={disabled}
+                            value={field.value ?? ""}
+                            onBlur={() => {
+                              field.onBlur()
+                              if (typeof field.value === "string") {
+                                field.onChange(field.value.trim())
+                              }
+                            }}
+                          />
+                        )}
+                      />
+                    </Box>
+                  )}
                   <IconButton
                     size="small"
                     onClick={() => {

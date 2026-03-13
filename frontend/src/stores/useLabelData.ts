@@ -7,7 +7,7 @@ export type AccordionSection =
   | "npk"
   | "ingredients"
   | "guaranteed"
-  | "safety"
+  | "statements"
 export type AccordionState = Record<AccordionSection, boolean>
 interface FieldMetadata {
   needs_review: boolean
@@ -59,7 +59,7 @@ const defaultAccordionState: AccordionState = {
   npk: true,
   ingredients: true,
   guaranteed: true,
-  safety: true,
+  statements: true,
 }
 const store = (set: any, get: any): LabelDataStore => ({
   // ============================== Accordion State ==============================

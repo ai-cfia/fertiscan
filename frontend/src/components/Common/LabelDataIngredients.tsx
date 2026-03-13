@@ -43,6 +43,10 @@ export default function LabelDataIngredients<
       nameFrLabel={t("data.ingredients.nameFr")}
       valueLabel={t("data.ingredients.value")}
       unitLabel={t("data.ingredients.unit")}
+      registrationNumberLabel={t(
+        "data.ingredients.registrationNumber",
+        "Registration number",
+      )}
     />
   )
 }

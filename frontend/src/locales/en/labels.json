@@ -57,12 +57,15 @@
     "extractAllIngredients": "Extract All Ingredients",
     "extractAllNPK": "Extract All NPK Fields",
     "extractAllSafety": "Extract All Safety Fields",
+    "extractAllStatements": "Extract All Statements",
     "extractField": "Extract with AI",
     "extractionAllSuccess": "All fields extracted successfully",
     "extractionFailed": "Extraction failed. Please try again.",
     "extractionNoImages": "No images available for extraction",
+    "extractionComplete": "Extraction complete",
     "extractionNoValue": "No value was extracted for this field",
     "extractionOnlyFertilizer": "Extraction is only available for fertilizer labels",
+    "extractionPartialSuccess": "Extracted {{success}} of {{total}} sections",
     "extractionSuccess": "Field extracted successfully",
     "fields": {
       "brandNameEn": "Brand Name (English)",
@@ -82,7 +85,18 @@
       "productNameEn": "Product Name (English)",
       "productNameFr": "Product Name (French)",
       "registrationNumber": "Registration Number",
-      "volume": "Volume"
+      "volume": "Volume",
+      "registrationClaimEn": "Registration claim (EN)",
+      "registrationClaimFr": "Registration claim (FR)",
+      "exemptionClaimEn": "Exemption claim (EN)",
+      "exemptionClaimFr": "Exemption claim (FR)",
+      "countryOfOrigin": "Country of origin",
+      "productClassification": "Product classification",
+      "productClassificationNone": "None",
+      "productClassification.fertilizer": "Fertilizer",
+      "productClassification.supplement": "Supplement",
+      "productClassification.growing_medium": "Growing medium",
+      "productClassification.treated_seed": "Treated seed"
     },
     "flagForReview": "Flag for review",
     "guaranteedAnalysis": {
@@ -114,13 +128,17 @@
       "productNameEn": "Enter the product name as it appears on the label",
       "productNameFr": "Enter the product name as it appears on the label",
       "registrationNumber": "Enter the product registration number",
-      "volume": "Enter volume with unit (e.g., 1 L, 500 ml)"
+      "volume": "Enter volume with unit (e.g., 1 L, 500 ml)",
+      "registrationClaim": "Verbatim registration claim text",
+      "exemptionClaim": "Verbatim exemption claim",
+      "countryOfOrigin": "Country where manufactured or imported from"
     },
     "ingredients": {
       "addIngredient": "Add Ingredient",
       "nameEn": "Name (English)",
       "nameFr": "Name (French)",
       "noIngredients": "No ingredients added",
+      "registrationNumber": "Registration number",
       "unit": "Unit",
       "value": "Value"
     },
@@ -156,9 +174,37 @@
       "npk": "NPK Analysis",
       "product": "Product",
       "registrationNumber": "Registration Number",
-      "safety": "Safety Information"
+      "safety": "Safety Information",
+      "statements": "Statements and Claims"
     },
     "title": "Label Review",
+    "statements": {
+      "add": "Add",
+      "en": "English",
+      "export_statements": "Export statements",
+      "experimental_statements": "Experimental statements",
+      "customer_formula_statements": "Customer formula statements",
+      "directions_for_use_statements": "Directions for use",
+      "empty": {
+        "precaution_statements": "No precaution statements",
+        "directions_for_use_statements": "No directions for use",
+        "customer_formula_statements": "No customer formula statements",
+        "intended_use_statements": "No intended use statements",
+        "processing_instruction_statements": "No processing instructions",
+        "experimental_statements": "No experimental statements",
+        "export_statements": "No export statements"
+      },
+      "fr": "French",
+      "intended_use_statements": "Intended use statements",
+      "precaution_statements": "Precaution statements",
+      "processing_instruction_statements": "Processing instructions",
+      "product_classification": {
+        "fertilizer": "Fertilizer",
+        "growing_medium": "Growing medium",
+        "supplement": "Supplement",
+        "treated_seed": "Treated seed"
+      }
+    },
     "validation": {
       "missingLabelData": "Label data must be created before marking review as complete",
       "missingRegistrationNumber": "Registration number is required to mark review as complete"

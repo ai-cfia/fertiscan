@@ -1,18 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { StatusCodes } from "http-status-codes"
+import pLimit from "p-limit"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { LabelsService, ProductsService, type ReviewStatus } from "@/api"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataStore } from "@/stores/useLabelData"
-import { isCommonField, isFertilizerField } from "@/utils/labelData"
+import {
+  EXTRACTION_SECTIONS,
+  isCommonField,
+  isFertilizerField,
+} from "@/utils/labelData"
 import {
   getErrorMessage,
   isAxiosErrorWithStatus,
 } from "@/utils/labelDataErrors"
 import {
-  transformBackendDataToFormValues,
-  transformGuaranteedAnalysis,
+  mergeForForm,
+  normalizeFieldValueForForm,
 } from "@/utils/labelDataHelpers"
 
 // ============================== Label Data Queries & Mutations ==============================
@@ -141,10 +146,7 @@ export function useLabelDataQueries(
         fertilizerDataMeta: fertilizerDataMeta || [],
       }
       if (form) {
-        const formValues = transformBackendDataToFormValues(
-          result.labelData,
-          result.fertilizerData,
-        )
+        const formValues = mergeForForm(result.labelData, result.fertilizerData)
         form.reset(formValues, { keepDirty: false })
       }
       return result
@@ -189,39 +191,12 @@ export function useLabelDataQueries(
     },
   })
   // --- Extract Mutation ---
+  const EXTRACTION_CONCURRENCY_LIMIT = 5
   // ............................. Process Extracted Field Helper .............................
   const processExtractedField = useCallback(
     (fieldName: string, value: any) => {
       if (!form) return
-      const listOrObjectFields = [
-        "contacts",
-        "ingredients",
-        "guaranteed_analysis",
-      ]
-      const isListOrObjectField = listOrObjectFields.includes(fieldName)
-      let formValue: any
-      if (value === undefined || value === null) {
-        if (fieldName === "guaranteed_analysis") {
-          formValue = {
-            title_en: "",
-            title_fr: "",
-            is_minimum: false,
-            nutrients: [],
-          }
-        } else if (isListOrObjectField) {
-          formValue = []
-        } else {
-          formValue = ""
-        }
-      } else {
-        if (fieldName === "guaranteed_analysis") {
-          formValue = transformGuaranteedAnalysis(value)
-        } else if (isListOrObjectField) {
-          formValue = value
-        } else {
-          formValue = typeof value === "string" ? value : value.toString()
-        }
-      }
+      const formValue = normalizeFieldValueForForm(fieldName, value)
       form.setValue(fieldName as any, formValue, {
         shouldDirty: true,
         shouldTouch: true,
@@ -311,6 +286,90 @@ export function useLabelDataQueries(
           setFieldExtracting(labelId, fieldName, false)
         })
       }
+      if (error instanceof Error) {
+        if (
+          error.message === "Extraction is only available for fertilizer labels"
+        ) {
+          showErrorToast(t("data.extractionOnlyFertilizer", { ns: "labels" }))
+        } else if (error.message === "No images available for extraction") {
+          showErrorToast(t("data.extractionNoImages", { ns: "labels" }))
+        } else {
+          showErrorToast(t("data.extractionFailed", { ns: "labels" }))
+        }
+      } else {
+        showErrorToast(t("data.extractionFailed", { ns: "labels" }))
+      }
+    },
+  })
+  // ............................. Extract All Sections Mutation .............................
+  const extractAllSectionsMutation = useMutation({
+    mutationFn: async () => {
+      if (!isFertilizer) {
+        throw new Error("Extraction is only available for fertilizer labels")
+      }
+      if (!hasImages) {
+        throw new Error("No images available for extraction")
+      }
+      const limit = pLimit(EXTRACTION_CONCURRENCY_LIMIT)
+      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
+        fieldNames.forEach((fieldName) => {
+          setFieldExtracting(labelId, fieldName, true)
+        })
+      })
+      setExtracting(labelId, true)
+      const promises = EXTRACTION_SECTIONS.map(({ fieldNames }) =>
+        limit(() =>
+          LabelsService.extractFertilizerFields({
+            path: { label_id: labelId },
+            body: { field_names: [...fieldNames] as any },
+          }),
+        ),
+      )
+      const results = await Promise.allSettled(promises)
+      let successSectionCount = 0
+      results.forEach((result, index) => {
+        const { fieldNames } = EXTRACTION_SECTIONS[index]
+        fieldNames.forEach((fieldName) => {
+          setFieldExtracting(labelId, fieldName, false)
+        })
+        if (result.status === "fulfilled" && result.value?.data) {
+          successSectionCount++
+          const extractedData = result.value.data as Record<string, any>
+          fieldNames.forEach((fieldName) => {
+            processExtractedField(fieldName, extractedData[fieldName])
+          })
+        }
+      })
+      setExtracting(labelId, false)
+      const totalSections = EXTRACTION_SECTIONS.length
+      const failCount = totalSections - successSectionCount
+      if (failCount === totalSections) {
+        showErrorToast(t("data.extractionFailed", { ns: "labels" }))
+      } else if (failCount > 0) {
+        showSuccessToast(
+          t("data.extractionPartialSuccess", {
+            ns: "labels",
+            defaultValue: "Extracted {{success}} of {{total}} sections",
+            success: successSectionCount,
+            total: totalSections,
+          }),
+        )
+      } else {
+        showSuccessToast(
+          t("data.extractionComplete", {
+            ns: "labels",
+            defaultValue: "Extraction complete",
+          }),
+        )
+      }
+    },
+    onError: (error) => {
+      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
+        fieldNames.forEach((fieldName) => {
+          setFieldExtracting(labelId, fieldName, false)
+        })
+      })
+      setExtracting(labelId, false)
       if (error instanceof Error) {
         if (
           error.message === "Extraction is only available for fertilizer labels"
@@ -487,41 +546,27 @@ export function useLabelDataQueries(
     const dirtyFields = form.formState.dirtyFields
     const commonFields: Record<string, any> = {}
     const fertilizerFields: Record<string, any> = {}
-    const trimmedFormValues: Record<string, any> = {}
-    const listOrObjectFields = [
-      "contacts",
-      "ingredients",
-      "guaranteed_analysis",
-    ]
-    const decimalFields = ["n", "p", "k"]
-    Object.keys(formValues).forEach((fieldName) => {
-      const value = formValues[fieldName as keyof typeof formValues]
-      const isListOrObjectField = listOrObjectFields.includes(fieldName)
-      const isDecimalField = decimalFields.includes(fieldName)
-      let processedValue: any
-      if (value === null || value === undefined) {
-        processedValue = isListOrObjectField ? null : ""
-      } else if (typeof value === "string") {
-        const trimmed = value.trim()
-        if (isDecimalField && trimmed === "") {
-          processedValue = null
-        } else {
-          processedValue = trimmed
-        }
-      } else if (Array.isArray(value)) {
-        processedValue = value
-      } else if (typeof value === "object") {
-        processedValue = value
-      } else {
-        processedValue = String(value).trim()
+    const toPayload = (fieldName: string, value: any): any => {
+      if (value === null || value === undefined) return value
+      if (["n", "p", "k"].includes(fieldName)) {
+        const s = typeof value === "string" ? value.trim() : String(value)
+        return s === "" ? null : value
       }
-      trimmedFormValues[fieldName] = processedValue
-      if ((dirtyFields as Record<string, any>)[fieldName]) {
-        if (isCommonField(fieldName)) {
-          commonFields[fieldName] = processedValue
-        } else if (isFertilizerField(fieldName)) {
-          fertilizerFields[fieldName] = processedValue
-        }
+      if (typeof value === "string") return value.trim()
+      return value
+    }
+    Object.keys(formValues).forEach((fieldName) => {
+      if (!(dirtyFields as Record<string, any>)[fieldName]) return
+      if (isCommonField(fieldName)) {
+        commonFields[fieldName] = toPayload(
+          fieldName,
+          formValues[fieldName as keyof typeof formValues],
+        )
+      } else if (isFertilizerField(fieldName)) {
+        fertilizerFields[fieldName] = toPayload(
+          fieldName,
+          formValues[fieldName as keyof typeof formValues],
+        )
       }
     })
     try {
@@ -535,7 +580,7 @@ export function useLabelDataQueries(
         )
       }
       await Promise.all(promises)
-      form.reset(trimmedFormValues, { keepDirty: false })
+      form.reset(form.getValues(), { keepDirty: false })
       showSuccessToast(t("data.saved", { ns: "labels" }))
     } catch (error) {
       const errorMessage = getErrorMessage(error, t)
@@ -567,6 +612,7 @@ export function useLabelDataQueries(
     createFertilizerDataMutation,
     updateReviewStatusMutation,
     extractFieldMutation,
+    extractAllSectionsMutation,
     toggleReviewMutation,
     updateCommonDataMutation,
     updateFertilizerDataMutation,

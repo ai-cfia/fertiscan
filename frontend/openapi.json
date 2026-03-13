@@ -794,12 +794,66 @@
         }
       }
     },
-    "/api/v1/labels/{label_id}/verify": {
+    "/api/v1/labels/{label_id}/evaluate-non-compliance": {
       "get": {
         "tags": ["labels"],
-        "summary": "Verify Rule",
-        "description": "Verify non-compliance data item of the label.",
-        "operationId": "labels_verify_rule",
+        "summary": "Evaluate Non Compliance",
+        "description": "Evaluate non-compliance of the label against specified rules.",
+        "operationId": "labels_evaluate_non_compliance",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "requirement_ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": { "type": "string", "format": "uuid" }
+                },
+                { "type": "null" }
+              ],
+              "title": "Requirement Ids"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ComplianceResults" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/non_compliance_data_items": {
+      "post": {
+        "tags": ["labels"],
+        "summary": "Create Compliance",
+        "description": "Create a new compliance result.",
+        "operationId": "labels_create_compliance",
         "security": [{ "OAuth2PasswordBearer": [] }],
         "parameters": [
           {
@@ -813,14 +867,350 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NonComplianceDataItemPayload"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NonComplianceDataItemsList"
+                  "$ref": "#/components/schemas/NonComplianceDataItemPublic"
                 }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["labels"],
+        "summary": "Reads Compliances",
+        "description": "Read compliance results for a label with optional filters.",
+        "operationId": "labels_reads_compliances",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          },
+          {
+            "name": "note",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Note"
+            }
+          },
+          {
+            "name": "description_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Description En"
+            }
+          },
+          {
+            "name": "description_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Description Fr"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "$ref": "#/components/schemas/ComplianceStatus" },
+                { "type": "null" }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "start_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Created At"
+            }
+          },
+          {
+            "name": "end_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Created At"
+            }
+          },
+          {
+            "name": "start_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Updated At"
+            }
+          },
+          {
+            "name": "end_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Updated At"
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Order By"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "desc", "title": "Order" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_NonComplianceDataItemPublic_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labels/{label_id}/non_compliance_data_items/{requirement_id}": {
+      "get": {
+        "tags": ["labels"],
+        "summary": "Read Compliance By Rule",
+        "description": "Read compliance result for a label and a specific rule.",
+        "operationId": "labels_read_compliance_by_rule",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "requirement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Requirement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonComplianceDataItemPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["labels"],
+        "summary": "Update Compliance",
+        "description": "Update a non-compliance data item for a given label and rule.",
+        "operationId": "labels_update_compliance",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "requirement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Requirement Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNonComplianceDataItemPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonComplianceDataItemPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["labels"],
+        "summary": "Delete Compliance",
+        "description": "Delete a non-compliance data item for a given label and rule.",
+        "operationId": "labels_delete_compliance",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Label Id"
+            }
+          },
+          {
+            "name": "requirement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Requirement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -1775,11 +2165,7 @@
             "required": false,
             "schema": {
               "anyOf": [
-                {
-                  "type": "string",
-                  "maxLength": 50,
-                  "pattern": "^[a-zA-Z0-9\\s-]+$"
-                },
+                { "type": "string", "maxLength": 255 },
                 { "type": "null" }
               ],
               "title": "Registration Number"
@@ -2029,6 +2415,203 @@
         }
       }
     },
+    "/api/v1/requirements": {
+      "get": {
+        "tags": ["requirements"],
+        "summary": "Read Requirements",
+        "description": "List requirements with optional filters.",
+        "operationId": "requirements_read_requirements",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size limit",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size limit"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          },
+          {
+            "name": "legislation_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "uuid" },
+                { "type": "null" }
+              ],
+              "title": "Legislation Id"
+            }
+          },
+          {
+            "name": "title_en",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Title En"
+            }
+          },
+          {
+            "name": "title_fr",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "maxLength": 255 },
+                { "type": "null" }
+              ],
+              "title": "Title Fr"
+            }
+          },
+          {
+            "name": "start_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Created At"
+            }
+          },
+          {
+            "name": "end_created_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Created At"
+            }
+          },
+          {
+            "name": "start_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "Start Updated At"
+            }
+          },
+          {
+            "name": "end_updated_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ],
+              "title": "End Updated At"
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Order By"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "desc", "title": "Order" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_RequirementPublic_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/requirements/{requirement_id}": {
+      "get": {
+        "tags": ["requirements"],
+        "summary": "Read Requirement By Id",
+        "description": "Get requirement by ID.",
+        "operationId": "requirements_read_requirement_by_id",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "requirement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Requirement Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RequirementPublic" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/private/users/": {
       "post": {
         "tags": ["private"],
@@ -2066,6 +2649,22 @@
   },
   "components": {
     "schemas": {
+      "BilingualText": {
+        "properties": {
+          "en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "En",
+            "description": "The English text verbatim. Leave as null if not present."
+          },
+          "fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Fr",
+            "description": "The French text verbatim. Leave as null if not present."
+          }
+        },
+        "type": "object",
+        "title": "BilingualText"
+      },
       "Body_login_login_access_token": {
         "properties": {
           "grant_type": {
@@ -2095,6 +2694,47 @@
         "type": "object",
         "required": ["username", "password"],
         "title": "Body_login_login_access_token"
+      },
+      "ComplianceResult": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ComplianceStatus",
+            "description": "Outcome of the check: compliant, non_compliant, not_applicable, or inconclusive (requires human review)."
+          },
+          "explanation": {
+            "$ref": "#/components/schemas/BilingualText",
+            "description": "Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements."
+          }
+        },
+        "type": "object",
+        "required": ["status", "explanation"],
+        "title": "ComplianceResult"
+      },
+      "ComplianceResults": {
+        "properties": {
+          "total": { "type": "integer", "title": "Total" },
+          "results": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ComplianceResult"
+            },
+            "propertyNames": { "format": "uuid" },
+            "type": "object",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": ["total", "results"],
+        "title": "ComplianceResults"
+      },
+      "ComplianceStatus": {
+        "type": "string",
+        "enum": [
+          "compliant",
+          "non_compliant",
+          "not_applicable",
+          "inconclusive"
+        ],
+        "title": "ComplianceStatus"
       },
       "Contact": {
         "properties": {
@@ -2139,29 +2779,21 @@
       },
       "ExtractFertilizerFieldsOutput": {
         "properties": {
-          "brand_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name En",
-            "description": "Brand name in English",
-            "examples": ["GreenGrow"]
+          "brand_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ],
+            "description": "Brand name verbatim",
+            "examples": [{ "en": "GreenGrow" }]
           },
-          "brand_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name Fr",
-            "description": "Brand name in French",
-            "examples": ["CroissanceVerte"]
-          },
-          "product_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name En",
-            "description": "Product name in English",
-            "examples": ["Premium All-Purpose Fertilizer"]
-          },
-          "product_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name Fr",
-            "description": "Product name in French",
-            "examples": ["Engrais Polyvalent Premium"]
+          "product_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ],
+            "description": "Product name verbatim",
+            "examples": [{ "en": "Premium All-Purpose Fertilizer" }]
           },
           "contacts": {
             "anyOf": [
@@ -2177,8 +2809,15 @@
           "registration_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Registration Number",
-            "description": "Product registration number",
-            "examples": ["REG-2024-12345"]
+            "description": "Registration number of the product itself (not its individual ingredients).",
+            "examples": ["1234567F"]
+          },
+          "registration_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ],
+            "description": "Verbatim text where the product claims to be registered, even if no registration number is present."
           },
           "lot_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
@@ -2197,6 +2836,110 @@
             "title": "Volume",
             "description": "Volume with unit",
             "examples": ["1 L"]
+          },
+          "exemption_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ],
+            "description": "Verbatim claim of registration exemption (e.g., Section 18 mixture claims).",
+            "examples": [
+              { "en": "All ingredients in this mixture are registered" }
+            ]
+          },
+          "country_of_origin": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Country Of Origin",
+            "description": "Country where the product was manufactured or from which it was imported.",
+            "examples": ["Canada", "United States"]
+          },
+          "product_classification": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ProductClassification" },
+              { "type": "null" }
+            ],
+            "description": "Classify the product. 'fertilizer': contains N/P/K or plant food, sold as plant nutrient. 'supplement': improves soil or aids growth, but is not a fertilizer. 'growing_medium': a medium (e.g., potting mix) containing fertilizers/supplements. 'treated_seed': seeds treated with fertilizers/supplements."
+          },
+          "customer_formula_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Customer Formula Statements",
+            "description": "A 'customer formula fertilizer' is a fertilizer prepared to the specifications of the purchaser and sold only to that purchaser. Extract verbatim text identifying the product as such, including the purchaser's name or any signature references."
+          },
+          "intended_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Intended Use Statements",
+            "description": "Verbatim statements indicating intended use or target audience.",
+            "examples": [
+              [
+                { "en": "For industrial use only" },
+                { "en": "Not for retail sale" }
+              ]
+            ]
+          },
+          "processing_instruction_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Processing Instruction Statements",
+            "description": "Verbatim statements indicating the product requires further treatment, other than simple mixing or repackaging.",
+            "examples": [
+              [
+                { "en": "Requires further chemical processing" },
+                { "en": "For use as an ingredient in XYZ manufacture" }
+              ]
+            ]
+          },
+          "experimental_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Experimental Statements",
+            "description": "Verbatim statements indicating the product is for experimental, research, or trial purposes, including instructions to destroy the product or plants upon completion.",
+            "examples": [
+              [
+                { "en": "For experimental purposes only" },
+                {
+                  "en": "Residual product and plants must be destroyed after trial"
+                }
+              ]
+            ]
+          },
+          "export_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Export Statements",
+            "description": "Verbatim statements indicating that the product is not intended for sale or use in Canada and is intended for export only.",
+            "examples": [
+              [
+                { "en": "For export only" },
+                { "en": "Not for sale or use in Canada" }
+              ]
+            ]
           },
           "n": {
             "anyOf": [
@@ -2243,38 +2986,38 @@
               { "type": "null" }
             ],
             "title": "Ingredients",
-            "description": "List of ingredients with bilingual names, values and units"
+            "description": "Source materials or compounds the product is made from. This is NOT the guaranteed analysis section."
           },
           "guaranteed_analysis": {
             "anyOf": [
               { "$ref": "#/components/schemas/GuaranteedAnalysis-Output" },
               { "type": "null" }
             ],
-            "description": "Guaranteed analysis section with bilingual title and nutrients"
+            "description": "The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list."
           },
-          "caution_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution En",
-            "description": "Caution statements in English",
-            "examples": ["Keep out of reach of children"]
+          "precaution_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Precaution Statements",
+            "description": "Precaution statements verbatim",
+            "examples": [[{ "en": "Keep out of reach of children" }]]
           },
-          "caution_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution Fr",
-            "description": "Caution statements in French",
-            "examples": ["Tenir hors de la port\u00e9e des enfants"]
-          },
-          "instructions_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions En",
-            "description": "Usage instructions in English",
-            "examples": ["Apply 2-3 cups per 100 square feet"]
-          },
-          "instructions_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions Fr",
-            "description": "Usage instructions in French",
-            "examples": ["Appliquer 2-3 tasses par 100 pieds carr\u00e9s"]
+          "directions_for_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Directions For Use Statements",
+            "description": "Directions for use verbatim",
+            "examples": [[{ "en": "Apply 2-3 cups per 100 square feet" }]]
           }
         },
         "type": "object",
@@ -2334,21 +3077,81 @@
               { "type": "null" }
             ]
           },
-          "caution_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution En"
+          "precaution_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Precaution Statements"
           },
-          "caution_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution Fr"
+          "directions_for_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Directions For Use Statements"
           },
-          "instructions_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions En"
+          "customer_formula_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Customer Formula Statements"
           },
-          "instructions_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions Fr"
+          "intended_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Intended Use Statements"
+          },
+          "processing_instruction_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Processing Instruction Statements"
+          },
+          "experimental_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Experimental Statements"
+          },
+          "export_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Export Statements"
+          },
+          "product_classification": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ProductClassification" },
+              { "type": "null" }
+            ]
           }
         },
         "type": "object",
@@ -2405,21 +3208,81 @@
               { "type": "null" }
             ]
           },
-          "caution_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution En"
+          "precaution_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Precaution Statements"
           },
-          "caution_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution Fr"
+          "directions_for_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Directions For Use Statements"
           },
-          "instructions_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions En"
+          "customer_formula_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Customer Formula Statements"
           },
-          "instructions_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions Fr"
+          "intended_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Intended Use Statements"
+          },
+          "processing_instruction_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Processing Instruction Statements"
+          },
+          "experimental_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Experimental Statements"
+          },
+          "export_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Export Statements"
+          },
+          "product_classification": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ProductClassification" },
+              { "type": "null" }
+            ]
           }
         },
         "type": "object",
@@ -2433,10 +3296,14 @@
           "k",
           "ingredients",
           "guaranteed_analysis",
-          "caution_en",
-          "caution_fr",
-          "instructions_en",
-          "instructions_fr"
+          "precaution_statements",
+          "directions_for_use_statements",
+          "customer_formula_statements",
+          "intended_use_statements",
+          "processing_instruction_statements",
+          "experimental_statements",
+          "export_statements",
+          "product_classification"
         ],
         "title": "FertilizerLabelDataFieldName",
         "description": "Valid field names for FertilizerLabelDataMeta."
@@ -2528,21 +3395,81 @@
               { "type": "null" }
             ]
           },
-          "caution_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution En"
+          "precaution_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Precaution Statements"
           },
-          "caution_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Caution Fr"
+          "directions_for_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Directions For Use Statements"
           },
-          "instructions_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions En"
+          "customer_formula_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Customer Formula Statements"
           },
-          "instructions_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Instructions Fr"
+          "intended_use_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Intended Use Statements"
+          },
+          "processing_instruction_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Processing Instruction Statements"
+          },
+          "experimental_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Experimental Statements"
+          },
+          "export_statements": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/BilingualText" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Export Statements"
+          },
+          "product_classification": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ProductClassification" },
+              { "type": "null" }
+            ]
           }
         },
         "type": "object",
@@ -2550,17 +3477,9 @@
       },
       "GuaranteedAnalysis-Input": {
         "properties": {
-          "title_en": {
-            "type": "string",
-            "title": "Title En",
-            "description": "Section title in English from label",
-            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
-          },
-          "title_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Title Fr",
-            "description": "Section title in French from label",
-            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          "title": {
+            "$ref": "#/components/schemas/BilingualText",
+            "examples": [{ "en": "Minimum Guaranteed Analysis" }]
           },
           "is_minimum": {
             "type": "boolean",
@@ -2575,22 +3494,14 @@
           }
         },
         "type": "object",
-        "required": ["title_en", "is_minimum", "nutrients"],
+        "required": ["title", "is_minimum", "nutrients"],
         "title": "GuaranteedAnalysis"
       },
       "GuaranteedAnalysis-Output": {
         "properties": {
-          "title_en": {
-            "type": "string",
-            "title": "Title En",
-            "description": "Section title in English from label",
-            "examples": ["Minimum Guaranteed Analysis", "Guaranteed Analysis"]
-          },
-          "title_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Title Fr",
-            "description": "Section title in French from label",
-            "examples": ["Analyse Garantie Minimale", "Analyse Garantie"]
+          "title": {
+            "$ref": "#/components/schemas/BilingualText",
+            "examples": [{ "en": "Minimum Guaranteed Analysis" }]
           },
           "is_minimum": {
             "type": "boolean",
@@ -2605,7 +3516,7 @@
           }
         },
         "type": "object",
-        "required": ["title_en", "is_minimum", "nutrients"],
+        "required": ["title", "is_minimum", "nutrients"],
         "title": "GuaranteedAnalysis"
       },
       "HTTPValidationError": {
@@ -2627,15 +3538,9 @@
       },
       "Ingredient": {
         "properties": {
-          "name_en": {
-            "type": "string",
-            "title": "Name En",
-            "description": "Ingredient name in English as it appears on the label"
-          },
-          "name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Name Fr",
-            "description": "Ingredient name in French as it appears on the label"
+          "name": {
+            "$ref": "#/components/schemas/BilingualText",
+            "description": "Ingredient name verbatim"
           },
           "value": {
             "type": "string",
@@ -2647,10 +3552,16 @@
             "title": "Unit",
             "description": "Unit of measurement",
             "examples": ["%", "ppm", "mg/kg", "g/kg", "mm"]
+          },
+          "registration_number": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Registration Number",
+            "description": "Registration number of the product itself (not its individual ingredients).",
+            "examples": ["1234567F"]
           }
         },
         "type": "object",
-        "required": ["name_en", "value", "unit"],
+        "required": ["name", "value", "unit"],
         "title": "Ingredient"
       },
       "LabelCreate": {
@@ -2679,21 +3590,17 @@
       },
       "LabelData": {
         "properties": {
-          "brand_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name En"
+          "brand_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
-          "brand_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name Fr"
-          },
-          "product_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name En"
-          },
-          "product_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name Fr"
+          "product_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "contacts": {
             "anyOf": [
@@ -2706,8 +3613,17 @@
             "title": "Contacts"
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number"
+          },
+          "registration_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "lot_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
@@ -2720,6 +3636,16 @@
           "volume": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Volume"
+          },
+          "exemption_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
+          },
+          "country_of_origin": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Country Of Origin"
           }
         },
         "type": "object",
@@ -2727,21 +3653,17 @@
       },
       "LabelDataCreate": {
         "properties": {
-          "brand_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name En"
+          "brand_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
-          "brand_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name Fr"
-          },
-          "product_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name En"
-          },
-          "product_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name Fr"
+          "product_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "contacts": {
             "anyOf": [
@@ -2754,8 +3676,17 @@
             "title": "Contacts"
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number"
+          },
+          "registration_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "lot_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
@@ -2768,6 +3699,16 @@
           "volume": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Volume"
+          },
+          "exemption_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
+          },
+          "country_of_origin": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Country Of Origin"
           }
         },
         "type": "object",
@@ -2810,36 +3751,37 @@
       "LabelDataFieldName": {
         "type": "string",
         "enum": [
-          "brand_name_en",
-          "brand_name_fr",
-          "product_name_en",
-          "product_name_fr",
+          "brand_name",
+          "product_name",
           "contacts",
           "registration_number",
+          "registration_claim",
           "lot_number",
           "net_weight",
-          "volume"
+          "volume",
+          "exemption_claim",
+          "country_of_origin"
         ],
         "title": "LabelDataFieldName",
         "description": "Valid field names for LabelDataFieldMeta."
       },
       "LabelDataLite": {
         "properties": {
-          "brand_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name En"
+          "brand_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
-          "brand_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name Fr"
+          "product_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
-          "product_name_en": {
+          "registration_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name En"
-          },
-          "product_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name Fr"
+            "title": "Registration Number"
           }
         },
         "type": "object",
@@ -2847,21 +3789,17 @@
       },
       "LabelDataUpdate": {
         "properties": {
-          "brand_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name En"
+          "brand_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
-          "brand_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Brand Name Fr"
-          },
-          "product_name_en": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name En"
-          },
-          "product_name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Product Name Fr"
+          "product_name": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "contacts": {
             "anyOf": [
@@ -2874,8 +3812,17 @@
             "title": "Contacts"
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number"
+          },
+          "registration_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
           },
           "lot_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
@@ -2888,6 +3835,16 @@
           "volume": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Volume"
+          },
+          "exemption_claim": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BilingualText" },
+              { "type": "null" }
+            ]
+          },
+          "country_of_origin": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Country Of Origin"
           }
         },
         "type": "object",
@@ -3041,6 +3998,23 @@
         "required": ["items", "total", "limit", "offset"],
         "title": "LimitOffsetPage[LabelListItem]"
       },
+      "LimitOffsetPage_NonComplianceDataItemPublic_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NonComplianceDataItemPublic"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[NonComplianceDataItemPublic]"
+      },
       "LimitOffsetPage_ProductPublic_": {
         "properties": {
           "items": {
@@ -3055,6 +4029,21 @@
         "type": "object",
         "required": ["items", "total", "limit", "offset"],
         "title": "LimitOffsetPage[ProductPublic]"
+      },
+      "LimitOffsetPage_RequirementPublic_": {
+        "properties": {
+          "items": {
+            "items": { "$ref": "#/components/schemas/RequirementPublic" },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": { "type": "integer", "minimum": 0.0, "title": "Total" },
+          "limit": { "type": "integer", "minimum": 1.0, "title": "Limit" },
+          "offset": { "type": "integer", "minimum": 0.0, "title": "Offset" }
+        },
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "title": "LimitOffsetPage[RequirementPublic]"
       },
       "Message": {
         "properties": { "message": { "type": "string", "title": "Message" } },
@@ -3071,14 +4060,13 @@
         "required": ["token", "new_password"],
         "title": "NewPassword"
       },
-      "NonComplianceDataItemPublic": {
+      "NonComplianceDataItemPayload": {
         "properties": {
-          "label_id": {
+          "requirement_id": {
             "type": "string",
             "format": "uuid",
-            "title": "Label Id"
+            "title": "Requirement Id"
           },
-          "rule_id": { "type": "string", "format": "uuid", "title": "Rule Id" },
           "note": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Note"
@@ -3091,51 +4079,55 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Description Fr"
           },
-          "is_compliant": {
-            "type": "boolean",
-            "title": "Is Compliant",
-            "default": false
+          "status": {
+            "$ref": "#/components/schemas/ComplianceStatus",
+            "default": "inconclusive"
+          }
+        },
+        "type": "object",
+        "required": ["requirement_id"],
+        "title": "NonComplianceDataItemPayload"
+      },
+      "NonComplianceDataItemPublic": {
+        "properties": {
+          "label_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Label Id"
+          },
+          "requirement_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Requirement Id"
+          },
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ComplianceStatus",
+            "default": "inconclusive"
           },
           "id": { "type": "string", "format": "uuid", "title": "Id" }
         },
         "type": "object",
-        "required": ["label_id", "rule_id", "id"],
+        "required": ["label_id", "requirement_id", "id"],
         "title": "NonComplianceDataItemPublic"
-      },
-      "NonComplianceDataItemsList": {
-        "properties": {
-          "total": { "type": "integer", "title": "Total" },
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/NonComplianceDataItemPublic"
-            },
-            "type": "array",
-            "title": "Items"
-          }
-        },
-        "type": "object",
-        "required": ["total", "items"],
-        "title": "NonComplianceDataItemsList"
       },
       "Nutrient-Input": {
         "properties": {
-          "name_en": {
-            "type": "string",
-            "title": "Name En",
-            "description": "Nutrient name in English as it appears on the label",
-            "examples": [
-              "Total Nitrogen (N)",
-              "Available Phosphate (P\u2082O\u2085)"
-            ]
-          },
-          "name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Name Fr",
-            "description": "Nutrient name in French as it appears on the label",
-            "examples": [
-              "Azote Total (N)",
-              "Phosphate Disponible (P\u2082O\u2085)"
-            ]
+          "name": {
+            "$ref": "#/components/schemas/BilingualText",
+            "description": "Nutrient name verbatim",
+            "examples": [{ "en": "Total Nitrogen (N)" }]
           },
           "value": {
             "anyOf": [
@@ -3156,28 +4148,15 @@
           }
         },
         "type": "object",
-        "required": ["name_en", "value", "unit"],
+        "required": ["name", "value", "unit"],
         "title": "Nutrient"
       },
       "Nutrient-Output": {
         "properties": {
-          "name_en": {
-            "type": "string",
-            "title": "Name En",
-            "description": "Nutrient name in English as it appears on the label",
-            "examples": [
-              "Total Nitrogen (N)",
-              "Available Phosphate (P\u2082O\u2085)"
-            ]
-          },
-          "name_fr": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Name Fr",
-            "description": "Nutrient name in French as it appears on the label",
-            "examples": [
-              "Azote Total (N)",
-              "Phosphate Disponible (P\u2082O\u2085)"
-            ]
+          "name": {
+            "$ref": "#/components/schemas/BilingualText",
+            "description": "Nutrient name verbatim",
+            "examples": [{ "en": "Total Nitrogen (N)" }]
           },
           "value": {
             "type": "string",
@@ -3193,7 +4172,7 @@
           }
         },
         "type": "object",
-        "required": ["name_en", "value", "unit"],
+        "required": ["name", "value", "unit"],
         "title": "Nutrient"
       },
       "PresignedDownloadUrlResponse": {
@@ -3255,10 +4234,18 @@
         "required": ["email", "password"],
         "title": "PrivateUserCreate"
       },
+      "ProductClassification": {
+        "type": "string",
+        "enum": ["fertilizer", "supplement", "growing_medium", "treated_seed"],
+        "title": "ProductClassification"
+      },
       "ProductCreate": {
         "properties": {
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number"
           },
           "product_type": { "type": "string", "title": "Product Type" },
@@ -3303,7 +4290,10 @@
             "title": "Name Fr"
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number"
           },
           "created_at": {
@@ -3363,6 +4353,57 @@
         "required": ["status", "database"],
         "title": "Readiness"
       },
+      "RequirementPublic": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "legislation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Legislation Id"
+          },
+          "title_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title En"
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "guidance_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Guidance En"
+          },
+          "guidance_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Guidance Fr"
+          },
+          "created_at": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": ["id", "legislation_id"],
+        "title": "RequirementPublic"
+      },
       "ReviewStatus": {
         "type": "string",
         "enum": ["not_started", "in_progress", "completed"],
@@ -3380,6 +4421,30 @@
         "type": "object",
         "required": ["access_token"],
         "title": "Token"
+      },
+      "UpdateNonComplianceDataItemPayload": {
+        "properties": {
+          "note": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Note"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "status": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ComplianceStatus" },
+              { "type": "null" }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "UpdateNonComplianceDataItemPayload"
       },
       "UpdatePassword": {
         "properties": {

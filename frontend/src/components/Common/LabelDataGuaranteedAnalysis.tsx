@@ -130,7 +130,7 @@ export default function LabelDataGuaranteedAnalysis<
         >
           <Box sx={{ flex: 1 }}>
             <Controller
-              name={`${String(fieldName)}.title_en` as any}
+              name={`${String(fieldName)}.title.en` as any}
               control={control}
               render={({ field }) => (
                 <TextField
@@ -151,7 +151,7 @@ export default function LabelDataGuaranteedAnalysis<
           </Box>
           <Box sx={{ flex: 1 }}>
             <Controller
-              name={`${String(fieldName)}.title_fr` as any}
+              name={`${String(fieldName)}.title.fr` as any}
               control={control}
               render={({ field }) => (
                 <TextField

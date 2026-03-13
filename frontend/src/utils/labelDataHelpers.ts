@@ -34,6 +34,11 @@ export function getFieldMeta(
     }
   )
 }
+export function formPathToMetaFieldName(path: string): string {
+  const match = path.match(/^(.+?)\.(en|fr)$/)
+  if (match) return match[1]
+  return path
+}
 export function useNeedsReviewCount(
   labelDataMeta: any[] | undefined,
   fertilizerDataMeta: any[] | undefined,
@@ -56,68 +61,197 @@ export function useHasImages(label: any) {
     )
   }, [label])
 }
-export function isCommonFieldForReview(fieldName: string): boolean {
+export function isCommonFieldForReview(metaFieldName: string): boolean {
   return [
-    "brand_name_en",
-    "brand_name_fr",
-    "product_name_en",
-    "product_name_fr",
-    "registration_number",
-    "lot_number",
+    "brand_name",
+    "product_name",
     "contacts",
+    "registration_number",
+    "registration_claim",
+    "lot_number",
     "net_weight",
     "volume",
-  ].includes(fieldName)
+    "exemption_claim",
+    "country_of_origin",
+  ].includes(metaFieldName)
 }
-// ============================== Form Value Transformation ==============================
-export function transformGuaranteedAnalysis(val: any) {
-  if (!val) {
+// ============================== Minimal Form Helpers ==============================
+function emptyBilingual(): { en: string; fr: string } {
+  return { en: "", fr: "" }
+}
+function ensureBilingual(val: any): { en: string; fr: string } {
+  if (!val || typeof val !== "object") return emptyBilingual()
+  return {
+    en: val.en ?? "",
+    fr: val.fr ?? "",
+  }
+}
+function ensureGuaranteedAnalysis(val: any): {
+  title: { en: string; fr: string }
+  is_minimum: boolean
+  nutrients: Array<{
+    name: { en: string; fr: string }
+    value: string
+    unit: string
+  }>
+} {
+  if (!val || typeof val !== "object") {
     return {
-      title_en: "",
-      title_fr: "",
+      title: emptyBilingual(),
       is_minimum: false,
       nutrients: [],
     }
   }
   return {
-    title_en: val.title_en ?? "",
-    title_fr: val.title_fr ?? "",
+    title: ensureBilingual(val.title),
     is_minimum: val.is_minimum ?? false,
-    nutrients: (val.nutrients ?? []).map((nutrient: any) => ({
-      name_en: nutrient.name_en ?? "",
-      name_fr: nutrient.name_fr ?? "",
-      value:
-        nutrient.value !== undefined && nutrient.value !== null
-          ? String(nutrient.value)
-          : "",
-      unit: nutrient.unit ?? "",
+    nutrients: (val.nutrients ?? []).map((n: any) => ({
+      name: ensureBilingual(n?.name),
+      value: n?.value != null ? String(n.value) : "",
+      unit: n?.unit ?? "",
     })),
   }
 }
-export function transformBackendDataToFormValues(
-  labelData: any,
-  fertilizerData: any,
-) {
+function ensureIngredient(i: any): {
+  name: { en: string; fr: string }
+  value: string
+  unit: string
+  registration_number: string
+} {
+  if (!i || typeof i !== "object")
+    return {
+      name: emptyBilingual(),
+      value: "",
+      unit: "",
+      registration_number: "",
+    }
   return {
-    brand_name_en: labelData?.brand_name_en ?? "",
-    brand_name_fr: labelData?.brand_name_fr ?? "",
-    product_name_en: labelData?.product_name_en ?? "",
-    product_name_fr: labelData?.product_name_fr ?? "",
-    registration_number: labelData?.registration_number ?? "",
-    lot_number: labelData?.lot_number ?? "",
-    contacts: labelData?.contacts ?? [],
-    net_weight: labelData?.net_weight ?? "",
-    volume: labelData?.volume ?? "",
-    n: fertilizerData?.n?.toString() ?? "",
-    p: fertilizerData?.p?.toString() ?? "",
-    k: fertilizerData?.k?.toString() ?? "",
-    ingredients: fertilizerData?.ingredients ?? [],
-    guaranteed_analysis: transformGuaranteedAnalysis(
-      fertilizerData?.guaranteed_analysis,
-    ),
-    caution_en: fertilizerData?.caution_en ?? "",
-    caution_fr: fertilizerData?.caution_fr ?? "",
-    instructions_en: fertilizerData?.instructions_en ?? "",
-    instructions_fr: fertilizerData?.instructions_fr ?? "",
+    name: ensureBilingual(i.name),
+    value: i.value ?? "",
+    unit: i.unit ?? "",
+    registration_number: i.registration_number ?? "",
   }
+}
+function ensureStatementList(
+  arr: any[] | null | undefined,
+): Array<{ en: string; fr: string }> {
+  if (!Array.isArray(arr)) return []
+  return arr.map((x) => ensureBilingual(x))
+}
+export function getDefaultFormValues() {
+  return {
+    brand_name: emptyBilingual(),
+    product_name: emptyBilingual(),
+    contacts: [] as any[],
+    registration_number: "",
+    registration_claim: emptyBilingual(),
+    lot_number: "",
+    net_weight: "",
+    volume: "",
+    exemption_claim: emptyBilingual(),
+    country_of_origin: "",
+    n: "",
+    p: "",
+    k: "",
+    ingredients: [] as any[],
+    guaranteed_analysis: ensureGuaranteedAnalysis(null),
+    precaution_statements: [] as Array<{ en: string; fr: string }>,
+    directions_for_use_statements: [] as Array<{ en: string; fr: string }>,
+    customer_formula_statements: [] as Array<{ en: string; fr: string }>,
+    intended_use_statements: [] as Array<{ en: string; fr: string }>,
+    processing_instruction_statements: [] as Array<{ en: string; fr: string }>,
+    experimental_statements: [] as Array<{ en: string; fr: string }>,
+    export_statements: [] as Array<{ en: string; fr: string }>,
+    product_classification: null as string | null,
+  }
+}
+export function mergeForForm(labelData: any, fertilizerData: any) {
+  const ld = labelData ?? {}
+  const fd = fertilizerData ?? {}
+  return {
+    brand_name: ensureBilingual(ld.brand_name),
+    product_name: ensureBilingual(ld.product_name),
+    contacts: ld.contacts ?? [],
+    registration_number: ld.registration_number ?? "",
+    registration_claim: ensureBilingual(ld.registration_claim),
+    lot_number: ld.lot_number ?? "",
+    net_weight: ld.net_weight ?? "",
+    volume: ld.volume ?? "",
+    exemption_claim: ensureBilingual(ld.exemption_claim),
+    country_of_origin: ld.country_of_origin ?? "",
+    n: fd.n != null ? String(fd.n) : "",
+    p: fd.p != null ? String(fd.p) : "",
+    k: fd.k != null ? String(fd.k) : "",
+    ingredients: (fd.ingredients ?? []).map(ensureIngredient),
+    guaranteed_analysis: ensureGuaranteedAnalysis(fd.guaranteed_analysis),
+    precaution_statements: ensureStatementList(fd.precaution_statements),
+    directions_for_use_statements: ensureStatementList(
+      fd.directions_for_use_statements,
+    ),
+    customer_formula_statements: ensureStatementList(
+      fd.customer_formula_statements,
+    ),
+    intended_use_statements: ensureStatementList(fd.intended_use_statements),
+    processing_instruction_statements: ensureStatementList(
+      fd.processing_instruction_statements,
+    ),
+    experimental_statements: ensureStatementList(fd.experimental_statements),
+    export_statements: ensureStatementList(fd.export_statements),
+    product_classification: fd.product_classification ?? null,
+  }
+}
+export function normalizeFieldValueForForm(fieldName: string, value: any): any {
+  if (value === undefined || value === null) {
+    if (fieldName === "guaranteed_analysis")
+      return ensureGuaranteedAnalysis(null)
+    if (fieldName === "contacts") return []
+    if (fieldName === "ingredients") return []
+    const statementLists = [
+      "precaution_statements",
+      "directions_for_use_statements",
+      "customer_formula_statements",
+      "intended_use_statements",
+      "processing_instruction_statements",
+      "experimental_statements",
+      "export_statements",
+    ]
+    if (statementLists.includes(fieldName)) return []
+    if (["n", "p", "k"].includes(fieldName)) return ""
+    if (fieldName === "product_classification") return null
+    if (
+      [
+        "brand_name",
+        "product_name",
+        "registration_claim",
+        "exemption_claim",
+      ].includes(fieldName)
+    )
+      return emptyBilingual()
+    return ""
+  }
+  if (fieldName === "guaranteed_analysis")
+    return ensureGuaranteedAnalysis(value)
+  if (fieldName === "contacts") return value
+  if (fieldName === "ingredients") return (value ?? []).map(ensureIngredient)
+  const statementLists = [
+    "precaution_statements",
+    "directions_for_use_statements",
+    "customer_formula_statements",
+    "intended_use_statements",
+    "processing_instruction_statements",
+    "experimental_statements",
+    "export_statements",
+  ]
+  if (statementLists.includes(fieldName)) return ensureStatementList(value)
+  if (
+    [
+      "brand_name",
+      "product_name",
+      "registration_claim",
+      "exemption_claim",
+    ].includes(fieldName)
+  )
+    return ensureBilingual(value)
+  if (typeof value === "string") return value
+  return value != null ? String(value) : ""
 }

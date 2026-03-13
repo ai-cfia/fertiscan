@@ -27,7 +27,7 @@ import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysis
 import IngredientsSection from "@/components/LabelData/IngredientsSection"
 import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
 import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
-import SafetyInformationSection from "@/components/LabelData/SafetyInformationSection"
+import StatementsAndClaimsSection from "@/components/LabelData/StatementsAndClaimsSection"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
@@ -38,9 +38,10 @@ import {
   isAxiosErrorWithStatus,
 } from "@/utils/labelDataErrors"
 import {
+  formPathToMetaFieldName,
+  getDefaultFormValues,
   getFieldMeta,
   isCommonFieldForReview,
-  transformBackendDataToFormValues,
   useHasImages,
   useLabelDataMetaMap,
 } from "@/utils/labelDataHelpers"
@@ -105,7 +106,7 @@ function LabelData() {
   const { clearActions } = useAppBarActionsStore()
   const { showBanner, dismissBanner } = useBanner()
   const form = useForm({
-    defaultValues: transformBackendDataToFormValues(undefined, undefined),
+    defaultValues: getDefaultFormValues(),
   })
   const {
     label,
@@ -119,6 +120,7 @@ function LabelData() {
     createFertilizerDataMutation,
     updateReviewStatusMutation,
     extractFieldMutation,
+    extractAllSectionsMutation,
     toggleReviewMutation,
     updateLabelMutation,
     createProductMutation,
@@ -169,10 +171,10 @@ function LabelData() {
       const productResponse = await createProductMutation.mutateAsync({
         registration_number: values.registration_number,
         product_type: productType,
-        brand_name_en: values.brand_name_en,
-        brand_name_fr: values.brand_name_fr,
-        name_en: values.product_name_en,
-        name_fr: values.product_name_fr,
+        brand_name_en: values.brand_name?.en ?? undefined,
+        brand_name_fr: values.brand_name?.fr ?? undefined,
+        name_en: values.product_name?.en ?? undefined,
+        name_fr: values.product_name?.fr ?? undefined,
       })
 
       if (productResponse.data) {
@@ -305,20 +307,24 @@ function LabelData() {
     createFertilizerDataMutation.isPending
   const isExtracting = getIsExtracting(labelId)
   const accordionState = getAccordionState(labelId)
-  const getFieldMetaFn = (fieldName: string) =>
-    getFieldMeta(labelDataMetaMap, fieldName)
+  const getFieldMetaFn = (formPath: string) =>
+    getFieldMeta(labelDataMetaMap, formPathToMetaFieldName(formPath))
   const handleExtractField = (fieldName: string | string[] | null) => {
     extractFieldMutation.mutate(fieldName)
   }
-  const getIsFieldExtractingWithAll = (fieldName: string) => {
-    return isExtracting || getIsFieldExtracting(labelId, fieldName)
+  const getIsFieldExtractingWithAll = (formPath: string) => {
+    return (
+      isExtracting ||
+      getIsFieldExtracting(labelId, formPathToMetaFieldName(formPath))
+    )
   }
-  const handleToggleReview = (fieldName: string) => {
-    const currentMeta = getFieldMetaFn(fieldName)
+  const handleToggleReview = (formPath: string) => {
+    const metaFieldName = formPathToMetaFieldName(formPath)
+    const currentMeta = getFieldMeta(labelDataMetaMap, metaFieldName)
     const newNeedsReview = !currentMeta.needs_review
-    const isCommonField = isCommonFieldForReview(fieldName)
+    const isCommonField = isCommonFieldForReview(metaFieldName)
     toggleReviewMutation.mutate({
-      fieldName,
+      fieldName: metaFieldName,
       newNeedsReview,
       isCommonField,
     })
@@ -327,9 +333,11 @@ function LabelData() {
   const isCompleted = label?.review_status === "completed"
   const handleSaveRef = useRef(handleSave)
   const extractFieldMutationRef = useRef(extractFieldMutation)
+  const extractAllSectionsMutationRef = useRef(extractAllSectionsMutation)
   const updateReviewStatusMutationRef = useRef(updateReviewStatusMutation)
   handleSaveRef.current = handleSave
   extractFieldMutationRef.current = extractFieldMutation
+  extractAllSectionsMutationRef.current = extractAllSectionsMutation
   updateReviewStatusMutationRef.current = updateReviewStatusMutation
   if (isLoading) {
     return (
@@ -453,8 +461,14 @@ function LabelData() {
                     variant="outlined"
                     color="primary"
                     size="small"
-                    onClick={() => extractFieldMutationRef.current.mutate(null)}
-                    disabled={isExtracting || isCompleted}
+                    onClick={() =>
+                      extractAllSectionsMutationRef.current.mutate()
+                    }
+                    disabled={
+                      isExtracting ||
+                      isCompleted ||
+                      extractAllSectionsMutation.isPending
+                    }
                     startIcon={<AutoAwesomeIcon />}
                     sx={{ mr: 0.5 }}
                   >
@@ -513,10 +527,10 @@ function LabelData() {
                   <ProductAssociationSection
                     label={label}
                     registrationNumber={form.watch("registration_number")}
-                    brandNameEn={form.watch("brand_name_en")}
-                    brandNameFr={form.watch("brand_name_fr")}
-                    productNameEn={form.watch("product_name_en")}
-                    productNameFr={form.watch("product_name_fr")}
+                    brandNameEn={form.watch("brand_name")?.en}
+                    brandNameFr={form.watch("brand_name")?.fr}
+                    productNameEn={form.watch("product_name")?.en}
+                    productNameFr={form.watch("product_name")?.fr}
                     accordionState={accordionState.association}
                     onAccordionChange={(isExpanded) =>
                       setAccordionExpanded(labelId, "association", isExpanded)
@@ -540,6 +554,7 @@ function LabelData() {
                     getIsFieldExtracting={getIsFieldExtractingWithAll}
                     onExtractField={handleExtractField}
                     onToggleReview={handleToggleReview}
+                    isFertilizer={isFertilizer}
                     disabled={isCompleted}
                   />
                   {isFertilizer && (
@@ -589,20 +604,22 @@ function LabelData() {
                       disabled={isCompleted}
                     />
                   )}
-                  <SafetyInformationSection
-                    control={form.control}
-                    accordionState={accordionState.safety}
-                    onAccordionChange={(isExpanded) =>
-                      setAccordionExpanded(labelId, "safety", isExpanded)
-                    }
-                    getFieldMeta={getFieldMetaFn}
-                    hasImages={hasImages}
-                    getIsFieldExtracting={getIsFieldExtractingWithAll}
-                    onExtractField={handleExtractField}
-                    onToggleReview={handleToggleReview}
-                    isFertilizer={isFertilizer}
-                    disabled={isCompleted}
-                  />
+                  {isFertilizer && (
+                    <StatementsAndClaimsSection
+                      control={form.control}
+                      form={form}
+                      accordionState={accordionState.statements}
+                      onAccordionChange={(isExpanded) =>
+                        setAccordionExpanded(labelId, "statements", isExpanded)
+                      }
+                      getFieldMeta={getFieldMetaFn}
+                      hasImages={hasImages}
+                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      onExtractField={handleExtractField}
+                      onToggleReview={handleToggleReview}
+                      disabled={isCompleted}
+                    />
+                  )}
                 </form>
               </Box>
             </Paper>
