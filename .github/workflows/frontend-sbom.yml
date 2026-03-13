@@ -7,9 +7,9 @@ on:
 
 jobs:
   sbom-generation:
-  needs: [versions]
-  uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-frontend-sbom.yml@main
-  secrets: inherit
+    needs: [versions]
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-frontend-sbom.yml@main
+    secrets: inherit
 
   sbom-scan:
     name: SBOM Scan
