@@ -44,6 +44,7 @@ interface LabelDataNameValueListProps<
   onExtract?: () => void
   onToggleReview?: () => void
   disabled?: boolean
+  readOnly?: boolean
   emptyStateMessage: string
   addButtonLabel: string
   nameEnLabel: string
@@ -72,6 +73,7 @@ export default function LabelDataNameValueList<
   onExtract,
   onToggleReview,
   disabled = false,
+  readOnly = false,
   emptyStateMessage,
   addButtonLabel,
   nameEnLabel,
@@ -184,15 +186,17 @@ export default function LabelDataNameValueList<
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {emptyStateMessage}
           </Typography>
-          <Button
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={handleAdd}
-            disabled={disabled}
-            variant="outlined"
-          >
-            {addButtonLabel}
-          </Button>
+          {!readOnly && (
+            <Button
+              size="small"
+              startIcon={<AddIcon />}
+              onClick={handleAdd}
+              disabled={disabled}
+              variant="outlined"
+            >
+              {addButtonLabel}
+            </Button>
+          )}
         </Box>
       ) : (
         <Box
@@ -371,39 +375,43 @@ export default function LabelDataNameValueList<
                       />
                     </Box>
                   )}
-                  <IconButton
-                    size="small"
-                    onClick={() => {
-                      remove(index)
-                      if (form) {
-                        const currentValue = form.getValues(fieldName as any)
-                        form.setValue(fieldName as any, currentValue, {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                        })
-                      }
-                    }}
-                    disabled={disabled}
-                    color="error"
-                    sx={{
-                      alignSelf: { xs: "flex-start", sm: "center" },
-                      flexShrink: 0,
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                  {!readOnly && (
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        remove(index)
+                        if (form) {
+                          const currentValue = form.getValues(fieldName as any)
+                          form.setValue(fieldName as any, currentValue, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          })
+                        }
+                      }}
+                      disabled={disabled}
+                      color="error"
+                      sx={{
+                        alignSelf: { xs: "flex-start", sm: "center" },
+                        flexShrink: 0,
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Box>
               </Box>
             ))}
-            <Button
-              startIcon={<AddIcon />}
-              onClick={handleAdd}
-              disabled={disabled}
-              variant="outlined"
-              size="small"
-            >
-              {addButtonLabel}
-            </Button>
+            {!readOnly && (
+              <Button
+                startIcon={<AddIcon />}
+                onClick={handleAdd}
+                disabled={disabled}
+                variant="outlined"
+                size="small"
+              >
+                {addButtonLabel}
+              </Button>
+            )}
           </Box>
         </Box>
       )}

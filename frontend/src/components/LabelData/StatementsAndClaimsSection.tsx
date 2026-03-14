@@ -31,8 +31,9 @@ interface StatementsAndClaimsSectionProps {
   hasImages: boolean
   getIsFieldExtracting: (formPath: string) => boolean
   onExtractField: (fieldName: string | string[] | null) => void
-  onToggleReview: (formPath: string) => void
+  onToggleReview?: (formPath: string) => void
   disabled?: boolean
+  readOnly?: boolean
 }
 export default function StatementsAndClaimsSection({
   control,
@@ -45,6 +46,7 @@ export default function StatementsAndClaimsSection({
   onExtractField,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: StatementsAndClaimsSectionProps) {
   const { t } = useTranslation("labels")
   const isExtractingAny = STATEMENT_FIELDS.some((field) =>
@@ -110,8 +112,11 @@ export default function StatementsAndClaimsSection({
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting(fieldName)}
               onExtract={() => onExtractField(fieldName)}
-              onToggleReview={() => onToggleReview(fieldName)}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!(fieldName)
+              }
               disabled={disabled}
+              readOnly={readOnly}
               emptyStateMessage={t(
                 `data.statements.empty.${fieldName}`,
                 "No items",

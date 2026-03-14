@@ -45,6 +45,7 @@ interface LabelDataContactsProps<
   onExtract?: () => void
   onToggleReview?: () => void
   disabled?: boolean
+  readOnly?: boolean
 }
 
 // ============================== Component ==============================
@@ -64,6 +65,7 @@ export default function LabelDataContacts<
   onExtract,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: LabelDataContactsProps<TFieldValues, TName>) {
   const { t } = useTranslation(["labels", "common"])
   const { fields, append, remove } = useFieldArray({
@@ -159,15 +161,17 @@ export default function LabelDataContacts<
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {t("data.contacts.noContacts")}
           </Typography>
-          <Button
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={handleAddContact}
-            disabled={disabled}
-            variant="outlined"
-          >
-            {t("data.contacts.addContact")}
-          </Button>
+          {!readOnly && (
+            <Button
+              size="small"
+              startIcon={<AddIcon />}
+              onClick={handleAddContact}
+              disabled={disabled}
+              variant="outlined"
+            >
+              {t("data.contacts.addContact")}
+            </Button>
+          )}
         </Box>
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -189,14 +193,16 @@ export default function LabelDataContacts<
                   <Typography variant="subtitle2" color="text.secondary">
                     {t("data.contacts.contactNumber", { number: index + 1 })}
                   </Typography>
-                  <IconButton
-                    size="small"
-                    onClick={() => remove(index)}
-                    disabled={disabled}
-                    color="error"
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                  {!readOnly && (
+                    <IconButton
+                      size="small"
+                      onClick={() => remove(index)}
+                      disabled={disabled}
+                      color="error"
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <Box
@@ -371,15 +377,17 @@ export default function LabelDataContacts<
               </CardContent>
             </Card>
           ))}
-          <Button
-            startIcon={<AddIcon />}
-            onClick={handleAddContact}
-            disabled={disabled}
-            variant="outlined"
-            size="small"
-          >
-            {t("data.contacts.addContact")}
-          </Button>
+          {!readOnly && (
+            <Button
+              startIcon={<AddIcon />}
+              onClick={handleAddContact}
+              disabled={disabled}
+              variant="outlined"
+              size="small"
+            >
+              {t("data.contacts.addContact")}
+            </Button>
+          )}
         </Box>
       )}
       {displayHelperText && (

@@ -139,6 +139,7 @@ export function useComplianceDataQueries(labelId: string, productType: string) {
     (fertilizerDataIsFatalError && fertilizerLabelDataQuery.error) ||
     null
   return {
+    legislations: legislationsQuery.data ?? [],
     requirements: requirementsQuery.data ?? [],
     complianceItems: complianceItemsQuery.data ?? [],
     labelData: labelDataQuery.data,

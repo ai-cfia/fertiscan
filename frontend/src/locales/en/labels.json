@@ -184,6 +184,8 @@
     "compliancePrerequisiteNotMet": "Prerequisite not met: complete label data extraction first",
     "complianceRequirementsCount": "{{count}} requirements",
     "complianceTitle": "Compliance",
+    "complianceEvaluationPlaceholder": "Requirement list and evaluation will appear here.",
+    "complianceRequirementPlaceholder": "Evaluation result will appear here.",
     "title": "Label Review",
     "statements": {
       "add": "Add",

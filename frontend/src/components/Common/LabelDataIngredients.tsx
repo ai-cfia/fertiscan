@@ -25,6 +25,7 @@ interface LabelDataIngredientsProps<
   onExtract?: () => void
   onToggleReview?: () => void
   disabled?: boolean
+  readOnly?: boolean
 }
 
 // ============================== Component ==============================

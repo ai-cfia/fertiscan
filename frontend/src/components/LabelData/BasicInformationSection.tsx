@@ -36,9 +36,10 @@ interface BasicInformationSectionProps {
   hasImages: boolean
   getIsFieldExtracting: (formPath: string) => boolean
   onExtractField: (fieldName: string | string[] | null) => void
-  onToggleReview: (formPath: string) => void
+  onToggleReview?: (formPath: string) => void
   isFertilizer?: boolean
   disabled?: boolean
+  readOnly?: boolean
 }
 export default function BasicInformationSection({
   control,
@@ -51,6 +52,7 @@ export default function BasicInformationSection({
   onToggleReview,
   isFertilizer = true,
   disabled = false,
+  readOnly = false,
 }: BasicInformationSectionProps) {
   const { t } = useTranslation("labels")
   const basicFields = [
@@ -126,12 +128,16 @@ export default function BasicInformationSection({
               label={t("data.fields.productNameEn")}
               control={control}
               type="text"
-              helperText={t("data.helperText.productNameEn")}
+              helperText={
+                readOnly ? undefined : t("data.helperText.productNameEn")
+              }
               needsReview={getFieldMeta("product_name.en").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("product_name.en")}
               onExtract={() => onExtractField("product_name")}
-              onToggleReview={() => onToggleReview("product_name.en")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("product_name.en")
+              }
               disabled={disabled}
             />
           </Box>
@@ -141,12 +147,16 @@ export default function BasicInformationSection({
               label={t("data.fields.productNameFr")}
               control={control}
               type="text"
-              helperText={t("data.helperText.productNameFr")}
+              helperText={
+                readOnly ? undefined : t("data.helperText.productNameFr")
+              }
               needsReview={getFieldMeta("product_name.fr").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("product_name.fr")}
               onExtract={() => onExtractField("product_name")}
-              onToggleReview={() => onToggleReview("product_name.fr")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("product_name.fr")
+              }
               disabled={disabled}
             />
           </Box>
@@ -164,12 +174,16 @@ export default function BasicInformationSection({
               label={t("data.fields.brandNameEn")}
               control={control}
               type="text"
-              helperText={t("data.helperText.brandNameEn")}
+              helperText={
+                readOnly ? undefined : t("data.helperText.brandNameEn")
+              }
               needsReview={getFieldMeta("brand_name.en").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("brand_name.en")}
               onExtract={() => onExtractField("brand_name")}
-              onToggleReview={() => onToggleReview("brand_name.en")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("brand_name.en")
+              }
               disabled={disabled}
             />
           </Box>
@@ -179,12 +193,16 @@ export default function BasicInformationSection({
               label={t("data.fields.brandNameFr")}
               control={control}
               type="text"
-              helperText={t("data.helperText.brandNameFr")}
+              helperText={
+                readOnly ? undefined : t("data.helperText.brandNameFr")
+              }
               needsReview={getFieldMeta("brand_name.fr").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("brand_name.fr")}
               onExtract={() => onExtractField("brand_name")}
-              onToggleReview={() => onToggleReview("brand_name.fr")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("brand_name.fr")
+              }
               disabled={disabled}
             />
           </Box>
@@ -205,15 +223,23 @@ export default function BasicInformationSection({
               )}
               control={control}
               type="text"
-              helperText={t(
-                "data.helperText.registrationClaim",
-                "Verbatim registration claim text",
-              )}
+              helperText={
+                readOnly
+                  ? undefined
+                  : t(
+                      "data.helperText.registrationClaim",
+                      "Verbatim registration claim text",
+                    )
+              }
               needsReview={getFieldMeta("registration_claim.en").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("registration_claim.en")}
               onExtract={() => onExtractField("registration_claim")}
-              onToggleReview={() => onToggleReview("registration_claim.en")}
+              onToggleReview={
+                readOnly
+                  ? undefined
+                  : () => onToggleReview!("registration_claim.en")
+              }
               disabled={disabled}
             />
           </Box>
@@ -230,7 +256,11 @@ export default function BasicInformationSection({
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("registration_claim.fr")}
               onExtract={() => onExtractField("registration_claim")}
-              onToggleReview={() => onToggleReview("registration_claim.fr")}
+              onToggleReview={
+                readOnly
+                  ? undefined
+                  : () => onToggleReview!("registration_claim.fr")
+              }
               disabled={disabled}
             />
           </Box>
@@ -248,12 +278,18 @@ export default function BasicInformationSection({
               label={t("data.fields.registrationNumber")}
               control={control}
               type="text"
-              helperText={t("data.helperText.registrationNumber")}
+              helperText={
+                readOnly ? undefined : t("data.helperText.registrationNumber")
+              }
               needsReview={getFieldMeta("registration_number").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("registration_number")}
               onExtract={() => onExtractField("registration_number")}
-              onToggleReview={() => onToggleReview("registration_number")}
+              onToggleReview={
+                readOnly
+                  ? undefined
+                  : () => onToggleReview!("registration_number")
+              }
               disabled={disabled}
             />
           </Box>
@@ -263,12 +299,14 @@ export default function BasicInformationSection({
               label={t("data.fields.lotNumber")}
               control={control}
               type="text"
-              helperText={t("data.helperText.lotNumber")}
+              helperText={readOnly ? undefined : t("data.helperText.lotNumber")}
               needsReview={getFieldMeta("lot_number").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("lot_number")}
               onExtract={() => onExtractField("lot_number")}
-              onToggleReview={() => onToggleReview("lot_number")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("lot_number")
+              }
               disabled={disabled}
             />
           </Box>
@@ -286,12 +324,14 @@ export default function BasicInformationSection({
               label={t("data.fields.netWeight")}
               control={control}
               type="text"
-              helperText={t("data.helperText.netWeight")}
+              helperText={readOnly ? undefined : t("data.helperText.netWeight")}
               needsReview={getFieldMeta("net_weight").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("net_weight")}
               onExtract={() => onExtractField("net_weight")}
-              onToggleReview={() => onToggleReview("net_weight")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("net_weight")
+              }
               disabled={disabled}
             />
           </Box>
@@ -301,12 +341,14 @@ export default function BasicInformationSection({
               label={t("data.fields.volume")}
               control={control}
               type="text"
-              helperText={t("data.helperText.volume")}
+              helperText={readOnly ? undefined : t("data.helperText.volume")}
               needsReview={getFieldMeta("volume").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("volume")}
               onExtract={() => onExtractField("volume")}
-              onToggleReview={() => onToggleReview("volume")}
+              onToggleReview={
+                readOnly ? undefined : () => onToggleReview!("volume")
+              }
               disabled={disabled}
             />
           </Box>
@@ -324,15 +366,23 @@ export default function BasicInformationSection({
               label={t("data.fields.exemptionClaimEn", "Exemption claim (EN)")}
               control={control}
               type="text"
-              helperText={t(
-                "data.helperText.exemptionClaim",
-                "Verbatim exemption claim",
-              )}
+              helperText={
+                readOnly
+                  ? undefined
+                  : t(
+                      "data.helperText.exemptionClaim",
+                      "Verbatim exemption claim",
+                    )
+              }
               needsReview={getFieldMeta("exemption_claim.en").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("exemption_claim.en")}
               onExtract={() => onExtractField("exemption_claim")}
-              onToggleReview={() => onToggleReview("exemption_claim.en")}
+              onToggleReview={
+                readOnly
+                  ? undefined
+                  : () => onToggleReview!("exemption_claim.en")
+              }
               disabled={disabled}
             />
           </Box>
@@ -346,7 +396,11 @@ export default function BasicInformationSection({
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("exemption_claim.fr")}
               onExtract={() => onExtractField("exemption_claim")}
-              onToggleReview={() => onToggleReview("exemption_claim.fr")}
+              onToggleReview={
+                readOnly
+                  ? undefined
+                  : () => onToggleReview!("exemption_claim.fr")
+              }
               disabled={disabled}
             />
           </Box>
@@ -356,15 +410,21 @@ export default function BasicInformationSection({
           label={t("data.fields.countryOfOrigin", "Country of origin")}
           control={control}
           type="text"
-          helperText={t(
-            "data.helperText.countryOfOrigin",
-            "Country where manufactured or imported from",
-          )}
+          helperText={
+            readOnly
+              ? undefined
+              : t(
+                  "data.helperText.countryOfOrigin",
+                  "Country where manufactured or imported from",
+                )
+          }
           needsReview={getFieldMeta("country_of_origin").needs_review}
           hasImages={hasImages}
           isExtracting={getIsFieldExtracting("country_of_origin")}
           onExtract={() => onExtractField("country_of_origin")}
-          onToggleReview={() => onToggleReview("country_of_origin")}
+          onToggleReview={
+            readOnly ? undefined : () => onToggleReview!("country_of_origin")
+          }
           disabled={disabled}
         />
         {isFertilizer && (
@@ -424,25 +484,27 @@ export default function BasicInformationSection({
                   </IconButton>
                 </Tooltip>
               )}
-              <Tooltip
-                title={
-                  getFieldMeta("product_classification").needs_review
-                    ? t("data.removeReviewFlag", { ns: "labels" })
-                    : t("data.flagForReview", { ns: "labels" })
-                }
-              >
-                <IconButton
-                  size="small"
-                  onClick={() => onToggleReview("product_classification")}
-                  disabled={disabled}
+              {!readOnly && onToggleReview && (
+                <Tooltip
+                  title={
+                    getFieldMeta("product_classification").needs_review
+                      ? t("data.removeReviewFlag", { ns: "labels" })
+                      : t("data.flagForReview", { ns: "labels" })
+                  }
                 >
-                  {getFieldMeta("product_classification").needs_review ? (
-                    <FlagIcon color="warning" sx={{ fontSize: 18 }} />
-                  ) : (
-                    <FlagOutlinedIcon sx={{ fontSize: 18 }} />
-                  )}
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    size="small"
+                    onClick={() => onToggleReview("product_classification")}
+                    disabled={disabled}
+                  >
+                    {getFieldMeta("product_classification").needs_review ? (
+                      <FlagIcon color="warning" sx={{ fontSize: 18 }} />
+                    ) : (
+                      <FlagOutlinedIcon sx={{ fontSize: 18 }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
           </Box>
         )}
@@ -450,13 +512,16 @@ export default function BasicInformationSection({
           fieldName="contacts"
           label={t("data.fields.contacts")}
           control={control}
-          helperText={t("data.helperText.contacts")}
+          helperText={readOnly ? undefined : t("data.helperText.contacts")}
           needsReview={getFieldMeta("contacts").needs_review}
           hasImages={hasImages}
           isExtracting={getIsFieldExtracting("contacts")}
           onExtract={() => onExtractField("contacts")}
-          onToggleReview={() => onToggleReview("contacts")}
+          onToggleReview={
+            readOnly ? undefined : () => onToggleReview!("contacts")
+          }
           disabled={disabled}
+          readOnly={readOnly}
         />
       </Box>
     </LabelDataAccordionSection>

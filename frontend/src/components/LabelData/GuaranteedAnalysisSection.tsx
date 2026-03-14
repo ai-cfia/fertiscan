@@ -17,8 +17,9 @@ interface GuaranteedAnalysisSectionProps {
   hasImages: boolean
   getIsFieldExtracting: (fieldName: string) => boolean
   onExtractField: (fieldName: string | string[] | null) => void
-  onToggleReview: (fieldName: string) => void
+  onToggleReview?: (fieldName: string) => void
   disabled?: boolean
+  readOnly?: boolean
 }
 export default function GuaranteedAnalysisSection({
   control,
@@ -31,6 +32,7 @@ export default function GuaranteedAnalysisSection({
   onExtractField,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: GuaranteedAnalysisSectionProps) {
   const { t } = useTranslation("labels")
   const guaranteedFields = ["guaranteed_analysis"]
@@ -83,12 +85,17 @@ export default function GuaranteedAnalysisSection({
         label={t("data.fields.guaranteedAnalysis")}
         control={control}
         form={form}
-        helperText={t("data.helperText.guaranteedAnalysis")}
+        helperText={
+          readOnly ? undefined : t("data.helperText.guaranteedAnalysis")
+        }
         needsReview={getFieldMeta("guaranteed_analysis").needs_review}
         hasImages={hasImages}
         isExtracting={getIsFieldExtracting("guaranteed_analysis")}
-        onToggleReview={() => onToggleReview("guaranteed_analysis")}
+        onToggleReview={
+          readOnly ? undefined : () => onToggleReview!("guaranteed_analysis")
+        }
         disabled={disabled}
+        readOnly={readOnly}
       />
     </LabelDataAccordionSection>
   )
