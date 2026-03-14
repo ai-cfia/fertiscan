@@ -27,8 +27,8 @@ def read_requirements(
 ) -> LimitOffsetPage[RequirementPublic]:
     """List requirements with optional filters."""
 
-    rules = requirement_controller.get_rules_query(**filters.model_dump())
-    return paginate(session, rules, params)  # type: ignore[no-any-return, arg-type]
+    stmt = requirement_controller.get_requirements_query(**filters.model_dump())
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
 
 
 @router.get("/{requirement_id}", response_model=RequirementPublic)

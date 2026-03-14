@@ -1,6 +1,7 @@
 [
   {
     "citation_reference": "C.R.C., c. 666",
+    "product_type": "fertilizer",
     "title_en": "Fertilizers Regulations",
     "title_fr": "Règlement sur les engrais",
     "source_url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._666/FullText.html",
@@ -8,6 +9,7 @@
   },
   {
     "citation_reference": "R.S.C., 1985, c. F-10",
+    "product_type": "fertilizer",
     "title_en": "Fertilizers Act",
     "title_fr": "Loi sur les engrais",
     "source_url_en": "https://laws-lois.justice.gc.ca/eng/acts/f-10/FullText.html",
@@ -15,6 +17,7 @@
   },
   {
     "citation_reference": "S.C. 2002, c. 28",
+    "product_type": "fertilizer",
     "title_en": "Pest Control Products Act",
     "title_fr": "Loi sur les produits antiparasitaires",
     "source_url_en": "https://laws-lois.justice.gc.ca/eng/acts/P-9.01/FullText.html",
@@ -22,6 +25,7 @@
   },
   {
     "citation_reference": "C.R.C., c. 296",
+    "product_type": "fertilizer",
     "title_en": "Health of Animals Regulations",
     "title_fr": "Règlement sur la santé des animaux",
     "source_url_en": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._296/FullText.html",

@@ -29,9 +29,11 @@ class RequirementsPublic(BaseModel):
 class RequirementParams(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
-    legislation_id: UUID | None = None
-    title_en: str | None = Query(None, max_length=255)
-    title_fr: str | None = Query(None, max_length=255)
+    legislation_ids: list[UUID] | None = Query(
+        None, description="Filter by legislation IDs (repeated param)"
+    )
+    title_en: str | None = Query(None, max_length=255, description="Title (English)")
+    title_fr: str | None = Query(None, max_length=255, description="Title (French)")
     start_created_at: datetime | None = Query(None, description="Start created at")
     end_created_at: datetime | None = Query(None, description="End created at")
     start_updated_at: datetime | None = Query(None, description="Start updated at")

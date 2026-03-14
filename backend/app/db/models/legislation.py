@@ -8,6 +8,7 @@ from app.db.base import Base, DescriptiveMixin, GuidanceMixin, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.definition import Definition
+    from app.db.models.product_type import ProductType
     from app.db.models.provision import Provision
     from app.db.models.requirement import Requirement
 
@@ -16,6 +17,7 @@ class Legislation(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=T
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     citation_reference: str = Field(unique=True, index=True, max_length=255)
     legislation_type: str | None = Field(default=None, max_length=100)
+    product_type_id: UUID = Field(foreign_key="producttype.id", index=True)
     source_url_en: str | None = Field(default=None, max_length=500)
     source_url_fr: str | None = Field(default=None, max_length=500)
     last_amended_date: date | None = Field(default=None)
@@ -29,6 +31,7 @@ class Legislation(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=T
     requirements: list["Requirement"] = Relationship(
         back_populates="legislation", cascade_delete=True
     )
+    product_type: "ProductType" = Relationship(back_populates="legislations")
     global_provisions: list["Provision"] = Relationship(
         sa_relationship_kwargs={
             "primaryjoin": "and_(Legislation.id == Provision.legislation_id, Provision.is_global_rule == True)",

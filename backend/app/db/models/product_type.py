@@ -7,6 +7,7 @@ from app.db.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.db.models.label import Label
+    from app.db.models.legislation import Legislation
     from app.db.models.product import Product
 
 
@@ -18,3 +19,4 @@ class ProductType(Base, TimestampMixin, table=True):
     is_active: bool = Field(default=True, index=True)
     products: list["Product"] = Relationship(back_populates="product_type")
     labels: list["Label"] = Relationship(back_populates="product_type")
+    legislations: list["Legislation"] = Relationship(back_populates="product_type")
