@@ -67,22 +67,6 @@ export type ComplianceResult = {
 };
 
 /**
- * ComplianceResults
- */
-export type ComplianceResults = {
-    /**
-     * Total
-     */
-    total: number;
-    /**
-     * Results
-     */
-    results: {
-        [key: string]: ComplianceResult;
-    };
-};
-
-/**
  * ComplianceStatus
  */
 export type ComplianceStatus = 'compliant' | 'non_compliant' | 'not_applicable' | 'inconclusive';
@@ -860,6 +844,72 @@ export type LabelUpdate = {
      * Product Id
      */
     product_id?: string | null;
+};
+
+/**
+ * LegislationPublic
+ */
+export type LegislationPublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Citation Reference
+     */
+    citation_reference: string;
+    /**
+     * Legislation Type
+     */
+    legislation_type?: string | null;
+    /**
+     * Product Type Id
+     */
+    product_type_id: string;
+    /**
+     * Title En
+     */
+    title_en?: string | null;
+    /**
+     * Title Fr
+     */
+    title_fr?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    /**
+     * Guidance En
+     */
+    guidance_en?: string | null;
+    /**
+     * Guidance Fr
+     */
+    guidance_fr?: string | null;
+    /**
+     * Source Url En
+     */
+    source_url_en?: string | null;
+    /**
+     * Source Url Fr
+     */
+    source_url_fr?: string | null;
+    /**
+     * Last Amended Date
+     */
+    last_amended_date?: string | null;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
 };
 
 /**
@@ -2172,40 +2222,39 @@ export type PatchApiV1LabelsByLabelIdReviewStatusResponses = {
 
 export type PatchApiV1LabelsByLabelIdReviewStatusResponse = PatchApiV1LabelsByLabelIdReviewStatusResponses[keyof PatchApiV1LabelsByLabelIdReviewStatusResponses];
 
-export type GetApiV1LabelsByLabelIdEvaluateNonComplianceData = {
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdData = {
     body?: never;
     path: {
         /**
          * Label Id
          */
         label_id: string;
-    };
-    query: {
         /**
-         * Requirement Ids
+         * Requirement Id
          */
-        requirement_ids: Array<string> | null;
+        requirement_id: string;
     };
-    url: '/api/v1/labels/{label_id}/evaluate-non-compliance';
+    query?: never;
+    url: '/api/v1/labels/{label_id}/evaluate-non-compliance/{requirement_id}';
 };
 
-export type GetApiV1LabelsByLabelIdEvaluateNonComplianceErrors = {
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type GetApiV1LabelsByLabelIdEvaluateNonComplianceError = GetApiV1LabelsByLabelIdEvaluateNonComplianceErrors[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceErrors];
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdError = GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors];
 
-export type GetApiV1LabelsByLabelIdEvaluateNonComplianceResponses = {
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses = {
     /**
      * Successful Response
      */
-    200: ComplianceResults;
+    200: ComplianceResult;
 };
 
-export type GetApiV1LabelsByLabelIdEvaluateNonComplianceResponse = GetApiV1LabelsByLabelIdEvaluateNonComplianceResponses[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceResponses];
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponse = GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses];
 
 export type GetApiV1LabelsByLabelIdNonComplianceDataItemsData = {
     body?: never;
@@ -3020,6 +3069,40 @@ export type PostApiV1LabelsByLabelIdFertilizerExtractResponses = {
 
 export type PostApiV1LabelsByLabelIdFertilizerExtractResponse = PostApiV1LabelsByLabelIdFertilizerExtractResponses[keyof PostApiV1LabelsByLabelIdFertilizerExtractResponses];
 
+export type GetApiV1LegislationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Product Type
+         *
+         * Product type
+         */
+        product_type?: string;
+    };
+    url: '/api/v1/legislations';
+};
+
+export type GetApiV1LegislationsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1LegislationsError = GetApiV1LegislationsErrors[keyof GetApiV1LegislationsErrors];
+
+export type GetApiV1LegislationsResponses = {
+    /**
+     * Response Legislations Read Legislations
+     *
+     * Successful Response
+     */
+    200: Array<LegislationPublic>;
+};
+
+export type GetApiV1LegislationsResponse = GetApiV1LegislationsResponses[keyof GetApiV1LegislationsResponses];
+
 export type GetApiV1ProductsData = {
     body?: never;
     path?: never;
@@ -3209,10 +3292,6 @@ export type GetApiV1RequirementsData = {
          * Page offset
          */
         offset?: number;
-        /**
-         * Legislation Id
-         */
-        legislation_id?: string | null;
         /**
          * Title En
          */

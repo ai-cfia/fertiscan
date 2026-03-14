@@ -1,4 +1,5 @@
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
+import FactCheckIcon from "@mui/icons-material/FactCheck"
 import LockIcon from "@mui/icons-material/Lock"
 import LockOpenIcon from "@mui/icons-material/LockOpen"
 import SaveIcon from "@mui/icons-material/Save"
@@ -13,7 +14,12 @@ import {
   Typography,
 } from "@mui/material"
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createFileRoute, notFound, redirect } from "@tanstack/react-router"
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+} from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useEffect, useMemo, useRef } from "react"
@@ -351,12 +357,12 @@ function LabelData() {
       <Box
         sx={{
           px: { xs: 2, md: 3 },
-          pt: 9,
+          pt: 3,
           pb: { xs: 2, md: 3 },
           width: "100%",
         }}
       >
-        <Typography variant="h4" sx={{ mb: 3 }}>
+        <Typography variant="h4" sx={{ py: 3 }}>
           {t("data.title")}
         </Typography>
         <Grid
@@ -445,6 +451,17 @@ function LabelData() {
                   justifyContent: "flex-end",
                 }}
               >
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  component={Link}
+                  to={`/${productType}/labels/${labelId}/compliance`}
+                  startIcon={<FactCheckIcon />}
+                  sx={{ mr: 0.5 }}
+                >
+                  {t("data.compliance")}
+                </Button>
                 <Button
                   variant="outlined"
                   color="primary"

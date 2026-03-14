@@ -134,6 +134,13 @@ class LabelDataNotFound(HTTPException):
         super().__init__(status.HTTP_400_BAD_REQUEST, detail)
 
 
+class FertilizerLabelDataNotFound(HTTPException):
+    def __init__(
+        self, detail: str = "Fertilizer label data not found for fertilizer product"
+    ) -> None:
+        super().__init__(status.HTTP_400_BAD_REQUEST, detail)
+
+
 class RegistrationNumberMissing(HTTPException):
     def __init__(
         self, detail: str = "Registration number missing from label data"

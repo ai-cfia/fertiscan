@@ -794,11 +794,11 @@
         }
       }
     },
-    "/api/v1/labels/{label_id}/evaluate-non-compliance": {
+    "/api/v1/labels/{label_id}/evaluate-non-compliance/{requirement_id}": {
       "get": {
         "tags": ["labels"],
         "summary": "Evaluate Non Compliance",
-        "description": "Evaluate non-compliance of the label against specified rules.",
+        "description": "Evaluate non-compliance of the label against a single requirement.",
         "operationId": "labels_evaluate_non_compliance",
         "security": [{ "OAuth2PasswordBearer": [] }],
         "parameters": [
@@ -813,18 +813,13 @@
             }
           },
           {
-            "name": "requirement_ids",
-            "in": "query",
+            "name": "requirement_id",
+            "in": "path",
             "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": { "type": "string", "format": "uuid" }
-                },
-                { "type": "null" }
-              ],
-              "title": "Requirement Ids"
+              "type": "string",
+              "format": "uuid",
+              "title": "Requirement Id"
             }
           }
         ],
@@ -833,7 +828,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ComplianceResults" }
+                "schema": { "$ref": "#/components/schemas/ComplianceResult" }
               }
             }
           },
@@ -2112,6 +2107,51 @@
         }
       }
     },
+    "/api/v1/legislations": {
+      "get": {
+        "tags": ["legislations"],
+        "summary": "Read Legislations",
+        "description": "List legislations for the given product type.",
+        "operationId": "legislations_read_legislations",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "product_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Product type",
+              "default": "fertilizer",
+              "title": "Product Type"
+            },
+            "description": "Product type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LegislationPublic" },
+                  "title": "Response Legislations Read Legislations"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products": {
       "get": {
         "tags": ["products"],
@@ -2451,18 +2491,6 @@
             "description": "Page offset"
           },
           {
-            "name": "legislation_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                { "type": "string", "format": "uuid" },
-                { "type": "null" }
-              ],
-              "title": "Legislation Id"
-            }
-          },
-          {
             "name": "title_en",
             "in": "query",
             "required": false,
@@ -2709,22 +2737,6 @@
         "type": "object",
         "required": ["status", "explanation"],
         "title": "ComplianceResult"
-      },
-      "ComplianceResults": {
-        "properties": {
-          "total": { "type": "integer", "title": "Total" },
-          "results": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ComplianceResult"
-            },
-            "propertyNames": { "format": "uuid" },
-            "type": "object",
-            "title": "Results"
-          }
-        },
-        "type": "object",
-        "required": ["total", "results"],
-        "title": "ComplianceResults"
       },
       "ComplianceStatus": {
         "type": "string",
@@ -3982,6 +3994,80 @@
         },
         "type": "object",
         "title": "LabelUpdate"
+      },
+      "LegislationPublic": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "citation_reference": {
+            "type": "string",
+            "title": "Citation Reference"
+          },
+          "legislation_type": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Legislation Type"
+          },
+          "product_type_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Product Type Id"
+          },
+          "title_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title En"
+          },
+          "title_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title Fr"
+          },
+          "description_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description En"
+          },
+          "description_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description Fr"
+          },
+          "guidance_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Guidance En"
+          },
+          "guidance_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Guidance Fr"
+          },
+          "source_url_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Source Url En"
+          },
+          "source_url_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Source Url Fr"
+          },
+          "last_amended_date": {
+            "anyOf": [
+              { "type": "string", "format": "date" },
+              { "type": "null" }
+            ],
+            "title": "Last Amended Date"
+          },
+          "created_at": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": ["id", "citation_reference", "product_type_id"],
+        "title": "LegislationPublic"
       },
       "LimitOffsetPage_LabelListItem_": {
         "properties": {

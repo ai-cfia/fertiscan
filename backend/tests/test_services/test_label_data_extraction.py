@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from app.controllers.labels.label_data_extraction import create_subset_model
 from app.schemas.label_data import BilingualText, ExtractFertilizerFieldsOutput
-from app.services.label_data_extraction import ImageData, extract_fields_from_images
+from app.services.extraction import ImageData, extract_fields_from_images
 from tests.conftest import DUMMY_EXTRACTION_DATA
 
 

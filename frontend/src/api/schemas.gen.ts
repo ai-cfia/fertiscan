@@ -110,31 +110,6 @@ export const ComplianceResultSchema = {
     title: 'ComplianceResult'
 } as const;
 
-export const ComplianceResultsSchema = {
-    properties: {
-        total: {
-            type: 'integer',
-            title: 'Total'
-        },
-        results: {
-            additionalProperties: {
-                $ref: '#/components/schemas/ComplianceResult'
-            },
-            propertyNames: {
-                format: 'uuid'
-            },
-            type: 'object',
-            title: 'Results'
-        }
-    },
-    type: 'object',
-    required: [
-        'total',
-        'results'
-    ],
-    title: 'ComplianceResults'
-} as const;
-
 export const ComplianceStatusSchema = {
     type: 'string',
     enum: [
@@ -2172,6 +2147,167 @@ export const LabelUpdateSchema = {
     },
     type: 'object',
     title: 'LabelUpdate'
+} as const;
+
+export const LegislationPublicSchema = {
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Id'
+        },
+        citation_reference: {
+            type: 'string',
+            title: 'Citation Reference'
+        },
+        legislation_type: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Legislation Type'
+        },
+        product_type_id: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Product Type Id'
+        },
+        title_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Title En'
+        },
+        title_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Title Fr'
+        },
+        description_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description En'
+        },
+        description_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description Fr'
+        },
+        guidance_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Guidance En'
+        },
+        guidance_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Guidance Fr'
+        },
+        source_url_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Source Url En'
+        },
+        source_url_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Source Url Fr'
+        },
+        last_amended_date: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Last Amended Date'
+        },
+        created_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Created At'
+        },
+        updated_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'citation_reference',
+        'product_type_id'
+    ],
+    title: 'LegislationPublic'
 } as const;
 
 export const LimitOffsetPage_LabelListItem_Schema = {

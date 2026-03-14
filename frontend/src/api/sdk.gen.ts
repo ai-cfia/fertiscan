@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { DeleteApiV1LabelsByLabelIdData, DeleteApiV1LabelsByLabelIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdData, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1ProductsByProductIdData, DeleteApiV1ProductsByProductIdErrors, DeleteApiV1ProductsByProductIdResponses, DeleteApiV1UsersByUserIdData, DeleteApiV1UsersByUserIdErrors, DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersMeData, DeleteApiV1UsersMeResponses, GetApiV1LabelsByLabelIdData, GetApiV1LabelsByLabelIdDataData, GetApiV1LabelsByLabelIdDataErrors, GetApiV1LabelsByLabelIdDataMetaData, GetApiV1LabelsByLabelIdDataMetaErrors, GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdErrors, GetApiV1LabelsByLabelIdEvaluateNonComplianceData, GetApiV1LabelsByLabelIdEvaluateNonComplianceErrors, GetApiV1LabelsByLabelIdEvaluateNonComplianceResponses, GetApiV1LabelsByLabelIdFertilizerDataData, GetApiV1LabelsByLabelIdFertilizerDataErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaData, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdImagesByImageIdData, GetApiV1LabelsByLabelIdImagesByImageIdErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesData, GetApiV1LabelsByLabelIdImagesErrors, GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, GetApiV1LabelsByLabelIdNonComplianceDataItemsData, GetApiV1LabelsByLabelIdNonComplianceDataItemsErrors, GetApiV1LabelsByLabelIdNonComplianceDataItemsResponses, GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsData, GetApiV1LabelsErrors, GetApiV1LabelsResponses, GetApiV1ProductsByProductIdData, GetApiV1ProductsByProductIdErrors, GetApiV1ProductsByProductIdResponses, GetApiV1ProductsData, GetApiV1ProductsErrors, GetApiV1ProductsResponses, GetApiV1RequirementsByRequirementIdData, GetApiV1RequirementsByRequirementIdErrors, GetApiV1RequirementsByRequirementIdResponses, GetApiV1RequirementsData, GetApiV1RequirementsErrors, GetApiV1RequirementsResponses, GetApiV1UsersByUserIdData, GetApiV1UsersByUserIdErrors, GetApiV1UsersByUserIdResponses, GetApiV1UsersData, GetApiV1UsersErrors, GetApiV1UsersMeData, GetApiV1UsersMeResponses, GetApiV1UsersResponses, GetHealthzData, GetHealthzResponses, GetReadyzData, GetReadyzResponses, PatchApiV1LabelsByLabelIdData, PatchApiV1LabelsByLabelIdDataData, PatchApiV1LabelsByLabelIdDataErrors, PatchApiV1LabelsByLabelIdDataMetaData, PatchApiV1LabelsByLabelIdDataMetaErrors, PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdErrors, PatchApiV1LabelsByLabelIdFertilizerDataData, PatchApiV1LabelsByLabelIdFertilizerDataErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaData, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdReviewStatusData, PatchApiV1LabelsByLabelIdReviewStatusErrors, PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1UsersByUserIdData, PatchApiV1UsersByUserIdErrors, PatchApiV1UsersByUserIdResponses, PatchApiV1UsersMeData, PatchApiV1UsersMeErrors, PatchApiV1UsersMePasswordData, PatchApiV1UsersMePasswordErrors, PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMeResponses, PostApiV1LabelsByLabelIdDataData, PostApiV1LabelsByLabelIdDataErrors, PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdFertilizerDataData, PostApiV1LabelsByLabelIdFertilizerDataErrors, PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerExtractData, PostApiV1LabelsByLabelIdFertilizerExtractErrors, PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdImagesCompleteData, PostApiV1LabelsByLabelIdImagesCompleteErrors, PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesData, PostApiV1LabelsByLabelIdImagesErrors, PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsByLabelIdNonComplianceDataItemsData, PostApiV1LabelsByLabelIdNonComplianceDataItemsErrors, PostApiV1LabelsByLabelIdNonComplianceDataItemsResponses, PostApiV1LabelsData, PostApiV1LabelsErrors, PostApiV1LabelsResponses, PostApiV1LoginAccessTokenData, PostApiV1LoginAccessTokenErrors, PostApiV1LoginAccessTokenResponses, PostApiV1LoginTestTokenData, PostApiV1LoginTestTokenResponses, PostApiV1PasswordRecoveryByEmailData, PostApiV1PasswordRecoveryByEmailErrors, PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailData, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PrivateUsersData, PostApiV1PrivateUsersErrors, PostApiV1PrivateUsersResponses, PostApiV1ProductsData, PostApiV1ProductsErrors, PostApiV1ProductsResponses, PostApiV1ResetPasswordData, PostApiV1ResetPasswordErrors, PostApiV1ResetPasswordResponses, PostApiV1UsersData, PostApiV1UsersErrors, PostApiV1UsersResponses } from './types.gen';
+import type { DeleteApiV1LabelsByLabelIdData, DeleteApiV1LabelsByLabelIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdData, DeleteApiV1LabelsByLabelIdImagesByImageIdErrors, DeleteApiV1LabelsByLabelIdImagesByImageIdResponses, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, DeleteApiV1LabelsByLabelIdResponses, DeleteApiV1ProductsByProductIdData, DeleteApiV1ProductsByProductIdErrors, DeleteApiV1ProductsByProductIdResponses, DeleteApiV1UsersByUserIdData, DeleteApiV1UsersByUserIdErrors, DeleteApiV1UsersByUserIdResponses, DeleteApiV1UsersMeData, DeleteApiV1UsersMeResponses, GetApiV1LabelsByLabelIdData, GetApiV1LabelsByLabelIdDataData, GetApiV1LabelsByLabelIdDataErrors, GetApiV1LabelsByLabelIdDataMetaData, GetApiV1LabelsByLabelIdDataMetaErrors, GetApiV1LabelsByLabelIdDataMetaResponses, GetApiV1LabelsByLabelIdDataResponses, GetApiV1LabelsByLabelIdErrors, GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdData, GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors, GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses, GetApiV1LabelsByLabelIdFertilizerDataData, GetApiV1LabelsByLabelIdFertilizerDataErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaData, GetApiV1LabelsByLabelIdFertilizerDataMetaErrors, GetApiV1LabelsByLabelIdFertilizerDataMetaResponses, GetApiV1LabelsByLabelIdFertilizerDataResponses, GetApiV1LabelsByLabelIdImagesByImageIdData, GetApiV1LabelsByLabelIdImagesByImageIdErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedDownloadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlData, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlErrors, GetApiV1LabelsByLabelIdImagesByImageIdPresignedUploadUrlResponses, GetApiV1LabelsByLabelIdImagesByImageIdResponses, GetApiV1LabelsByLabelIdImagesData, GetApiV1LabelsByLabelIdImagesErrors, GetApiV1LabelsByLabelIdImagesResponses, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, GetApiV1LabelsByLabelIdNonComplianceDataItemsData, GetApiV1LabelsByLabelIdNonComplianceDataItemsErrors, GetApiV1LabelsByLabelIdNonComplianceDataItemsResponses, GetApiV1LabelsByLabelIdResponses, GetApiV1LabelsData, GetApiV1LabelsErrors, GetApiV1LabelsResponses, GetApiV1LegislationsData, GetApiV1LegislationsErrors, GetApiV1LegislationsResponses, GetApiV1ProductsByProductIdData, GetApiV1ProductsByProductIdErrors, GetApiV1ProductsByProductIdResponses, GetApiV1ProductsData, GetApiV1ProductsErrors, GetApiV1ProductsResponses, GetApiV1RequirementsByRequirementIdData, GetApiV1RequirementsByRequirementIdErrors, GetApiV1RequirementsByRequirementIdResponses, GetApiV1RequirementsData, GetApiV1RequirementsErrors, GetApiV1RequirementsResponses, GetApiV1UsersByUserIdData, GetApiV1UsersByUserIdErrors, GetApiV1UsersByUserIdResponses, GetApiV1UsersData, GetApiV1UsersErrors, GetApiV1UsersMeData, GetApiV1UsersMeResponses, GetApiV1UsersResponses, GetHealthzData, GetHealthzResponses, GetReadyzData, GetReadyzResponses, PatchApiV1LabelsByLabelIdData, PatchApiV1LabelsByLabelIdDataData, PatchApiV1LabelsByLabelIdDataErrors, PatchApiV1LabelsByLabelIdDataMetaData, PatchApiV1LabelsByLabelIdDataMetaErrors, PatchApiV1LabelsByLabelIdDataMetaResponses, PatchApiV1LabelsByLabelIdDataResponses, PatchApiV1LabelsByLabelIdErrors, PatchApiV1LabelsByLabelIdFertilizerDataData, PatchApiV1LabelsByLabelIdFertilizerDataErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaData, PatchApiV1LabelsByLabelIdFertilizerDataMetaErrors, PatchApiV1LabelsByLabelIdFertilizerDataMetaResponses, PatchApiV1LabelsByLabelIdFertilizerDataResponses, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors, PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses, PatchApiV1LabelsByLabelIdResponses, PatchApiV1LabelsByLabelIdReviewStatusData, PatchApiV1LabelsByLabelIdReviewStatusErrors, PatchApiV1LabelsByLabelIdReviewStatusResponses, PatchApiV1UsersByUserIdData, PatchApiV1UsersByUserIdErrors, PatchApiV1UsersByUserIdResponses, PatchApiV1UsersMeData, PatchApiV1UsersMeErrors, PatchApiV1UsersMePasswordData, PatchApiV1UsersMePasswordErrors, PatchApiV1UsersMePasswordResponses, PatchApiV1UsersMeResponses, PostApiV1LabelsByLabelIdDataData, PostApiV1LabelsByLabelIdDataErrors, PostApiV1LabelsByLabelIdDataResponses, PostApiV1LabelsByLabelIdFertilizerDataData, PostApiV1LabelsByLabelIdFertilizerDataErrors, PostApiV1LabelsByLabelIdFertilizerDataResponses, PostApiV1LabelsByLabelIdFertilizerExtractData, PostApiV1LabelsByLabelIdFertilizerExtractErrors, PostApiV1LabelsByLabelIdFertilizerExtractResponses, PostApiV1LabelsByLabelIdImagesCompleteData, PostApiV1LabelsByLabelIdImagesCompleteErrors, PostApiV1LabelsByLabelIdImagesCompleteResponses, PostApiV1LabelsByLabelIdImagesData, PostApiV1LabelsByLabelIdImagesErrors, PostApiV1LabelsByLabelIdImagesResponses, PostApiV1LabelsByLabelIdNonComplianceDataItemsData, PostApiV1LabelsByLabelIdNonComplianceDataItemsErrors, PostApiV1LabelsByLabelIdNonComplianceDataItemsResponses, PostApiV1LabelsData, PostApiV1LabelsErrors, PostApiV1LabelsResponses, PostApiV1LoginAccessTokenData, PostApiV1LoginAccessTokenErrors, PostApiV1LoginAccessTokenResponses, PostApiV1LoginTestTokenData, PostApiV1LoginTestTokenResponses, PostApiV1PasswordRecoveryByEmailData, PostApiV1PasswordRecoveryByEmailErrors, PostApiV1PasswordRecoveryByEmailResponses, PostApiV1PasswordRecoveryHtmlContentByEmailData, PostApiV1PasswordRecoveryHtmlContentByEmailErrors, PostApiV1PasswordRecoveryHtmlContentByEmailResponses, PostApiV1PrivateUsersData, PostApiV1PrivateUsersErrors, PostApiV1PrivateUsersResponses, PostApiV1ProductsData, PostApiV1ProductsErrors, PostApiV1ProductsResponses, PostApiV1ResetPasswordData, PostApiV1ResetPasswordErrors, PostApiV1ResetPasswordResponses, PostApiV1UsersData, PostApiV1UsersErrors, PostApiV1UsersResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -31,7 +31,7 @@ export class HealthService {
             ...options
         });
     }
-
+    
     /**
      * Readiness
      *
@@ -64,7 +64,7 @@ export class LoginService {
             }
         });
     }
-
+    
     /**
      * Test Token
      *
@@ -78,7 +78,7 @@ export class LoginService {
             ...options
         });
     }
-
+    
     /**
      * Recover Password
      *
@@ -91,7 +91,7 @@ export class LoginService {
             ...options
         });
     }
-
+    
     /**
      * Reset Password
      *
@@ -108,7 +108,7 @@ export class LoginService {
             }
         });
     }
-
+    
     /**
      * Recover Password Html Content
      *
@@ -138,7 +138,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Create User
      *
@@ -156,7 +156,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Delete User Me
      *
@@ -170,7 +170,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Read User Me
      *
@@ -184,7 +184,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Update User Me
      *
@@ -202,7 +202,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Update Password Me
      *
@@ -220,7 +220,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Delete User
      *
@@ -234,7 +234,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Read User By Id
      *
@@ -248,7 +248,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Update User
      *
@@ -282,7 +282,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Label
      *
@@ -300,7 +300,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Label
      *
@@ -313,7 +313,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label
      *
@@ -327,7 +327,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label
      *
@@ -345,7 +345,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Update Label Review Status
      *
@@ -363,21 +363,21 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Evaluate Non Compliance
      *
-     * Evaluate non-compliance of the label against specified rules.
+     * Evaluate non-compliance of the label against a single requirement.
      */
-    public static evaluateNonCompliance<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdEvaluateNonComplianceData, ThrowOnError>) {
-        return (options.client ?? client).get<GetApiV1LabelsByLabelIdEvaluateNonComplianceResponses, GetApiV1LabelsByLabelIdEvaluateNonComplianceErrors, ThrowOnError>({
+    public static evaluateNonCompliance<ThrowOnError extends boolean = false>(options: Options<GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdData, ThrowOnError>) {
+        return (options.client ?? client).get<GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses, GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors, ThrowOnError>({
             responseType: 'json',
             security: [{ scheme: 'bearer', type: 'http' }],
-            url: '/api/v1/labels/{label_id}/evaluate-non-compliance',
+            url: '/api/v1/labels/{label_id}/evaluate-non-compliance/{requirement_id}',
             ...options
         });
     }
-
+    
     /**
      * Reads Compliances
      *
@@ -391,7 +391,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Compliance
      *
@@ -409,7 +409,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Compliance
      *
@@ -423,7 +423,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Compliance By Rule
      *
@@ -437,7 +437,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Compliance
      *
@@ -455,7 +455,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Label Images
      *
@@ -469,7 +469,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Label Image
      *
@@ -487,7 +487,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Label Image
      *
@@ -500,7 +500,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label Image
      *
@@ -514,7 +514,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Complete Label Image Upload
      *
@@ -532,7 +532,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Get Label Image Presigned Upload Url
      *
@@ -546,7 +546,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Get Label Image Presigned Download Url
      *
@@ -560,7 +560,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label Data
      *
@@ -574,7 +574,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label Data
      *
@@ -592,7 +592,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Create Label Data
      *
@@ -610,7 +610,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Label Data Meta
      *
@@ -624,7 +624,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label Data Meta
      *
@@ -642,7 +642,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Fertilizer Label Data
      *
@@ -656,7 +656,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Fertilizer Label Data
      *
@@ -674,7 +674,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Create Fertilizer Label Data
      *
@@ -692,7 +692,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Fertilizer Label Data Meta
      *
@@ -706,7 +706,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Fertilizer Label Data Meta
      *
@@ -724,7 +724,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Extract Fertilizer Fields
      *
@@ -744,6 +744,22 @@ export class LabelsService {
     }
 }
 
+export class LegislationsService {
+    /**
+     * Read Legislations
+     *
+     * List legislations for the given product type.
+     */
+    public static readLegislations<ThrowOnError extends boolean = false>(options?: Options<GetApiV1LegislationsData, ThrowOnError>) {
+        return (options?.client ?? client).get<GetApiV1LegislationsResponses, GetApiV1LegislationsErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/legislations',
+            ...options
+        });
+    }
+}
+
 export class ProductsService {
     /**
      * Read Products
@@ -758,7 +774,7 @@ export class ProductsService {
             ...options
         });
     }
-
+    
     /**
      * Create Product
      *
@@ -776,7 +792,7 @@ export class ProductsService {
             }
         });
     }
-
+    
     /**
      * Delete Product
      *
@@ -790,7 +806,7 @@ export class ProductsService {
             ...options
         });
     }
-
+    
     /**
      * Read Product By Id
      *
@@ -820,7 +836,7 @@ export class RequirementsService {
             ...options
         });
     }
-
+    
     /**
      * Read Requirement By Id
      *

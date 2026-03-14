@@ -18,6 +18,7 @@ from app.db.models import (
 )
 from app.dependencies.auth import SessionDep
 from app.exceptions import (
+    FertilizerLabelDataNotFound,
     ImageCountLimitExceeded,
     ImageNotCompleted,
     InvalidProductType,
@@ -166,6 +167,20 @@ def verify_label_is_extractable(
 
 
 ExtractableLabelDep = Annotated[Label, Depends(verify_label_is_extractable)]
+
+
+# ====================== Evaluable Label (label_data + fertilizer_label_data) for Compliance Evaluation ======================
+def verify_label_is_evaluable(label: LabelDep) -> Label:
+    """Verify label has label_data and fertilizer_label_data (for fertilizer type) for evaluation."""
+    if not label.label_data:
+        raise LabelDataNotFound()
+    if label.product_type and label.product_type.code == "fertilizer":
+        if not label.fertilizer_label_data:
+            raise FertilizerLabelDataNotFound()
+    return label
+
+
+EvaluableLabelDep = Annotated[Label, Depends(verify_label_is_evaluable)]
 
 
 # ====================== Label Completed Verification for Non-Compliance Data Item Endpoint ======================

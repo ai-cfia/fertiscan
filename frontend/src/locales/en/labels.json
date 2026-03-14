@@ -177,6 +177,13 @@
       "safety": "Safety Information",
       "statements": "Statements and Claims"
     },
+    "compliance": "Compliance",
+    "complianceItemsCount": "{{count}} compliance results",
+    "compliancePageTitle": "Compliance - Label Inspection",
+    "compliancePrerequisiteMet": "Prerequisite met: label data ready for evaluation",
+    "compliancePrerequisiteNotMet": "Prerequisite not met: complete label data extraction first",
+    "complianceRequirementsCount": "{{count}} requirements",
+    "complianceTitle": "Compliance",
     "title": "Label Review",
     "statements": {
       "add": "Add",

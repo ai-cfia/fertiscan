@@ -11,16 +11,16 @@ from app.controllers import compliance as compliance_controller
 from app.controllers.labels import label as label_controller
 from app.db.models import ReviewStatus
 from app.dependencies import (
-    CompletedLabelDep,
     CurrentUser,
     EditableLabelDep,
+    EvaluableLabelDep,
     InstructorDep,
     LabelDep,
     LimitOffsetParamsDep,
     NonComplianceDataItemDep,
     ProductQueryTypeDep,
     ProductTypeDep,
-    RequirementsDep,
+    RequirementDep,
     S3ClientDep,
     SessionDep,
     ValidatedStatusLabelDep,
@@ -28,7 +28,7 @@ from app.dependencies import (
 )
 from app.exceptions import InvalidDateRange
 from app.schemas.label import (
-    ComplianceResults,
+    ComplianceResult,
     LabelCreate,
     LabelCreated,
     LabelDetail,
@@ -160,23 +160,21 @@ async def delete_label(
     )
 
 
-@router.get("/{label_id}/evaluate-non-compliance", response_model=ComplianceResults)
+@router.get(
+    "/{label_id}/evaluate-non-compliance/{requirement_id}",
+    response_model=ComplianceResult,
+)
 async def evaluate_non_compliance(
-    label: CompletedLabelDep,
     _: CurrentUser,
     instructor: InstructorDep,
-    requirements: RequirementsDep,
-) -> ComplianceResults:
-    """Evaluate non-compliance of the label against specified rules."""
-    results = await label_controller.evaluate_non_compliance(
+    label: EvaluableLabelDep,
+    requirement: RequirementDep,
+) -> ComplianceResult:
+    """Evaluate non-compliance of the label against a single requirement."""
+    return await label_controller.evaluate(
         instructor=instructor,
         label=label,
-        rules=requirements,
-    )
-
-    return ComplianceResults(
-        total=len(results),
-        results=results,
+        requirement=requirement,
     )
 
 

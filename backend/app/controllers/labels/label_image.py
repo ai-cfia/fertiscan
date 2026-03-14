@@ -6,17 +6,11 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 
+from app import storage
 from app.db.models import Label, LabelImage, UploadStatus
 from app.schemas.label import (
     PresignedDownloadUrlResponse,
     PresignedUrlRequest,
-)
-from app.storage import (
-    build_storage_path,
-    delete_file,
-    generate_presigned_download_url,
-    generate_presigned_upload_url,
-    generate_storage_filename,
 )
 from app.storage.presigned import PresignedUrl
 
@@ -47,8 +41,8 @@ def create_label_image(
     """Create pending LabelImage record. Returns (LabelImage,
     current_image_count)."""
     # Generate storage filename and path
-    storage_filename = generate_storage_filename(request.extension)
-    storage_file_path = build_storage_path(label.id, storage_filename)
+    storage_filename = storage.generate_storage_filename(request.extension)
+    storage_file_path = storage.build_storage_path(label.id, storage_filename)
 
     # Create LabelImage record with status='pending'
     label_image = LabelImage(
@@ -106,7 +100,7 @@ async def delete_label_image(
     """Delete a label image, its storage file, and renumber remaining images."""
     label_id = label_image.label_id
     file_path = label_image.file_path
-    await delete_file(s3_client, file_path)
+    await storage.delete_file(s3_client, file_path)
     session.delete(label_image)
     session.flush()
     stmt = (
@@ -138,7 +132,7 @@ async def get_label_image_presigned_upload_url(
     content_type: str,
 ) -> PresignedUrl:
     """Generate presigned upload URL for a pending LabelImage."""
-    return await generate_presigned_upload_url(
+    return await storage.generate_presigned_upload_url(
         client=s3_client,
         label_id=label_image.label_id,
         storage_filename=label_image.file_path.split("/")[-1],
@@ -152,7 +146,7 @@ async def get_label_image_presigned_download_url(
     label_image: LabelImage,
 ) -> PresignedDownloadUrlResponse:
     """Get presigned download URL for a completed label image."""
-    presigned_url_result = await generate_presigned_download_url(
+    presigned_url_result = await storage.generate_presigned_download_url(
         s3_client, label_image.file_path
     )
     if not isinstance(presigned_url_result, PresignedUrl):
