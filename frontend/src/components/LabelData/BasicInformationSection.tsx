@@ -432,7 +432,7 @@ export default function BasicInformationSection({
             <FormControl size="small" fullWidth>
               <InputLabel>
                 {t(
-                  "data.fields.productClassification",
+                  "data.fields.productClassificationLabel",
                   "Product classification",
                 )}
               </InputLabel>
@@ -445,7 +445,7 @@ export default function BasicInformationSection({
                     value={field.value ?? ""}
                     onChange={(e) => field.onChange(e.target.value || null)}
                     label={t(
-                      "data.fields.productClassification",
+                      "data.fields.productClassificationLabel",
                       "Product classification",
                     )}
                     disabled={disabled}
