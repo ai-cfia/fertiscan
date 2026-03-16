@@ -91,12 +91,14 @@
       "exemptionClaimEn": "Revendication d'exemption (EN)",
       "exemptionClaimFr": "Revendication d'exemption (FR)",
       "countryOfOrigin": "Pays d'origine",
-      "productClassification": "Classification du produit",
-      "productClassificationNone": "Aucun",
-      "productClassification.fertilizer": "Engrais",
-      "productClassification.supplement": "Supplement",
-      "productClassification.growing_medium": "Milieu de culture",
-      "productClassification.treated_seed": "Semence traitée"
+      "productClassification": {
+        "fertilizer": "Engrais",
+        "supplement": "Supplement",
+        "growing_medium": "Milieu de culture",
+        "treated_seed": "Semence traitée"
+      },
+      "productClassificationLabel": "Classification du produit",
+      "productClassificationNone": "Aucun"
     },
     "flagForReview": "Marquer pour révision",
     "guaranteedAnalysis": {
@@ -207,6 +209,7 @@
     "complianceCleared": "Résultat de conformité effacé",
     "complianceClear": "Effacer",
     "complianceUnsavedWarning": "Vous avez des résultats de conformité non enregistrés. Voulez-vous vraiment quitter?",
+    "complianceNoUnsavedChanges": "Aucun changement non enregistré",
     "editUnsavedWarning": "Vous avez des données d'étiquette non enregistrées. Voulez-vous vraiment quitter?",
     "statements": {
       "add": "Ajouter",

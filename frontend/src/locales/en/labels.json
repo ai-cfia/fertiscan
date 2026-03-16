@@ -91,12 +91,14 @@
       "exemptionClaimEn": "Exemption claim (EN)",
       "exemptionClaimFr": "Exemption claim (FR)",
       "countryOfOrigin": "Country of origin",
-      "productClassification": "Product classification",
-      "productClassificationNone": "None",
-      "productClassification.fertilizer": "Fertilizer",
-      "productClassification.supplement": "Supplement",
-      "productClassification.growing_medium": "Growing medium",
-      "productClassification.treated_seed": "Treated seed"
+      "productClassification": {
+        "fertilizer": "Fertilizer",
+        "supplement": "Supplement",
+        "growing_medium": "Growing medium",
+        "treated_seed": "Treated seed"
+      },
+      "productClassificationLabel": "Product classification",
+      "productClassificationNone": "None"
     },
     "flagForReview": "Flag for review",
     "guaranteedAnalysis": {
@@ -206,6 +208,7 @@
     "complianceCleared": "Compliance result cleared",
     "complianceClear": "Clear",
     "complianceUnsavedWarning": "You have unsaved compliance results. Are you sure you want to leave?",
+    "complianceNoUnsavedChanges": "No unsaved changes",
     "editUnsavedWarning": "You have unsaved label data. Are you sure you want to leave?",
     "title": "Edit Label",
     "statements": {
