@@ -4063,6 +4063,12 @@
               { "type": "null" }
             ],
             "title": "Updated At"
+          },
+          "general_exemptions": {
+            "items": { "$ref": "#/components/schemas/ProvisionSnippet" },
+            "type": "array",
+            "title": "General Exemptions",
+            "default": []
           }
         },
         "type": "object",
@@ -4136,6 +4142,20 @@
         "type": "object",
         "required": ["message"],
         "title": "Message"
+      },
+      "Modifier": {
+        "properties": {
+          "provision": { "$ref": "#/components/schemas/ProvisionSnippet" },
+          "type": { "$ref": "#/components/schemas/ModifierType" }
+        },
+        "type": "object",
+        "required": ["provision", "type"],
+        "title": "Modifier"
+      },
+      "ModifierType": {
+        "type": "string",
+        "enum": ["EXEMPTION", "APPLICABILITY_CONDITION"],
+        "title": "ModifierType"
       },
       "NewPassword": {
         "properties": {
@@ -4430,6 +4450,22 @@
         "required": ["code", "id", "created_at", "updated_at"],
         "title": "ProductTypePublic"
       },
+      "ProvisionSnippet": {
+        "properties": {
+          "citation": { "type": "string", "title": "Citation" },
+          "text_en": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Text En"
+          },
+          "text_fr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Text Fr"
+          }
+        },
+        "type": "object",
+        "required": ["citation"],
+        "title": "ProvisionSnippet"
+      },
       "Readiness": {
         "properties": {
           "status": { "type": "string", "title": "Status" },
@@ -4470,6 +4506,18 @@
           "guidance_fr": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Guidance Fr"
+          },
+          "provisions": {
+            "items": { "$ref": "#/components/schemas/ProvisionSnippet" },
+            "type": "array",
+            "title": "Provisions",
+            "default": []
+          },
+          "modifiers": {
+            "items": { "$ref": "#/components/schemas/Modifier" },
+            "type": "array",
+            "title": "Modifiers",
+            "default": []
           },
           "created_at": {
             "anyOf": [

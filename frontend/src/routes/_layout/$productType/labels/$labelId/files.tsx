@@ -105,9 +105,9 @@ function LabelFiles() {
             variant="contained"
             color="primary"
             component={Link}
-            to={`/${productType}/labels/${labelId}/review`}
+            to={`/${productType}/labels/${labelId}/edit`}
           >
-            {t("files.reviewLabel", { defaultValue: "Review Label" })}
+            {t("files.editLabel", { defaultValue: "Edit Label" })}
           </Button>
         </Box>
         {/* ============================== Label Images ============================== */}

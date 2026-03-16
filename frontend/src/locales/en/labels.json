@@ -143,7 +143,7 @@
       "value": "Value"
     },
     "markComplete": "Mark Complete",
-    "pageTitle": "Label Review - Label Inspection",
+    "pageTitle": "Edit Label - Label Inspection",
     "removeReviewFlag": "Remove review flag",
     "save": "Save",
     "saved": "Changes saved successfully",
@@ -186,7 +186,28 @@
     "complianceTitle": "Compliance",
     "complianceEvaluationPlaceholder": "Requirement list and evaluation will appear here.",
     "complianceRequirementPlaceholder": "Evaluation result will appear here.",
-    "title": "Label Review",
+    "complianceProvisions": "Provisions",
+    "complianceRequirement": "Requirement",
+    "complianceGlobalExemptions": "General exemptions",
+    "complianceExemptions": "Exemptions",
+    "complianceApplicabilityCondition": "Applicability condition",
+    "complianceRunAll": "Run evaluation",
+    "complianceRunLegislation": "Evaluate all",
+    "complianceRunRequirement": "Evaluate",
+    "complianceStatusCompliant": "Compliant",
+    "complianceStatusNonCompliant": "Non-compliant",
+    "complianceStatusNotApplicable": "Not applicable",
+    "complianceStatusInconclusive": "Inconclusive",
+    "complianceStatusLabel": "Status",
+    "complianceStatusPlaceholder": "Select status",
+    "complianceExplanationLabel": "Explanation",
+    "complianceExplanationPlaceholder": "Enter explanation",
+    "complianceEvaluationError": "Evaluation failed. Please try again.",
+    "complianceCleared": "Compliance result cleared",
+    "complianceClear": "Clear",
+    "complianceUnsavedWarning": "You have unsaved compliance results. Are you sure you want to leave?",
+    "editUnsavedWarning": "You have unsaved label data. Are you sure you want to leave?",
+    "title": "Edit Label",
     "statements": {
       "add": "Add",
       "en": "English",
@@ -232,7 +253,7 @@
   },
   "files": {
     "pageTitle": "Label Files - Label Inspection",
-    "reviewLabel": "Review Label",
+    "editLabel": "Edit Label",
     "title_one": "Label Image: {{count}} (max {{max}})",
     "title_other": "Label Images: {{count}} (max {{max}})"
   },
@@ -283,14 +304,14 @@
       "title": "Create New Label"
     },
     "rowActions": {
-      "continueReview": "Continue review",
+      "continueEdit": "Continue editing",
       "delete": "Delete",
       "deleteDialog": {
         "description": "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files.",
         "title": "Delete label"
       },
       "deleteNotImplemented": "Delete functionality not yet implemented",
-      "startReview": "Start review",
+      "editLabel": "Edit label",
       "viewDetails": "View Details"
     },
     "upload": {

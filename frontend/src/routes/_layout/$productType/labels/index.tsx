@@ -565,7 +565,7 @@ function LabelsTable() {
                         }}
                         onReview={() => {
                           navigate({
-                            to: "/$productType/labels/$labelId/review",
+                            to: "/$productType/labels/$labelId/edit",
                             params: { productType, labelId: label.id },
                           })
                         }}

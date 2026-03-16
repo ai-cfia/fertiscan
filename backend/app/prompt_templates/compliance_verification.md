@@ -9,7 +9,7 @@ product's label data adheres to a specific regulatory requirement.
 
 1. Consult the **Dictionary** to establish the strict legal definitions of terms
    used in the subsequent texts.
-2. Evaluate the **Global Exemptions**. If the product is globally exempt or
+2. Evaluate the **General Exemptions**. If the product is generally exempt or
    fundamentally violates a core prohibition, stop and return the overarching
    result.
 3. Evaluate the **Exemptions**. If any exemption applies to the product, stop
@@ -34,10 +34,10 @@ product's label data adheres to a specific regulatory requirement.
 {{ dictionary | safe }}
 ```
 
-## Global Exemptions
+## General Exemptions
 
 ```text
-{{ global_exemptions | safe }}
+{{ general_exemptions | safe }}
 ```
 
 ## Exemptions

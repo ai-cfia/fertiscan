@@ -7,8 +7,18 @@ from uuid import UUID
 from fastapi import Query
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
+from app.db.models.enums import ModifierType
+from app.schemas.provision import ProvisionSnippet
+
+
+class Modifier(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    provision: ProvisionSnippet
+    type: ModifierType
+
 
 class RequirementPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     legislation_id: UUID
     title_en: str | None = None
@@ -17,6 +27,8 @@ class RequirementPublic(BaseModel):
     description_fr: str | None = None
     guidance_en: str | None = None
     guidance_fr: str | None = None
+    provisions: list[ProvisionSnippet] = []
+    modifiers: list[Modifier] = []
     created_at: datetime | None = None
     updated_at: datetime | None = None
 

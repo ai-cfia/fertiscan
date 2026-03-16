@@ -191,7 +191,7 @@ export function useLabelDataQueries(
     },
   })
   // --- Extract Mutation ---
-  const EXTRACTION_CONCURRENCY_LIMIT = 5
+  const EXTRACTION_CONCURRENCY_LIMIT = 1
   // ............................. Process Extracted Field Helper .............................
   const processExtractedField = useCallback(
     (fieldName: string, value: any) => {
@@ -323,23 +323,29 @@ export function useLabelDataQueries(
             path: { label_id: labelId },
             body: { field_names: [...fieldNames] as any },
           }),
-        ),
-      )
-      const results = await Promise.allSettled(promises)
-      let successSectionCount = 0
-      results.forEach((result, index) => {
-        const { fieldNames } = EXTRACTION_SECTIONS[index]
-        fieldNames.forEach((fieldName) => {
-          setFieldExtracting(labelId, fieldName, false)
-        })
-        if (result.status === "fulfilled" && result.value?.data) {
-          successSectionCount++
-          const extractedData = result.value.data as Record<string, any>
-          fieldNames.forEach((fieldName) => {
-            processExtractedField(fieldName, extractedData[fieldName])
+        )
+          .then((response) => {
+            fieldNames.forEach((fieldName) => {
+              setFieldExtracting(labelId, fieldName, false)
+            })
+            if (response?.data) {
+              const extractedData = response.data as Record<string, any>
+              fieldNames.forEach((fieldName) => {
+                processExtractedField(fieldName, extractedData[fieldName])
+              })
+              return true
+            }
+            return false
           })
-        }
-      })
+          .catch(() => {
+            fieldNames.forEach((fieldName) => {
+              setFieldExtracting(labelId, fieldName, false)
+            })
+            return false
+          }),
+      )
+      const results = await Promise.all(promises)
+      const successSectionCount = results.filter(Boolean).length
       setExtracting(labelId, false)
       const totalSections = EXTRACTION_SECTIONS.length
       const failCount = totalSections - successSectionCount

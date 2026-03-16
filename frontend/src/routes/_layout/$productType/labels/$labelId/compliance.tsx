@@ -1,39 +1,25 @@
-import EditIcon from "@mui/icons-material/Edit"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  ListSubheader,
-  Paper,
-  Toolbar,
-  Typography,
-} from "@mui/material"
+import { Box, CircularProgress, Grid, Typography } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
-  Link,
   notFound,
   redirect,
+  useBlocker,
 } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import type { ComplianceStatus } from "@/api"
 import { LabelsService } from "@/api"
 import NotFound from "@/components/Common/NotFound"
-import BasicInformationSection from "@/components/LabelData/BasicInformationSection"
-import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysisSection"
-import IngredientsSection from "@/components/LabelData/IngredientsSection"
-import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
-import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
-import StatementsAndClaimsSection from "@/components/LabelData/StatementsAndClaimsSection"
+import ComplianceEvaluationPanel from "@/components/Compliance/ComplianceEvaluationPanel"
+import ComplianceLabelDataPanel from "@/components/Compliance/ComplianceLabelDataPanel"
 import { useComplianceDataQueries } from "@/hooks/useComplianceDataQueries"
+import { useDeleteCompliance } from "@/hooks/useDeleteCompliance"
+import { useEvaluateCompliance } from "@/hooks/useEvaluateCompliance"
+import { useSaveCompliance } from "@/hooks/useSaveCompliance"
 import { useBanner } from "@/stores/useBanner"
 import { useLabelDataStore } from "@/stores/useLabelData"
 import { useLanguage } from "@/stores/useLanguage"
@@ -105,8 +91,141 @@ function Compliance() {
     isLoading,
     isError,
     error,
+    complianceItems,
   } = useComplianceDataQueries(labelId, productType)
   const { language } = useLanguage()
+  const requirementIds = useMemo(
+    () => requirements.map((r) => r.id),
+    [requirements],
+  )
+  const {
+    evaluate,
+    evaluateMany,
+    cancelRequirement,
+    isEvaluating,
+    isEvaluatingAny,
+    evaluationResults,
+    getEvaluationError,
+  } = useEvaluateCompliance(labelId, requirementIds)
+  const { saveRequirement, isSaving: isSavingCompliance } = useSaveCompliance(
+    labelId,
+    complianceItems,
+    language,
+  )
+  const { clearRequirement, isDeleting: isDeletingCompliance } =
+    useDeleteCompliance(labelId, complianceItems)
+  const complianceFormValues = useMemo(() => {
+    const compliance: Record<
+      string,
+      { status: ComplianceStatus | ""; description: string }
+    > = {}
+    requirements.forEach((r) => {
+      const fresh = evaluationResults[r.id]
+      if (fresh) {
+        const expl =
+          language === "fr"
+            ? (fresh.explanation?.fr ?? fresh.explanation?.en ?? "")
+            : (fresh.explanation?.en ?? fresh.explanation?.fr ?? "")
+        compliance[r.id] = { status: fresh.status, description: expl }
+      } else {
+        const item = complianceItems.find((i) => i.requirement_id === r.id)
+        if (item?.status) {
+          const expl =
+            language === "fr"
+              ? (item.description_fr ?? item.description_en ?? "")
+              : (item.description_en ?? item.description_fr ?? "")
+          compliance[r.id] = { status: item.status, description: expl }
+        } else {
+          compliance[r.id] = { status: "", description: "" }
+        }
+      }
+    })
+    return { compliance }
+  }, [requirements, complianceItems, evaluationResults, language])
+  const complianceFormDefaultValues = useMemo(
+    () => ({
+      compliance: Object.fromEntries(
+        requirements.map((r) => [
+          r.id,
+          { status: "" as const, description: "" },
+        ]),
+      ),
+    }),
+    [requirements],
+  )
+  const complianceForm = useForm({
+    defaultValues: complianceFormDefaultValues,
+    values: complianceFormValues,
+  })
+  const { dirtyFields } = complianceForm.formState
+  const getIsRequirementDirty = useCallback(
+    (requirementId: string) => {
+      const dirty = (dirtyFields.compliance ?? {}) as Record<
+        string,
+        { status?: boolean; description?: boolean }
+      >
+      const reqDirty = dirty[requirementId]
+      if (reqDirty?.status || reqDirty?.description) return true
+      const formVal = complianceForm.getValues().compliance?.[requirementId]
+      if (!formVal || (!formVal.status && !formVal.description?.trim()))
+        return false
+      const item = complianceItems.find(
+        (i) => i.requirement_id === requirementId,
+      )
+      if (!item) return true
+      const savedDesc =
+        language === "en"
+          ? (item.description_en ?? "")
+          : (item.description_fr ?? "")
+      const savedStatus = item.status ?? ""
+      return (
+        formVal.status !== savedStatus ||
+        (formVal.description ?? "") !== savedDesc
+      )
+    },
+    [dirtyFields, complianceForm, complianceItems, language],
+  )
+  const handleSaveRequirement = useCallback(
+    (requirementId: string) => {
+      const values = complianceForm.getValues().compliance?.[requirementId]
+      if (!values) return
+      saveRequirement({
+        requirementId,
+        payload: {
+          status: values.status || "",
+          description: values.description || "",
+        },
+      })
+    },
+    [complianceForm, saveRequirement],
+  )
+  const hasUnsavedCompliance = requirements.some((r) =>
+    getIsRequirementDirty(r.id),
+  )
+  useBlocker({
+    shouldBlockFn: () => {
+      if (!hasUnsavedCompliance) return false
+      return !window.confirm(
+        t("data.complianceUnsavedWarning", { ns: "labels" }),
+      )
+    },
+    enableBeforeUnload: hasUnsavedCompliance,
+  })
+  const getHasRequirementData = useCallback(
+    (requirementId: string) =>
+      !!(
+        evaluationResults[requirementId] ||
+        complianceItems.some((i) => i.requirement_id === requirementId)
+      ),
+    [evaluationResults, complianceItems],
+  )
+  const getEvaluationErrorFormatted = useCallback(
+    (requirementId: string) => {
+      const err = getEvaluationError(requirementId)
+      return err ? getErrorMessage(err, t) : null
+    },
+    [getEvaluationError, t],
+  )
   const requirementsByLegislation = useMemo(() => {
     return legislations
       .map((leg) => ({
@@ -115,17 +234,11 @@ function Compliance() {
       }))
       .filter((g) => g.requirements.length > 0)
   }, [legislations, requirements])
-  const isFertilizer = productType === "fertilizer"
   const formValues = mergeForForm(labelData, fertilizerData)
   const form = useForm({
     defaultValues: getDefaultFormValues(),
     values: meetsPrerequisite ? formValues : undefined,
   })
-  const noop = useCallback(() => {}, [])
-  const getFieldMetaStub = useCallback(
-    (_: string) => ({ needs_review: false }),
-    [],
-  )
   useEffect(() => {
     document.title = t("data.compliancePageTitle")
   }, [t])
@@ -173,6 +286,13 @@ function Compliance() {
       </Box>
     )
   }
+  const productName = meetsPrerequisite
+    ? formValues.product_name
+    : labelData?.product_name
+  const displayName =
+    language === "fr"
+      ? (productName?.fr ?? productName?.en ?? null)
+      : (productName?.en ?? productName?.fr ?? null)
   return (
     <Box sx={{ scrollPaddingTop: "120px", width: "100%" }}>
       <Box
@@ -183,9 +303,13 @@ function Compliance() {
           width: "100%",
         }}
       >
-        <Typography variant="h4" sx={{ py: 3 }}>
-          {t("data.complianceTitle")}
-        </Typography>
+        <Box sx={{ py: 3 }}>
+          <Typography variant="h4">
+            {displayName
+              ? `${t("data.complianceTitle")} – ${displayName}`
+              : t("data.complianceTitle")}
+          </Typography>
+        </Box>
         <Grid
           container
           spacing={3}
@@ -195,270 +319,50 @@ function Compliance() {
             size={{ xs: 12, md: 6 }}
             sx={{ height: { md: "100%" }, display: "flex" }}
           >
-            <Paper
-              elevation={0}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                height: { xs: "auto", md: "100%" },
-                overflow: "hidden",
-                border: 1,
-                borderColor: "divider",
-              }}
-            >
-              {!meetsPrerequisite ? (
-                <Box sx={{ p: 3 }}>
-                  <Typography variant="body1" color="text.secondary">
-                    {t("data.compliancePrerequisiteNotMet", {
-                      defaultValue:
-                        "Prerequisite not met: complete label data extraction first",
-                    })}
-                  </Typography>
-                  <Button
-                    component={Link}
-                    to={`/${productType}/labels/${labelId}/review`}
-                    variant="outlined"
-                    size="small"
-                    startIcon={<EditIcon />}
-                    sx={{ mt: 2 }}
-                  >
-                    {t("data.title")}
-                  </Button>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    flex: 1,
-                    overflow: "auto",
-                    p: 2,
-                  }}
-                >
-                  <form>
-                    <ProductAssociationSection
-                      label={label}
-                      registrationNumber={form.watch("registration_number")}
-                      brandNameEn={form.watch("brand_name")?.en}
-                      brandNameFr={form.watch("brand_name")?.fr}
-                      productNameEn={form.watch("product_name")?.en}
-                      productNameFr={form.watch("product_name")?.fr}
-                      accordionState={accordionState.association}
-                      onAccordionChange={(isExpanded) =>
-                        setAccordionExpanded(labelId, "association", isExpanded)
-                      }
-                      onAssociate={noop}
-                      onCreateAndAssociate={noop}
-                      disabled
-                    />
-                    <BasicInformationSection
-                      control={form.control}
-                      accordionState={accordionState.basic}
-                      onAccordionChange={(isExpanded) =>
-                        setAccordionExpanded(labelId, "basic", isExpanded)
-                      }
-                      getFieldMeta={getFieldMetaStub}
-                      hasImages={false}
-                      getIsFieldExtracting={() => false}
-                      onExtractField={noop}
-                      isFertilizer={isFertilizer}
-                      disabled
-                      readOnly
-                    />
-                    {isFertilizer && (
-                      <NPKAnalysisSection
-                        control={form.control}
-                        accordionState={accordionState.npk}
-                        onAccordionChange={(isExpanded) =>
-                          setAccordionExpanded(labelId, "npk", isExpanded)
-                        }
-                        getFieldMeta={getFieldMetaStub}
-                        hasImages={false}
-                        getIsFieldExtracting={() => false}
-                        onExtractField={noop}
-                        disabled
-                        readOnly
-                      />
-                    )}
-                    {isFertilizer && (
-                      <IngredientsSection
-                        control={form.control}
-                        form={form}
-                        accordionState={accordionState.ingredients}
-                        onAccordionChange={(isExpanded) =>
-                          setAccordionExpanded(
-                            labelId,
-                            "ingredients",
-                            isExpanded,
-                          )
-                        }
-                        getFieldMeta={getFieldMetaStub}
-                        hasImages={false}
-                        getIsFieldExtracting={() => false}
-                        onExtractField={noop}
-                        disabled
-                        readOnly
-                      />
-                    )}
-                    {isFertilizer && (
-                      <GuaranteedAnalysisSection
-                        control={form.control}
-                        form={form}
-                        accordionState={accordionState.guaranteed}
-                        onAccordionChange={(isExpanded) =>
-                          setAccordionExpanded(
-                            labelId,
-                            "guaranteed",
-                            isExpanded,
-                          )
-                        }
-                        getFieldMeta={getFieldMetaStub}
-                        hasImages={false}
-                        getIsFieldExtracting={() => false}
-                        onExtractField={noop}
-                        disabled
-                        readOnly
-                      />
-                    )}
-                    {isFertilizer && (
-                      <StatementsAndClaimsSection
-                        control={form.control}
-                        form={form}
-                        accordionState={accordionState.statements}
-                        onAccordionChange={(isExpanded) =>
-                          setAccordionExpanded(
-                            labelId,
-                            "statements",
-                            isExpanded,
-                          )
-                        }
-                        getFieldMeta={getFieldMetaStub}
-                        hasImages={false}
-                        getIsFieldExtracting={() => false}
-                        onExtractField={noop}
-                        disabled
-                        readOnly
-                      />
-                    )}
-                  </form>
-                </Box>
-              )}
-            </Paper>
+            <ComplianceLabelDataPanel
+              label={label}
+              labelId={labelId}
+              productType={productType}
+              meetsPrerequisite={meetsPrerequisite}
+              form={form}
+              accordionState={accordionState}
+              onAccordionChange={(section, isExpanded) =>
+                setAccordionExpanded(labelId, section, isExpanded)
+              }
+              isFertilizer={productType === "fertilizer"}
+            />
           </Grid>
           <Grid
             size={{ xs: 12, md: 6 }}
             sx={{ height: { md: "100%" }, display: "flex" }}
           >
-            <Paper
-              elevation={0}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                height: { xs: "auto", md: "100%" },
-                overflow: "hidden",
-                border: 1,
-                borderColor: "divider",
-              }}
-            >
-              <Toolbar
-                sx={{
-                  minHeight: "48px !important",
-                  px: 1,
-                  borderBottom: 1,
-                  borderColor: "divider",
-                  gap: 0.5,
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  component={Link}
-                  to={`/${productType}/labels/${labelId}/review`}
-                  startIcon={<EditIcon />}
-                >
-                  {t("data.title")}
-                </Button>
-              </Toolbar>
-              <Box sx={{ flex: 1, overflow: "auto", px: 2, pb: 2, pt: 0 }}>
-                {requirementsByLegislation.length === 0 ? (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("data.complianceEvaluationPlaceholder", {
-                      defaultValue:
-                        "Requirement list and evaluation will appear here.",
-                    })}
-                  </Typography>
-                ) : (
-                  <Box>
-                    {requirementsByLegislation.map(
-                      ({ legislation, requirements: reqs }) => (
-                        <Box key={legislation.id}>
-                          <ListSubheader
-                            component="div"
-                            sx={{
-                              position: "sticky",
-                              top: 0,
-                              zIndex: 1,
-                              bgcolor: "background.paper",
-                            }}
-                          >
-                            {language === "fr" && legislation.title_fr
-                              ? legislation.title_fr
-                              : (legislation.title_en ??
-                                legislation.citation_reference)}
-                          </ListSubheader>
-                          {reqs.map((req) => {
-                            const title =
-                              language === "fr" && req.title_fr
-                                ? req.title_fr
-                                : (req.title_en ?? req.id)
-                            return (
-                              <Accordion
-                                key={req.id}
-                                disableGutters
-                                sx={{
-                                  "&:before": { display: "none" },
-                                  boxShadow: "none",
-                                  borderBottom: 1,
-                                  borderColor: "divider",
-                                }}
-                              >
-                                <AccordionSummary
-                                  expandIcon={<ExpandMoreIcon />}
-                                >
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ fontWeight: 500 }}
-                                  >
-                                    {title}
-                                  </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                  <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ fontStyle: "italic" }}
-                                  >
-                                    {t(
-                                      "data.complianceRequirementPlaceholder",
-                                      {
-                                        defaultValue:
-                                          "Evaluation result will appear here.",
-                                      },
-                                    )}
-                                  </Typography>
-                                </AccordionDetails>
-                              </Accordion>
-                            )
-                          })}
-                        </Box>
-                      ),
-                    )}
-                  </Box>
-                )}
-              </Box>
-            </Paper>
+            <ComplianceEvaluationPanel
+              productType={productType}
+              labelId={labelId}
+              meetsPrerequisite={meetsPrerequisite}
+              requirementsByLegislation={requirementsByLegislation}
+              language={language}
+              complianceControl={complianceForm.control}
+              getIsRequirementDirty={getIsRequirementDirty}
+              getHasRequirementData={getHasRequirementData}
+              onSaveRequirement={handleSaveRequirement}
+              onClearRequirement={clearRequirement}
+              isSavingCompliance={isSavingCompliance}
+              isDeletingCompliance={isDeletingCompliance}
+              onEvaluate={evaluate}
+              onEvaluateAll={() =>
+                evaluateMany(
+                  requirementsByLegislation.flatMap((g) =>
+                    g.requirements.map((r) => r.id),
+                  ),
+                )
+              }
+              onEvaluateLegislation={(ids) => evaluateMany(ids)}
+              onCancelRequirement={cancelRequirement}
+              isEvaluating={isEvaluating}
+              isEvaluatingAny={isEvaluatingAny}
+              getEvaluationError={getEvaluationErrorFormatted}
+            />
           </Grid>
         </Grid>
       </Box>

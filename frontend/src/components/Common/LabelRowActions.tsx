@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete"
-import FactCheckIcon from "@mui/icons-material/FactCheck"
+import EditIcon from "@mui/icons-material/Edit"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
   Box,
@@ -53,20 +53,20 @@ export default function LabelRowActions({
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
   }
-  const reviewTooltip =
+  const editTooltip =
     reviewStatus === "not_started"
-      ? t("labels.rowActions.startReview")
-      : t("labels.rowActions.continueReview")
+      ? t("labels.rowActions.editLabel")
+      : t("labels.rowActions.continueEdit")
   return (
     <>
       <Box sx={{ display: "flex", gap: 0.5 }}>
-        <Tooltip title={reviewTooltip}>
+        <Tooltip title={editTooltip}>
           <IconButton
             onClick={handleReview}
             size="small"
-            aria-label={reviewTooltip}
+            aria-label={editTooltip}
           >
-            <FactCheckIcon fontSize="small" />
+            <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
         <Tooltip title={t("labels.rowActions.viewDetails")}>

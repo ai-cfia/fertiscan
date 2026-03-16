@@ -13,4 +13,4 @@ class ProvisionFactory(BaseFactory):
     citation = factory.Sequence(lambda n: f"Section {n}")
     text_en = factory.Faker("paragraph")
     text_fr = factory.Faker("paragraph")
-    is_global_rule = False
+    is_general_exemption = False

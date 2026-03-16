@@ -3,10 +3,13 @@
 from datetime import date, datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+from app.schemas.provision import ProvisionSnippet
 
 
 class LegislationPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     citation_reference: str
     legislation_type: str | None = None
@@ -22,3 +25,4 @@ class LegislationPublic(BaseModel):
     last_amended_date: date | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    general_exemptions: list[ProvisionSnippet] = []

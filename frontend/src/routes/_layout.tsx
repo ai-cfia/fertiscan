@@ -54,7 +54,7 @@ function Layout() {
   const params = useParams({ strict: false })
   const { actions: appBarActions, clearActions } = useAppBarActionsStore()
   const normalizedPath = location.pathname.replace(/\/+$/, "")
-  const isDataPage = /\/labels\/[^/]+\/(review|compliance)\/?$/.test(
+  const isDataPage = /\/labels\/[^/]+\/(edit|compliance)\/?$/.test(
     normalizedPath,
   )
   const productType = (params.productType as string) || "fertilizer"

@@ -19,6 +19,7 @@ import {
   Link,
   notFound,
   redirect,
+  useBlocker,
 } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
@@ -39,6 +40,7 @@ import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useBanner } from "@/stores/useBanner"
 import { useLabelDataStore } from "@/stores/useLabelData"
+import { useLanguage } from "@/stores/useLanguage"
 import {
   getErrorMessage,
   isAxiosErrorWithStatus,
@@ -53,7 +55,7 @@ import {
 } from "@/utils/labelDataHelpers"
 
 export const Route = createFileRoute(
-  "/_layout/$productType/labels/$labelId/review",
+  "/_layout/$productType/labels/$labelId/edit",
 )({
   notFoundComponent: NotFound,
   loader: async ({ params }) => {
@@ -68,7 +70,7 @@ export const Route = createFileRoute(
       }
       if (label.product_type.code !== productType) {
         throw redirect({
-          to: "/$productType/labels/$labelId/review",
+          to: "/$productType/labels/$labelId/edit",
           params: {
             productType: label.product_type.code as "fertilizer",
             labelId: labelId,
@@ -135,6 +137,12 @@ function LabelData() {
   } = useLabelDataQueries(labelId, isFertilizer, form)
 
   const { showSuccessToast } = useSnackbar()
+  const { language } = useLanguage()
+  const productName = form.watch("product_name") ?? labelData?.product_name
+  const displayName =
+    language === "fr"
+      ? (productName?.fr ?? productName?.en ?? null)
+      : (productName?.en ?? productName?.fr ?? null)
 
   const handleAssociate = useCallback(
     (productId: string) => {
@@ -233,17 +241,17 @@ function LabelData() {
     ) {
       const error = queryError as Error
       showBanner({
-        id: `label-review-load-error-${labelId}`,
+        id: `label-edit-load-error-${labelId}`,
         message: getErrorMessage(error, t),
         severity: "error",
         onRetry: () => {
           queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-          dismissBanner(`label-review-load-error-${labelId}`)
+          dismissBanner(`label-edit-load-error-${labelId}`)
         },
-        onDismiss: () => dismissBanner(`label-review-load-error-${labelId}`),
+        onDismiss: () => dismissBanner(`label-edit-load-error-${labelId}`),
       })
     } else {
-      dismissBanner(`label-review-load-error-${labelId}`)
+      dismissBanner(`label-edit-load-error-${labelId}`)
     }
   }, [
     hasQueryError,
@@ -337,6 +345,13 @@ function LabelData() {
   }
   const isDirty = form.formState.isDirty
   const isCompleted = label?.review_status === "completed"
+  useBlocker({
+    shouldBlockFn: () => {
+      if (!isDirty) return false
+      return !window.confirm(t("data.editUnsavedWarning", { ns: "labels" }))
+    },
+    enableBeforeUnload: isDirty,
+  })
   const handleSaveRef = useRef(handleSave)
   const extractFieldMutationRef = useRef(extractFieldMutation)
   const extractAllSectionsMutationRef = useRef(extractAllSectionsMutation)
@@ -362,9 +377,13 @@ function LabelData() {
           width: "100%",
         }}
       >
-        <Typography variant="h4" sx={{ py: 3 }}>
-          {t("data.title")}
-        </Typography>
+        <Box sx={{ py: 3 }}>
+          <Typography variant="h4">
+            {displayName
+              ? `${t("data.title")} – ${displayName}`
+              : t("data.title")}
+          </Typography>
+        </Box>
         <Grid
           container
           spacing={3}

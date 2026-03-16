@@ -40,17 +40,17 @@ def get_requirement_dictionary(requirement: Requirement) -> str:
     return "\n".join(lines)
 
 
-def get_global_exemptions(requirement: Requirement) -> str:
+def get_general_exemptions(requirement: Requirement) -> str:
     """
-    Extract global rules (often exemptions) from the database for the given legislation.
+    Extract general exemptions from the database for the given legislation.
     Returns a bulleted list of English texts.
     """
-    if not requirement.legislation.global_provisions:
+    if not requirement.legislation.general_exemptions:
         return ""
 
     # Sort for deterministic output
     sorted_provisions = sorted(
-        requirement.legislation.global_provisions, key=lambda p: p.citation
+        requirement.legislation.general_exemptions, key=lambda p: p.citation
     )
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
     return "\n".join(lines)
@@ -117,7 +117,7 @@ def build_context(label: Label, requirement: Requirement) -> dict[str, str]:
     """
     return {
         "dictionary": get_requirement_dictionary(requirement),
-        "global_exemptions": get_global_exemptions(requirement),
+        "general_exemptions": get_general_exemptions(requirement),
         "exemptions": get_exemptions(requirement),
         "applicability_conditions": get_applicability_conditions(requirement),
         "provisions": get_requirement_provisions(requirement),
@@ -133,7 +133,7 @@ def render_prompt(context: dict[str, str]) -> str:
         settings.COMPLIANCE_PROMPT_TEMPLATE
     ).render(
         dictionary=context.get("dictionary", ""),
-        global_exemptions=context.get("global_exemptions", ""),
+        general_exemptions=context.get("general_exemptions", ""),
         exemptions=context.get("exemptions", ""),
         applicability_conditions=context.get("applicability_conditions", ""),
         requirement=context.get("provisions", ""),

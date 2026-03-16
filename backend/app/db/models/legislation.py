@@ -32,9 +32,9 @@ class Legislation(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=T
         back_populates="legislation", cascade_delete=True
     )
     product_type: "ProductType" = Relationship(back_populates="legislations")
-    global_provisions: list["Provision"] = Relationship(
+    general_exemptions: list["Provision"] = Relationship(
         sa_relationship_kwargs={
-            "primaryjoin": "and_(Legislation.id == Provision.legislation_id, Provision.is_global_rule == True)",
+            "primaryjoin": "and_(Legislation.id == Provision.legislation_id, Provision.is_general_exemption == True)",
             "viewonly": True,
             "lazy": "selectin",
         }

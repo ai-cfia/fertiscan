@@ -910,6 +910,10 @@ export type LegislationPublic = {
      * Updated At
      */
     updated_at?: string | null;
+    /**
+     * General Exemptions
+     */
+    general_exemptions?: Array<ProvisionSnippet>;
 };
 
 /**
@@ -1009,6 +1013,19 @@ export type Message = {
      */
     message: string;
 };
+
+/**
+ * Modifier
+ */
+export type Modifier = {
+    provision: ProvisionSnippet;
+    type: ModifierType;
+};
+
+/**
+ * ModifierType
+ */
+export type ModifierType = 'EXEMPTION' | 'APPLICABILITY_CONDITION';
 
 /**
  * NewPassword
@@ -1296,6 +1313,24 @@ export type ProductTypePublic = {
 };
 
 /**
+ * ProvisionSnippet
+ */
+export type ProvisionSnippet = {
+    /**
+     * Citation
+     */
+    citation: string;
+    /**
+     * Text En
+     */
+    text_en?: string | null;
+    /**
+     * Text Fr
+     */
+    text_fr?: string | null;
+};
+
+/**
  * Readiness
  */
 export type Readiness = {
@@ -1345,6 +1380,14 @@ export type RequirementPublic = {
      * Guidance Fr
      */
     guidance_fr?: string | null;
+    /**
+     * Provisions
+     */
+    provisions?: Array<ProvisionSnippet>;
+    /**
+     * Modifiers
+     */
+    modifiers?: Array<Modifier>;
     /**
      * Created At
      */

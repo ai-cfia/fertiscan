@@ -251,6 +251,35 @@ interface Resources {
       viewAllLabelsDescription: "Browse and manage all labels"
     }
     data: {
+      compliance: "Compliance"
+      complianceApplicabilityCondition: "Applicability condition"
+      complianceClear: "Clear"
+      complianceCleared: "Compliance result cleared"
+      complianceEvaluationError: "Evaluation failed. Please try again."
+      complianceEvaluationPlaceholder: "Requirement list and evaluation will appear here."
+      complianceExemptions: "Exemptions"
+      complianceExplanationLabel: "Explanation"
+      complianceExplanationPlaceholder: "Enter explanation"
+      complianceGlobalExemptions: "General exemptions"
+      complianceItemsCount: "{{count}} compliance results"
+      compliancePageTitle: "Compliance - Label Inspection"
+      compliancePrerequisiteMet: "Prerequisite met: label data ready for evaluation"
+      compliancePrerequisiteNotMet: "Prerequisite not met: complete label data extraction first"
+      complianceProvisions: "Provisions"
+      complianceRequirement: "Requirement"
+      complianceRequirementPlaceholder: "Evaluation result will appear here."
+      complianceRequirementsCount: "{{count}} requirements"
+      complianceRunAll: "Run evaluation"
+      complianceRunLegislation: "Evaluate all"
+      complianceRunRequirement: "Evaluate"
+      complianceStatusCompliant: "Compliant"
+      complianceStatusInconclusive: "Inconclusive"
+      complianceStatusLabel: "Status"
+      complianceStatusNonCompliant: "Non-compliant"
+      complianceStatusNotApplicable: "Not applicable"
+      complianceStatusPlaceholder: "Select status"
+      complianceTitle: "Compliance"
+      complianceUnsavedWarning: "You have unsaved compliance results. Are you sure you want to leave?"
       contacts: {
         addContact: "Add Contact"
         address: "Address"
@@ -269,6 +298,7 @@ interface Resources {
         website: "Website"
       }
       continueReview: "Continue Review"
+      editUnsavedWarning: "You have unsaved label data. Are you sure you want to leave?"
       extractAllBasic: "Extract All Basic Fields"
       extractAllFields: "Extract All Fields"
       extractAllGuaranteed: "Extract All Guaranteed Analysis"
@@ -361,7 +391,7 @@ interface Resources {
         value: "Value"
       }
       markComplete: "Mark Complete"
-      pageTitle: "Label Review - Label Inspection"
+      pageTitle: "Edit Label - Label Inspection"
       removeReviewFlag: "Remove review flag"
       save: "Save"
       saved: "Changes saved successfully"
@@ -422,7 +452,7 @@ interface Resources {
           treated_seed: "Treated seed"
         }
       }
-      title: "Label Review"
+      title: "Edit Label"
       validation: {
         missingLabelData: "Label data must be created before marking review as complete"
         missingRegistrationNumber: "Registration number is required to mark review as complete"
@@ -440,8 +470,8 @@ interface Resources {
       }
     }
     files: {
+      editLabel: "Edit Label"
       pageTitle: "Label Files - Label Inspection"
-      reviewLabel: "Review Label"
       title_one: "Label Image: {{count}} (max {{max}})"
       title_other: "Label Images: {{count}} (max {{max}})"
     }
@@ -492,14 +522,14 @@ interface Resources {
         title: "Create New Label"
       }
       rowActions: {
-        continueReview: "Continue review"
+        continueEdit: "Continue editing"
         delete: "Delete"
         deleteDialog: {
           description: "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files."
           title: "Delete label"
         }
         deleteNotImplemented: "Delete functionality not yet implemented"
-        startReview: "Start review"
+        editLabel: "Edit label"
         viewDetails: "View Details"
       }
       upload: {

@@ -2299,6 +2299,14 @@ export const LegislationPublicSchema = {
                 }
             ],
             title: 'Updated At'
+        },
+        general_exemptions: {
+            items: {
+                $ref: '#/components/schemas/ProvisionSnippet'
+            },
+            type: 'array',
+            title: 'General Exemptions',
+            default: []
         }
     },
     type: 'object',
@@ -2462,6 +2470,32 @@ export const MessageSchema = {
         'message'
     ],
     title: 'Message'
+} as const;
+
+export const ModifierSchema = {
+    properties: {
+        provision: {
+            $ref: '#/components/schemas/ProvisionSnippet'
+        },
+        type: {
+            $ref: '#/components/schemas/ModifierType'
+        }
+    },
+    type: 'object',
+    required: [
+        'provision',
+        'type'
+    ],
+    title: 'Modifier'
+} as const;
+
+export const ModifierTypeSchema = {
+    type: 'string',
+    enum: [
+        'EXEMPTION',
+        'APPLICABILITY_CONDITION'
+    ],
+    title: 'ModifierType'
 } as const;
 
 export const NewPasswordSchema = {
@@ -3012,6 +3046,42 @@ export const ProductTypePublicSchema = {
     title: 'ProductTypePublic'
 } as const;
 
+export const ProvisionSnippetSchema = {
+    properties: {
+        citation: {
+            type: 'string',
+            title: 'Citation'
+        },
+        text_en: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Text En'
+        },
+        text_fr: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Text Fr'
+        }
+    },
+    type: 'object',
+    required: [
+        'citation'
+    ],
+    title: 'ProvisionSnippet'
+} as const;
+
 export const ReadinessSchema = {
     properties: {
         status: {
@@ -3108,6 +3178,22 @@ export const RequirementPublicSchema = {
                 }
             ],
             title: 'Guidance Fr'
+        },
+        provisions: {
+            items: {
+                $ref: '#/components/schemas/ProvisionSnippet'
+            },
+            type: 'array',
+            title: 'Provisions',
+            default: []
+        },
+        modifiers: {
+            items: {
+                $ref: '#/components/schemas/Modifier'
+            },
+            type: 'array',
+            title: 'Modifiers',
+            default: []
         },
         created_at: {
             anyOf: [
