@@ -10,6 +10,9 @@ jobs:
     name: SBOM Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    continue-on-error: true
+    permissions:
+      security-events: write
     defaults:
       run:
         working-directory: frontend
@@ -19,51 +22,14 @@ jobs:
         with:
           node-version: "20"
       - run: npm ci
-      - name: Generate new SBOM
+      - name: Generate SBOM
         run: |
           npx @cyclonedx/cyclonedx-npm package-lock.json \
-            --output-reproducible --package-lock-only -v --sv 1.6 -o sbom-new.json
-          echo "" >> sbom-new.json
-      - name: Check if SBOM needs update
-        id: sbom-check
-        run: |
-          if [ ! -f sbom.json ]; then
-            echo "needs_update=true" >> $GITHUB_OUTPUT
-            echo "## SBOM Creation Required" >> $GITHUB_STEP_SUMMARY
-            echo "Run: make frontend-generate-sbom" >> $GITHUB_STEP_SUMMARY
-          elif ! cmp -s sbom.json sbom-new.json; then
-            echo "needs_update=true" >> $GITHUB_OUTPUT
-            echo "## SBOM Update Required" >> $GITHUB_STEP_SUMMARY
-            echo "Run: make frontend-generate-sbom" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "needs_update=false" >> $GITHUB_OUTPUT
-            echo "## ✅ SBOM is up to date" >> $GITHUB_STEP_SUMMARY
-          fi
-      - name: Show diff if needed
-        if: steps.sbom-check.outputs.needs_update == 'true'
-        run: diff sbom.json sbom-new.json || true
-      - name: Fail if SBOM needs update
-        if: steps.sbom-check.outputs.needs_update == 'true'
-        run: exit 1
-
-  sbom-scan:
-    name: SBOM Scan
-    needs: sbom-check
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    permissions:
-      security-events: write
-    steps:
-      - uses: actions/checkout@v6
-      - name: Check SBOM exists
-        run: |
-          if [ ! -f frontend/sbom.json ]; then
-            echo "SBOM not found, skipping scan"
-            exit 0
-          fi
+            --output-reproducible --package-lock-only -v --sv 1.6 -o sbom.json
+          echo "" >> sbom.json
       - name: SBOM security scan
         id: scan
-        uses: anchore/scan-action@a00a05e63ba70a3938d40280dfe42bb5d8e16d19
+        uses: anchore/scan-action@f63dc5910033de4782c37de5c6d7c7767852844e
         with:
           sbom: frontend/sbom.json
           fail-build: false

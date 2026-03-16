@@ -12,8 +12,8 @@
 	"docker": { "pinDigests": true },
 	"github-actions": { "pinDigests": true },
 	"packageRules": [
-		{ "matchPaths": ["frontend/**"], "labels": ["area:frontend"] },
-		{ "matchPaths": ["backend/**"], "labels": ["area:backend"] },
-		{ "matchPaths": [".github/**"], "labels": ["area:ci"] }
+		{ "matchPaths": ["frontend/**"], "labels": ["frontend"] },
+		{ "matchPaths": ["backend/**"], "labels": ["backend"] },
+		{ "matchPaths": [".github/**"], "labels": ["ci"] }
 	]
 }
