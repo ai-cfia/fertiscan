@@ -57,12 +57,15 @@
     "extractAllIngredients": "Extraire tous les ingrédients",
     "extractAllNPK": "Extraire tous les champs NPK",
     "extractAllSafety": "Extraire tous les champs de sécurité",
+    "extractAllStatements": "Extraire toutes les déclarations",
     "extractField": "Extraire avec l'IA",
     "extractionAllSuccess": "Tous les champs ont été extraits avec succès",
     "extractionFailed": "L'extraction a échoué. Veuillez réessayer.",
     "extractionNoImages": "Aucune image disponible pour l'extraction",
+    "extractionComplete": "Extraction terminée",
     "extractionNoValue": "Aucune valeur n'a été extraite pour ce champ",
     "extractionOnlyFertilizer": "L'extraction n'est disponible que pour les étiquettes d'engrais",
+    "extractionPartialSuccess": "{{success}} sections extraites sur {{total}}",
     "extractionSuccess": "Champ extrait avec succès",
     "fields": {
       "brandNameEn": "Nom de marque (anglais)",
@@ -82,7 +85,20 @@
       "productNameEn": "Nom du produit (anglais)",
       "productNameFr": "Nom du produit (français)",
       "registrationNumber": "Numéro d'enregistrement",
-      "volume": "Volume"
+      "volume": "Volume",
+      "registrationClaimEn": "Revendication d'enregistrement (EN)",
+      "registrationClaimFr": "Revendication d'enregistrement (FR)",
+      "exemptionClaimEn": "Revendication d'exemption (EN)",
+      "exemptionClaimFr": "Revendication d'exemption (FR)",
+      "countryOfOrigin": "Pays d'origine",
+      "productClassification": {
+        "fertilizer": "Engrais",
+        "supplement": "Supplement",
+        "growing_medium": "Milieu de culture",
+        "treated_seed": "Semence traitée"
+      },
+      "productClassificationLabel": "Classification du produit",
+      "productClassificationNone": "Aucun"
     },
     "flagForReview": "Marquer pour révision",
     "guaranteedAnalysis": {
@@ -114,18 +130,22 @@
       "productNameEn": "Entrez le nom du produit tel qu'il apparaît sur l'étiquette",
       "productNameFr": "Entrez le nom du produit tel qu'il apparaît sur l'étiquette",
       "registrationNumber": "Entrez le numéro d'enregistrement du produit",
-      "volume": "Entrez le volume avec l'unité (ex. 1 L, 500 ml)"
+      "volume": "Entrez le volume avec l'unité (ex. 1 L, 500 ml)",
+      "registrationClaim": "Texte intégral de la revendication d'enregistrement",
+      "exemptionClaim": "Texte intégral de la revendication d'exemption",
+      "countryOfOrigin": "Pays de fabrication ou d'importation"
     },
     "ingredients": {
       "addIngredient": "Ajouter un ingrédient",
       "nameEn": "Nom (Anglais)",
       "nameFr": "Nom (Français)",
       "noIngredients": "Aucun ingrédient ajouté",
+      "registrationNumber": "Numéro d'enregistrement",
       "unit": "Unité",
       "value": "Valeur"
     },
     "markComplete": "Marquer comme terminé",
-    "pageTitle": "Révision d'étiquette - Inspection d'étiquettes",
+    "pageTitle": "Modifier l'étiquette - Inspection d'étiquettes",
     "removeReviewFlag": "Retirer le drapeau de révision",
     "save": "Enregistrer",
     "saved": "Modifications enregistrées avec succès",
@@ -157,9 +177,62 @@
       "npk": "Analyse NPK",
       "product": "Produit",
       "registrationNumber": "Numéro d'enregistrement",
-      "safety": "Informations de sécurité"
+      "safety": "Informations de sécurité",
+      "statements": "Déclarations et revendications"
     },
-    "title": "Révision d'étiquette",
+    "compliance": "Conformité",
+    "complianceItemsCount": "{{count}} résultats de conformité",
+    "compliancePageTitle": "Conformité - Inspection d'étiquettes",
+    "compliancePrerequisiteMet": "Prérequis satisfait : données d'étiquette prêtes pour l'évaluation",
+    "compliancePrerequisiteNotMet": "Prérequis non satisfait : complétez d'abord l'extraction des données de l'étiquette",
+    "complianceRequirementsCount": "{{count}} exigences",
+    "complianceTitle": "Conformité",
+    "complianceEvaluationPlaceholder": "La liste des exigences et l'évaluation apparaîtront ici.",
+    "complianceRequirementPlaceholder": "Le résultat de l'évaluation apparaîtra ici.",
+    "complianceProvisions": "Dispositions",
+    "complianceRequirement": "Exigence",
+    "complianceGlobalExemptions": "Exemptions générales",
+    "complianceExemptions": "Exemptions",
+    "complianceApplicabilityCondition": "Condition d'applicabilité",
+    "complianceRunAll": "Lancer l'évaluation",
+    "complianceRunLegislation": "Évaluer tout",
+    "complianceRunRequirement": "Évaluer",
+    "complianceStatusCompliant": "Conforme",
+    "complianceStatusNonCompliant": "Non conforme",
+    "complianceStatusNotApplicable": "Non applicable",
+    "complianceStatusInconclusive": "Inconcluant",
+    "complianceStatusLabel": "Statut",
+    "complianceStatusPlaceholder": "Sélectionner le statut",
+    "complianceExplanationLabel": "Explication",
+    "complianceExplanationPlaceholder": "Saisir l'explication",
+    "complianceEvaluationError": "L'évaluation a échoué. Veuillez réessayer.",
+    "complianceCleared": "Résultat de conformité effacé",
+    "complianceClear": "Effacer",
+    "complianceUnsavedWarning": "Vous avez des résultats de conformité non enregistrés. Voulez-vous vraiment quitter?",
+    "complianceNoUnsavedChanges": "Aucun changement non enregistré",
+    "editUnsavedWarning": "Vous avez des données d'étiquette non enregistrées. Voulez-vous vraiment quitter?",
+    "statements": {
+      "add": "Ajouter",
+      "en": "Anglais",
+      "export_statements": "Déclarations d'exportation",
+      "experimental_statements": "Déclarations expérimentales",
+      "customer_formula_statements": "Déclarations formule client",
+      "directions_for_use_statements": "Mode d'emploi",
+      "empty": {
+        "precaution_statements": "Aucune mise en garde",
+        "directions_for_use_statements": "Aucun mode d'emploi",
+        "customer_formula_statements": "Aucune déclaration formule client",
+        "intended_use_statements": "Aucune déclaration d'usage prévu",
+        "processing_instruction_statements": "Aucune instruction de traitement",
+        "experimental_statements": "Aucune déclaration expérimentale",
+        "export_statements": "Aucune déclaration d'exportation"
+      },
+      "fr": "Français",
+      "intended_use_statements": "Déclarations d'usage prévu",
+      "precaution_statements": "Mises en garde",
+      "processing_instruction_statements": "Instructions de traitement"
+    },
+    "title": "Modifier l'étiquette",
     "validation": {
       "missingLabelData": "Les données de l'étiquette doivent être créées avant de marquer la révision comme terminée",
       "missingRegistrationNumber": "Le numéro d'enregistrement est requis pour marquer la révision comme terminée"
@@ -178,7 +251,7 @@
   },
   "files": {
     "pageTitle": "Fichiers d'étiquette - Inspection d'étiquettes",
-    "reviewLabel": "Réviser l'étiquette",
+    "editLabel": "Modifier l'étiquette",
     "title_one": "Image d'étiquette : {{count}} (max {{max}})",
     "title_many": "Images d'étiquette : {{count}} (max {{max}})",
     "title_other": "Images d'étiquette : {{count}} (max {{max}})"
@@ -234,14 +307,14 @@
       "title": "Créer une nouvelle étiquette"
     },
     "rowActions": {
-      "continueReview": "Continuer la révision",
+      "continueEdit": "Continuer la modification",
       "delete": "Supprimer",
       "deleteDialog": {
         "description": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
         "title": "Supprimer l'étiquette"
       },
       "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
-      "startReview": "Démarrer l'examen",
+      "editLabel": "Modifier l'étiquette",
       "viewDetails": "Voir les détails"
     },
     "upload": {

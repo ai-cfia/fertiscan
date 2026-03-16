@@ -44,7 +44,7 @@ erDiagram
         uuid id PK
         uuid legislation_id FK
         string citation UK
-        boolean is_global_rule "default false"
+        boolean is_general_exemption "default false"
         string title_en "nullable"
         string title_fr "nullable"
         string description_en "nullable"

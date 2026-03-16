@@ -11,9 +11,9 @@ from sqlalchemy.orm import Session
 from sqlmodel import or_, select
 from sqlmodel.sql.expression import SelectOfScalar
 
+from app import storage
 from app.db.models.label import Label
 from app.db.models.product import Product
-from app.storage import delete_files
 
 
 def _apply_product_sorting(
@@ -152,7 +152,7 @@ async def delete_product(
     stm = select(Label).where(Label.product_id == product.id)
     if label := session.scalar(stm):
         if file_paths := [img.file_path for img in label.images]:
-            await delete_files(client=s3_client, file_paths=file_paths)
+            await storage.delete_files(client=s3_client, file_paths=file_paths)
 
     session.delete(product)
     session.flush()

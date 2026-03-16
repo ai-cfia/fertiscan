@@ -22,7 +22,7 @@ class Provision(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=Tru
     citation: str = Field(max_length=255, unique=True, index=True)
     text_en: str
     text_fr: str
-    is_global_rule: bool = Field(default=False)
+    is_general_exemption: bool = Field(default=False)
 
     legislation: "Legislation" = Relationship(back_populates="provisions")
     definitions: list["Definition"] = Relationship(

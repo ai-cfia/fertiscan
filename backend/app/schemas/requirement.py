@@ -7,8 +7,18 @@ from uuid import UUID
 from fastapi import Query
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
+from app.db.models.enums import ModifierType
+from app.schemas.provision import ProvisionSnippet
+
+
+class Modifier(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    provision: ProvisionSnippet
+    type: ModifierType
+
 
 class RequirementPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     legislation_id: UUID
     title_en: str | None = None
@@ -17,6 +27,8 @@ class RequirementPublic(BaseModel):
     description_fr: str | None = None
     guidance_en: str | None = None
     guidance_fr: str | None = None
+    provisions: list[ProvisionSnippet] = []
+    modifiers: list[Modifier] = []
     created_at: datetime | None = None
     updated_at: datetime | None = None
 
@@ -29,9 +41,11 @@ class RequirementsPublic(BaseModel):
 class RequirementParams(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
-    legislation_id: UUID | None = None
-    title_en: str | None = Query(None, max_length=255)
-    title_fr: str | None = Query(None, max_length=255)
+    legislation_ids: list[UUID] | None = Query(
+        None, description="Filter by legislation IDs (repeated param)"
+    )
+    title_en: str | None = Query(None, max_length=255, description="Title (English)")
+    title_fr: str | None = Query(None, max_length=255, description="Title (French)")
     start_created_at: datetime | None = Query(None, description="Start created at")
     end_created_at: datetime | None = Query(None, description="End created at")
     start_updated_at: datetime | None = Query(None, description="Start updated at")

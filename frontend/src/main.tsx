@@ -46,6 +46,9 @@ const handleApiError = (error: Error) => {
 }
 
 export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false },
+  },
   queryCache: new QueryCache({
     onError: handleApiError,
   }),

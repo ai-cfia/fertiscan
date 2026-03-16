@@ -22,6 +22,7 @@ from app.dependencies.label_images import (
 from app.dependencies.labels import (
     CompletedLabelDep,
     EditableLabelDep,
+    EvaluableLabelDep,
     ExtractableLabelDep,
     FertilizerLabelDep,
     LabelDep,
@@ -46,6 +47,7 @@ __all__ = [
     "CurrentUser",
     "EditableLabelDep",
     "EditableLabelImageDep",
+    "EvaluableLabelDep",
     "ExtractableLabelDep",
     "FertilizerLabelDataDep",
     "FertilizerLabelDep",

@@ -6,7 +6,7 @@ from app.services.compliance import (
     build_context,
     get_applicability_conditions,
     get_exemptions,
-    get_global_exemptions,
+    get_general_exemptions,
     get_label_data_json,
     get_requirement_dictionary,
     get_requirement_provisions,
@@ -136,75 +136,75 @@ class TestGetRequirementDictionary:
         assert result.count("- ") == 2
 
 
-class TestGetGlobalExemptions:
-    """Tests for the get_global_exemptions helper function."""
+class TestGetGeneralExemptions:
+    """Tests for the get_general_exemptions helper function."""
 
-    def test_get_global_exemptions_empty(self, db: Session) -> None:
-        """Test returning an empty string when no global rules exist."""
+    def test_get_general_exemptions_empty(self, db: Session) -> None:
+        """Test returning an empty string when no general exemptions exist."""
         requirement = RequirementFactory.create()
         # Provisions are linked to legislation via factory, but let's be explicit
         requirement.legislation.provisions = []
         db.flush()
 
-        assert get_global_exemptions(requirement) == ""
+        assert get_general_exemptions(requirement) == ""
 
-    def test_get_global_exemptions_single(self, db: Session) -> None:
-        """Test formatting a single global rule."""
+    def test_get_general_exemptions_single(self, db: Session) -> None:
+        """Test formatting a single general exemption."""
         requirement = RequirementFactory.create()
         # Use factory to handle citation uniqueness and link to legislation
         ProvisionFactory.create(
             legislation=requirement.legislation,
             text_en="Exemption A",
-            is_global_rule=True,
+            is_general_exemption=True,
             citation="Global-1",
         )
         db.flush()
         db.refresh(requirement.legislation)
 
-        result = get_global_exemptions(requirement)
+        result = get_general_exemptions(requirement)
         assert result == "- Global-1: Exemption A"
 
-    def test_get_global_exemptions_multiple_sorting(self, db: Session) -> None:
-        """Test that multiple global rules are sorted by citation."""
+    def test_get_general_exemptions_multiple_sorting(self, db: Session) -> None:
+        """Test that multiple general exemptions are sorted by citation."""
         requirement = RequirementFactory.create()
         ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="B",
             text_en="Exemption B",
-            is_global_rule=True,
+            is_general_exemption=True,
         )
         ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="A",
             text_en="Exemption A",
-            is_global_rule=True,
+            is_general_exemption=True,
         )
         db.flush()
         db.refresh(requirement.legislation)
 
-        result = get_global_exemptions(requirement)
+        result = get_general_exemptions(requirement)
         expected = "- A: Exemption A\n- B: Exemption B"
         assert result == expected
 
-    def test_get_global_exemptions_filters_non_global(self, db: Session) -> None:
-        """Test that only global rules are included."""
+    def test_get_general_exemptions_filters_non_general(self, db: Session) -> None:
+        """Test that only general exemptions are included."""
         requirement = RequirementFactory.create()
         ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="Global-A",
             text_en="Exemption A",
-            is_global_rule=True,
+            is_general_exemption=True,
         )
         ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="Regular-A",
             text_en="Standard Rule",
-            is_global_rule=False,
+            is_general_exemption=False,
         )
         db.flush()
         db.refresh(requirement.legislation)
 
-        result = get_global_exemptions(requirement)
+        result = get_general_exemptions(requirement)
         assert result == "- Global-A: Exemption A"
 
 
@@ -366,7 +366,7 @@ class TestBuildContext:
         ProvisionFactory.create(
             legislation=requirement.legislation,
             citation="Global-1",
-            is_global_rule=True,
+            is_general_exemption=True,
             text_en="Global Rule",
         )
         p_req = ProvisionFactory.create(
@@ -384,8 +384,8 @@ class TestBuildContext:
 
         context = build_context(label, requirement)
         assert "dictionary" in context
-        assert "global_exemptions" in context
-        assert "- Global-1: Global Rule" in context["global_exemptions"]
+        assert "general_exemptions" in context
+        assert "- Global-1: Global Rule" in context["general_exemptions"]
         assert "exemptions" in context
         assert "applicability_conditions" in context
         assert "provisions" in context
@@ -401,7 +401,7 @@ class TestRenderPrompt:
         """Test that the prompt is rendered with context values."""
         context = {
             "dictionary": "DEF: TEST",
-            "global_exemptions": "GLOBAL: NONE",
+            "general_exemptions": "GENERAL: NONE",
             "exemptions": "EXEMPT: NONE",
             "applicability_conditions": "COND: NONE",
             "provisions": "PROV: TEST",

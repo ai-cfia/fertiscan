@@ -38,6 +38,7 @@ interface LabelDataGuaranteedAnalysisProps<
   onExtract?: () => void
   onToggleReview?: () => void
   disabled?: boolean
+  readOnly?: boolean
 }
 
 // ============================== Component ==============================
@@ -57,6 +58,7 @@ export default function LabelDataGuaranteedAnalysis<
   onExtract,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: LabelDataGuaranteedAnalysisProps<TFieldValues>) {
   const { t } = useTranslation(["labels", "common"])
   const nutrientsFieldName = `${String(fieldName)}.nutrients` as any
@@ -130,7 +132,7 @@ export default function LabelDataGuaranteedAnalysis<
         >
           <Box sx={{ flex: 1 }}>
             <Controller
-              name={`${String(fieldName)}.title_en` as any}
+              name={`${String(fieldName)}.title.en` as any}
               control={control}
               render={({ field }) => (
                 <TextField
@@ -151,7 +153,7 @@ export default function LabelDataGuaranteedAnalysis<
           </Box>
           <Box sx={{ flex: 1 }}>
             <Controller
-              name={`${String(fieldName)}.title_fr` as any}
+              name={`${String(fieldName)}.title.fr` as any}
               control={control}
               render={({ field }) => (
                 <TextField
@@ -193,6 +195,7 @@ export default function LabelDataGuaranteedAnalysis<
           control={control}
           form={form}
           disabled={disabled}
+          readOnly={readOnly}
           emptyStateMessage={t("data.guaranteedAnalysis.noNutrients")}
           addButtonLabel={t("data.guaranteedAnalysis.addNutrient")}
           nameEnLabel={t("data.guaranteedAnalysis.nameEn")}

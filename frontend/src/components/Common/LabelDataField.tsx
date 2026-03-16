@@ -146,6 +146,16 @@ export default function LabelDataField<
           value={field.value ?? ""}
           multiline={multiline}
           maxRows={maxRows}
+          InputLabelProps={{ shrink: true }}
+          sx={{
+            "& .MuiInputBase-input": {
+              color: "text.primary",
+            },
+            "&.Mui-disabled .MuiInputBase-input": {
+              WebkitTextFillColor: "inherit",
+              color: "text.primary",
+            },
+          }}
           onBlur={(_e) => {
             field.onBlur()
             if (typeof field.value === "string") {

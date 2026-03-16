@@ -17,8 +17,9 @@ interface IngredientsSectionProps {
   hasImages: boolean
   getIsFieldExtracting: (fieldName: string) => boolean
   onExtractField: (fieldName: string | string[] | null) => void
-  onToggleReview: (fieldName: string) => void
+  onToggleReview?: (fieldName: string) => void
   disabled?: boolean
+  readOnly?: boolean
 }
 export default function IngredientsSection({
   control,
@@ -31,6 +32,7 @@ export default function IngredientsSection({
   onExtractField,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: IngredientsSectionProps) {
   const { t } = useTranslation("labels")
   const ingredientsFields = ["ingredients"]
@@ -83,12 +85,15 @@ export default function IngredientsSection({
         label={t("data.fields.ingredients")}
         control={control}
         form={form}
-        helperText={t("data.helperText.ingredients")}
+        helperText={readOnly ? undefined : t("data.helperText.ingredients")}
         needsReview={getFieldMeta("ingredients").needs_review}
         hasImages={hasImages}
         isExtracting={getIsFieldExtracting("ingredients")}
-        onToggleReview={() => onToggleReview("ingredients")}
+        onToggleReview={
+          readOnly ? undefined : () => onToggleReview!("ingredients")
+        }
         disabled={disabled}
+        readOnly={readOnly}
       />
     </LabelDataAccordionSection>
   )

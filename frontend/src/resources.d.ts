@@ -224,7 +224,7 @@ interface Resources {
       button: {
         cancel: "Cancel"
       }
-      loading: "Loading..."
+      loading: "Loading linked product..."
       noBrand: "No Brand"
       processing: "Processing..."
       unnamedProduct: "Unnamed Product"
@@ -251,6 +251,36 @@ interface Resources {
       viewAllLabelsDescription: "Browse and manage all labels"
     }
     data: {
+      compliance: "Compliance"
+      complianceApplicabilityCondition: "Applicability condition"
+      complianceClear: "Clear"
+      complianceCleared: "Compliance result cleared"
+      complianceEvaluationError: "Evaluation failed. Please try again."
+      complianceEvaluationPlaceholder: "Requirement list and evaluation will appear here."
+      complianceExemptions: "Exemptions"
+      complianceExplanationLabel: "Explanation"
+      complianceExplanationPlaceholder: "Enter explanation"
+      complianceGlobalExemptions: "General exemptions"
+      complianceItemsCount: "{{count}} compliance results"
+      complianceNoUnsavedChanges: "No unsaved changes"
+      compliancePageTitle: "Compliance - Label Inspection"
+      compliancePrerequisiteMet: "Prerequisite met: label data ready for evaluation"
+      compliancePrerequisiteNotMet: "Prerequisite not met: complete label data extraction first"
+      complianceProvisions: "Provisions"
+      complianceRequirement: "Requirement"
+      complianceRequirementPlaceholder: "Evaluation result will appear here."
+      complianceRequirementsCount: "{{count}} requirements"
+      complianceRunAll: "Run evaluation"
+      complianceRunLegislation: "Evaluate all"
+      complianceRunRequirement: "Evaluate"
+      complianceStatusCompliant: "Compliant"
+      complianceStatusInconclusive: "Inconclusive"
+      complianceStatusLabel: "Status"
+      complianceStatusNonCompliant: "Non-compliant"
+      complianceStatusNotApplicable: "Not applicable"
+      complianceStatusPlaceholder: "Select status"
+      complianceTitle: "Compliance"
+      complianceUnsavedWarning: "You have unsaved compliance results. Are you sure you want to leave?"
       contacts: {
         addContact: "Add Contact"
         address: "Address"
@@ -269,18 +299,22 @@ interface Resources {
         website: "Website"
       }
       continueReview: "Continue Review"
+      editUnsavedWarning: "You have unsaved label data. Are you sure you want to leave?"
       extractAllBasic: "Extract All Basic Fields"
       extractAllFields: "Extract All Fields"
       extractAllGuaranteed: "Extract All Guaranteed Analysis"
       extractAllIngredients: "Extract All Ingredients"
       extractAllNPK: "Extract All NPK Fields"
       extractAllSafety: "Extract All Safety Fields"
+      extractAllStatements: "Extract All Statements"
       extractField: "Extract with AI"
       extractionAllSuccess: "All fields extracted successfully"
+      extractionComplete: "Extraction complete"
       extractionFailed: "Extraction failed. Please try again."
       extractionNoImages: "No images available for extraction"
       extractionNoValue: "No value was extracted for this field"
       extractionOnlyFertilizer: "Extraction is only available for fertilizer labels"
+      extractionPartialSuccess: "Extracted {{success}} of {{total}} sections"
       extractionSuccess: "Field extracted successfully"
       fields: {
         brandNameEn: "Brand Name (English)"
@@ -288,6 +322,9 @@ interface Resources {
         cautionEn: "Caution (English)"
         cautionFr: "Caution (French)"
         contacts: "Contacts"
+        countryOfOrigin: "Country of origin"
+        exemptionClaimEn: "Exemption claim (EN)"
+        exemptionClaimFr: "Exemption claim (FR)"
         guaranteedAnalysis: "Guaranteed Analysis"
         ingredients: "Ingredient List"
         instructionsEn: "Instructions (English)"
@@ -297,8 +334,18 @@ interface Resources {
         n: "Nitrogen (N)"
         netWeight: "Net Weight"
         p: "Phosphorus (P)"
+        productClassification: {
+          fertilizer: "Fertilizer"
+          growing_medium: "Growing medium"
+          supplement: "Supplement"
+          treated_seed: "Treated seed"
+        }
+        productClassificationLabel: "Product classification"
+        productClassificationNone: "None"
         productNameEn: "Product Name (English)"
         productNameFr: "Product Name (French)"
+        registrationClaimEn: "Registration claim (EN)"
+        registrationClaimFr: "Registration claim (FR)"
         registrationNumber: "Registration Number"
         volume: "Volume"
       }
@@ -320,6 +367,8 @@ interface Resources {
         cautionEn: "Enter caution statements as they appear on the label"
         cautionFr: "Enter caution statements as they appear on the label"
         contacts: "Enter contact information for manufacturer, distributor, or importer"
+        countryOfOrigin: "Country where manufactured or imported from"
+        exemptionClaim: "Verbatim exemption claim"
         guaranteedAnalysis: "Enter guaranteed analysis with title, nutrients, values and units"
         ingredients: "Enter ingredients with bilingual names, values and units"
         instructionsEn: "Enter usage instructions as they appear on the label"
@@ -331,6 +380,7 @@ interface Resources {
         p: "Enter phosphorus percentage"
         productNameEn: "Enter the product name as it appears on the label"
         productNameFr: "Enter the product name as it appears on the label"
+        registrationClaim: "Verbatim registration claim text"
         registrationNumber: "Enter the product registration number"
         volume: "Enter volume with unit (e.g., 1 L, 500 ml)"
       }
@@ -339,11 +389,12 @@ interface Resources {
         nameEn: "Name (English)"
         nameFr: "Name (French)"
         noIngredients: "No ingredients added"
+        registrationNumber: "Registration number"
         unit: "Unit"
         value: "Value"
       }
       markComplete: "Mark Complete"
-      pageTitle: "Label Review - Label Inspection"
+      pageTitle: "Edit Label - Label Inspection"
       removeReviewFlag: "Remove review flag"
       save: "Save"
       saved: "Changes saved successfully"
@@ -359,7 +410,7 @@ interface Resources {
           linked: "Product associated"
           linkedMessage: "This label is linked to a product entry."
           linkedProduct: "Linked Product"
-          matchesFound_one: "{{count}} potential match found"
+          matchesFound_one: "{{count}} potential matches found"
           matchesFound_other: "{{count}} potential matches found"
           missingCriteria: "At least one product attribute required for search"
           noMatch: "No matching product found"
@@ -375,8 +426,36 @@ interface Resources {
         product: "Product"
         registrationNumber: "Registration Number"
         safety: "Safety Information"
+        statements: "Statements and Claims"
       }
-      title: "Label Review"
+      statements: {
+        add: "Add"
+        customer_formula_statements: "Customer formula statements"
+        directions_for_use_statements: "Directions for use"
+        empty: {
+          customer_formula_statements: "No customer formula statements"
+          directions_for_use_statements: "No directions for use"
+          experimental_statements: "No experimental statements"
+          export_statements: "No export statements"
+          intended_use_statements: "No intended use statements"
+          precaution_statements: "No precaution statements"
+          processing_instruction_statements: "No processing instructions"
+        }
+        en: "English"
+        experimental_statements: "Experimental statements"
+        export_statements: "Export statements"
+        fr: "French"
+        intended_use_statements: "Intended use statements"
+        precaution_statements: "Precaution statements"
+        processing_instruction_statements: "Processing instructions"
+        product_classification: {
+          fertilizer: "Fertilizer"
+          growing_medium: "Growing medium"
+          supplement: "Supplement"
+          treated_seed: "Treated seed"
+        }
+      }
+      title: "Edit Label"
       validation: {
         missingLabelData: "Label data must be created before marking review as complete"
         missingRegistrationNumber: "Registration number is required to mark review as complete"
@@ -394,8 +473,8 @@ interface Resources {
       }
     }
     files: {
+      editLabel: "Edit Label"
       pageTitle: "Label Files - Label Inspection"
-      reviewLabel: "Review Label"
       title_one: "Label Image: {{count}} (max {{max}})"
       title_other: "Label Images: {{count}} (max {{max}})"
     }
@@ -446,14 +525,14 @@ interface Resources {
         title: "Create New Label"
       }
       rowActions: {
-        continueReview: "Continue review"
+        continueEdit: "Continue editing"
         delete: "Delete"
         deleteDialog: {
           description: "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files."
           title: "Delete label"
         }
         deleteNotImplemented: "Delete functionality not yet implemented"
-        startReview: "Start review"
+        editLabel: "Edit label"
         viewDetails: "View Details"
       }
       upload: {

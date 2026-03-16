@@ -10,7 +10,7 @@
     "citation": "3(1)(a)",
     "text_en": "The following fertilizers and supplements are exempt from the application of the Act and these Regulations: (a) manure that is sold in its natural condition and that conforms to the standard set out in paragraph 9(a), other than manure that is a fertilizer or supplement referred to in section 2.1",
     "text_fr": "Les engrais et suppléments ci-après sont exemptés de l’application de la Loi et du présent règlement : a) le fumier vendu à l’état naturel et conforme à la norme prévue à l’alinéa 9a), autre que du fumier qui est un engrais ou supplément visé à l’article 2.1;",
-    "is_global_rule": true,
+    "is_general_exemption": true,
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -27,7 +27,7 @@
     "citation": "3(1)(b)",
     "text_en": "The following fertilizers and supplements are exempt from the application of the Act and these Regulations: (b) a fertilizer or supplement that is imported or manufactured in Canada that is used for manufacturing purposes only and that requires further treatment, other than mixing, blending, repackaging or application to seeds.",
     "text_fr": "Les engrais et suppléments ci-après sont exemptés de l’application de la Loi et du présent règlement : b) les engrais et suppléments, importés ou fabriqués au Canada, qui sont utilisés aux fins de fabrication seulement et qui exigent un traitement supplémentaire, autre que le mélange, le remballage ou l’application sur des semences.",
-    "is_global_rule": true,
+    "is_general_exemption": true,
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -44,7 +44,7 @@
     "citation": "3(1.1)",
     "text_en": "A fertilizer or supplement, including one that is imported, that is not intended for sale or use in Canada and that is intended for export and labelled accordingly is exempt from the application of the Act, other than section 5.5, and the application of these Regulations.",
     "text_fr": "Les engrais et suppléments — y compris les engrais et suppléments importés — qui ne sont pas destinés à être vendus ni utilisés au Canada et qui sont destinés à l’exportation et étiquetés à cette fin sont exemptés de l’application de la Loi, à l’exception de l'article 5.5 de celle-ci, et du présent règlement.",
-    "is_global_rule": true,
+    "is_general_exemption": true,
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -61,7 +61,7 @@
     "citation": "3(2)",
     "text_en": "Supplements that are imported into or manufactured in Canada for experimental purposes are exempt from the Act and all provisions of these Regulations except sections 23.1 to 23.4.",
     "text_fr": "Les suppléments importés ou fabriqués au Canada à des fins expérimentales sont soustraits à l’application de la Loi et du présent règlement, sauf les articles 23.1 à 23.4 de celui-ci.",
-    "is_global_rule": true,
+    "is_general_exemption": true,
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -74,7 +74,7 @@
     "citation": "3(3)",
     "text_en": "A fertilizer that is imported into or manufactured in Canada for experimental purposes and that is not a fertilizer-pesticide or a fertilizer that contains a supplement is exempt from the application of section 3 of the Act and of all provisions of these Regulations other than section 2.1, if the residual fertilizer and all plants that are grown in the course of the experiment are destroyed at the end of the experiment.",
     "text_fr": "Les engrais, autres que les engrais-antiparasitaires et les engrais contenant des suppléments, importés ou fabriqués au Canada à des fins expérimentales sont exemptés de l’application de l’article 3 de la Loi et du présent règlement, sauf l’article 2.1 de celui-ci, si, à la conclusion de l’expérimentation, toute plante cultivée dans le cadre de celle-ci et tout engrais résiduel sont détruits.",
-    "is_global_rule": true,
+    "is_general_exemption": true,
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -93,8 +93,8 @@
   {
     "legislation_citation": "C.R.C., c. 666",
     "citation": "3.1(1)",
-    "text_en": "(1) The following fertilizers are exempt from registration if they do not contain seeds or growing media:\n(a) a fertilizer (in this paragraph referred to as the “product”), unless it contains any of the following:\n(i) a substance produced by or derived from a living organism,\n(ii) a pesticide,\n(iii) a supplement that is not registered and is not set out in the List of Materials,\n(iv) a registered supplement, if its directions for use are not consistent with those of the product,\n(v) a micronutrient fertilizer that is not registered, and\n(vi) a registered micronutrient fertilizer, if its directions for use are not consistent with those of the product;\n(b) a fertilizer that is set out in the List of Materials;\n(c) a customer formula fertilizer; and\n(d) a fertilizer whose active ingredients consist solely of a mixture of fertilizers or fertilizers and supplements, if those fertilizers and supplements are exempt from registration or are registered for the proposed use of the mixture.",
-    "text_fr": "(1) S’ils ne contiennent pas de semences ou de milieux de culture, les engrais ci-après sont exemptés de l’enregistrement :\na) tout engrais (appelé « produit » au présent alinéa), à moins qu’il ne contienne l’un ou l’autre des composants suivants :\n(i) une substance produite par un organisme vivant ou issue d’un tel organisme,\n(ii) un antiparasitaire,\n(iii) un supplément qui n’est pas enregistré et qui ne figure pas à la Liste des composants,\n(iv) un supplément enregistré, si le mode d’emploi du produit n’est pas conforme à celui du supplément enregistré,\n(v) un engrais d’oligo-élément qui n’est pas enregistré,\n(vi) un engrais d’oligo-élément enregistré, si le mode d’emploi du produit n’est pas conforme à celui de l’engrais d’oligo-élément enregistré;\nb) tout engrais figurant sur la Liste des composants;\nc) tout engrais préparé selon la formule du client;\nd) tout engrais dont les composants actifs consistant seulement en un mélange soit d’engrais, soit d’engrais et de suppléments, qui sont exemptés de l’enregistrement ou qui sont enregistrés pour l’usage proposé du mélange.",
+    "text_en": "The following fertilizers are exempt from registration if they do not contain seeds or growing media:\n(a) a fertilizer (in this paragraph referred to as the “product”), unless it contains any of the following:\n(i) a substance produced by or derived from a living organism,\n(ii) a pesticide,\n(iii) a supplement that is not registered and is not set out in the List of Materials,\n(iv) a registered supplement, if its directions for use are not consistent with those of the product,\n(v) a micronutrient fertilizer that is not registered, and\n(vi) a registered micronutrient fertilizer, if its directions for use are not consistent with those of the product;\n(b) a fertilizer that is set out in the List of Materials;\n(c) a customer formula fertilizer; and\n(d) a fertilizer whose active ingredients consist solely of a mixture of fertilizers or fertilizers and supplements, if those fertilizers and supplements are exempt from registration or are registered for the proposed use of the mixture.",
+    "text_fr": "S’ils ne contiennent pas de semences ou de milieux de culture, les engrais ci-après sont exemptés de l’enregistrement :\na) tout engrais (appelé « produit » au présent alinéa), à moins qu’il ne contienne l’un ou l’autre des composants suivants :\n(i) une substance produite par un organisme vivant ou issue d’un tel organisme,\n(ii) un antiparasitaire,\n(iii) un supplément qui n’est pas enregistré et qui ne figure pas à la Liste des composants,\n(iv) un supplément enregistré, si le mode d’emploi du produit n’est pas conforme à celui du supplément enregistré,\n(v) un engrais d’oligo-élément qui n’est pas enregistré,\n(vi) un engrais d’oligo-élément enregistré, si le mode d’emploi du produit n’est pas conforme à celui de l’engrais d’oligo-élément enregistré;\nb) tout engrais figurant sur la Liste des composants;\nc) tout engrais préparé selon la formule du client;\nd) tout engrais dont les composants actifs consistant seulement en un mélange soit d’engrais, soit d’engrais et de suppléments, qui sont exemptés de l’enregistrement ou qui sont enregistrés pour l’usage proposé du mélange.",
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -129,8 +129,8 @@
   {
     "legislation_citation": "C.R.C., c. 666",
     "citation": "3.1(2)",
-    "text_en": "(2) The following supplements are exempt from registration if they do not contain seeds or growing media:\n(a) a supplement set out in the List of Materials; and\n(b) a supplement whose active ingredients consist solely of a mixture of supplements, if\n(i) each supplement in the mixture is exempt from registration or is registered for the proposed use of the mixture, and\n(ii) in the case of a mixture containing one or more viable microorganisms as active ingredients, the mixture is not further cultured or manipulated.",
-    "text_fr": "(2) S’ils ne contiennent pas de semences ou de milieux de culture, les suppléments ci-après sont exemptés de l’enregistrement :\na) tout supplément figurant sur la Liste des composants;\nb) tout supplément dont les composants actifs consistent seulement en un mélange de suppléments, si :\n(i) chaque supplément dans le mélange est exempté de l’enregistrement ou est enregistré pour l’usage proposé du mélange,\n(ii) dans le cas où le mélange contient un ou plusieurs composants actifs qui sont des micro-organismes viables, il n’est pas de nouveau mis en culture ou manipulé.",
+    "text_en": "The following supplements are exempt from registration if they do not contain seeds or growing media:\n(a) a supplement set out in the List of Materials; and\n(b) a supplement whose active ingredients consist solely of a mixture of supplements, if\n(i) each supplement in the mixture is exempt from registration or is registered for the proposed use of the mixture, and\n(ii) in the case of a mixture containing one or more viable microorganisms as active ingredients, the mixture is not further cultured or manipulated.",
+    "text_fr": "S’ils ne contiennent pas de semences ou de milieux de culture, les suppléments ci-après sont exemptés de l’enregistrement :\na) tout supplément figurant sur la Liste des composants;\nb) tout supplément dont les composants actifs consistent seulement en un mélange de suppléments, si :\n(i) chaque supplément dans le mélange est exempté de l’enregistrement ou est enregistré pour l’usage proposé du mélange,\n(ii) dans le cas où le mélange contient un ou plusieurs composants actifs qui sont des micro-organismes viables, il n’est pas de nouveau mis en culture ou manipulé.",
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -149,8 +149,8 @@
   {
     "legislation_citation": "C.R.C., c. 666",
     "citation": "3.1(3)",
-    "text_en": "(3) Seeds that are treated with fertilizers, supplements or both are exempt from registration if each of those fertilizers and supplements\n(a) is exempt from registration; or\n(b) is registered for use with those seeds.",
-    "text_fr": "(3) Les semences traitées avec un engrais ou un supplément, ou avec les deux, sont exemptées de l’enregistrement si chaque engrais ou supplément utilisé est :\na) soit exempté de l’enregistrement;\nb) soit enregistré pour usage avec ces semences.",
+    "text_en": "Seeds that are treated with fertilizers, supplements or both are exempt from registration if each of those fertilizers and supplements\n(a) is exempt from registration; or\n(b) is registered for use with those seeds.",
+    "text_fr": "Les semences traitées avec un engrais ou un supplément, ou avec les deux, sont exemptées de l’enregistrement si chaque engrais ou supplément utilisé est :\na) soit exempté de l’enregistrement;\nb) soit enregistré pour usage avec ces semences.",
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",
@@ -165,8 +165,8 @@
   {
     "legislation_citation": "C.R.C., c. 666",
     "citation": "3.1(4)",
-    "text_en": "(4) A growing medium that contains fertilizers, supplements or both is exempt from registration if each of those fertilizers and supplements\n(a) is exempt from registration; or\n(b) is registered for use in growing media and its directions for use are consistent with those of the growing media.",
-    "text_fr": "(4) Les milieux de culture qui contiennent un engrais ou un supplément, ou les deux, sont exemptés de l’enregistrement si chaque engrais ou supplément utilisé est :\na) soit exempté de l’enregistrement;\nb) soit enregistré pour usage dans des milieux de culture et son mode d’emploi est conforme à celui de ces milieux de culture.",
+    "text_en": "A growing medium that contains fertilizers, supplements or both is exempt from registration if each of those fertilizers and supplements\n(a) is exempt from registration; or\n(b) is registered for use in growing media and its directions for use are consistent with those of the growing media.",
+    "text_fr": "Les milieux de culture qui contiennent un engrais ou un supplément, ou les deux, sont exemptés de l’enregistrement si chaque engrais ou supplément utilisé est :\na) soit exempté de l’enregistrement;\nb) soit enregistré pour usage dans des milieux de culture et son mode d’emploi est conforme à celui de ces milieux de culture.",
     "definitions": [
       {
         "legislation": "R.S.C., 1985, c. F-10",

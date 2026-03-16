@@ -64,18 +64,18 @@ function mapLabelToRow(label: LabelListItem, language: "en" | "fr"): LabelRow {
   return {
     id: label.id,
     brand: isFrench
-      ? (label.label_data?.brand_name_fr ??
-        label.label_data?.brand_name_en ??
+      ? (label.label_data?.brand_name?.fr ??
+        label.label_data?.brand_name?.en ??
         null)
-      : (label.label_data?.brand_name_en ??
-        label.label_data?.brand_name_fr ??
+      : (label.label_data?.brand_name?.en ??
+        label.label_data?.brand_name?.fr ??
         null),
     productName: isFrench
-      ? (label.label_data?.product_name_fr ??
-        label.label_data?.product_name_en ??
+      ? (label.label_data?.product_name?.fr ??
+        label.label_data?.product_name?.en ??
         null)
-      : (label.label_data?.product_name_en ??
-        label.label_data?.product_name_fr ??
+      : (label.label_data?.product_name?.en ??
+        label.label_data?.product_name?.fr ??
         null),
     reviewStatus: label.review_status ?? null,
     createdAt: label.created_at ?? null,
@@ -565,7 +565,7 @@ function LabelsTable() {
                         }}
                         onReview={() => {
                           navigate({
-                            to: "/$productType/labels/$labelId/review",
+                            to: "/$productType/labels/$labelId/edit",
                             params: { productType, labelId: label.id },
                           })
                         }}

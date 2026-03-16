@@ -32,14 +32,9 @@ def get_requirement_by_id(
     session: SessionDep,
 ) -> Requirement:
     """Get requirement by reference number."""
-
     stmt = select(Requirement).where(Requirement.id == requirement_id)
-
-    requirement = session.scalars(stmt).first()
-
-    if requirement is None:
+    if (requirement := session.scalars(stmt).first()) is None:
         raise RequirementNotFound(requirement_id=str(requirement_id))
-
     return requirement
 
 

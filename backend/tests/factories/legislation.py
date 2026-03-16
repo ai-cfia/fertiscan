@@ -2,6 +2,7 @@ import factory
 
 from app.db.models.legislation import Legislation
 from tests.factories import BaseFactory
+from tests.factories.product_type import ProductTypeFactory
 
 
 class LegislationFactory(BaseFactory):
@@ -9,6 +10,8 @@ class LegislationFactory(BaseFactory):
         model = Legislation
 
     citation_reference = factory.Sequence(lambda n: f"Fertilizers Act TEST-{n}")
+    product_type = factory.SubFactory(ProductTypeFactory)
+    product_type_id = factory.LazyAttribute(lambda o: o.product_type.id)
     legislation_type = "regulation"
     source_url_en = factory.Faker("url")
     source_url_fr = factory.Faker("url")

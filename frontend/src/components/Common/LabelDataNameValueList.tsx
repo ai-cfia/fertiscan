@@ -44,6 +44,7 @@ interface LabelDataNameValueListProps<
   onExtract?: () => void
   onToggleReview?: () => void
   disabled?: boolean
+  readOnly?: boolean
   emptyStateMessage: string
   addButtonLabel: string
   nameEnLabel: string
@@ -51,6 +52,7 @@ interface LabelDataNameValueListProps<
   valueLabel: string
   unitLabel: string
   valueType?: "number" | "text"
+  registrationNumberLabel?: string
 }
 
 // ============================== Component ==============================
@@ -71,6 +73,7 @@ export default function LabelDataNameValueList<
   onExtract,
   onToggleReview,
   disabled = false,
+  readOnly = false,
   emptyStateMessage,
   addButtonLabel,
   nameEnLabel,
@@ -78,6 +81,7 @@ export default function LabelDataNameValueList<
   valueLabel,
   unitLabel,
   valueType = "number",
+  registrationNumberLabel,
 }: LabelDataNameValueListProps<TFieldValues, TName>) {
   const { t } = useTranslation(["labels", "common"])
   const { fields, append, remove, replace } = useFieldArray({
@@ -104,10 +108,10 @@ export default function LabelDataNameValueList<
   const displayHelperText = error ? errorMessage : helperText
   const handleAdd = () => {
     append({
-      name_en: "",
-      name_fr: "",
+      name: { en: "", fr: "" },
       value: "",
       unit: "",
+      ...(registrationNumberLabel ? { registration_number: "" } : {}),
     } as Parameters<typeof append>[0])
   }
   return (
@@ -182,15 +186,17 @@ export default function LabelDataNameValueList<
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {emptyStateMessage}
           </Typography>
-          <Button
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={handleAdd}
-            disabled={disabled}
-            variant="outlined"
-          >
-            {addButtonLabel}
-          </Button>
+          {!readOnly && (
+            <Button
+              size="small"
+              startIcon={<AddIcon />}
+              onClick={handleAdd}
+              disabled={disabled}
+              variant="outlined"
+            >
+              {addButtonLabel}
+            </Button>
+          )}
         </Box>
       ) : (
         <Box
@@ -225,7 +231,7 @@ export default function LabelDataNameValueList<
                     }}
                   >
                     <Controller
-                      name={`${fieldName}.${index}.name_en` as any}
+                      name={`${fieldName}.${index}.name.en` as any}
                       control={control}
                       render={({ field }) => (
                         <TextField
@@ -251,7 +257,7 @@ export default function LabelDataNameValueList<
                     }}
                   >
                     <Controller
-                      name={`${fieldName}.${index}.name_fr` as any}
+                      name={`${fieldName}.${index}.name.fr` as any}
                       control={control}
                       render={({ field }) => (
                         <TextField
@@ -338,39 +344,74 @@ export default function LabelDataNameValueList<
                       )}
                     />
                   </Box>
-                  <IconButton
-                    size="small"
-                    onClick={() => {
-                      remove(index)
-                      if (form) {
-                        const currentValue = form.getValues(fieldName as any)
-                        form.setValue(fieldName as any, currentValue, {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                        })
-                      }
-                    }}
-                    disabled={disabled}
-                    color="error"
-                    sx={{
-                      alignSelf: { xs: "flex-start", sm: "center" },
-                      flexShrink: 0,
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                  {registrationNumberLabel && (
+                    <Box
+                      sx={{
+                        flex: 0.5,
+                        minWidth: "120px",
+                      }}
+                    >
+                      <Controller
+                        name={
+                          `${fieldName}.${index}.registration_number` as any
+                        }
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label={registrationNumberLabel}
+                            fullWidth
+                            size="small"
+                            disabled={disabled}
+                            value={field.value ?? ""}
+                            onBlur={() => {
+                              field.onBlur()
+                              if (typeof field.value === "string") {
+                                field.onChange(field.value.trim())
+                              }
+                            }}
+                          />
+                        )}
+                      />
+                    </Box>
+                  )}
+                  {!readOnly && (
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        remove(index)
+                        if (form) {
+                          const currentValue = form.getValues(fieldName as any)
+                          form.setValue(fieldName as any, currentValue, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          })
+                        }
+                      }}
+                      disabled={disabled}
+                      color="error"
+                      sx={{
+                        alignSelf: { xs: "flex-start", sm: "center" },
+                        flexShrink: 0,
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Box>
               </Box>
             ))}
-            <Button
-              startIcon={<AddIcon />}
-              onClick={handleAdd}
-              disabled={disabled}
-              variant="outlined"
-              size="small"
-            >
-              {addButtonLabel}
-            </Button>
+            {!readOnly && (
+              <Button
+                startIcon={<AddIcon />}
+                onClick={handleAdd}
+                disabled={disabled}
+                variant="outlined"
+                size="small"
+              >
+                {addButtonLabel}
+              </Button>
+            )}
           </Box>
         </Box>
       )}

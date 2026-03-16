@@ -12,8 +12,8 @@ from app.db.models.requirement import Requirement
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def get_rules_query(
-    legislation_id: UUID | None,
+def get_requirements_query(
+    legislation_ids: list[UUID] | None = None,
     title_en: str | None = None,
     title_fr: str | None = None,
     start_created_at: datetime | None = None,
@@ -23,11 +23,10 @@ def get_rules_query(
     order_by: str = "created_at",
     order: str = "desc",
 ) -> SelectOfScalar[Requirement]:
-    """Build rules query with optional filters."""
+    """Build requirements query with optional filters."""
     stmt = select(Requirement)
-
-    if legislation_id is not None:
-        stmt = stmt.where(Requirement.legislation_id == legislation_id)
+    if legislation_ids is not None and len(legislation_ids) > 0:
+        stmt = stmt.where(Requirement.legislation_id.in_(legislation_ids))  # type: ignore[attr-defined]
     if title_en is not None:
         stmt = stmt.where(Requirement.title_en.ilike(f"%{title_en}%"))  # type: ignore[union-attr]
     if title_fr is not None:

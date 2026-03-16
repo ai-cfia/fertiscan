@@ -1,4 +1,5 @@
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
+import FactCheckIcon from "@mui/icons-material/FactCheck"
 import LockIcon from "@mui/icons-material/Lock"
 import LockOpenIcon from "@mui/icons-material/LockOpen"
 import SaveIcon from "@mui/icons-material/Save"
@@ -13,7 +14,13 @@ import {
   Typography,
 } from "@mui/material"
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createFileRoute, notFound, redirect } from "@tanstack/react-router"
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+  useBlocker,
+} from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useEffect, useMemo, useRef } from "react"
@@ -27,26 +34,28 @@ import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysis
 import IngredientsSection from "@/components/LabelData/IngredientsSection"
 import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
 import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
-import SafetyInformationSection from "@/components/LabelData/SafetyInformationSection"
+import StatementsAndClaimsSection from "@/components/LabelData/StatementsAndClaimsSection"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
 import { useAppBarActionsStore } from "@/stores/useAppBarActions"
 import { useBanner } from "@/stores/useBanner"
 import { useLabelDataStore } from "@/stores/useLabelData"
+import { useLanguage } from "@/stores/useLanguage"
 import {
   getErrorMessage,
   isAxiosErrorWithStatus,
 } from "@/utils/labelDataErrors"
 import {
+  formPathToMetaFieldName,
+  getDefaultFormValues,
   getFieldMeta,
   isCommonFieldForReview,
-  transformBackendDataToFormValues,
   useHasImages,
   useLabelDataMetaMap,
 } from "@/utils/labelDataHelpers"
 
 export const Route = createFileRoute(
-  "/_layout/$productType/labels/$labelId/review",
+  "/_layout/$productType/labels/$labelId/edit",
 )({
   notFoundComponent: NotFound,
   loader: async ({ params }) => {
@@ -61,7 +70,7 @@ export const Route = createFileRoute(
       }
       if (label.product_type.code !== productType) {
         throw redirect({
-          to: "/$productType/labels/$labelId/review",
+          to: "/$productType/labels/$labelId/edit",
           params: {
             productType: label.product_type.code as "fertilizer",
             labelId: labelId,
@@ -105,7 +114,7 @@ function LabelData() {
   const { clearActions } = useAppBarActionsStore()
   const { showBanner, dismissBanner } = useBanner()
   const form = useForm({
-    defaultValues: transformBackendDataToFormValues(undefined, undefined),
+    defaultValues: getDefaultFormValues(),
   })
   const {
     label,
@@ -119,6 +128,7 @@ function LabelData() {
     createFertilizerDataMutation,
     updateReviewStatusMutation,
     extractFieldMutation,
+    extractAllSectionsMutation,
     toggleReviewMutation,
     updateLabelMutation,
     createProductMutation,
@@ -127,6 +137,12 @@ function LabelData() {
   } = useLabelDataQueries(labelId, isFertilizer, form)
 
   const { showSuccessToast } = useSnackbar()
+  const { language } = useLanguage()
+  const productName = form.watch("product_name") ?? labelData?.product_name
+  const displayName =
+    language === "fr"
+      ? (productName?.fr ?? productName?.en ?? null)
+      : (productName?.en ?? productName?.fr ?? null)
 
   const handleAssociate = useCallback(
     (productId: string) => {
@@ -169,10 +185,10 @@ function LabelData() {
       const productResponse = await createProductMutation.mutateAsync({
         registration_number: values.registration_number,
         product_type: productType,
-        brand_name_en: values.brand_name_en,
-        brand_name_fr: values.brand_name_fr,
-        name_en: values.product_name_en,
-        name_fr: values.product_name_fr,
+        brand_name_en: values.brand_name?.en ?? undefined,
+        brand_name_fr: values.brand_name?.fr ?? undefined,
+        name_en: values.product_name?.en ?? undefined,
+        name_fr: values.product_name?.fr ?? undefined,
       })
 
       if (productResponse.data) {
@@ -225,17 +241,17 @@ function LabelData() {
     ) {
       const error = queryError as Error
       showBanner({
-        id: `label-review-load-error-${labelId}`,
+        id: `label-edit-load-error-${labelId}`,
         message: getErrorMessage(error, t),
         severity: "error",
         onRetry: () => {
           queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-          dismissBanner(`label-review-load-error-${labelId}`)
+          dismissBanner(`label-edit-load-error-${labelId}`)
         },
-        onDismiss: () => dismissBanner(`label-review-load-error-${labelId}`),
+        onDismiss: () => dismissBanner(`label-edit-load-error-${labelId}`),
       })
     } else {
-      dismissBanner(`label-review-load-error-${labelId}`)
+      dismissBanner(`label-edit-load-error-${labelId}`)
     }
   }, [
     hasQueryError,
@@ -305,31 +321,44 @@ function LabelData() {
     createFertilizerDataMutation.isPending
   const isExtracting = getIsExtracting(labelId)
   const accordionState = getAccordionState(labelId)
-  const getFieldMetaFn = (fieldName: string) =>
-    getFieldMeta(labelDataMetaMap, fieldName)
+  const getFieldMetaFn = (formPath: string) =>
+    getFieldMeta(labelDataMetaMap, formPathToMetaFieldName(formPath))
   const handleExtractField = (fieldName: string | string[] | null) => {
     extractFieldMutation.mutate(fieldName)
   }
-  const getIsFieldExtractingWithAll = (fieldName: string) => {
-    return isExtracting || getIsFieldExtracting(labelId, fieldName)
+  const getIsFieldExtractingWithAll = (formPath: string) => {
+    return (
+      isExtracting ||
+      getIsFieldExtracting(labelId, formPathToMetaFieldName(formPath))
+    )
   }
-  const handleToggleReview = (fieldName: string) => {
-    const currentMeta = getFieldMetaFn(fieldName)
+  const handleToggleReview = (formPath: string) => {
+    const metaFieldName = formPathToMetaFieldName(formPath)
+    const currentMeta = getFieldMeta(labelDataMetaMap, metaFieldName)
     const newNeedsReview = !currentMeta.needs_review
-    const isCommonField = isCommonFieldForReview(fieldName)
+    const isCommonField = isCommonFieldForReview(metaFieldName)
     toggleReviewMutation.mutate({
-      fieldName,
+      fieldName: metaFieldName,
       newNeedsReview,
       isCommonField,
     })
   }
   const isDirty = form.formState.isDirty
   const isCompleted = label?.review_status === "completed"
+  useBlocker({
+    shouldBlockFn: () => {
+      if (!isDirty) return false
+      return !window.confirm(t("data.editUnsavedWarning", { ns: "labels" }))
+    },
+    enableBeforeUnload: isDirty,
+  })
   const handleSaveRef = useRef(handleSave)
   const extractFieldMutationRef = useRef(extractFieldMutation)
+  const extractAllSectionsMutationRef = useRef(extractAllSectionsMutation)
   const updateReviewStatusMutationRef = useRef(updateReviewStatusMutation)
   handleSaveRef.current = handleSave
   extractFieldMutationRef.current = extractFieldMutation
+  extractAllSectionsMutationRef.current = extractAllSectionsMutation
   updateReviewStatusMutationRef.current = updateReviewStatusMutation
   if (isLoading) {
     return (
@@ -343,14 +372,18 @@ function LabelData() {
       <Box
         sx={{
           px: { xs: 2, md: 3 },
-          pt: 9,
+          pt: 3,
           pb: { xs: 2, md: 3 },
           width: "100%",
         }}
       >
-        <Typography variant="h4" sx={{ mb: 3 }}>
-          {t("data.title")}
-        </Typography>
+        <Box sx={{ py: 3 }}>
+          <Typography variant="h4">
+            {displayName
+              ? `${t("data.title")} – ${displayName}`
+              : t("data.title")}
+          </Typography>
+        </Box>
         <Grid
           container
           spacing={3}
@@ -441,6 +474,17 @@ function LabelData() {
                   variant="outlined"
                   color="primary"
                   size="small"
+                  component={Link}
+                  to={`/${productType}/labels/${labelId}/compliance`}
+                  startIcon={<FactCheckIcon />}
+                  sx={{ mr: 0.5 }}
+                >
+                  {t("data.compliance")}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="small"
                   onClick={() => handleSaveRef.current()}
                   disabled={!isDirty || isSaving}
                   startIcon={<SaveIcon />}
@@ -453,8 +497,14 @@ function LabelData() {
                     variant="outlined"
                     color="primary"
                     size="small"
-                    onClick={() => extractFieldMutationRef.current.mutate(null)}
-                    disabled={isExtracting || isCompleted}
+                    onClick={() =>
+                      extractAllSectionsMutationRef.current.mutate()
+                    }
+                    disabled={
+                      isExtracting ||
+                      isCompleted ||
+                      extractAllSectionsMutation.isPending
+                    }
                     startIcon={<AutoAwesomeIcon />}
                     sx={{ mr: 0.5 }}
                   >
@@ -513,10 +563,10 @@ function LabelData() {
                   <ProductAssociationSection
                     label={label}
                     registrationNumber={form.watch("registration_number")}
-                    brandNameEn={form.watch("brand_name_en")}
-                    brandNameFr={form.watch("brand_name_fr")}
-                    productNameEn={form.watch("product_name_en")}
-                    productNameFr={form.watch("product_name_fr")}
+                    brandNameEn={form.watch("brand_name")?.en}
+                    brandNameFr={form.watch("brand_name")?.fr}
+                    productNameEn={form.watch("product_name")?.en}
+                    productNameFr={form.watch("product_name")?.fr}
                     accordionState={accordionState.association}
                     onAccordionChange={(isExpanded) =>
                       setAccordionExpanded(labelId, "association", isExpanded)
@@ -540,6 +590,7 @@ function LabelData() {
                     getIsFieldExtracting={getIsFieldExtractingWithAll}
                     onExtractField={handleExtractField}
                     onToggleReview={handleToggleReview}
+                    isFertilizer={isFertilizer}
                     disabled={isCompleted}
                   />
                   {isFertilizer && (
@@ -589,20 +640,22 @@ function LabelData() {
                       disabled={isCompleted}
                     />
                   )}
-                  <SafetyInformationSection
-                    control={form.control}
-                    accordionState={accordionState.safety}
-                    onAccordionChange={(isExpanded) =>
-                      setAccordionExpanded(labelId, "safety", isExpanded)
-                    }
-                    getFieldMeta={getFieldMetaFn}
-                    hasImages={hasImages}
-                    getIsFieldExtracting={getIsFieldExtractingWithAll}
-                    onExtractField={handleExtractField}
-                    onToggleReview={handleToggleReview}
-                    isFertilizer={isFertilizer}
-                    disabled={isCompleted}
-                  />
+                  {isFertilizer && (
+                    <StatementsAndClaimsSection
+                      control={form.control}
+                      form={form}
+                      accordionState={accordionState.statements}
+                      onAccordionChange={(isExpanded) =>
+                        setAccordionExpanded(labelId, "statements", isExpanded)
+                      }
+                      getFieldMeta={getFieldMetaFn}
+                      hasImages={hasImages}
+                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      onExtractField={handleExtractField}
+                      onToggleReview={handleToggleReview}
+                      disabled={isCompleted}
+                    />
+                  )}
                 </form>
               </Box>
             </Paper>

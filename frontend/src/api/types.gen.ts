@@ -5,6 +5,24 @@ export type ClientOptions = {
 };
 
 /**
+ * BilingualText
+ */
+export type BilingualText = {
+    /**
+     * En
+     *
+     * The English text verbatim. Leave as null if not present.
+     */
+    en?: string | null;
+    /**
+     * Fr
+     *
+     * The French text verbatim. Leave as null if not present.
+     */
+    fr?: string | null;
+};
+
+/**
  * Body_login_login_access_token
  */
 export type BodyLoginLoginAccessToken = {
@@ -33,6 +51,25 @@ export type BodyLoginLoginAccessToken = {
      */
     client_secret?: string | null;
 };
+
+/**
+ * ComplianceResult
+ */
+export type ComplianceResult = {
+    /**
+     * Outcome of the check: compliant, non_compliant, not_applicable, or inconclusive (requires human review).
+     */
+    status: ComplianceStatus;
+    /**
+     * Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.
+     */
+    explanation: BilingualText;
+};
+
+/**
+ * ComplianceStatus
+ */
+export type ComplianceStatus = 'compliant' | 'non_compliant' | 'not_applicable' | 'inconclusive';
 
 /**
  * Contact
@@ -81,29 +118,13 @@ export type Contact = {
  */
 export type ExtractFertilizerFieldsOutput = {
     /**
-     * Brand Name En
-     *
-     * Brand name in English
+     * Brand name verbatim
      */
-    brand_name_en?: string | null;
+    brand_name?: BilingualText | null;
     /**
-     * Brand Name Fr
-     *
-     * Brand name in French
+     * Product name verbatim
      */
-    brand_name_fr?: string | null;
-    /**
-     * Product Name En
-     *
-     * Product name in English
-     */
-    product_name_en?: string | null;
-    /**
-     * Product Name Fr
-     *
-     * Product name in French
-     */
-    product_name_fr?: string | null;
+    product_name?: BilingualText | null;
     /**
      * Contacts
      *
@@ -113,9 +134,13 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Registration Number
      *
-     * Product registration number
+     * Registration number of the product itself (not its individual ingredients).
      */
     registration_number?: string | null;
+    /**
+     * Verbatim text where the product claims to be registered, even if no registration number is present.
+     */
+    registration_claim?: BilingualText | null;
     /**
      * Lot Number
      *
@@ -134,6 +159,50 @@ export type ExtractFertilizerFieldsOutput = {
      * Volume with unit
      */
     volume?: string | null;
+    /**
+     * Verbatim claim of registration exemption (e.g., Section 18 mixture claims).
+     */
+    exemption_claim?: BilingualText | null;
+    /**
+     * Country Of Origin
+     *
+     * Country where the product was manufactured or from which it was imported.
+     */
+    country_of_origin?: string | null;
+    /**
+     * Classify the product. 'fertilizer': contains N/P/K or plant food, sold as plant nutrient. 'supplement': improves soil or aids growth, but is not a fertilizer. 'growing_medium': a medium (e.g., potting mix) containing fertilizers/supplements. 'treated_seed': seeds treated with fertilizers/supplements.
+     */
+    product_classification?: ProductClassification | null;
+    /**
+     * Customer Formula Statements
+     *
+     * A 'customer formula fertilizer' is a fertilizer prepared to the specifications of the purchaser and sold only to that purchaser. Extract verbatim text identifying the product as such, including the purchaser's name or any signature references.
+     */
+    customer_formula_statements?: Array<BilingualText> | null;
+    /**
+     * Intended Use Statements
+     *
+     * Verbatim statements indicating intended use or target audience.
+     */
+    intended_use_statements?: Array<BilingualText> | null;
+    /**
+     * Processing Instruction Statements
+     *
+     * Verbatim statements indicating the product requires further treatment, other than simple mixing or repackaging.
+     */
+    processing_instruction_statements?: Array<BilingualText> | null;
+    /**
+     * Experimental Statements
+     *
+     * Verbatim statements indicating the product is for experimental, research, or trial purposes, including instructions to destroy the product or plants upon completion.
+     */
+    experimental_statements?: Array<BilingualText> | null;
+    /**
+     * Export Statements
+     *
+     * Verbatim statements indicating that the product is not intended for sale or use in Canada and is intended for export only.
+     */
+    export_statements?: Array<BilingualText> | null;
     /**
      * N
      *
@@ -155,37 +224,25 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Ingredients
      *
-     * List of ingredients with bilingual names, values and units
+     * Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.
      */
     ingredients?: Array<Ingredient> | null;
     /**
-     * Guaranteed analysis section with bilingual title and nutrients
+     * The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.
      */
     guaranteed_analysis?: GuaranteedAnalysisOutput | null;
     /**
-     * Caution En
+     * Precaution Statements
      *
-     * Caution statements in English
+     * Precaution statements verbatim
      */
-    caution_en?: string | null;
+    precaution_statements?: Array<BilingualText> | null;
     /**
-     * Caution Fr
+     * Directions For Use Statements
      *
-     * Caution statements in French
+     * Directions for use verbatim
      */
-    caution_fr?: string | null;
-    /**
-     * Instructions En
-     *
-     * Usage instructions in English
-     */
-    instructions_en?: string | null;
-    /**
-     * Instructions Fr
-     *
-     * Usage instructions in French
-     */
-    instructions_fr?: string | null;
+    directions_for_use_statements?: Array<BilingualText> | null;
 };
 
 /**
@@ -222,21 +279,34 @@ export type FertilizerLabelData = {
     ingredients?: Array<Ingredient> | null;
     guaranteed_analysis?: GuaranteedAnalysisOutput | null;
     /**
-     * Caution En
+     * Precaution Statements
      */
-    caution_en?: string | null;
+    precaution_statements?: Array<BilingualText> | null;
     /**
-     * Caution Fr
+     * Directions For Use Statements
      */
-    caution_fr?: string | null;
+    directions_for_use_statements?: Array<BilingualText> | null;
     /**
-     * Instructions En
+     * Customer Formula Statements
      */
-    instructions_en?: string | null;
+    customer_formula_statements?: Array<BilingualText> | null;
     /**
-     * Instructions Fr
+     * Intended Use Statements
      */
-    instructions_fr?: string | null;
+    intended_use_statements?: Array<BilingualText> | null;
+    /**
+     * Processing Instruction Statements
+     */
+    processing_instruction_statements?: Array<BilingualText> | null;
+    /**
+     * Experimental Statements
+     */
+    experimental_statements?: Array<BilingualText> | null;
+    /**
+     * Export Statements
+     */
+    export_statements?: Array<BilingualText> | null;
+    product_classification?: ProductClassification | null;
 };
 
 /**
@@ -261,21 +331,34 @@ export type FertilizerLabelDataCreate = {
     ingredients?: Array<Ingredient> | null;
     guaranteed_analysis?: GuaranteedAnalysisInput | null;
     /**
-     * Caution En
+     * Precaution Statements
      */
-    caution_en?: string | null;
+    precaution_statements?: Array<BilingualText> | null;
     /**
-     * Caution Fr
+     * Directions For Use Statements
      */
-    caution_fr?: string | null;
+    directions_for_use_statements?: Array<BilingualText> | null;
     /**
-     * Instructions En
+     * Customer Formula Statements
      */
-    instructions_en?: string | null;
+    customer_formula_statements?: Array<BilingualText> | null;
     /**
-     * Instructions Fr
+     * Intended Use Statements
      */
-    instructions_fr?: string | null;
+    intended_use_statements?: Array<BilingualText> | null;
+    /**
+     * Processing Instruction Statements
+     */
+    processing_instruction_statements?: Array<BilingualText> | null;
+    /**
+     * Experimental Statements
+     */
+    experimental_statements?: Array<BilingualText> | null;
+    /**
+     * Export Statements
+     */
+    export_statements?: Array<BilingualText> | null;
+    product_classification?: ProductClassification | null;
 };
 
 /**
@@ -283,7 +366,7 @@ export type FertilizerLabelDataCreate = {
  *
  * Valid field names for FertilizerLabelDataMeta.
  */
-export type FertilizerLabelDataFieldName = 'n' | 'p' | 'k' | 'ingredients' | 'guaranteed_analysis' | 'caution_en' | 'caution_fr' | 'instructions_en' | 'instructions_fr';
+export type FertilizerLabelDataFieldName = 'n' | 'p' | 'k' | 'ingredients' | 'guaranteed_analysis' | 'precaution_statements' | 'directions_for_use_statements' | 'customer_formula_statements' | 'intended_use_statements' | 'processing_instruction_statements' | 'experimental_statements' | 'export_statements' | 'product_classification';
 
 /**
  * FertilizerLabelDataMetaResponse
@@ -348,39 +431,41 @@ export type FertilizerLabelDataUpdate = {
     ingredients?: Array<Ingredient> | null;
     guaranteed_analysis?: GuaranteedAnalysisInput | null;
     /**
-     * Caution En
+     * Precaution Statements
      */
-    caution_en?: string | null;
+    precaution_statements?: Array<BilingualText> | null;
     /**
-     * Caution Fr
+     * Directions For Use Statements
      */
-    caution_fr?: string | null;
+    directions_for_use_statements?: Array<BilingualText> | null;
     /**
-     * Instructions En
+     * Customer Formula Statements
      */
-    instructions_en?: string | null;
+    customer_formula_statements?: Array<BilingualText> | null;
     /**
-     * Instructions Fr
+     * Intended Use Statements
      */
-    instructions_fr?: string | null;
+    intended_use_statements?: Array<BilingualText> | null;
+    /**
+     * Processing Instruction Statements
+     */
+    processing_instruction_statements?: Array<BilingualText> | null;
+    /**
+     * Experimental Statements
+     */
+    experimental_statements?: Array<BilingualText> | null;
+    /**
+     * Export Statements
+     */
+    export_statements?: Array<BilingualText> | null;
+    product_classification?: ProductClassification | null;
 };
 
 /**
  * GuaranteedAnalysis
  */
 export type GuaranteedAnalysisInput = {
-    /**
-     * Title En
-     *
-     * Section title in English from label
-     */
-    title_en: string;
-    /**
-     * Title Fr
-     *
-     * Section title in French from label
-     */
-    title_fr?: string | null;
+    title: BilingualText;
     /**
      * Is Minimum
      *
@@ -399,18 +484,7 @@ export type GuaranteedAnalysisInput = {
  * GuaranteedAnalysis
  */
 export type GuaranteedAnalysisOutput = {
-    /**
-     * Title En
-     *
-     * Section title in English from label
-     */
-    title_en: string;
-    /**
-     * Title Fr
-     *
-     * Section title in French from label
-     */
-    title_fr?: string | null;
+    title: BilingualText;
     /**
      * Is Minimum
      *
@@ -450,17 +524,9 @@ export type Health = {
  */
 export type Ingredient = {
     /**
-     * Name En
-     *
-     * Ingredient name in English as it appears on the label
+     * Ingredient name verbatim
      */
-    name_en: string;
-    /**
-     * Name Fr
-     *
-     * Ingredient name in French as it appears on the label
-     */
-    name_fr?: string | null;
+    name: BilingualText;
     /**
      * Value
      *
@@ -473,6 +539,12 @@ export type Ingredient = {
      * Unit of measurement
      */
     unit: string;
+    /**
+     * Registration Number
+     *
+     * Registration number of the product itself (not its individual ingredients).
+     */
+    registration_number?: string | null;
 };
 
 /**
@@ -505,22 +577,8 @@ export type LabelCreated = {
  * LabelData
  */
 export type LabelData = {
-    /**
-     * Brand Name En
-     */
-    brand_name_en?: string | null;
-    /**
-     * Brand Name Fr
-     */
-    brand_name_fr?: string | null;
-    /**
-     * Product Name En
-     */
-    product_name_en?: string | null;
-    /**
-     * Product Name Fr
-     */
-    product_name_fr?: string | null;
+    brand_name?: BilingualText | null;
+    product_name?: BilingualText | null;
     /**
      * Contacts
      */
@@ -529,6 +587,7 @@ export type LabelData = {
      * Registration Number
      */
     registration_number?: string | null;
+    registration_claim?: BilingualText | null;
     /**
      * Lot Number
      */
@@ -541,28 +600,19 @@ export type LabelData = {
      * Volume
      */
     volume?: string | null;
+    exemption_claim?: BilingualText | null;
+    /**
+     * Country Of Origin
+     */
+    country_of_origin?: string | null;
 };
 
 /**
  * LabelDataCreate
  */
 export type LabelDataCreate = {
-    /**
-     * Brand Name En
-     */
-    brand_name_en?: string | null;
-    /**
-     * Brand Name Fr
-     */
-    brand_name_fr?: string | null;
-    /**
-     * Product Name En
-     */
-    product_name_en?: string | null;
-    /**
-     * Product Name Fr
-     */
-    product_name_fr?: string | null;
+    brand_name?: BilingualText | null;
+    product_name?: BilingualText | null;
     /**
      * Contacts
      */
@@ -571,6 +621,7 @@ export type LabelDataCreate = {
      * Registration Number
      */
     registration_number?: string | null;
+    registration_claim?: BilingualText | null;
     /**
      * Lot Number
      */
@@ -583,6 +634,11 @@ export type LabelDataCreate = {
      * Volume
      */
     volume?: string | null;
+    exemption_claim?: BilingualText | null;
+    /**
+     * Country Of Origin
+     */
+    country_of_origin?: string | null;
 };
 
 /**
@@ -631,50 +687,26 @@ export type LabelDataFieldMetaUpdate = {
  *
  * Valid field names for LabelDataFieldMeta.
  */
-export type LabelDataFieldName = 'brand_name_en' | 'brand_name_fr' | 'product_name_en' | 'product_name_fr' | 'contacts' | 'registration_number' | 'lot_number' | 'net_weight' | 'volume';
+export type LabelDataFieldName = 'brand_name' | 'product_name' | 'contacts' | 'registration_number' | 'registration_claim' | 'lot_number' | 'net_weight' | 'volume' | 'exemption_claim' | 'country_of_origin';
 
 /**
  * LabelDataLite
  */
 export type LabelDataLite = {
+    brand_name?: BilingualText | null;
+    product_name?: BilingualText | null;
     /**
-     * Brand Name En
+     * Registration Number
      */
-    brand_name_en?: string | null;
-    /**
-     * Brand Name Fr
-     */
-    brand_name_fr?: string | null;
-    /**
-     * Product Name En
-     */
-    product_name_en?: string | null;
-    /**
-     * Product Name Fr
-     */
-    product_name_fr?: string | null;
+    registration_number?: string | null;
 };
 
 /**
  * LabelDataUpdate
  */
 export type LabelDataUpdate = {
-    /**
-     * Brand Name En
-     */
-    brand_name_en?: string | null;
-    /**
-     * Brand Name Fr
-     */
-    brand_name_fr?: string | null;
-    /**
-     * Product Name En
-     */
-    product_name_en?: string | null;
-    /**
-     * Product Name Fr
-     */
-    product_name_fr?: string | null;
+    brand_name?: BilingualText | null;
+    product_name?: BilingualText | null;
     /**
      * Contacts
      */
@@ -683,6 +715,7 @@ export type LabelDataUpdate = {
      * Registration Number
      */
     registration_number?: string | null;
+    registration_claim?: BilingualText | null;
     /**
      * Lot Number
      */
@@ -695,6 +728,11 @@ export type LabelDataUpdate = {
      * Volume
      */
     volume?: string | null;
+    exemption_claim?: BilingualText | null;
+    /**
+     * Country Of Origin
+     */
+    country_of_origin?: string | null;
 };
 
 /**
@@ -809,6 +847,76 @@ export type LabelUpdate = {
 };
 
 /**
+ * LegislationPublic
+ */
+export type LegislationPublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Citation Reference
+     */
+    citation_reference: string;
+    /**
+     * Legislation Type
+     */
+    legislation_type?: string | null;
+    /**
+     * Product Type Id
+     */
+    product_type_id: string;
+    /**
+     * Title En
+     */
+    title_en?: string | null;
+    /**
+     * Title Fr
+     */
+    title_fr?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    /**
+     * Guidance En
+     */
+    guidance_en?: string | null;
+    /**
+     * Guidance Fr
+     */
+    guidance_fr?: string | null;
+    /**
+     * Source Url En
+     */
+    source_url_en?: string | null;
+    /**
+     * Source Url Fr
+     */
+    source_url_fr?: string | null;
+    /**
+     * Last Amended Date
+     */
+    last_amended_date?: string | null;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
+    /**
+     * General Exemptions
+     */
+    general_exemptions?: Array<ProvisionSnippet>;
+};
+
+/**
  * LimitOffsetPage[LabelListItem]
  */
 export type LimitOffsetPageLabelListItem = {
@@ -816,6 +924,28 @@ export type LimitOffsetPageLabelListItem = {
      * Items
      */
     items: Array<LabelListItem>;
+    /**
+     * Total
+     */
+    total: number;
+    /**
+     * Limit
+     */
+    limit: number;
+    /**
+     * Offset
+     */
+    offset: number;
+};
+
+/**
+ * LimitOffsetPage[NonComplianceDataItemPublic]
+ */
+export type LimitOffsetPageNonComplianceDataItemPublic = {
+    /**
+     * Items
+     */
+    items: Array<NonComplianceDataItemPublic>;
     /**
      * Total
      */
@@ -853,6 +983,28 @@ export type LimitOffsetPageProductPublic = {
 };
 
 /**
+ * LimitOffsetPage[RequirementPublic]
+ */
+export type LimitOffsetPageRequirementPublic = {
+    /**
+     * Items
+     */
+    items: Array<RequirementPublic>;
+    /**
+     * Total
+     */
+    total: number;
+    /**
+     * Limit
+     */
+    limit: number;
+    /**
+     * Offset
+     */
+    offset: number;
+};
+
+/**
  * Message
  */
 export type Message = {
@@ -861,6 +1013,19 @@ export type Message = {
      */
     message: string;
 };
+
+/**
+ * Modifier
+ */
+export type Modifier = {
+    provision: ProvisionSnippet;
+    type: ModifierType;
+};
+
+/**
+ * ModifierType
+ */
+export type ModifierType = 'EXEMPTION' | 'APPLICABILITY_CONDITION';
 
 /**
  * NewPassword
@@ -877,17 +1042,13 @@ export type NewPassword = {
 };
 
 /**
- * NonComplianceDataItemPublic
+ * NonComplianceDataItemPayload
  */
-export type NonComplianceDataItemPublic = {
+export type NonComplianceDataItemPayload = {
     /**
-     * Label Id
+     * Requirement Id
      */
-    label_id: string;
-    /**
-     * Rule Id
-     */
-    rule_id: string;
+    requirement_id: string;
     /**
      * Note
      */
@@ -900,10 +1061,34 @@ export type NonComplianceDataItemPublic = {
      * Description Fr
      */
     description_fr?: string | null;
+    status?: ComplianceStatus;
+};
+
+/**
+ * NonComplianceDataItemPublic
+ */
+export type NonComplianceDataItemPublic = {
     /**
-     * Is Compliant
+     * Label Id
      */
-    is_compliant?: boolean;
+    label_id: string;
+    /**
+     * Requirement Id
+     */
+    requirement_id: string;
+    /**
+     * Note
+     */
+    note?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    status?: ComplianceStatus;
     /**
      * Id
      */
@@ -911,35 +1096,13 @@ export type NonComplianceDataItemPublic = {
 };
 
 /**
- * NonComplianceDataItemsList
- */
-export type NonComplianceDataItemsList = {
-    /**
-     * Total
-     */
-    total: number;
-    /**
-     * Items
-     */
-    items: Array<NonComplianceDataItemPublic>;
-};
-
-/**
  * Nutrient
  */
 export type NutrientInput = {
     /**
-     * Name En
-     *
-     * Nutrient name in English as it appears on the label
+     * Nutrient name verbatim
      */
-    name_en: string;
-    /**
-     * Name Fr
-     *
-     * Nutrient name in French as it appears on the label
-     */
-    name_fr?: string | null;
+    name: BilingualText;
     /**
      * Value
      *
@@ -959,17 +1122,9 @@ export type NutrientInput = {
  */
 export type NutrientOutput = {
     /**
-     * Name En
-     *
-     * Nutrient name in English as it appears on the label
+     * Nutrient name verbatim
      */
-    name_en: string;
-    /**
-     * Name Fr
-     *
-     * Nutrient name in French as it appears on the label
-     */
-    name_fr?: string | null;
+    name: BilingualText;
     /**
      * Value
      *
@@ -1053,6 +1208,11 @@ export type PrivateUserCreate = {
      */
     last_name?: string | null;
 };
+
+/**
+ * ProductClassification
+ */
+export type ProductClassification = 'fertilizer' | 'supplement' | 'growing_medium' | 'treated_seed';
 
 /**
  * ProductCreate
@@ -1153,6 +1313,24 @@ export type ProductTypePublic = {
 };
 
 /**
+ * ProvisionSnippet
+ */
+export type ProvisionSnippet = {
+    /**
+     * Citation
+     */
+    citation: string;
+    /**
+     * Text En
+     */
+    text_en?: string | null;
+    /**
+     * Text Fr
+     */
+    text_fr?: string | null;
+};
+
+/**
  * Readiness
  */
 export type Readiness = {
@@ -1164,6 +1342,60 @@ export type Readiness = {
      * Database
      */
     database: string;
+};
+
+/**
+ * RequirementPublic
+ */
+export type RequirementPublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Legislation Id
+     */
+    legislation_id: string;
+    /**
+     * Title En
+     */
+    title_en?: string | null;
+    /**
+     * Title Fr
+     */
+    title_fr?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    /**
+     * Guidance En
+     */
+    guidance_en?: string | null;
+    /**
+     * Guidance Fr
+     */
+    guidance_fr?: string | null;
+    /**
+     * Provisions
+     */
+    provisions?: Array<ProvisionSnippet>;
+    /**
+     * Modifiers
+     */
+    modifiers?: Array<Modifier>;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
 };
 
 /**
@@ -1183,6 +1415,25 @@ export type Token = {
      * Token Type
      */
     token_type?: string;
+};
+
+/**
+ * UpdateNonComplianceDataItemPayload
+ */
+export type UpdateNonComplianceDataItemPayload = {
+    /**
+     * Note
+     */
+    note?: string | null;
+    /**
+     * Description En
+     */
+    description_en?: string | null;
+    /**
+     * Description Fr
+     */
+    description_fr?: string | null;
+    status?: ComplianceStatus | null;
 };
 
 /**
@@ -2014,7 +2265,41 @@ export type PatchApiV1LabelsByLabelIdReviewStatusResponses = {
 
 export type PatchApiV1LabelsByLabelIdReviewStatusResponse = PatchApiV1LabelsByLabelIdReviewStatusResponses[keyof PatchApiV1LabelsByLabelIdReviewStatusResponses];
 
-export type GetApiV1LabelsByLabelIdVerifyData = {
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+        /**
+         * Requirement Id
+         */
+        requirement_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/evaluate-non-compliance/{requirement_id}';
+};
+
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdError = GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdErrors];
+
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: ComplianceResult;
+};
+
+export type GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponse = GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses[keyof GetApiV1LabelsByLabelIdEvaluateNonComplianceByRequirementIdResponses];
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsData = {
     body?: never;
     path: {
         /**
@@ -2022,27 +2307,212 @@ export type GetApiV1LabelsByLabelIdVerifyData = {
          */
         label_id: string;
     };
-    query?: never;
-    url: '/api/v1/labels/{label_id}/verify';
+    query?: {
+        /**
+         * Limit
+         *
+         * Page size limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         *
+         * Page offset
+         */
+        offset?: number;
+        /**
+         * Note
+         */
+        note?: string | null;
+        /**
+         * Description En
+         */
+        description_en?: string | null;
+        /**
+         * Description Fr
+         */
+        description_fr?: string | null;
+        /**
+         * Status
+         */
+        status?: ComplianceStatus | null;
+        /**
+         * Start Created At
+         */
+        start_created_at?: string | null;
+        /**
+         * End Created At
+         */
+        end_created_at?: string | null;
+        /**
+         * Start Updated At
+         */
+        start_updated_at?: string | null;
+        /**
+         * End Updated At
+         */
+        end_updated_at?: string | null;
+        /**
+         * Order By
+         */
+        order_by?: string;
+        /**
+         * Order
+         */
+        order?: string;
+    };
+    url: '/api/v1/labels/{label_id}/non_compliance_data_items';
 };
 
-export type GetApiV1LabelsByLabelIdVerifyErrors = {
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type GetApiV1LabelsByLabelIdVerifyError = GetApiV1LabelsByLabelIdVerifyErrors[keyof GetApiV1LabelsByLabelIdVerifyErrors];
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsError = GetApiV1LabelsByLabelIdNonComplianceDataItemsErrors[keyof GetApiV1LabelsByLabelIdNonComplianceDataItemsErrors];
 
-export type GetApiV1LabelsByLabelIdVerifyResponses = {
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsResponses = {
     /**
      * Successful Response
      */
-    200: NonComplianceDataItemsList;
+    200: LimitOffsetPageNonComplianceDataItemPublic;
 };
 
-export type GetApiV1LabelsByLabelIdVerifyResponse = GetApiV1LabelsByLabelIdVerifyResponses[keyof GetApiV1LabelsByLabelIdVerifyResponses];
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsResponse = GetApiV1LabelsByLabelIdNonComplianceDataItemsResponses[keyof GetApiV1LabelsByLabelIdNonComplianceDataItemsResponses];
+
+export type PostApiV1LabelsByLabelIdNonComplianceDataItemsData = {
+    body: NonComplianceDataItemPayload;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/non_compliance_data_items';
+};
+
+export type PostApiV1LabelsByLabelIdNonComplianceDataItemsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostApiV1LabelsByLabelIdNonComplianceDataItemsError = PostApiV1LabelsByLabelIdNonComplianceDataItemsErrors[keyof PostApiV1LabelsByLabelIdNonComplianceDataItemsErrors];
+
+export type PostApiV1LabelsByLabelIdNonComplianceDataItemsResponses = {
+    /**
+     * Successful Response
+     */
+    200: NonComplianceDataItemPublic;
+};
+
+export type PostApiV1LabelsByLabelIdNonComplianceDataItemsResponse = PostApiV1LabelsByLabelIdNonComplianceDataItemsResponses[keyof PostApiV1LabelsByLabelIdNonComplianceDataItemsResponses];
+
+export type DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+        /**
+         * Requirement Id
+         */
+        requirement_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/non_compliance_data_items/{requirement_id}';
+};
+
+export type DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdError = DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors[keyof DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors];
+
+export type DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: Message;
+};
+
+export type DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponse = DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses[keyof DeleteApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses];
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData = {
+    body?: never;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+        /**
+         * Requirement Id
+         */
+        requirement_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/non_compliance_data_items/{requirement_id}';
+};
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdError = GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors[keyof GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors];
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: NonComplianceDataItemPublic;
+};
+
+export type GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponse = GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses[keyof GetApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses];
+
+export type PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdData = {
+    body: UpdateNonComplianceDataItemPayload;
+    path: {
+        /**
+         * Label Id
+         */
+        label_id: string;
+        /**
+         * Requirement Id
+         */
+        requirement_id: string;
+    };
+    query?: never;
+    url: '/api/v1/labels/{label_id}/non_compliance_data_items/{requirement_id}';
+};
+
+export type PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdError = PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors[keyof PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdErrors];
+
+export type PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: NonComplianceDataItemPublic;
+};
+
+export type PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponse = PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses[keyof PatchApiV1LabelsByLabelIdNonComplianceDataItemsByRequirementIdResponses];
 
 export type GetApiV1LabelsByLabelIdImagesData = {
     body?: never;
@@ -2642,6 +3112,40 @@ export type PostApiV1LabelsByLabelIdFertilizerExtractResponses = {
 
 export type PostApiV1LabelsByLabelIdFertilizerExtractResponse = PostApiV1LabelsByLabelIdFertilizerExtractResponses[keyof PostApiV1LabelsByLabelIdFertilizerExtractResponses];
 
+export type GetApiV1LegislationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Product Type
+         *
+         * Product type
+         */
+        product_type?: string;
+    };
+    url: '/api/v1/legislations';
+};
+
+export type GetApiV1LegislationsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1LegislationsError = GetApiV1LegislationsErrors[keyof GetApiV1LegislationsErrors];
+
+export type GetApiV1LegislationsResponses = {
+    /**
+     * Response Legislations Read Legislations
+     *
+     * Successful Response
+     */
+    200: Array<LegislationPublic>;
+};
+
+export type GetApiV1LegislationsResponse = GetApiV1LegislationsResponses[keyof GetApiV1LegislationsResponses];
+
 export type GetApiV1ProductsData = {
     body?: never;
     path?: never;
@@ -2814,6 +3318,106 @@ export type GetApiV1ProductsByProductIdResponses = {
 };
 
 export type GetApiV1ProductsByProductIdResponse = GetApiV1ProductsByProductIdResponses[keyof GetApiV1ProductsByProductIdResponses];
+
+export type GetApiV1RequirementsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         *
+         * Page size limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         *
+         * Page offset
+         */
+        offset?: number;
+        /**
+         * Title En
+         */
+        title_en?: string | null;
+        /**
+         * Title Fr
+         */
+        title_fr?: string | null;
+        /**
+         * Start Created At
+         */
+        start_created_at?: string | null;
+        /**
+         * End Created At
+         */
+        end_created_at?: string | null;
+        /**
+         * Start Updated At
+         */
+        start_updated_at?: string | null;
+        /**
+         * End Updated At
+         */
+        end_updated_at?: string | null;
+        /**
+         * Order By
+         */
+        order_by?: string;
+        /**
+         * Order
+         */
+        order?: string;
+    };
+    url: '/api/v1/requirements';
+};
+
+export type GetApiV1RequirementsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1RequirementsError = GetApiV1RequirementsErrors[keyof GetApiV1RequirementsErrors];
+
+export type GetApiV1RequirementsResponses = {
+    /**
+     * Successful Response
+     */
+    200: LimitOffsetPageRequirementPublic;
+};
+
+export type GetApiV1RequirementsResponse = GetApiV1RequirementsResponses[keyof GetApiV1RequirementsResponses];
+
+export type GetApiV1RequirementsByRequirementIdData = {
+    body?: never;
+    path: {
+        /**
+         * Requirement Id
+         */
+        requirement_id: string;
+    };
+    query?: never;
+    url: '/api/v1/requirements/{requirement_id}';
+};
+
+export type GetApiV1RequirementsByRequirementIdErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetApiV1RequirementsByRequirementIdError = GetApiV1RequirementsByRequirementIdErrors[keyof GetApiV1RequirementsByRequirementIdErrors];
+
+export type GetApiV1RequirementsByRequirementIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: RequirementPublic;
+};
+
+export type GetApiV1RequirementsByRequirementIdResponse = GetApiV1RequirementsByRequirementIdResponses[keyof GetApiV1RequirementsByRequirementIdResponses];
 
 export type PostApiV1PrivateUsersData = {
     body: PrivateUserCreate;

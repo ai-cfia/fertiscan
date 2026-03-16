@@ -23,7 +23,6 @@ export const createClient = (config: Config = {}): Client => {
   if (_config.axios && !('Axios' in _config.axios)) {
     instance = _config.axios;
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { auth, ...configWithoutAuth } = _config;
     instance = axios.create(configWithoutAuth);
   }
@@ -76,7 +75,6 @@ export const createClient = (config: Config = {}): Client => {
     try {
       // assign Axios here for consistency with fetch
       const _axios = opts.axios!;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { auth, ...optsWithoutAuth } = opts;
       const response = await _axios({
         ...optsWithoutAuth,

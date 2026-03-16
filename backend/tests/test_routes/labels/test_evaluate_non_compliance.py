@@ -56,6 +56,7 @@ class TestEvaluateNonCompliance:
             review_status="completed",
         )
         LabelDataFactory.create(session=db, label=label, lot_number="LOT-12345")
+        FertilizerLabelDataFactory.create(session=db, label=label)
         LabelImageFactory.create(session=db, label_id=label.id)
 
         requirement = RequirementFactory.create(session=db)
@@ -65,15 +66,12 @@ class TestEvaluateNonCompliance:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["total"] == 1
-        assert str(requirement.id) in data["results"]
-        # test lot number presence evaluation is handled by LLM now so wait, let's just make sure it returns True since we might be mocking the result
-        assert data["results"][str(requirement.id)]["status"] == "compliant"
+        assert data["status"] == "compliant"
 
     def test_evaluate_non_compliance_lot_number_missing(
         self,
@@ -91,6 +89,7 @@ class TestEvaluateNonCompliance:
             review_status="completed",
         )
         LabelDataFactory.create(session=db, label=label, lot_number="")
+        FertilizerLabelDataFactory.create(session=db, label=label)
         LabelImageFactory.create(session=db, label_id=label.id)
 
         requirement = RequirementFactory.create(session=db)
@@ -100,41 +99,98 @@ class TestEvaluateNonCompliance:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["total"] == 1
-        assert str(requirement.id) in data["results"]
-        # Same here, status is used instead of is_compliant bool
-        assert data["results"][str(requirement.id)]["status"] in [
+        assert data["status"] in [
             "compliant",
             "non_compliant",
             "not_applicable",
         ]
 
-    @pytest.mark.asyncio
-    async def test_evaluate_non_compliance_label_not_completed(
+    def test_evaluate_fails_when_label_data_missing(
         self,
-        async_client: AsyncClient,
+        client: TestClient,
         db: Session,
     ) -> None:
-        """Test evaluating compliance when label is not completed (412)."""
+        """Test evaluate fails when label_data is missing (400)."""
         user = UserFactory.create(session=db)
-        label = LabelFactory.create(session=db, review_status="in_progress")
+        product_type = ProductTypeFactory.create(session=db)
+        label = LabelFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+            review_status="in_progress",
+        )
 
         requirement = RequirementFactory.create(session=db)
 
-        headers = await authentication_token_from_email_async(
-            client=async_client, email=user.email, db=db
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
         )
 
-        response = await async_client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
-        assert response.status_code == 412
+        assert response.status_code == 400
+
+    def test_evaluate_fails_when_fertilizer_label_data_missing(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluate fails when fertilizer_label_data is missing for fertilizer (400)."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        label = LabelFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+            review_status="in_progress",
+        )
+        LabelDataFactory.create(session=db, label=label)
+
+        requirement = RequirementFactory.create(session=db)
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
+            headers=headers,
+        )
+        assert response.status_code == 400
+
+    def test_evaluate_succeeds_when_not_completed_but_has_data(
+        self,
+        client: TestClient,
+        db: Session,
+    ) -> None:
+        """Test evaluate succeeds with label_data + fertilizer_label_data even when review_status != completed."""
+        user = UserFactory.create(session=db)
+        product_type = ProductTypeFactory.create(session=db)
+        label = LabelFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+            review_status="in_progress",
+        )
+        LabelDataFactory.create(session=db, label=label)
+        FertilizerLabelDataFactory.create(session=db, label=label)
+
+        requirement = RequirementFactory.create(session=db)
+
+        headers = authentication_token_from_email(
+            client=client, email=user.email, db=db
+        )
+
+        response = client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
+            headers=headers,
+        )
+        assert response.status_code == 200
+        assert response.json()["status"] == "compliant"
 
     def test_evaluate_non_compliance_authentication_required(
         self,
@@ -146,7 +202,7 @@ class TestEvaluateNonCompliance:
         requirement = RequirementFactory.create(session=db)
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}"
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}"
         )
         assert response.status_code == 401
 
@@ -187,13 +243,12 @@ class TestEvaluateNonCompliance:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["total"] == 1
-        assert str(requirement.id) in data["results"]
+        assert data["status"] == "compliant"
 
     def test_evaluate_non_compliance_guaranteed_analysis_missing(
         self,
@@ -226,13 +281,12 @@ class TestEvaluateNonCompliance:
         )
 
         response = client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["total"] == 1
-        assert str(requirement.id) in data["results"]
+        assert "status" in data
 
 
 @pytest.mark.usefixtures("override_dependencies")
@@ -260,8 +314,14 @@ class TestEvaluateNonComplianceLLM:
     ) -> None:
         """Test successful compliance evaluation using LLM."""
         user = UserFactory.create(session=db)
-        label = LabelFactory.create(session=db, review_status="completed")
+        product_type = ProductTypeFactory.create(session=db)
+        label = LabelFactory.create(
+            session=db,
+            product_type_id=product_type.id,
+            review_status="completed",
+        )
         LabelDataFactory.create(session=db, label=label)
+        FertilizerLabelDataFactory.create(session=db, label=label)
 
         requirement = RequirementFactory.create(session=db)
 
@@ -270,21 +330,21 @@ class TestEvaluateNonComplianceLLM:
         )
 
         response = await async_client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance?requirement_ids={requirement.id}",
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement.id}",
             headers=headers,
         )
 
         assert response.status_code == 200
         data = response.json()
-        assert data["results"][str(requirement.id)]["status"] == "compliant"
+        assert data["status"] == "compliant"
 
     @pytest.mark.asyncio
-    async def test_evaluate_non_compliance_multiple_rules(
+    async def test_evaluate_non_compliance_multiple_requirements(
         self,
         async_client: AsyncClient,
         db: Session,
     ) -> None:
-        """Test evaluating multiple rules (programmatic + LLM) at once."""
+        """Test evaluating multiple requirements via separate requests."""
         user = UserFactory.create(session=db)
         product_type = ProductTypeFactory.create(session=db)
         product = ProductFactory.create(session=db, product_type_id=product_type.id)
@@ -295,25 +355,26 @@ class TestEvaluateNonComplianceLLM:
             review_status="completed",
         )
         LabelDataFactory.create(session=db, label=label, lot_number="LOT-12345")
+        FertilizerLabelDataFactory.create(session=db, label=label)
         LabelImageFactory.create(session=db, label_id=label.id)
 
-        # 1. Programmatic Rule (Lot Number)
         requirement_lot = RequirementFactory.create(session=db)
-        # 2. LLM Rule (Organic Matter)
         requirement_llm = RequirementFactory.create(session=db)
 
         headers = await authentication_token_from_email_async(
             client=async_client, email=user.email, db=db
         )
 
-        response = await async_client.get(
-            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance"
-            f"?requirement_ids={requirement_lot.id}&requirement_ids={requirement_llm.id}",
+        response1 = await async_client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement_lot.id}",
             headers=headers,
         )
+        assert response1.status_code == 200
+        assert response1.json()["status"] == "compliant"
 
-        assert response.status_code == 200
-        data = response.json()
-        assert data["total"] == 2
-        assert str(requirement_lot.id) in data["results"]
-        assert str(requirement_llm.id) in data["results"]
+        response2 = await async_client.get(
+            f"{settings.API_V1_STR}/labels/{label.id}/evaluate-non-compliance/{requirement_llm.id}",
+            headers=headers,
+        )
+        assert response2.status_code == 200
+        assert response2.json()["status"] == "compliant"

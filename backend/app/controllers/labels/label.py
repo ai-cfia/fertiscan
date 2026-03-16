@@ -1,5 +1,3 @@
-import asyncio
-from collections.abc import Sequence
 from typing import Any
 from uuid import UUID
 
@@ -11,14 +9,14 @@ from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 from sqlmodel.sql.expression import SelectOfScalar
 
+from app import storage
 from app.db.models.enums import ReviewStatus
 from app.db.models.label import Label
 from app.db.models.label_data import LabelData
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
 from app.db.models.requirement import Requirement
 from app.schemas.label import ComplianceResult, LabelUpdate
-from app.services.compliance import evaluate_requirement
-from app.storage import delete_files
+from app.services import compliance
 
 
 def _apply_label_sorting(
@@ -169,26 +167,19 @@ async def delete_label(
     """Delete a label and its associated storage files."""
     file_paths = [img.file_path for img in label.images]
     if file_paths:
-        await delete_files(s3_client, file_paths)
+        await storage.delete_files(s3_client, file_paths)
     session.delete(label)
     session.flush()
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-async def evaluate_non_compliance(
+async def evaluate(
     instructor: AsyncInstructor,
     label: Label,
-    rules: Sequence[Requirement],
-) -> dict[UUID, ComplianceResult]:
-    """Evaluate rules in parallel."""
-
-    tasks = []
-    for rule in rules:
-        tasks.append(evaluate_requirement(instructor, label, rule))
-
-    results = await asyncio.gather(*tasks)
-
-    return dict(zip([r.id for r in rules], results, strict=True))
+    requirement: Requirement,
+) -> ComplianceResult:
+    """Evaluate a requirement against the label."""
+    return await compliance.evaluate_requirement(instructor, label, requirement)
 
 
 @validate_call(config={"arbitrary_types_allowed": True})

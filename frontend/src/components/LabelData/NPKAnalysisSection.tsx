@@ -16,8 +16,9 @@ interface NPKAnalysisSectionProps {
   hasImages: boolean
   getIsFieldExtracting: (fieldName: string) => boolean
   onExtractField: (fieldName: string | string[] | null) => void
-  onToggleReview: (fieldName: string) => void
+  onToggleReview?: (fieldName: string) => void
   disabled?: boolean
+  readOnly?: boolean
 }
 export default function NPKAnalysisSection({
   control,
@@ -29,6 +30,7 @@ export default function NPKAnalysisSection({
   onExtractField,
   onToggleReview,
   disabled = false,
+  readOnly = false,
 }: NPKAnalysisSectionProps) {
   const { t } = useTranslation("labels")
   const npkFields = ["n", "p", "k"]
@@ -88,11 +90,11 @@ export default function NPKAnalysisSection({
               label={t("data.fields.n")}
               control={control}
               type="number"
-              helperText={t("data.helperText.n")}
+              helperText={readOnly ? undefined : t("data.helperText.n")}
               needsReview={getFieldMeta("n").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("n")}
-              onToggleReview={() => onToggleReview("n")}
+              onToggleReview={readOnly ? undefined : () => onToggleReview!("n")}
               disabled={disabled}
             />
           </Box>
@@ -102,11 +104,11 @@ export default function NPKAnalysisSection({
               label={t("data.fields.p")}
               control={control}
               type="number"
-              helperText={t("data.helperText.p")}
+              helperText={readOnly ? undefined : t("data.helperText.p")}
               needsReview={getFieldMeta("p").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("p")}
-              onToggleReview={() => onToggleReview("p")}
+              onToggleReview={readOnly ? undefined : () => onToggleReview!("p")}
               disabled={disabled}
             />
           </Box>
@@ -116,11 +118,11 @@ export default function NPKAnalysisSection({
               label={t("data.fields.k")}
               control={control}
               type="number"
-              helperText={t("data.helperText.k")}
+              helperText={readOnly ? undefined : t("data.helperText.k")}
               needsReview={getFieldMeta("k").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("k")}
-              onToggleReview={() => onToggleReview("k")}
+              onToggleReview={readOnly ? undefined : () => onToggleReview!("k")}
               disabled={disabled}
             />
           </Box>
