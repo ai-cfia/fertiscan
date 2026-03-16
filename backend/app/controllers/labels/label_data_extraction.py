@@ -55,7 +55,11 @@ async def extract_fertilizer_fields(
     result, _completion = await extraction.extract_fields_from_images(
         images,
         response_model,
-        "Extract fertilizer label information from these label images exactly as written.",
+        "Extract fertilizer label information from these label images exactly as written."
+        "Return all fields exactly as they appear."
+        "If a field is missing OR unreadable, set the field to null. "
+        "Do not guess, do not invent values."
+        "If information is unclear, set 'uncertain' to true.",
         instructor,
     )
     if field_names:

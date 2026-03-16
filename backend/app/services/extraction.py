@@ -56,8 +56,18 @@ async def extract_fields_from_images[T: BaseModel](
     message: ChatCompletionUserMessageParam = {"role": "user", "content": content}
     response, completion = await instructor.chat.completions.create_with_completion(
         model=settings.AZURE_OPENAI_MODEL,
-        messages=[message],
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant for extracting information from fertilizer label images.",
+            },
+            message,
+        ],
         response_model=model,
         max_completion_tokens=4000,
+        temperature=0.0,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0,
     )
     return response, completion
