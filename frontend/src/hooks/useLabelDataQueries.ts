@@ -3,7 +3,13 @@ import { StatusCodes } from "http-status-codes"
 import pLimit from "p-limit"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { LabelsService, ProductsService, type ReviewStatus } from "@/api"
+import {
+  type FertilizerLabelDataMetaResponse,
+  type LabelDataFieldMetaResponse,
+  LabelsService,
+  ProductsService,
+  type ReviewStatus,
+} from "@/api"
 import { useSnackbar } from "@/components/SnackbarProvider"
 import { useLabelDataStore } from "@/stores/useLabelData"
 import {
@@ -25,8 +31,6 @@ export function useLabelDataQueries(
   labelId: string,
   isFertilizer: boolean,
   form?: any,
-  labelDataMeta?: any[],
-  fertilizerDataMeta?: any[],
 ) {
   // --- Hooks & State ---
   const queryClient = useQueryClient()
@@ -426,8 +430,10 @@ export function useLabelDataQueries(
       const queryKey = isCommonField
         ? ["labelDataMeta", labelId]
         : ["fertilizerLabelDataMeta", labelId]
-      const dataToUpdate = isCommonField ? labelDataMeta : fertilizerDataMeta
-      const updateMeta = (oldData: typeof dataToUpdate) => {
+      type MetaItem =
+        | LabelDataFieldMetaResponse
+        | FertilizerLabelDataMetaResponse
+      const updateMeta = (oldData: MetaItem[] | undefined): MetaItem[] => {
         if (!oldData) return [updatedMeta]
         const existingIndex = oldData.findIndex(
           (meta) => meta.field_name === fieldName,
