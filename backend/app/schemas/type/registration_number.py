@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from pydantic import StringConstraints
+from pydantic import Field, StringConstraints
 
 RegistrationNumber = Annotated[
     str,
@@ -12,5 +12,13 @@ RegistrationNumber = Annotated[
         strict=True,
         strip_whitespace=True,
         to_upper=True,
+    ),
+    Field(
+        description=(
+            "Registration number of the product itself :"
+            "7 digits followed by a letter (e.g. 1234567F)."
+            " Can be empty if unknown."
+        ),
+        examples=["1234567F"],
     ),
 ]

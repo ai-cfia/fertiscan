@@ -15,6 +15,11 @@ from pydantic import BaseModel, validate_call
 
 from app.config import settings
 
+MAX_IMAGES_PER_REQUEST = 10
+MAX_COMPLETION_TOKENS = 2500
+MAX_RETRIES = 1
+REQUEST_TIMEOUT_SECONDS = 30
+
 
 class ImageData(NamedTuple):
     """Image data with bytes and content type."""
@@ -43,8 +48,8 @@ async def extract_fields_from_images[T: BaseModel](
     """
     if not images:
         return model.model_validate({}), None
-    if len(images) > 10:
-        raise ValueError("Maximum 10 images per request")
+    if len(images) > MAX_IMAGES_PER_REQUEST:
+        raise ValueError(f"Maximum {MAX_IMAGES_PER_REQUEST} images per request")
     data_uris = [to_data_uri(img) for img in images]
     content: list[ChatCompletionContentPartParam] = [
         ChatCompletionContentPartTextParam(type="text", text=prompt)
@@ -64,7 +69,9 @@ async def extract_fields_from_images[T: BaseModel](
             message,
         ],
         response_model=model,
-        max_completion_tokens=4000,
+        max_completion_tokens=MAX_COMPLETION_TOKENS,
+        max_retries=MAX_RETRIES,
+        timeout=REQUEST_TIMEOUT_SECONDS,
         temperature=0.0,
         top_p=1.0,
         frequency_penalty=0.0,

@@ -67,7 +67,8 @@ class GuaranteedAnalysis(BaseModel):
         description="True if title contains 'Minimum', false otherwise"
     )
     nutrients: list[Nutrient] = Field(
-        description="List of nutrients with bilingual names, values and units"
+        description="List of nutrients with bilingual names, values and units",
+        max_length=40,
     )
 
 
@@ -228,7 +229,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None,
         description="List of contact information (manufacturer, distributor, etc.)",
     )
-    registration_number: str | None = Field(
+    registration_number: RegistrationNumber | None = Field(
         default=None,
         description="Registration number of the product itself (not its individual ingredients).",
         examples=["1234567F"],
@@ -276,10 +277,12 @@ class ExtractFertilizerFieldsOutput(BaseModel):
             "and sold only to that purchaser. Extract verbatim text identifying the product as such, "
             "including the purchaser's name or any signature references."
         ),
+        max_length=40,
     )
     intended_use_statements: list[BilingualText] | None = Field(
         default=None,
         description="Verbatim statements indicating intended use or target audience.",
+        max_length=20,
         examples=[
             [
                 {"en": "For industrial use only"},
@@ -290,6 +293,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     processing_instruction_statements: list[BilingualText] | None = Field(
         default=None,
         description="Verbatim statements indicating the product requires further treatment, other than simple mixing or repackaging.",
+        max_length=20,
         examples=[
             [
                 {"en": "Requires further chemical processing"},
@@ -303,6 +307,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
             "Verbatim statements indicating the product is for experimental, research, or trial purposes, "
             "including instructions to destroy the product or plants upon completion."
         ),
+        max_length=20,
         examples=[
             [
                 {"en": "For experimental purposes only"},
@@ -316,6 +321,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
             "Verbatim statements indicating that the product is not intended for sale or use in Canada "
             "and is intended for export only."
         ),
+        max_length=20,
         examples=[
             [
                 {"en": "For export only"},
@@ -344,6 +350,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     ingredients: list[Ingredient] | None = Field(
         default=None,
         description="Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.",
+        max_length=40,
     )
     guaranteed_analysis: GuaranteedAnalysis | None = Field(
         default=None,
@@ -352,10 +359,12 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     precaution_statements: list[BilingualText] | None = Field(
         default=None,
         description="Precaution statements verbatim",
+        max_length=20,
         examples=[[{"en": "Keep out of reach of children"}]],
     )
     directions_for_use_statements: list[BilingualText] | None = Field(
         default=None,
         description="Directions for use verbatim",
+        max_length=30,
         examples=[[{"en": "Apply 2-3 cups per 100 square feet"}]],
     )
