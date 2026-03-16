@@ -1,4 +1,4 @@
-.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-reset-local backend-db-seed backend-db-shell backend-observe-list-requirements backend-observe-extract backend-observe backend-observe-compliance backend-observe-full frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all
+.PHONY: help generate-openapi-client backend-% frontend-% backend-help backend-dev backend-sync backend-test backend-test-cov backend-lint backend-mypy backend-format backend-format-check backend-prestart backend-email-templates backend-alembic-upgrade backend-alembic-check backend-generate-sbom backend-db-start backend-db-stop backend-db-status backend-db-migrate backend-db-reset backend-db-reset-local backend-db-seed backend-db-shell frontend-help frontend-dev frontend-build frontend-lint frontend-preview frontend-test frontend-generate-openapi-client frontend-generate-sbom pre-commit-install pre-commit docker-compose-build docker-up docker-up-d docker-watch docker-down docker-down-v docker-logs docker-ps db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell minio-start minio-stop minio-status minio-reset minio-console build-all build-backend build-frontend test-all lint-all format-all format-check-all docker-build-backend docker-build-frontend docker-build-all prepare-deploy sync-all clean-all env sbom-scan-backend sbom-scan-frontend sbom-scan-all renovate-local
 
 help:
 	@echo "Monorepo Makefile (Development & Local Workflows)"
@@ -55,6 +55,7 @@ help:
 	@echo "  generate-openapi-client  - Generate OpenAPI client from backend spec"
 	@echo "  pre-commit-install       - Install pre-commit hooks from root config"
 	@echo "  pre-commit               - Run pre-commit checks on all files"
+	@echo "  renovate-local  	   	  - Run Renovate locally for testing"
 	@echo ""
 	@echo "Security scanning (requires grype: brew install grype):"
 	@echo "  sbom-scan-backend        - Scan backend SBOM for vulnerabilities"
@@ -345,3 +346,24 @@ sbom-scan-frontend:
 
 sbom-scan-all: sbom-scan-backend sbom-scan-frontend
 	@echo "SBOM scanning complete."
+
+renovate-local:
+	@echo "Running Renovate locally for testing..."
+	@test -n "$$GITHUB_COM_TOKEN" || (echo 'Error: GITHUB_COM_TOKEN is undefined. Please export it using: export GITHUB_COM_TOKEN="{your_token_here}"' && exit 1)
+		@mkdir -p experiments
+		@> experiments/log.txt
+		@{ \
+        spin='-\|/'; i=0; \
+        ( LOG_LEVEL=debug sh -c 'yes y | npx renovate --platform=local' >> experiments/log.txt 2>&1 ) & \
+        pid=$$!; \
+        printf "Working "; \
+        while kill -0 $$pid 2>/dev/null; do \
+            i=$$(( (i+1) % 4 )); \
+            printf "\rWorking %s" "$${spin:$$i:1}"; \
+            sleep 0.1; \
+        done; \
+        wait $$pid; rc=$$?; \
+        printf "\r"; \
+        exit $$rc; \
+    }
+		@echo "Logs written to experiments/log.txt"
