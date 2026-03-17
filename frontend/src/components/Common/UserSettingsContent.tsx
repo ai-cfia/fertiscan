@@ -1,3 +1,5 @@
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Avatar,
   Box,
@@ -9,6 +11,8 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  IconButton,
+  InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
@@ -43,6 +47,9 @@ interface ChangePasswordFormProps {
 function ChangePasswordForm({ t }: ChangePasswordFormProps) {
   const { showSuccessToast } = useSnackbar()
   const [mutationError, setMutationError] = useState<string | null>(null)
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -113,7 +120,7 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
             }),
           })}
           label={t("settings.password.currentPassword")}
-          type="password"
+          type={showCurrentPassword ? "text" : "password"}
           fullWidth
           required
           autoComplete="current-password"
@@ -124,6 +131,22 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
               ? mutationError
               : t("settings.password.passwordHelper"))
           }
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility")}
+                    onClick={() => setShowCurrentPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <TextField
           {...register(
@@ -134,7 +157,7 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
             }),
           )}
           label={t("settings.password.newPassword")}
-          type="password"
+          type={showNewPassword ? "text" : "password"}
           fullWidth
           required
           autoComplete="new-password"
@@ -143,6 +166,22 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
             errors.new_password?.message ||
             t("settings.password.passwordHelper")
           }
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility")}
+                    onClick={() => setShowNewPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <TextField
           {...register(
@@ -153,7 +192,7 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
             }),
           )}
           label={t("settings.password.confirmNewPassword")}
-          type="password"
+          type={showConfirmNewPassword ? "text" : "password"}
           fullWidth
           required
           autoComplete="new-password"
@@ -162,6 +201,26 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
             errors.confirm_new_password?.message ||
             t("settings.password.confirmPasswordHelper")
           }
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility")}
+                    onClick={() => setShowConfirmNewPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showConfirmNewPassword ? (
+                      <VisibilityOff />
+                    ) : (
+                      <Visibility />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <Button
           type="submit"

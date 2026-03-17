@@ -1,3 +1,5 @@
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
@@ -7,6 +9,8 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   Switch,
   TextField,
 } from "@mui/material"
@@ -38,6 +42,8 @@ export default function AddUserDialog({
   const { showSuccessToast } = useSnackbar()
   const queryClient = useQueryClient()
   const [mutationError, setMutationError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -61,6 +67,8 @@ export default function AddUserDialog({
   useEffect(() => {
     if (open) {
       setMutationError(null)
+      setShowPassword(false)
+      setShowConfirmPassword(false)
       reset({
         email: "",
         password: "",
@@ -169,7 +177,7 @@ export default function AddUserDialog({
               }),
             )}
             label={t("admin.addUserDialog.password")}
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
             required
             error={!!errors.password}
@@ -177,6 +185,22 @@ export default function AddUserDialog({
               errors.password?.message ||
               t("admin.addUserDialog.passwordHelper")
             }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={t("aria.togglePasswordVisibility")}
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
           <TextField
             {...register(
@@ -187,7 +211,7 @@ export default function AddUserDialog({
               }),
             )}
             label={t("admin.addUserDialog.confirmPassword")}
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             fullWidth
             required
             error={!!errors.confirm_password}
@@ -195,6 +219,22 @@ export default function AddUserDialog({
               errors.confirm_password?.message ||
               t("admin.addUserDialog.confirmPasswordHelper")
             }
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={t("aria.togglePasswordVisibility")}
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
           <TextField
             {...register("first_name", {

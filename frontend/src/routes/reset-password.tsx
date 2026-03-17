@@ -1,8 +1,11 @@
 import LockIcon from "@mui/icons-material/Lock"
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
   TextField,
   Typography,
@@ -42,6 +45,8 @@ function ResetPassword() {
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -127,7 +132,7 @@ function ResetPassword() {
             }),
           )}
           label={t("resetPassword.newPassword")}
-          type="password"
+          type={showNewPassword ? "text" : "password"}
           fullWidth
           error={!!errors.new_password}
           helperText={
@@ -143,6 +148,20 @@ function ResetPassword() {
                   <LockIcon />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowNewPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             },
           }}
         />
@@ -155,7 +174,7 @@ function ResetPassword() {
             }),
           )}
           label={t("resetPassword.confirmPassword")}
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           fullWidth
           error={!!errors.confirm_password}
           helperText={
@@ -169,6 +188,20 @@ function ResetPassword() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             },

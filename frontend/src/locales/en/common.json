@@ -90,7 +90,8 @@
   },
   "aria": {
     "navigation": "navigation",
-    "openDrawer": "open drawer"
+    "openDrawer": "open drawer",
+    "togglePasswordVisibility": "Toggle password visibility"
   },
   "backend": {
     "unavailable": "Backend unavailable. Some features may not work. Please try again later."

@@ -90,7 +90,8 @@
   },
   "aria": {
     "navigation": "navigation",
-    "openDrawer": "ouvrir le tiroir"
+    "openDrawer": "ouvrir le tiroir",
+    "togglePasswordVisibility": "Afficher ou masquer le mot de passe"
   },
   "backend": {
     "unavailable": "Serveur indisponible. Certaines fonctionnalités peuvent ne pas fonctionner. Veuillez réessayer plus tard."

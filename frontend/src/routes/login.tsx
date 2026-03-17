@@ -1,9 +1,12 @@
 import EmailIcon from "@mui/icons-material/Email"
 import LockIcon from "@mui/icons-material/Lock"
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
   Link,
   TextField,
@@ -42,6 +45,7 @@ function Login() {
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -132,7 +136,7 @@ function Login() {
             }),
           )}
           label={t("login.password")}
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           error={!!errors.password}
           helperText={
@@ -144,6 +148,20 @@ function Login() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             },

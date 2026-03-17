@@ -1,9 +1,12 @@
 import LockIcon from "@mui/icons-material/Lock"
 import PersonIcon from "@mui/icons-material/Person"
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
   Link,
   TextField,
@@ -46,6 +49,8 @@ function SignUp() {
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -186,7 +191,7 @@ function SignUp() {
             }),
           )}
           label={t("signup.password")}
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           error={!!errors.password}
           helperText={
@@ -202,6 +207,20 @@ function SignUp() {
                   <LockIcon />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             },
           }}
         />
@@ -214,7 +233,7 @@ function SignUp() {
             }),
           )}
           label={t("signup.confirmPassword")}
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           fullWidth
           error={!!errors.confirm_password}
           helperText={
@@ -228,6 +247,20 @@ function SignUp() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             },
