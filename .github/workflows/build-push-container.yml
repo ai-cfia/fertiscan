@@ -60,7 +60,7 @@ jobs:
       - name: Build and push (unmerged)
         id: docker_build_and_tag_unmerged
         if: github.event.pull_request.merged == false
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7
         with:
           context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
           push: true
@@ -75,7 +75,7 @@ jobs:
       - name: Build and push (merged)
         id: docker_build_and_tag_merged
         if: github.event.pull_request.merged == true
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7
         with:
           context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
           push: true
