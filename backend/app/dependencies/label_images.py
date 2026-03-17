@@ -7,8 +7,8 @@ from fastapi import Depends
 from sqlmodel import Session, select
 
 from app.db.models import LabelImage, UploadStatus
-from app.dependencies.auth import SessionDep
 from app.dependencies.labels import EditableLabelDep, LabelDep, S3ClientDep
+from app.dependencies.session import SessionDep
 from app.exceptions import (
     FileNotFoundInStorage,
     ImageNotCompleted,

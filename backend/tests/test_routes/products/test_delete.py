@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.db.models.label import Label

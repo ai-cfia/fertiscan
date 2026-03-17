@@ -6,9 +6,9 @@ from fastapi import Depends
 from sqlmodel import select
 
 from app.db.models.non_compliance_data_item import NonComplianceDataItem
-from app.dependencies.auth import SessionDep
 from app.dependencies.labels import LabelDep
 from app.dependencies.requirement import RequirementDep, get_requirement_by_id
+from app.dependencies.session import SessionDep
 from app.exceptions import (
     NonComplianceDataItemAlreadyExists,
     NonComplianceDataItemNotFound,

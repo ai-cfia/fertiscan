@@ -13,14 +13,15 @@ import type { AxiosError } from "axios"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { LoginService, type NewPassword } from "@/api"
+import { LoginService } from "@/api"
 import PageTopBanner from "@/components/Common/PageTopBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 import { confirmPasswordRules, handleError, passwordRules } from "@/utils"
 
-interface NewPasswordForm extends NewPassword {
+interface NewPasswordForm {
+  new_password: string
   confirm_password: string
 }
 
@@ -66,7 +67,7 @@ function ResetPassword() {
   })
   const { showSuccessToast } = useCustomToast()
   const navigate = useNavigate()
-  const resetPassword = async (data: NewPassword) => {
+  const resetPassword = async (data: NewPasswordForm) => {
     const token = new URLSearchParams(window.location.search).get("token")
     if (!token) return
     await LoginService.resetPassword({

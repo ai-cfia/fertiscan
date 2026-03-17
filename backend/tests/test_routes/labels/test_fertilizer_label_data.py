@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.schemas.label_data import GuaranteedAnalysis, Ingredient

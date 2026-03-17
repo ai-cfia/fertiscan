@@ -38,7 +38,7 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const { t } = useTranslation(["auth", "common"])
-  const { loginMutation, error, resetError } = useAuth()
+  const { loginMutation } = useAuth()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
@@ -66,7 +66,6 @@ function Login() {
   })
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
-    resetError()
     try {
       await loginMutation.mutateAsync(data)
     } catch {
@@ -111,14 +110,10 @@ function Login() {
           label={t("login.email")}
           type="email"
           fullWidth
-          error={!!errors.username || !!error}
+          error={!!errors.username}
           helperText={
             errors.username?.message ||
-            (error
-              ? t("login.failed")
-              : t("login.emailHelper", {
-                  defaultValue: "Enter your email address",
-                }))
+            t("login.emailHelper", { defaultValue: "Enter your email address" })
           }
           slotProps={{
             input: {

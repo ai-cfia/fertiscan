@@ -6,8 +6,8 @@ from fastapi import Depends
 from sqlmodel import select
 
 from app.db.models.label_data import LabelData
-from app.dependencies.auth import SessionDep
 from app.dependencies.labels import LabelDep
+from app.dependencies.session import SessionDep
 from app.exceptions import LabelNotFound
 
 

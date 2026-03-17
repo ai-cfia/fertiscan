@@ -1,25 +1,89 @@
 {
   "admin": {
     "addUser": "Add User",
+    "user": "User",
+    "deleteSelected": "Delete selected",
+    "addUserDialog": {
+      "title": "Add user",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "emailMaxLength": "Email must be 255 characters or less",
+      "emailHelper": "Must be unique. Used for login. Max 255 characters.",
+      "password": "Password",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordHelper": "Set the initial password for this user",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordRequired": "Password confirmation is required",
+      "confirmPasswordHelper": "Re-enter the password to confirm",
+      "passwordsDoNotMatch": "The passwords do not match",
+      "submit": "Add User",
+      "success": "User created successfully",
+      "error": "Failed to create user. Please try again."
+    },
+    "empty": {
+      "noUsers": "No users found",
+      "noUsersDescription": "Users will appear here once they are added."
+    },
     "pageTitle": "Admin - Label Inspection",
     "pagination": {
       "loading": "Loading...",
       "page": "Page {{current}} of {{total}}"
     },
+    "rowActions": {
+      "delete": "Delete",
+      "deleteDialog": {
+        "description": "Are you sure you want to delete this user? This action cannot be undone.",
+        "title": "Delete user"
+      },
+      "deleteError": "Failed to delete user. Please try again.",
+      "deleteSuccess": "User deleted successfully",
+      "edit": "Edit",
+      "editDialog": {
+        "active": "Active",
+        "emailHelper": "Must be unique. Used for login. Max 255 characters.",
+        "emailInvalid": "Invalid email address",
+        "emailMaxLength": "Email must be 255 characters or less",
+        "emailRequired": "Email is required",
+        "error": "Failed to update user. Please try again.",
+        "firstName": "First name",
+        "firstNameHelper": "Max 255 characters",
+        "firstNameMaxLength": "First name must be 255 characters or less",
+        "lastName": "Last name",
+        "lastNameHelper": "Max 255 characters",
+        "lastNameMaxLength": "Last name must be 255 characters or less",
+        "superuser": "Superuser",
+        "success": "User updated successfully",
+        "title": "Edit user"
+      },
+      "viewDetails": "View Details"
+    },
     "table": {
       "actions": "Actions",
       "active": "Active",
+      "sortedAscending": "sorted ascending",
+      "sortedDescending": "sorted descending",
+      "copyId": "Copy user ID {{id}}",
       "email": "Email",
       "fullName": "Full name",
+      "id": "ID",
+      "idCopied": "User ID copied to clipboard",
       "inactive": "Inactive",
       "notAvailable": "N/A",
       "role": "Role",
+      "selectAll": "select all users",
       "status": "Status",
       "superuser": "Superuser",
       "user": "User",
       "you": "You"
     },
-    "usersManagement": "Users Management"
+    "tabs": {
+      "userSettings": "User Settings",
+      "users": "Users"
+    },
+    "usersManagement": "Users Management",
+    "tableTitle": "Table (current)",
+    "datagridTitle": "DataGrid (with search)"
   },
   "app": {
     "title": "Label Inspection"
@@ -32,6 +96,8 @@
     "unavailable": "Backend unavailable. Some features may not work. Please try again later."
   },
   "button": {
+    "cancel": "Cancel",
+    "save": "Save",
     "clearAll": "Clear All",
     "dismiss": "Dismiss",
     "goBack": "Go Back",
@@ -113,6 +179,39 @@
   },
   "settings": {
     "pageTitle": "Settings - Label Inspection",
+    "profile": {
+      "edit": "Edit",
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "role": "Role",
+      "status": "Status"
+    },
+    "password": {
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "currentPasswordRequired": "Current password is required",
+      "newPasswordRequired": "New password is required",
+      "confirmNewPasswordRequired": "Confirm new password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordsDoNotMatch": "The passwords do not match",
+      "success": "Password updated successfully",
+      "error": "Failed to update password. Please try again.",
+      "incorrectPassword": "Incorrect password",
+      "userHasNoPassword": "User has no password",
+      "submit": "Update password",
+      "passwordHelper": "8–40 characters",
+      "confirmPasswordHelper": "Re-enter the new password to confirm"
+    },
+    "dangerZone": {
+      "deleteAccount": "Delete account",
+      "deleteAccountDescription": "Remove your account and data.",
+      "deleteAccountButton": "Delete account",
+      "deleteAccountDialogTitle": "Delete your account?",
+      "deleteAccountDialogDescription": "Your account will be removed and you will be logged out.",
+      "deleteAccountSuccess": "Your account has been deleted."
+    },
     "sections": {
       "appearance": "Appearance",
       "changePassword": "Change Password",

@@ -1,7 +1,6 @@
 """Tests for meta model lazy creation/deletion logic."""
 
-from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from app.db.models.fertilizer_label_data_meta import (
     FertilizerLabelDataFieldName,

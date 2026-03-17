@@ -3,8 +3,7 @@
 from uuid import UUID
 
 from pydantic import validate_call
-from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from app.db.models import Label, ReviewStatus
 from app.db.models.label_data import LabelData

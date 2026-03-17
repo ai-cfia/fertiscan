@@ -2,10 +2,11 @@
 
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from app.config import settings
-from app.controllers.users import create_user, get_user_by_email, update_user
+from app.controllers.users import create_user, update_user
+from app.db.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 from tests.utils import fake
 
@@ -47,13 +48,13 @@ def authentication_token_from_email(
     If the user doesn't exist it is created first.
     """
     password = fake.password()
-    user = get_user_by_email(db, email)
+    user = db.exec(select(User).where(User.email == email)).first()
     if not user:
         user_in_create = UserCreate(email=email, password=password)
         create_user(db, user_in_create)
     else:
         user_in_update = UserUpdate(password=password)
-        update_user(db, user.id, user_in_update)
+        update_user(db, user, user_in_update)
     return user_authentication_headers(client=client, email=email, password=password)
 
 
@@ -68,13 +69,13 @@ async def authentication_token_from_email_async(
     If the user doesn't exist it is created first.
     """
     password = fake.password()
-    user = get_user_by_email(db, email)
+    user = db.exec(select(User).where(User.email == email)).first()
     if not user:
         user_in_create = UserCreate(email=email, password=password)
         create_user(db, user_in_create)
     else:
         user_in_update = UserUpdate(password=password)
-        update_user(db, user.id, user_in_update)
+        update_user(db, user, user_in_update)
     return await user_authentication_headers_async(
         client=client, email=email, password=password
     )

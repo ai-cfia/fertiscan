@@ -2458,6 +2458,41 @@ export const LimitOffsetPage_RequirementPublic_Schema = {
     title: 'LimitOffsetPage[RequirementPublic]'
 } as const;
 
+export const LimitOffsetPage_UserPublic_Schema = {
+    properties: {
+        items: {
+            items: {
+                $ref: '#/components/schemas/UserPublic'
+            },
+            type: 'array',
+            title: 'Items'
+        },
+        total: {
+            type: 'integer',
+            minimum: 0,
+            title: 'Total'
+        },
+        limit: {
+            type: 'integer',
+            minimum: 1,
+            title: 'Limit'
+        },
+        offset: {
+            type: 'integer',
+            minimum: 0,
+            title: 'Offset'
+        }
+    },
+    type: 'object',
+    required: [
+        'items',
+        'total',
+        'limit',
+        'offset'
+    ],
+    title: 'LimitOffsetPage[UserPublic]'
+} as const;
+
 export const MessageSchema = {
     properties: {
         message: {
@@ -2503,16 +2538,11 @@ export const NewPasswordSchema = {
         token: {
             type: 'string',
             title: 'Token'
-        },
-        new_password: {
-            type: 'string',
-            title: 'New Password'
         }
     },
     type: 'object',
     required: [
-        'token',
-        'new_password'
+        'token'
     ],
     title: 'NewPassword'
 } as const;
@@ -2788,17 +2818,21 @@ export const PrivateUserCreateSchema = {
     properties: {
         email: {
             type: 'string',
+            maxLength: 255,
             format: 'email',
             title: 'Email'
         },
         password: {
             type: 'string',
+            maxLength: 40,
+            minLength: 8,
             title: 'Password'
         },
         first_name: {
             anyOf: [
                 {
-                    type: 'string'
+                    type: 'string',
+                    maxLength: 255
                 },
                 {
                     type: 'null'
@@ -2809,7 +2843,8 @@ export const PrivateUserCreateSchema = {
         last_name: {
             anyOf: [
                 {
-                    type: 'string'
+                    type: 'string',
+                    maxLength: 255
                 },
                 {
                     type: 'null'
@@ -3582,28 +3617,6 @@ export const UserUpdateMeSchema = {
     title: 'UserUpdateMe'
 } as const;
 
-export const UsersPublicSchema = {
-    properties: {
-        data: {
-            items: {
-                $ref: '#/components/schemas/UserPublic'
-            },
-            type: 'array',
-            title: 'Data'
-        },
-        count: {
-            type: 'integer',
-            title: 'Count'
-        }
-    },
-    type: 'object',
-    required: [
-        'data',
-        'count'
-    ],
-    title: 'UsersPublic'
-} as const;
-
 export const ValidationErrorSchema = {
     properties: {
         loc: {
@@ -3636,6 +3649,29 @@ export const ValidationErrorSchema = {
         'type'
     ],
     title: 'ValidationError'
+} as const;
+
+export const NewPasswordWritableSchema = {
+    properties: {
+        token: {
+            type: 'string',
+            title: 'Token'
+        },
+        new_password: {
+            type: 'string',
+            maxLength: 40,
+            minLength: 8,
+            format: 'password',
+            title: 'New Password',
+            writeOnly: true
+        }
+    },
+    type: 'object',
+    required: [
+        'token',
+        'new_password'
+    ],
+    title: 'NewPassword'
 } as const;
 
 export const UserCreateWritableSchema = {

@@ -1005,6 +1005,28 @@ export type LimitOffsetPageRequirementPublic = {
 };
 
 /**
+ * LimitOffsetPage[UserPublic]
+ */
+export type LimitOffsetPageUserPublic = {
+    /**
+     * Items
+     */
+    items: Array<UserPublic>;
+    /**
+     * Total
+     */
+    total: number;
+    /**
+     * Limit
+     */
+    limit: number;
+    /**
+     * Offset
+     */
+    offset: number;
+};
+
+/**
  * Message
  */
 export type Message = {
@@ -1035,10 +1057,6 @@ export type NewPassword = {
      * Token
      */
     token: string;
-    /**
-     * New Password
-     */
-    new_password: string;
 };
 
 /**
@@ -1572,20 +1590,6 @@ export type UserUpdateMe = {
 };
 
 /**
- * UsersPublic
- */
-export type UsersPublic = {
-    /**
-     * Data
-     */
-    data: Array<UserPublic>;
-    /**
-     * Count
-     */
-    count: number;
-};
-
-/**
  * ValidationError
  */
 export type ValidationError = {
@@ -1601,6 +1605,20 @@ export type ValidationError = {
      * Error Type
      */
     type: string;
+};
+
+/**
+ * NewPassword
+ */
+export type NewPasswordWritable = {
+    /**
+     * Token
+     */
+    token: string;
+    /**
+     * New Password
+     */
+    new_password: string;
 };
 
 /**
@@ -1767,7 +1785,7 @@ export type PostApiV1PasswordRecoveryByEmailResponses = {
 export type PostApiV1PasswordRecoveryByEmailResponse = PostApiV1PasswordRecoveryByEmailResponses[keyof PostApiV1PasswordRecoveryByEmailResponses];
 
 export type PostApiV1ResetPasswordData = {
-    body: NewPassword;
+    body: NewPasswordWritable;
     path?: never;
     query?: never;
     url: '/api/v1/reset-password/';
@@ -1826,13 +1844,45 @@ export type GetApiV1UsersData = {
     path?: never;
     query?: {
         /**
-         * Skip
-         */
-        skip?: number;
-        /**
          * Limit
+         *
+         * Page size limit
          */
         limit?: number;
+        /**
+         * Offset
+         *
+         * Page offset
+         */
+        offset?: number;
+        /**
+         * Is Active
+         */
+        is_active?: boolean | null;
+        /**
+         * Is Superuser
+         */
+        is_superuser?: boolean | null;
+        /**
+         * Search
+         */
+        search?: string | null;
+        /**
+         * Start Created At
+         */
+        start_created_at?: string | null;
+        /**
+         * End Created At
+         */
+        end_created_at?: string | null;
+        /**
+         * Order By
+         */
+        order_by?: string;
+        /**
+         * Order
+         */
+        order?: string;
     };
     url: '/api/v1/users';
 };
@@ -1850,7 +1900,7 @@ export type GetApiV1UsersResponses = {
     /**
      * Successful Response
      */
-    200: UsersPublic;
+    200: LimitOffsetPageUserPublic;
 };
 
 export type GetApiV1UsersResponse = GetApiV1UsersResponses[keyof GetApiV1UsersResponses];

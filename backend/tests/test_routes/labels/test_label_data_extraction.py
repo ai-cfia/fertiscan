@@ -3,7 +3,7 @@
 import pytest
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.db.models.label_image import UploadStatus

@@ -4,8 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import validate_call
-from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import Session, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app.db.models.requirement import Requirement

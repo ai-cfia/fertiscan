@@ -10,7 +10,16 @@ import {
   type UserPublic,
   UsersService,
 } from "@/api"
+import { useSnackbar } from "@/components/SnackbarProvider"
 import { handleError } from "@/utils"
+
+function extractErrorMessage(err: AxiosError): string {
+  const detail = (err.response?.data as { detail?: unknown })?.detail
+  if (Array.isArray(detail) && detail.length > 0 && detail[0]?.msg) {
+    return String(detail[0].msg)
+  }
+  return typeof detail === "string" ? detail : "Login failed"
+}
 
 export const isLoggedIn = () => {
   return localStorage.getItem("access_token") !== null
@@ -18,6 +27,7 @@ export const isLoggedIn = () => {
 
 const useAuth = () => {
   const [error, setError] = useState<string | null>(null)
+  const { showErrorToast } = useSnackbar()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { data: user } = useQuery<UserPublic | null, Error>({
@@ -57,10 +67,13 @@ const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
+      setError(null)
       navigate({ to: "/" })
     },
     onError: (err: AxiosError) => {
-      handleError(err)
+      const msg = extractErrorMessage(err)
+      setError(msg)
+      showErrorToast(msg)
     },
   })
 

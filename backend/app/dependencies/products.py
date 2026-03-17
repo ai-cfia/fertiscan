@@ -7,8 +7,9 @@ from fastapi import Depends
 from sqlmodel import select
 
 from app.db.models.product import Product
-from app.dependencies.auth import CurrentUser, SessionDep
 from app.dependencies.product_types import ProductCreateTypeDep
+from app.dependencies.session import SessionDep
+from app.dependencies.users import CurrentUser
 from app.exceptions import ProductNotFound, ResourceConflict
 from app.schemas.product import ProductCreate
 
