@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.db.models.enums import ModifierType
 from app.dependencies.labels import get_label_by_id

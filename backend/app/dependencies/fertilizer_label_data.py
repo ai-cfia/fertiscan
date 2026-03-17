@@ -6,8 +6,8 @@ from fastapi import Depends
 from sqlmodel import select
 
 from app.db.models.fertilizer_label_data import FertilizerLabelData
-from app.dependencies.auth import SessionDep
 from app.dependencies.labels import FertilizerLabelDep
+from app.dependencies.session import SessionDep
 from app.exceptions import LabelNotFound
 
 

@@ -326,12 +326,8 @@ function LabelData() {
   const handleExtractField = (fieldName: string | string[] | null) => {
     extractFieldMutation.mutate(fieldName)
   }
-  const getIsFieldExtractingWithAll = (formPath: string) => {
-    return (
-      isExtracting ||
-      getIsFieldExtracting(labelId, formPathToMetaFieldName(formPath))
-    )
-  }
+  const getIsFieldExtractingForSections = (formPath: string) =>
+    getIsFieldExtracting(labelId, formPathToMetaFieldName(formPath))
   const handleToggleReview = (formPath: string) => {
     const metaFieldName = formPathToMetaFieldName(formPath)
     const currentMeta = getFieldMeta(labelDataMetaMap, metaFieldName)
@@ -587,7 +583,7 @@ function LabelData() {
                     }
                     getFieldMeta={getFieldMetaFn}
                     hasImages={hasImages}
-                    getIsFieldExtracting={getIsFieldExtractingWithAll}
+                    getIsFieldExtracting={getIsFieldExtractingForSections}
                     onExtractField={handleExtractField}
                     onToggleReview={handleToggleReview}
                     isFertilizer={isFertilizer}
@@ -602,7 +598,7 @@ function LabelData() {
                       }
                       getFieldMeta={getFieldMetaFn}
                       hasImages={hasImages}
-                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      getIsFieldExtracting={getIsFieldExtractingForSections}
                       onExtractField={handleExtractField}
                       onToggleReview={handleToggleReview}
                       disabled={isCompleted}
@@ -618,7 +614,7 @@ function LabelData() {
                       }
                       getFieldMeta={getFieldMetaFn}
                       hasImages={hasImages}
-                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      getIsFieldExtracting={getIsFieldExtractingForSections}
                       onExtractField={handleExtractField}
                       onToggleReview={handleToggleReview}
                       disabled={isCompleted}
@@ -634,7 +630,7 @@ function LabelData() {
                       }
                       getFieldMeta={getFieldMetaFn}
                       hasImages={hasImages}
-                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      getIsFieldExtracting={getIsFieldExtractingForSections}
                       onExtractField={handleExtractField}
                       onToggleReview={handleToggleReview}
                       disabled={isCompleted}
@@ -650,7 +646,7 @@ function LabelData() {
                       }
                       getFieldMeta={getFieldMetaFn}
                       hasImages={hasImages}
-                      getIsFieldExtracting={getIsFieldExtractingWithAll}
+                      getIsFieldExtracting={getIsFieldExtractingForSections}
                       onExtractField={handleExtractField}
                       onToggleReview={handleToggleReview}
                       disabled={isCompleted}

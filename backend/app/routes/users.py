@@ -1,57 +1,52 @@
 """User routes."""
 
-from typing import Any
-from uuid import UUID
-
-from fastapi import APIRouter
+from fastapi import APIRouter, status
+from fastapi_pagination import LimitOffsetPage
+from fastapi_pagination.ext.sqlmodel import paginate
 
 from app.config import settings
 from app.controllers import users
-from app.core.security import generate_password_reset_token, verify_password
-from app.dependencies import CurrentSuperuser, CurrentUser, SessionDep
+from app.core.security import generate_password_reset_token
+from app.dependencies import (
+    CurrentSuperuser,
+    CurrentUser,
+    LimitOffsetParamsDep,
+    SessionDep,
+    UserCreateDep,
+    UserDep,
+    UserForUpdateByIdDep,
+    UserForUpdateMeDep,
+    UserForUpdatePasswordDep,
+    ValidatedUserParamsDep,
+)
 from app.emails import generate_new_account_email, send_email
-from app.exceptions import (
-    EmailAlreadyRegistered,
-    IncorrectPassword,
-    UserHasNoPassword,
-    UserNotFound,
-)
 from app.schemas.message import Message
-from app.schemas.user import (
-    UpdatePassword,
-    UserCreate,
-    UserPublic,
-    UsersPublic,
-    UserUpdate,
-    UserUpdateMe,
-)
+from app.schemas.user import UpdatePassword, UserPublic, UserUpdate, UserUpdateMe
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("", response_model=UsersPublic)
+# ============================== User ==============================
+@router.get("", response_model=LimitOffsetPage[UserPublic])
 def read_users(
     session: SessionDep,
     _: CurrentSuperuser,
-    skip: int = 0,
-    limit: int = 100,
-) -> UsersPublic:
+    params: LimitOffsetParamsDep,
+    filters: ValidatedUserParamsDep,
+) -> LimitOffsetPage[UserPublic]:
     """List all users (superuser only)."""
-    user_list, count = users.get_users(session, skip=skip, limit=limit)
-    user_public_list = [UserPublic.model_validate(u.model_dump()) for u in user_list]
-    return UsersPublic(data=user_public_list, count=count)
+    stmt = users.get_users_query(**filters.model_dump())
+    return paginate(session, stmt, params)  # type: ignore[no-any-return, arg-type]
 
 
-@router.post("", response_model=UserPublic, status_code=201)
+@router.post("", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
 async def create_user(
     *,
     session: SessionDep,
     _: CurrentSuperuser,
-    user_in: UserCreate,
-) -> Any:
+    user_in: UserCreateDep,
+) -> UserPublic:
     """Create new user (superuser only)."""
-    if users.get_user_by_email(session, user_in.email):
-        raise EmailAlreadyRegistered()
     user = users.create_user(session, user_in)
     if settings.emails_enabled:
         token = generate_password_reset_token(user_in.email)
@@ -59,75 +54,58 @@ async def create_user(
             email_to=user_in.email, username=user_in.email, token=token
         )
         await send_email(email_to=user_in.email, email_data=email_data)
-    return user
+    return user  # type: ignore[return-value]
 
 
 @router.get("/me", response_model=UserPublic)
 def read_user_me(
     current_user: CurrentUser,
-) -> Any:
+) -> UserPublic:
     """Get current user."""
-    return current_user
+    return current_user  # type: ignore[return-value]
 
 
 @router.patch("/me", response_model=UserPublic)
 def update_user_me(
     *,
     session: SessionDep,
-    current_user: CurrentUser,
-    user_in: UserUpdateMe,
-) -> Any:
+    me: UserForUpdateMeDep,
+    me_update: UserUpdateMe,
+) -> UserPublic:
     """Update current user."""
-    if user_in.email:
-        if existing := users.get_user_by_email(session, user_in.email):
-            if existing.id != current_user.id:
-                raise EmailAlreadyRegistered()
-    _user_in = UserUpdate.model_validate(user_in.model_dump(exclude_unset=True))
-    if not (user := users.update_user(session, current_user.id, _user_in)):
-        raise UserNotFound()
-    return user
+    update = UserUpdate.model_validate(me_update.model_dump(exclude_unset=True))
+    return users.update_user(session, me, update)  # type: ignore[return-value]
 
 
 @router.patch("/me/password", response_model=Message)
 def update_password_me(
     *,
     session: SessionDep,
-    current_user: CurrentUser,
-    body: UpdatePassword,
-) -> Any:
+    me: UserForUpdatePasswordDep,
+    update_password: UpdatePassword,
+) -> Message:
     """Update current user password."""
-    if not current_user.hashed_password:
-        raise UserHasNoPassword()
-    if not verify_password(body.current_password, current_user.hashed_password):
-        raise IncorrectPassword()
-    if not users.update_user(
-        session, current_user.id, UserUpdate(password=body.new_password)
-    ):
-        raise UserNotFound()
+    users.update_user(session, me, UserUpdate(password=update_password.new_password))
     return Message(message="Password updated successfully")
 
 
 @router.delete("/me", response_model=Message)
 def delete_user_me(
     session: SessionDep,
-    current_user: CurrentUser,
-) -> Any:
+    me: CurrentUser,
+) -> Message:
     """Delete current user."""
-    if not users.delete_user(session, current_user.id):
-        raise UserNotFound()
+    users.delete_user(session, me)
     return Message(message="User deleted successfully")
 
 
 @router.get("/{user_id}", response_model=UserPublic)
-def read_user_by_id(
-    session: SessionDep,
+def read_user(
     _: CurrentSuperuser,
-    user_id: UUID,
-) -> Any:
+    user: UserDep,
+) -> UserPublic:
     """Get user by ID (superuser only)."""
-    if not (user := users.get_user_by_id(session, user_id)):
-        raise UserNotFound()
-    return user
+    return user  # type: ignore[return-value]
 
 
 @router.patch("/{user_id}", response_model=UserPublic)
@@ -135,26 +113,19 @@ def update_user(
     *,
     session: SessionDep,
     _: CurrentSuperuser,
-    user_id: UUID,
-    user_in: UserUpdate,
-) -> Any:
+    user: UserForUpdateByIdDep,
+    user_update: UserUpdate,
+) -> UserPublic:
     """Update user (superuser only)."""
-    if user_in.email:
-        if existing := users.get_user_by_email(session, user_in.email):
-            if existing.id != user_id:
-                raise EmailAlreadyRegistered()
-    if not (user := users.update_user(session, user_id, user_in)):
-        raise UserNotFound()
-    return user
+    return users.update_user(session, user, user_update)  # type: ignore[return-value]
 
 
 @router.delete("/{user_id}", response_model=Message)
 def delete_user(
     session: SessionDep,
     _: CurrentSuperuser,
-    user_id: UUID,
+    user: UserDep,
 ) -> Message:
     """Delete user (superuser only)."""
-    if not users.delete_user(session, user_id):
-        raise UserNotFound()
+    users.delete_user(session, user)
     return Message(message="User deleted successfully")

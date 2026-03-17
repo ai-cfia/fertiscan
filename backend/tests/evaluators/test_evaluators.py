@@ -3,8 +3,7 @@ import os
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from app.config import settings
 from app.db.models.enums import ComplianceStatus

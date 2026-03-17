@@ -2,7 +2,7 @@
 
 import pytest
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.db.models.fertilizer_label_data import FertilizerLabelData
 from app.db.models.label import Label
