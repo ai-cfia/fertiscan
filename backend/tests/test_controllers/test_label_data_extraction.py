@@ -116,7 +116,6 @@ class TestSanitizeOutputPayload:
 @pytest.mark.asyncio
 async def test_extract_fertilizer_fields_handles_instructor_retry(
     monkeypatch: pytest.MonkeyPatch,
-    setup_db: None,
     s3_client,
     mock_instructor,
 ) -> None:
