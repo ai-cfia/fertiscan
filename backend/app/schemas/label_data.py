@@ -13,6 +13,7 @@ from app.schemas.type import RegistrationNumber
 
 
 class Contact(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     type: str = Field(
         description="Type of contact",
         examples=["manufacturer", "distributor", "importer"],
@@ -25,6 +26,7 @@ class Contact(BaseModel):
 
 
 class BilingualText(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     en: str | None = Field(
         default=None,
         description="The English text verbatim. Leave as null if not present.",
@@ -36,6 +38,7 @@ class BilingualText(BaseModel):
 
 
 class Ingredient(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     name: BilingualText = Field(description="Ingredient name verbatim")
     value: str = Field(description="Ingredient percentage or amount.")
     unit: str = Field(
@@ -49,6 +52,7 @@ class Ingredient(BaseModel):
 
 
 class Nutrient(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     name: BilingualText = Field(
         description="Nutrient name verbatim",
         examples=[{"en": "Total Nitrogen (N)"}],
@@ -60,6 +64,7 @@ class Nutrient(BaseModel):
 
 
 class GuaranteedAnalysis(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     title: BilingualText = Field(
         examples=[{"en": "Minimum Guaranteed Analysis"}],
     )

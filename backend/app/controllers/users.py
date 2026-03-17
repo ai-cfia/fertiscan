@@ -4,61 +4,84 @@ Note: Currently uses password hashing for local auth.
 Supports external_id field for future external auth provider migration.
 """
 
-from uuid import UUID
+from datetime import datetime
+from typing import Any
 
-from pydantic import EmailStr, SecretStr, validate_call
-from sqlalchemy.orm import Session
-from sqlmodel import func, select
+from pydantic import validate_call
+from sqlmodel import Session, or_, select
+from sqlmodel.sql.expression import SelectOfScalar
 
-from app.core.security import get_password_hash, verify_password
+from app.core.security import get_password_hash
 from app.db.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 
 
-@validate_call(config={"arbitrary_types_allowed": True})
-def get_users(
-    session: Session,
-    skip: int = 0,
-    limit: int = 100,
-) -> tuple[list[User], int]:
-    """Get all users with pagination."""
-    count_stmt = select(func.count()).select_from(User)
-    count_result = session.execute(count_stmt)
-    count = count_result.scalar_one()
-    stmt = select(User).offset(skip).limit(limit)
-    result = session.execute(stmt)
-    users = list(result.scalars().all())
-    return users, count
+def _apply_user_sorting(
+    stmt: SelectOfScalar[User],
+    order_by: str,
+    order: str,
+) -> SelectOfScalar[User]:
+    """Apply sorting to users query."""
+    valid_sort_fields: dict[str, Any] = {
+        "id": User.id,
+        "email": User.email,
+        "first_name": User.first_name,
+        "last_name": User.last_name,
+        "is_active": User.is_active,
+        "is_superuser": User.is_superuser,
+        "created_at": User.created_at,
+        "createdAt": User.created_at,
+    }
+    sort_column: Any = valid_sort_fields.get(order_by, User.created_at)
+    if order.lower() == "asc":
+        stmt = stmt.order_by(sort_column.asc())
+    else:
+        stmt = stmt.order_by(sort_column.desc())
+    return stmt
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
-def get_user_by_id(
-    session: Session,
-    user_id: UUID,
-) -> User | None:
-    """Get user by ID."""
-    return session.get(User, user_id)
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-def get_user_by_email(
-    session: Session,
-    email: EmailStr,
-) -> User | None:
-    """Get user by email."""
-    stmt = select(User).where(User.email == email)
-    result = session.execute(stmt)
-    return result.scalar_one_or_none()
+def get_users_query(
+    is_active: bool | None = None,
+    is_superuser: bool | None = None,
+    search: str | None = None,
+    start_created_at: datetime | None = None,
+    end_created_at: datetime | None = None,
+    order_by: str = "created_at",
+    order: str = "desc",
+) -> SelectOfScalar[User]:
+    """Build users query with optional filters and sorting."""
+    stmt = select(User)
+    if is_active is not None:
+        stmt = stmt.where(User.is_active == is_active)
+    if is_superuser is not None:
+        stmt = stmt.where(User.is_superuser == is_superuser)
+    if search:
+        for term in search.strip().split():
+            pattern = f"%{term}%"
+            stmt = stmt.where(
+                or_(
+                    User.email.ilike(pattern),  # type: ignore[attr-defined]
+                    User.first_name.ilike(pattern),  # type: ignore[union-attr]
+                    User.last_name.ilike(pattern),  # type: ignore[union-attr]
+                )
+            )
+    if start_created_at is not None:
+        stmt = stmt.where(User.created_at >= start_created_at)  # type: ignore[operator]
+    if end_created_at is not None:
+        stmt = stmt.where(User.created_at <= end_created_at)  # type: ignore[operator]
+    stmt = _apply_user_sorting(stmt, order_by, order)
+    return stmt
 
 
 @validate_call(config={"arbitrary_types_allowed": True})
 def create_user(
     session: Session,
-    user_in: UserCreate,
+    user_create: UserCreate,
 ) -> User:
     """Create new user with hashed password."""
-    hashed_pwd_field = {"hashed_password": get_password_hash(user_in.password)}
-    user = User.model_validate(user_in, update=hashed_pwd_field)
+    hashed_pwd_field = {"hashed_password": get_password_hash(user_create.password)}
+    user = User.model_validate(user_create, update=hashed_pwd_field)
     session.add(user)
     session.flush()
     session.refresh(user)
@@ -68,15 +91,13 @@ def create_user(
 @validate_call(config={"arbitrary_types_allowed": True})
 def update_user(
     session: Session,
-    user_id: UUID,
-    user_in: UserUpdate,
-) -> User | None:
+    user: User,
+    user_update: UserUpdate,
+) -> User:
     """Update a user."""
-    if not (user := session.get(User, user_id)):
-        return None
-    update_data = user_in.model_dump(exclude_unset=True)
-    if user_in.password:
-        hashed_password = get_password_hash(user_in.password)
+    update_data = user_update.model_dump(exclude_unset=True)
+    if user_update.password:
+        hashed_password = get_password_hash(user_update.password)
         update_data["hashed_password"] = hashed_password
     user.sqlmodel_update(update_data)
     session.add(user)
@@ -88,27 +109,8 @@ def update_user(
 @validate_call(config={"arbitrary_types_allowed": True})
 def delete_user(
     session: Session,
-    user_id: UUID,
-) -> bool:
-    """Delete a user. Returns True if deleted, False if not found."""
-    if not (user := session.get(User, user_id)):
-        return False
+    user: User,
+) -> None:
+    """Delete a user."""
     session.delete(user)
     session.flush()
-    return True
-
-
-@validate_call(config={"arbitrary_types_allowed": True})
-def authenticate(
-    session: Session,
-    email: EmailStr,
-    password: SecretStr,
-) -> User | None:
-    """Authenticate user by email and password."""
-    if not (user := get_user_by_email(session, email)):
-        return None
-    if not user.hashed_password:
-        return None
-    if not verify_password(password, user.hashed_password):
-        return None
-    return user

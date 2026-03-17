@@ -7,8 +7,7 @@ from uuid import UUID
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import validate_call
 from sqlalchemy import func
-from sqlalchemy.orm import Session
-from sqlmodel import or_, select
+from sqlmodel import Session, or_, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from app import storage

@@ -1,8 +1,11 @@
 import LockIcon from "@mui/icons-material/Lock"
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
   TextField,
   Typography,
@@ -13,14 +16,15 @@ import type { AxiosError } from "axios"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { LoginService, type NewPassword } from "@/api"
+import { LoginService } from "@/api"
 import PageTopBanner from "@/components/Common/PageTopBanner"
 import { isLoggedIn } from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
 import { useBackendStatus } from "@/stores/useBackendStatus"
 import { confirmPasswordRules, handleError, passwordRules } from "@/utils"
 
-interface NewPasswordForm extends NewPassword {
+interface NewPasswordForm {
+  new_password: string
   confirm_password: string
 }
 
@@ -41,6 +45,8 @@ function ResetPassword() {
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -66,7 +72,7 @@ function ResetPassword() {
   })
   const { showSuccessToast } = useCustomToast()
   const navigate = useNavigate()
-  const resetPassword = async (data: NewPassword) => {
+  const resetPassword = async (data: NewPasswordForm) => {
     const token = new URLSearchParams(window.location.search).get("token")
     if (!token) return
     await LoginService.resetPassword({
@@ -126,7 +132,7 @@ function ResetPassword() {
             }),
           )}
           label={t("resetPassword.newPassword")}
-          type="password"
+          type={showNewPassword ? "text" : "password"}
           fullWidth
           error={!!errors.new_password}
           helperText={
@@ -142,6 +148,20 @@ function ResetPassword() {
                   <LockIcon />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowNewPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             },
           }}
         />
@@ -154,7 +174,7 @@ function ResetPassword() {
             }),
           )}
           label={t("resetPassword.confirmPassword")}
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           fullWidth
           error={!!errors.confirm_password}
           helperText={
@@ -168,6 +188,20 @@ function ResetPassword() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             },

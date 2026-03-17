@@ -1,8 +1,8 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import LogoutIcon from "@mui/icons-material/Logout"
 import PersonIcon from "@mui/icons-material/Person"
 import {
-  Button,
+  Avatar,
+  IconButton,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -12,6 +12,7 @@ import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import useAuth from "@/hooks/useAuth"
+import { getUserInitials } from "@/utils"
 
 const UserMenu = () => {
   const { t } = useTranslation("auth")
@@ -28,20 +29,19 @@ const UserMenu = () => {
     logout()
     handleClose()
   }
-  const displayName =
-    user?.first_name && user?.last_name
-      ? `${user.first_name} ${user.last_name}`
-      : user?.first_name || user?.last_name || user?.email || "User"
   return (
     <>
-      <Button
+      <IconButton
         onClick={handleClick}
-        startIcon={<AccountCircleIcon />}
         color="primary"
-        variant="contained"
+        size="small"
+        sx={{ p: 0.5 }}
+        aria-label={t("userMenu.myProfile")}
       >
-        {displayName}
-      </Button>
+        <Avatar sx={{ width: 32, height: 32, fontSize: "0.75rem" }}>
+          {getUserInitials(user)}
+        </Avatar>
+      </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem component={Link} to="/settings" onClick={handleClose}>
           <ListItemIcon>

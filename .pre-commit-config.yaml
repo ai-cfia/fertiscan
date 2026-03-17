@@ -18,26 +18,6 @@ repos:
           )$
       - id: trailing-whitespace
         exclude: ^backend/alembic/versions/
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2
-    hooks:
-      - id: mypy
-        exclude: ^backend/(template|alembic|tests)/
-        files: ^backend/
-        additional_dependencies:
-          - types-passlib
-          - types-jinja2
-          - types-PyJWT
-          - sqlmodel
-          - pydantic
-          - pydantic-settings
-          - fastapi
-          - asyncpg
-          - python-dotenv
-          - jinja2
-          - tenacity
-          - aiosmtplib
-          - boto3-stubs[s3]
   - repo: local
     hooks:
       - id: ruff-format
@@ -45,6 +25,13 @@ repos:
         entry: bash -c 'cd backend && bash scripts/format.sh'
         language: system
         files: ^backend/.*\.py$
+        pass_filenames: false
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd backend && uv run mypy app'
+        language: system
+        files: ^backend/(app|scripts)/
+        exclude: ^backend/(template|alembic|tests)/
         pass_filenames: false
       - id: alembic-check
         name: Alembic check

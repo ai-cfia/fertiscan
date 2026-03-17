@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from tests.factories.user import UserFactory
@@ -181,8 +181,8 @@ class TestUsersSuperuser:
         )
         assert response.status_code == 200
         content = response.json()
-        assert content["count"] >= 3
-        user_ids = [user["id"] for user in content["data"]]
+        assert content["total"] >= 3
+        user_ids = [user["id"] for user in content["items"]]
         assert str(user1.id) in user_ids
         assert str(user2.id) in user_ids
 
@@ -196,13 +196,13 @@ class TestUsersSuperuser:
         UserFactory()
         UserFactory()
         response = client.get(
-            f"{settings.API_V1_STR}/users?skip=0&limit=1",
+            f"{settings.API_V1_STR}/users?offset=0&limit=1",
             headers=superuser_token_headers,
         )
         assert response.status_code == 200
         content = response.json()
-        assert content["count"] >= 2
-        assert len(content["data"]) == 1
+        assert content["total"] >= 2
+        assert len(content["items"]) == 1
 
     def test_create_user(
         self, client: TestClient, superuser_token_headers: dict[str, str]
@@ -264,7 +264,7 @@ class TestUsersSuperuser:
             )
             assert response.status_code == 201
 
-    def test_read_user_by_id(
+    def test_read_user(
         self,
         client: TestClient,
         superuser_token_headers: dict[str, str],
@@ -281,7 +281,7 @@ class TestUsersSuperuser:
         assert content["id"] == str(user.id)
         assert content["email"] == user.email
 
-    def test_read_user_by_id_not_found(
+    def test_read_user_not_found(
         self, client: TestClient, superuser_token_headers: dict[str, str]
     ) -> None:
         """Test getting non-existent user by ID."""

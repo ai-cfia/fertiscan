@@ -236,11 +236,11 @@ export class UsersService {
     }
 
     /**
-     * Read User By Id
+     * Read User
      *
      * Get user by ID (superuser only).
      */
-    public static readUserById<ThrowOnError extends boolean = false>(options: Options<GetApiV1UsersByUserIdData, ThrowOnError>) {
+    public static readUser<ThrowOnError extends boolean = false>(options: Options<GetApiV1UsersByUserIdData, ThrowOnError>) {
         return (options.client ?? client).get<GetApiV1UsersByUserIdResponses, GetApiV1UsersByUserIdErrors, ThrowOnError>({
             responseType: 'json',
             security: [{ scheme: 'bearer', type: 'http' }],

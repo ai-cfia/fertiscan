@@ -16,7 +16,7 @@ from app.db.models import (
     ReviewStatus,
     UploadStatus,
 )
-from app.dependencies.auth import SessionDep
+from app.dependencies.session import SessionDep
 from app.exceptions import (
     FertilizerLabelDataNotFound,
     ImageCountLimitExceeded,

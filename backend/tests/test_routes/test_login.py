@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from pydantic import SecretStr
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.core.security import generate_password_reset_token, verify_password

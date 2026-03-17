@@ -2,10 +2,10 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from app.config import settings
-from app.controllers.users import get_user_by_email
+from app.db.models.user import User
 from tests.utils import fake
 
 
@@ -31,7 +31,7 @@ class TestCreateUserNoVerification:
         assert content["last_name"] == "User"
         assert "id" in content
         assert "hashed_password" not in content
-        user = get_user_by_email(db, email)
+        user = db.exec(select(User).where(User.email == email)).first()
         assert user is not None
         assert user.email == email
 
@@ -56,7 +56,7 @@ class TestCreateUserNoVerification:
         assert response1.status_code == 200
         response2 = client.post(f"{settings.API_V1_STR}/private/users/", json=data)
         assert response2.status_code == 400
-        assert "already exists" in response2.json()["detail"].lower()
+        assert "already" in response2.json()["detail"].lower()
 
     def test_create_user_invalid_email(self, client: TestClient) -> None:
         """Test creating user with invalid email format."""

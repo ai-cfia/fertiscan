@@ -2,7 +2,7 @@
 
 import pytest
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.db.models.label_image import LabelImage, UploadStatus
 from tests.factories.label import LabelFactory

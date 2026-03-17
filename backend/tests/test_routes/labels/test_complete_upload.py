@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.db.models.label_image import UploadStatus

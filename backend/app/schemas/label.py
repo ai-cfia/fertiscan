@@ -18,6 +18,7 @@ from app.schemas.user import UserPublic
 class PresignedUrlRequest(BaseModel):
     """Request schema for individual presigned URL generation."""
 
+    model_config = ConfigDict(str_strip_whitespace=True)
     display_filename: str
     content_type: Literal["image/png", "image/jpeg", "image/webp"]
     sequence_order: int = Field(ge=1)
@@ -47,6 +48,7 @@ class PresignedDownloadUrlResponse(BaseModel):
 class UploadCompletionRequest(BaseModel):
     """Request schema for upload completion notification."""
 
+    model_config = ConfigDict(str_strip_whitespace=True)
     storage_file_path: str
 
 
@@ -61,6 +63,7 @@ class LabelDataLite(BaseModel):
 
 
 class LabelCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     product_type: str
     product_id: UUID | None = None
 

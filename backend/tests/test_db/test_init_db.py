@@ -1,16 +1,18 @@
 """Database initialization tests."""
 
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from app.config import settings
-from app.controllers.users import get_user_by_email
 from app.db.init_db import init_db
+from app.db.models.user import User
 
 
 class TestInitDb:
     def test_creates_superuser(self, db: Session) -> None:
         init_db(db)
-        user = get_user_by_email(db, settings.FIRST_SUPERUSER)
+        user = db.exec(
+            select(User).where(User.email == settings.FIRST_SUPERUSER)
+        ).first()
         assert user is not None
         assert user.email == settings.FIRST_SUPERUSER
         assert user.is_superuser is True
@@ -19,10 +21,14 @@ class TestInitDb:
 
     def test_skips_when_superuser_exists(self, db: Session) -> None:
         init_db(db)
-        user1 = get_user_by_email(db, settings.FIRST_SUPERUSER)
+        user1 = db.exec(
+            select(User).where(User.email == settings.FIRST_SUPERUSER)
+        ).first()
         assert user1 is not None
         initial_id = user1.id
         init_db(db)
-        user2 = get_user_by_email(db, settings.FIRST_SUPERUSER)
+        user2 = db.exec(
+            select(User).where(User.email == settings.FIRST_SUPERUSER)
+        ).first()
         assert user2 is not None
         assert user2.id == initial_id

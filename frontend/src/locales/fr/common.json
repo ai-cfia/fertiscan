@@ -1,37 +1,104 @@
 {
   "admin": {
     "addUser": "Ajouter un utilisateur",
+    "user": "Utilisateur",
+    "deleteSelected": "Supprimer la sélection",
+    "addUserDialog": {
+      "title": "Ajouter un utilisateur",
+      "emailRequired": "Le courriel est requis",
+      "emailInvalid": "Adresse courriel invalide",
+      "emailMaxLength": "Le courriel doit contenir 255 caractères ou moins",
+      "emailHelper": "Doit être unique. Utilisé pour la connexion. Max 255 caractères.",
+      "password": "Mot de passe",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordHelper": "Définir le mot de passe initial pour cet utilisateur",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordRequired": "La confirmation du mot de passe est requise",
+      "confirmPasswordHelper": "Saisissez à nouveau le mot de passe pour confirmer",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "submit": "Ajouter l'utilisateur",
+      "success": "Utilisateur créé avec succès",
+      "error": "Échec de la création de l'utilisateur. Veuillez réessayer."
+    },
+    "empty": {
+      "noUsers": "Aucun utilisateur trouvé",
+      "noUsersDescription": "Les utilisateurs apparaîtront ici une fois ajoutés."
+    },
     "pageTitle": "Administration - Inspection d'étiquettes",
     "pagination": {
       "loading": "Chargement...",
       "page": "Page {{current}} sur {{total}}"
     },
+    "rowActions": {
+      "delete": "Supprimer",
+      "deleteDialog": {
+        "description": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
+        "title": "Supprimer l'utilisateur"
+      },
+      "deleteError": "Échec de la suppression de l'utilisateur. Veuillez réessayer.",
+      "deleteSuccess": "Utilisateur supprimé avec succès",
+      "edit": "Modifier",
+      "editDialog": {
+        "active": "Actif",
+        "emailHelper": "Doit être unique. Utilisé pour la connexion. Max 255 caractères.",
+        "emailInvalid": "Adresse courriel invalide",
+        "emailMaxLength": "Le courriel doit contenir 255 caractères ou moins",
+        "emailRequired": "Le courriel est requis",
+        "error": "Échec de la mise à jour de l'utilisateur. Veuillez réessayer.",
+        "firstName": "Prénom",
+        "firstNameHelper": "Max 255 caractères",
+        "firstNameMaxLength": "Le prénom doit contenir 255 caractères ou moins",
+        "lastName": "Nom de famille",
+        "lastNameHelper": "Max 255 caractères",
+        "lastNameMaxLength": "Le nom de famille doit contenir 255 caractères ou moins",
+        "superuser": "Superutilisateur",
+        "success": "Utilisateur mis à jour avec succès",
+        "title": "Modifier l'utilisateur"
+      },
+      "viewDetails": "Voir les détails"
+    },
     "table": {
       "actions": "Actions",
       "active": "Actif",
+      "sortedAscending": "trié par ordre croissant",
+      "sortedDescending": "trié par ordre décroissant",
+      "copyId": "Copier l'ID utilisateur {{id}}",
       "email": "Courriel",
       "fullName": "Nom complet",
+      "id": "ID",
+      "idCopied": "ID utilisateur copié dans le presse-papiers",
       "inactive": "Inactif",
       "notAvailable": "N/D",
       "role": "Rôle",
+      "selectAll": "sélectionner tous les utilisateurs",
       "status": "Statut",
       "superuser": "Superutilisateur",
       "user": "Utilisateur",
       "you": "Vous"
     },
-    "usersManagement": "Gestion des utilisateurs"
+    "tabs": {
+      "userSettings": "Paramètres utilisateur",
+      "users": "Utilisateurs"
+    },
+    "usersManagement": "Gestion des utilisateurs",
+    "tableTitle": "Tableau (actuel)",
+    "datagridTitle": "DataGrid (avec recherche)"
   },
   "app": {
     "title": "Inspection d'étiquettes"
   },
   "aria": {
     "navigation": "navigation",
-    "openDrawer": "ouvrir le tiroir"
+    "openDrawer": "ouvrir le tiroir",
+    "togglePasswordVisibility": "Afficher ou masquer le mot de passe"
   },
   "backend": {
     "unavailable": "Serveur indisponible. Certaines fonctionnalités peuvent ne pas fonctionner. Veuillez réessayer plus tard."
   },
   "button": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
     "clearAll": "Tout effacer",
     "dismiss": "Ignorer",
     "goBack": "Retour",
@@ -113,6 +180,39 @@
   },
   "settings": {
     "pageTitle": "Paramètres - Inspection d'étiquettes",
+    "profile": {
+      "edit": "Modifier",
+      "email": "Courriel",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "role": "Rôle",
+      "status": "Statut"
+    },
+    "password": {
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "currentPasswordRequired": "Le mot de passe actuel est requis",
+      "newPasswordRequired": "Le nouveau mot de passe est requis",
+      "confirmNewPasswordRequired": "La confirmation du nouveau mot de passe est requise",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "success": "Mot de passe mis à jour avec succès",
+      "error": "Échec de la mise à jour du mot de passe. Veuillez réessayer.",
+      "incorrectPassword": "Mot de passe incorrect",
+      "userHasNoPassword": "L'utilisateur n'a pas de mot de passe",
+      "submit": "Mettre à jour le mot de passe",
+      "passwordHelper": "8–40 caractères",
+      "confirmPasswordHelper": "Saisissez à nouveau le nouveau mot de passe pour confirmer"
+    },
+    "dangerZone": {
+      "deleteAccount": "Supprimer le compte",
+      "deleteAccountDescription": "Supprimez votre compte et vos données.",
+      "deleteAccountButton": "Supprimer le compte",
+      "deleteAccountDialogTitle": "Supprimer votre compte?",
+      "deleteAccountDialogDescription": "Votre compte sera supprimé et vous serez déconnecté.",
+      "deleteAccountSuccess": "Votre compte a été supprimé."
+    },
     "sections": {
       "appearance": "Apparence",
       "changePassword": "Changer le mot de passe",

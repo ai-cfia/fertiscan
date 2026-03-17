@@ -1,11 +1,5 @@
 """FastAPI dependency injection."""
 
-from app.dependencies.auth import (
-    CurrentSuperuser,
-    CurrentUser,
-    SessionDep,
-    TokenDep,
-)
 from app.dependencies.compliance import (
     NonComplianceDataItemDep,
     newComplianceDataItemDep,
@@ -40,6 +34,22 @@ from app.dependencies.product_types import (
 )
 from app.dependencies.products import NewProductDep, ProductDep
 from app.dependencies.requirement import RequirementDep, RequirementsDep
+from app.dependencies.session import SessionDep
+from app.dependencies.users import (
+    CurrentSuperuser,
+    CurrentUser,
+    LoginUserDep,
+    PrivateUserCreateDep,
+    TokenDep,
+    UserByEmailDep,
+    UserCreateDep,
+    UserDep,
+    UserForResetPasswordDep,
+    UserForUpdateByIdDep,
+    UserForUpdateMeDep,
+    UserForUpdatePasswordDep,
+    ValidatedUserParamsDep,
+)
 
 __all__ = [
     "CompletedLabelImageDep",
@@ -74,4 +84,14 @@ __all__ = [
     "NonComplianceDataItemDep",
     "RequirementDep",
     "RequirementsDep",
+    "ValidatedUserParamsDep",
+    "UserForUpdateByIdDep",
+    "UserForUpdateMeDep",
+    "UserForUpdatePasswordDep",
+    "UserForResetPasswordDep",
+    "LoginUserDep",
+    "PrivateUserCreateDep",
+    "UserCreateDep",
+    "UserDep",
+    "UserByEmailDep",
 ]

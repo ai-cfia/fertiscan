@@ -6,7 +6,7 @@ from fastapi import Depends, Query
 
 from app.controllers.product_types import get_product_type_by_code
 from app.db.models.product_type import ProductType
-from app.dependencies.auth import SessionDep
+from app.dependencies.session import SessionDep
 from app.exceptions import InactiveProductType, ProductTypeNotFound
 from app.schemas.label import LabelCreate
 from app.schemas.product import ProductCreate

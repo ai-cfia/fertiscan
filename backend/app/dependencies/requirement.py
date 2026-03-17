@@ -8,7 +8,7 @@ from fastapi import Depends, Query
 from sqlmodel import select
 
 from app.db.models.requirement import Requirement
-from app.dependencies import SessionDep
+from app.dependencies.session import SessionDep
 from app.exceptions import RequirementNotFound
 
 

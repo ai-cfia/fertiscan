@@ -1,9 +1,12 @@
 import EmailIcon from "@mui/icons-material/Email"
 import LockIcon from "@mui/icons-material/Lock"
+import Visibility from "@mui/icons-material/Visibility"
+import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
   Link,
   TextField,
@@ -38,10 +41,11 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const { t } = useTranslation(["auth", "common"])
-  const { loginMutation, error, resetError } = useAuth()
+  const { loginMutation } = useAuth()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -66,7 +70,6 @@ function Login() {
   })
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
-    resetError()
     try {
       await loginMutation.mutateAsync(data)
     } catch {
@@ -111,14 +114,10 @@ function Login() {
           label={t("login.email")}
           type="email"
           fullWidth
-          error={!!errors.username || !!error}
+          error={!!errors.username}
           helperText={
             errors.username?.message ||
-            (error
-              ? t("login.failed")
-              : t("login.emailHelper", {
-                  defaultValue: "Enter your email address",
-                }))
+            t("login.emailHelper", { defaultValue: "Enter your email address" })
           }
           slotProps={{
             input: {
@@ -137,7 +136,7 @@ function Login() {
             }),
           )}
           label={t("login.password")}
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           error={!!errors.password}
           helperText={
@@ -149,6 +148,20 @@ function Login() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={t("aria.togglePasswordVisibility", {
+                      ns: "common",
+                    })}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 </InputAdornment>
               ),
             },

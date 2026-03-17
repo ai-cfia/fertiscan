@@ -3,8 +3,8 @@
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
 from pydantic import validate_call
 from sqlalchemy import func
-from sqlalchemy.orm import Session, selectinload
-from sqlmodel import select
+from sqlalchemy.orm import selectinload
+from sqlmodel import Session, select
 
 from app import storage
 from app.db.models import Label, LabelImage, UploadStatus
@@ -73,7 +73,7 @@ async def get_label_images(
     )
     result = session.execute(stmt)
     label_with_images = result.scalar_one()
-    return label_with_images.images
+    return list(label_with_images.images)
 
 
 @validate_call(config={"arbitrary_types_allowed": True})

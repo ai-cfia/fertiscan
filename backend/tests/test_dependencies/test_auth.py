@@ -7,11 +7,11 @@ from uuid import uuid4
 import jwt
 import pytest
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from app.config import settings
 from app.core import security
-from app.dependencies.auth import get_current_active_superuser, get_current_user
+from app.dependencies.users import get_current_active_superuser, get_current_user
 from tests.factories.user import UserFactory
 
 
