@@ -37,7 +37,7 @@ class TestExtractFieldsFromImages:
         assert result.brand_name.fr == "CroissanceVerte"
         assert result.product_name.en == "Premium All-Purpose Fertilizer"
         assert result.product_name.fr == "Engrais Polyvalent Premium"
-        assert result.registration_number == "REG-2024-12345"
+        assert result.registration_number == "2018161F"
         assert result.lot_number == "LOT-2024-001"
         assert result.net_weight == "10 kg"
         assert result.n is not None
@@ -74,12 +74,13 @@ class TestExtractFieldsFromImages:
         assert call_args.kwargs["model"] is not None
         assert call_args.kwargs["response_model"] == ExtractFertilizerFieldsOutput
         messages = call_args.kwargs["messages"]
-        assert len(messages) == 1
-        assert messages[0]["role"] == "user"
-        assert len(messages[0]["content"]) == 2
-        assert messages[0]["content"][0]["type"] == "text"
-        assert messages[0]["content"][0]["text"] == "test prompt"
-        assert messages[0]["content"][1]["type"] == "image_url"
+        assert len(messages) == 2
+        assert messages[0]["role"] == "system"
+        assert messages[1]["role"] == "user"
+        assert len(messages[1]["content"]) == 2
+        assert messages[1]["content"][0]["type"] == "text"
+        assert messages[1]["content"][0]["text"] == "test prompt"
+        assert messages[1]["content"][1]["type"] == "image_url"
 
     async def test_works_with_different_model(
         self, mock_instructor: MagicMock, sample_image_data: ImageData

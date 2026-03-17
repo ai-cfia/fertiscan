@@ -3,7 +3,6 @@
 import asyncio
 import mimetypes
 import re
-from typing import cast
 
 import instructor
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
@@ -197,7 +196,4 @@ async def extract_fertilizer_fields(
     for result, _completion in pairs:
         merged.update(result.model_dump())
     merged = _sanitize_output_payload(merged)
-    return cast(
-        ExtractFertilizerFieldsOutput,
-        ExtractFertilizerFieldsOutput.model_validate(merged),
-    )
+    return ExtractFertilizerFieldsOutput.model_validate(merged)
