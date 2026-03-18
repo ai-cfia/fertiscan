@@ -1,4 +1,20 @@
 import { useMemo } from "react"
+import { z } from "zod"
+
+const REGISTRATION_NUMBER_PATTERN = /^([0-9]{7}[A-Za-z])?$/
+
+export function createLabelDataFormSchema(t: (key: string) => string) {
+  return z
+    .object({
+      registration_number: z
+        .string()
+        .transform((s) => (s ?? "").trim())
+        .refine((val) => val === "" || REGISTRATION_NUMBER_PATTERN.test(val), {
+          message: t("data.validation.registrationNumberInvalidFormat"),
+        }),
+    })
+    .passthrough()
+}
 
 // ============================== Field Metadata Helpers ==============================
 export function useLabelDataMetaMap(

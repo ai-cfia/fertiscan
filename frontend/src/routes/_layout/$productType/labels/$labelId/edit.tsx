@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import FactCheckIcon from "@mui/icons-material/FactCheck"
 import LockIcon from "@mui/icons-material/Lock"
@@ -46,6 +47,7 @@ import {
   isAxiosErrorWithStatus,
 } from "@/utils/labelDataErrors"
 import {
+  createLabelDataFormSchema,
   formPathToMetaFieldName,
   getDefaultFormValues,
   getFieldMeta,
@@ -101,6 +103,10 @@ export const Route = createFileRoute(
 
 function LabelData() {
   const { t } = useTranslation(["labels", "errors", "common"])
+  const labelDataFormSchema = useMemo(
+    () => createLabelDataFormSchema((k) => t(k, { ns: "labels" })),
+    [t],
+  )
   const { labelId, productType } = Route.useParams()
   const queryClient = useQueryClient()
   const paginationRef = useRef<HTMLDivElement>(null)
@@ -115,6 +121,8 @@ function LabelData() {
   const { showBanner, dismissBanner } = useBanner()
   const form = useForm({
     defaultValues: getDefaultFormValues(),
+    resolver: zodResolver(labelDataFormSchema) as any,
+    mode: "onBlur",
   })
   const {
     label,
@@ -180,15 +188,22 @@ function LabelData() {
   }, [updateLabelMutation, t, showSuccessToast])
 
   const handleCreateAndAssociate = useCallback(async () => {
+    const valid = await form.trigger("registration_number")
+    if (!valid) return
     const values = form.getValues()
     try {
+      const v = values as {
+        registration_number?: string
+        brand_name?: { en?: string; fr?: string }
+        product_name?: { en?: string; fr?: string }
+      }
       const productResponse = await createProductMutation.mutateAsync({
-        registration_number: values.registration_number,
+        registration_number: v.registration_number,
         product_type: productType,
-        brand_name_en: values.brand_name?.en ?? undefined,
-        brand_name_fr: values.brand_name?.fr ?? undefined,
-        name_en: values.product_name?.en ?? undefined,
-        name_fr: values.product_name?.fr ?? undefined,
+        brand_name_en: v.brand_name?.en ?? undefined,
+        brand_name_fr: v.brand_name?.fr ?? undefined,
+        name_en: v.product_name?.en ?? undefined,
+        name_fr: v.product_name?.fr ?? undefined,
       })
 
       if (productResponse.data) {
@@ -559,10 +574,18 @@ function LabelData() {
                   <ProductAssociationSection
                     label={label}
                     registrationNumber={form.watch("registration_number")}
-                    brandNameEn={form.watch("brand_name")?.en}
-                    brandNameFr={form.watch("brand_name")?.fr}
-                    productNameEn={form.watch("product_name")?.en}
-                    productNameFr={form.watch("product_name")?.fr}
+                    brandNameEn={
+                      (form.watch("brand_name") as { en?: string })?.en
+                    }
+                    brandNameFr={
+                      (form.watch("brand_name") as { fr?: string })?.fr
+                    }
+                    productNameEn={
+                      (form.watch("product_name") as { en?: string })?.en
+                    }
+                    productNameFr={
+                      (form.watch("product_name") as { fr?: string })?.fr
+                    }
                     accordionState={accordionState.association}
                     onAccordionChange={(isExpanded) =>
                       setAccordionExpanded(labelId, "association", isExpanded)
@@ -588,6 +611,12 @@ function LabelData() {
                     onToggleReview={handleToggleReview}
                     isFertilizer={isFertilizer}
                     disabled={isCompleted}
+                    fieldErrors={
+                      form.formState.errors as Record<
+                        string,
+                        { message?: string } | undefined
+                      >
+                    }
                   />
                   {isFertilizer && (
                     <NPKAnalysisSection

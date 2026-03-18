@@ -554,6 +554,8 @@ export function useLabelDataQueries(
   // ............................. Handle Save .............................
   const handleSave = useCallback(async () => {
     if (!form || !form.formState.isDirty) return
+    const valid = await form.trigger()
+    if (!valid) return
     const formValues = form.getValues()
     const dirtyFields = form.formState.dirtyFields
     const commonFields: Record<string, any> = {}
