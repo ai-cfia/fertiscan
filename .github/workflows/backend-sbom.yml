@@ -30,7 +30,7 @@ jobs:
             --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
       - name: SBOM security scan
         id: scan
-        uses: anchore/scan-action@6471a7ecdb0c416a386ad58b1064cbc154d0221e
+        uses: anchore/scan-action@daeb723982a29db0a021b5fa3af65d08e1f891c8
         with:
           sbom: backend/sbom.json
           fail-build: false
