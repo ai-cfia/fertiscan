@@ -2906,17 +2906,19 @@
             "description": "List of contact information (manufacturer, distributor, etc.)"
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number",
-            "description": "Registration number of the product itself (not its individual ingredients).",
-            "examples": ["1234567F"]
+            "description": "Registration number of the product itself (main label), not ingredient registration numbers"
           },
           "registration_claim": {
             "anyOf": [
               { "$ref": "#/components/schemas/BilingualText" },
               { "type": "null" }
             ],
-            "description": "Verbatim text where the product claims to be registered, even if no registration number is present."
+            "description": "Verbatim registration claim text"
           },
           "lot_number": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
@@ -3653,10 +3655,12 @@
             "examples": ["%", "ppm", "mg/kg", "g/kg", "mm"]
           },
           "registration_number": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
+              { "type": "null" }
+            ],
             "title": "Registration Number",
-            "description": "Registration number of the product itself (not its individual ingredients).",
-            "examples": ["1234567F"]
+            "description": "Per-ingredient or per-ingredient-group when the label assigns one number. Not the main product registration number."
           }
         },
         "type": "object",
@@ -3713,7 +3717,7 @@
           },
           "registration_number": {
             "anyOf": [
-              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
               { "type": "null" }
             ],
             "title": "Registration Number"
@@ -3776,7 +3780,7 @@
           },
           "registration_number": {
             "anyOf": [
-              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
               { "type": "null" }
             ],
             "title": "Registration Number"
@@ -3912,7 +3916,7 @@
           },
           "registration_number": {
             "anyOf": [
-              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
               { "type": "null" }
             ],
             "title": "Registration Number"
@@ -4474,7 +4478,7 @@
         "properties": {
           "registration_number": {
             "anyOf": [
-              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
               { "type": "null" }
             ],
             "title": "Registration Number"
@@ -4522,7 +4526,7 @@
           },
           "registration_number": {
             "anyOf": [
-              { "type": "string", "pattern": "^([0-9]{7}[FfPpGgHhMmSs])?$" },
+              { "type": "string", "pattern": "^([0-9]{7}[A-Za-z])?$" },
               { "type": "null" }
             ],
             "title": "Registration Number"

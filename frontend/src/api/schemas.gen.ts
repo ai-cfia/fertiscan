@@ -248,17 +248,15 @@ export const ExtractFertilizerFieldsOutputSchema = {
         registration_number: {
             anyOf: [
                 {
-                    type: 'string'
+                    type: 'string',
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
                 }
             ],
             title: 'Registration Number',
-            description: 'Registration number of the product itself (not its individual ingredients).',
-            examples: [
-                '1234567F'
-            ]
+            description: 'Registration number of the product itself (main label), not ingredient registration numbers'
         },
         registration_claim: {
             anyOf: [
@@ -269,7 +267,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                     type: 'null'
                 }
             ],
-            description: 'Verbatim text where the product claims to be registered, even if no registration number is present.'
+            description: 'Verbatim registration claim text'
         },
         lot_number: {
             anyOf: [
@@ -1395,17 +1393,15 @@ export const IngredientSchema = {
         registration_number: {
             anyOf: [
                 {
-                    type: 'string'
+                    type: 'string',
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
                 }
             ],
             title: 'Registration Number',
-            description: 'Registration number of the product itself (not its individual ingredients).',
-            examples: [
-                '1234567F'
-            ]
+            description: 'Per-ingredient or per-ingredient-group when the label assigns one number. Not the main product registration number.'
         }
     },
     type: 'object',
@@ -1499,7 +1495,7 @@ export const LabelDataSchema = {
             anyOf: [
                 {
                     type: 'string',
-                    pattern: '^([0-9]{7}[FfPpGgHhMmSs])?$'
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
@@ -1616,7 +1612,7 @@ export const LabelDataCreateSchema = {
             anyOf: [
                 {
                     type: 'string',
-                    pattern: '^([0-9]{7}[FfPpGgHhMmSs])?$'
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
@@ -1871,7 +1867,7 @@ export const LabelDataUpdateSchema = {
             anyOf: [
                 {
                     type: 'string',
-                    pattern: '^([0-9]{7}[FfPpGgHhMmSs])?$'
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
@@ -2878,7 +2874,7 @@ export const ProductCreateSchema = {
             anyOf: [
                 {
                     type: 'string',
-                    pattern: '^([0-9]{7}[FfPpGgHhMmSs])?$'
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'
@@ -2997,7 +2993,7 @@ export const ProductPublicSchema = {
             anyOf: [
                 {
                     type: 'string',
-                    pattern: '^([0-9]{7}[FfPpGgHhMmSs])?$'
+                    pattern: '^([0-9]{7}[A-Za-z])?$'
                 },
                 {
                     type: 'null'

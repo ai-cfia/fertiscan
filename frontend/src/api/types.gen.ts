@@ -134,11 +134,11 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Registration Number
      *
-     * Registration number of the product itself (not its individual ingredients).
+     * Registration number of the product itself (main label), not ingredient registration numbers
      */
     registration_number?: string | null;
     /**
-     * Verbatim text where the product claims to be registered, even if no registration number is present.
+     * Verbatim registration claim text
      */
     registration_claim?: BilingualText | null;
     /**
@@ -542,7 +542,7 @@ export type Ingredient = {
     /**
      * Registration Number
      *
-     * Registration number of the product itself (not its individual ingredients).
+     * Per-ingredient or per-ingredient-group when the label assigns one number. Not the main product registration number.
      */
     registration_number?: string | null;
 };

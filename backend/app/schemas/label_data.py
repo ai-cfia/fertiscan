@@ -44,10 +44,9 @@ class Ingredient(BaseModel):
     unit: str = Field(
         description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg", "mm"]
     )
-    registration_number: str | None = Field(
+    registration_number: RegistrationNumber | None = Field(
         default=None,
-        description="Registration number of the product itself (not its individual ingredients).",
-        examples=["1234567F"],
+        description="Per-ingredient or per-ingredient-group when the label assigns one number. Not the main product registration number.",
     )
 
 
@@ -233,17 +232,13 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None,
         description="List of contact information (manufacturer, distributor, etc.)",
     )
-    registration_number: str | None = Field(
+    registration_number: RegistrationNumber | None = Field(
         default=None,
-        description="Registration number of the product itself (not its individual ingredients).",
-        examples=["1234567F"],
+        description="Registration number of the product itself (main label), not ingredient registration numbers",
     )
     registration_claim: BilingualText | None = Field(
         default=None,
-        description=(
-            "Verbatim text where the product claims to be registered, "
-            "even if no registration number is present."
-        ),
+        description="Verbatim registration claim text",
     )
     lot_number: str | None = Field(
         default=None, description="Lot or batch number", examples=["LOT-2024-001"]

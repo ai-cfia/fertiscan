@@ -1,35 +1,26 @@
 {
   "admin": {
     "addUser": "Ajouter un utilisateur",
-    "user": "Utilisateur",
-    "deleteSelected": "Supprimer la sélection",
     "addUserDialog": {
-      "title": "Ajouter un utilisateur",
-      "emailRequired": "Le courriel est requis",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordHelper": "Saisissez à nouveau le mot de passe pour confirmer",
+      "confirmPasswordRequired": "La confirmation du mot de passe est requise",
+      "emailHelper": "Doit être unique. Utilisé pour la connexion. Max 255 caractères.",
       "emailInvalid": "Adresse courriel invalide",
       "emailMaxLength": "Le courriel doit contenir 255 caractères ou moins",
-      "emailHelper": "Doit être unique. Utilisé pour la connexion. Max 255 caractères.",
+      "emailRequired": "Le courriel est requis",
+      "error": "Échec de la création de l'utilisateur. Veuillez réessayer.",
       "password": "Mot de passe",
-      "passwordRequired": "Le mot de passe est requis",
-      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
       "passwordHelper": "Définir le mot de passe initial pour cet utilisateur",
-      "confirmPassword": "Confirmer le mot de passe",
-      "confirmPasswordRequired": "La confirmation du mot de passe est requise",
-      "confirmPasswordHelper": "Saisissez à nouveau le mot de passe pour confirmer",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordRequired": "Le mot de passe est requis",
       "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
       "submit": "Ajouter l'utilisateur",
       "success": "Utilisateur créé avec succès",
-      "error": "Échec de la création de l'utilisateur. Veuillez réessayer."
+      "title": "Ajouter un utilisateur"
     },
-    "empty": {
-      "noUsers": "Aucun utilisateur trouvé",
-      "noUsersDescription": "Les utilisateurs apparaîtront ici une fois ajoutés."
-    },
+    "deleteSelected": "Supprimer la sélection",
     "pageTitle": "Administration - Inspection d'étiquettes",
-    "pagination": {
-      "loading": "Chargement...",
-      "page": "Page {{current}} sur {{total}}"
-    },
     "rowActions": {
       "delete": "Supprimer",
       "deleteDialog": {
@@ -52,38 +43,28 @@
         "lastName": "Nom de famille",
         "lastNameHelper": "Max 255 caractères",
         "lastNameMaxLength": "Le nom de famille doit contenir 255 caractères ou moins",
-        "superuser": "Superutilisateur",
         "success": "Utilisateur mis à jour avec succès",
+        "superuser": "Superutilisateur",
         "title": "Modifier l'utilisateur"
-      },
-      "viewDetails": "Voir les détails"
+      }
     },
     "table": {
       "actions": "Actions",
       "active": "Actif",
-      "sortedAscending": "trié par ordre croissant",
-      "sortedDescending": "trié par ordre décroissant",
       "copyId": "Copier l'ID utilisateur {{id}}",
       "email": "Courriel",
       "fullName": "Nom complet",
       "id": "ID",
       "idCopied": "ID utilisateur copié dans le presse-papiers",
       "inactive": "Inactif",
-      "notAvailable": "N/D",
       "role": "Rôle",
-      "selectAll": "sélectionner tous les utilisateurs",
       "status": "Statut",
       "superuser": "Superutilisateur",
       "user": "Utilisateur",
       "you": "Vous"
     },
-    "tabs": {
-      "userSettings": "Paramètres utilisateur",
-      "users": "Utilisateurs"
-    },
-    "usersManagement": "Gestion des utilisateurs",
-    "tableTitle": "Tableau (actuel)",
-    "datagridTitle": "DataGrid (avec recherche)"
+    "user": "Utilisateur",
+    "usersManagement": "Gestion des utilisateurs"
   },
   "app": {
     "title": "Inspection d'étiquettes"
@@ -98,17 +79,20 @@
   },
   "button": {
     "cancel": "Annuler",
-    "save": "Enregistrer",
     "clearAll": "Tout effacer",
     "dismiss": "Ignorer",
     "goBack": "Retour",
     "label": "Étiquette",
-    "next": "Suivant",
-    "previous": "Précédent",
     "retry": "Réessayer",
+    "save": "Enregistrer",
     "upload": "Téléverser des fichiers",
     "uploading": "Téléversement en cours...",
     "viewAll": "Voir tout"
+  },
+  "data": {
+    "validation": {
+      "registrationNumberInvalidFormat": "data.validation.registrationNumberInvalidFormat"
+    }
   },
   "labels": {
     "errorOccurred": "Une erreur s'est produite",
@@ -165,9 +149,9 @@
           "checking": "Vérification...",
           "duplicate": "Un produit avec ce numéro d'enregistrement existe déjà.",
           "helperText": "Le numéro d'enregistrement officiel attribué à ce produit",
-          "invalidFormat": "Le numéro d'enregistrement ne peut contenir que des lettres, des chiffres, des espaces et des tirets",
+          "invalidFormat": "7 chiffres suivis d'une lettre (ex. 1234567F)",
           "label": "Numéro d'enregistrement",
-          "maxLength": "Le numéro d'enregistrement doit contenir 50 caractères ou moins",
+          "maxLength": "Le numéro d'enregistrement doit contenir 8 caractères (7 chiffres + 1 lettre)",
           "required": "Le numéro d'enregistrement est requis"
         },
         "submit": "Créer le produit",
@@ -179,45 +163,39 @@
     "createNew": "Produit"
   },
   "settings": {
+    "dangerZone": {
+      "deleteAccount": "Supprimer le compte",
+      "deleteAccountButton": "Supprimer le compte",
+      "deleteAccountDescription": "Supprimez votre compte et vos données.",
+      "deleteAccountDialogDescription": "Votre compte sera supprimé et vous serez déconnecté.",
+      "deleteAccountDialogTitle": "Supprimer votre compte?",
+      "deleteAccountSuccess": "Votre compte a été supprimé."
+    },
     "pageTitle": "Paramètres - Inspection d'étiquettes",
+    "password": {
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "confirmNewPasswordRequired": "La confirmation du nouveau mot de passe est requise",
+      "confirmPasswordHelper": "Saisissez à nouveau le nouveau mot de passe pour confirmer",
+      "currentPassword": "Mot de passe actuel",
+      "currentPasswordRequired": "Le mot de passe actuel est requis",
+      "error": "Échec de la mise à jour du mot de passe. Veuillez réessayer.",
+      "incorrectPassword": "Mot de passe incorrect",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordRequired": "Le nouveau mot de passe est requis",
+      "passwordHelper": "8–40 caractères",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+      "submit": "Mettre à jour le mot de passe",
+      "success": "Mot de passe mis à jour avec succès",
+      "userHasNoPassword": "L'utilisateur n'a pas de mot de passe"
+    },
     "profile": {
       "edit": "Modifier",
       "email": "Courriel",
-      "firstName": "Prénom",
-      "lastName": "Nom de famille",
-      "role": "Rôle",
       "status": "Statut"
     },
-    "password": {
-      "currentPassword": "Mot de passe actuel",
-      "newPassword": "Nouveau mot de passe",
-      "confirmNewPassword": "Confirmer le nouveau mot de passe",
-      "currentPasswordRequired": "Le mot de passe actuel est requis",
-      "newPasswordRequired": "Le nouveau mot de passe est requis",
-      "confirmNewPasswordRequired": "La confirmation du nouveau mot de passe est requise",
-      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
-      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
-      "success": "Mot de passe mis à jour avec succès",
-      "error": "Échec de la mise à jour du mot de passe. Veuillez réessayer.",
-      "incorrectPassword": "Mot de passe incorrect",
-      "userHasNoPassword": "L'utilisateur n'a pas de mot de passe",
-      "submit": "Mettre à jour le mot de passe",
-      "passwordHelper": "8–40 caractères",
-      "confirmPasswordHelper": "Saisissez à nouveau le nouveau mot de passe pour confirmer"
-    },
-    "dangerZone": {
-      "deleteAccount": "Supprimer le compte",
-      "deleteAccountDescription": "Supprimez votre compte et vos données.",
-      "deleteAccountButton": "Supprimer le compte",
-      "deleteAccountDialogTitle": "Supprimer votre compte?",
-      "deleteAccountDialogDescription": "Votre compte sera supprimé et vous serez déconnecté.",
-      "deleteAccountSuccess": "Votre compte a été supprimé."
-    },
     "sections": {
-      "appearance": "Apparence",
-      "changePassword": "Changer le mot de passe",
-      "deleteAccount": "Supprimer le compte",
-      "userInformation": "Informations utilisateur"
+      "appearance": "Apparence"
     },
     "tabs": {
       "appearance": "Apparence",

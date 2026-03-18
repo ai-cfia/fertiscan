@@ -37,7 +37,7 @@ class TestExtractFieldsFromImages:
         assert result.brand_name.fr == "CroissanceVerte"
         assert result.product_name.en == "Premium All-Purpose Fertilizer"
         assert result.product_name.fr == "Engrais Polyvalent Premium"
-        assert result.registration_number == "REG-2024-12345"
+        assert result.registration_number == "1234567F"
         assert result.lot_number == "LOT-2024-001"
         assert result.net_weight == "10 kg"
         assert result.n is not None
