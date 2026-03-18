@@ -40,6 +40,7 @@ interface BasicInformationSectionProps {
   isFertilizer?: boolean
   disabled?: boolean
   readOnly?: boolean
+  fieldErrors?: Record<string, { message?: string } | undefined>
 }
 export default function BasicInformationSection({
   control,
@@ -53,6 +54,7 @@ export default function BasicInformationSection({
   isFertilizer = true,
   disabled = false,
   readOnly = false,
+  fieldErrors,
 }: BasicInformationSectionProps) {
   const { t } = useTranslation("labels")
   const basicFields = [
@@ -281,6 +283,8 @@ export default function BasicInformationSection({
               helperText={
                 readOnly ? undefined : t("data.helperText.registrationNumber")
               }
+              error={!!fieldErrors?.registration_number}
+              errorMessage={fieldErrors?.registration_number?.message}
               needsReview={getFieldMeta("registration_number").needs_review}
               hasImages={hasImages}
               isExtracting={getIsFieldExtracting("registration_number")}

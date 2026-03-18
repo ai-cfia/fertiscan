@@ -36,11 +36,16 @@ const createProductFormSchema = (t: (key: string) => string) =>
   z.object({
     registration_number: z
       .string()
-      .min(1, t("products.create.form.registrationNumber.required"))
-      .max(50, t("products.create.form.registrationNumber.maxLength"))
-      .regex(
-        /^[a-zA-Z0-9\s-]+$/,
-        t("products.create.form.registrationNumber.invalidFormat"),
+      .transform((s) => s.trim())
+      .pipe(
+        z
+          .string()
+          .min(1, t("products.create.form.registrationNumber.required"))
+          .max(8, t("products.create.form.registrationNumber.maxLength"))
+          .regex(
+            /^[0-9]{7}[A-Za-z]$/,
+            t("products.create.form.registrationNumber.invalidFormat"),
+          ),
       ),
     brand_name_en: z
       .string()
