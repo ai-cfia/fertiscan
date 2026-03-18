@@ -249,10 +249,25 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None, description="Lot or batch number", examples=["LOT-2024-001"]
     )
     net_weight: str | None = Field(
-        default=None, description="Net weight with unit", examples=["10 kg"]
+        default=None,
+        examples=["10 kg", "500 g", "0.5 t", "2 lb", "3 oz"],
+        description=(
+            "Return weight as 'value unit' with one unit symbol. Allowed: mg, g, kg, t, lb, lbs, oz. "
+            "Convert full words (pound/pounds, ounce/ounces) to symbols. Reject volume units. "
+            "No parentheses or punctuation. Metric > imperial; if only imperial appears, keep it. "
+            "Prefer nearest weight anchor; if none exists and a valid mass is present, return it; else {None}."
+        ),
     )
+
     volume: str | None = Field(
-        default=None, description="Volume with unit", examples=["1 L"]
+        default=None,
+        examples=["0.47 L", "500 mL", "1 pint", "2 gal", "12 fl oz"],
+        description=(
+            "Return volume as 'value unit' with one unit symbol. Allowed: mL, L, m³, fl oz, pint, quart, gal. "
+            "Convert full words (liter/litre, milliliter/millilitre, pint(s), quart(s), gallon(s)) to symbols. Reject mass units. "
+            "No parentheses or punctuation. Metric > imperial; if only imperial appears, keep it. "
+            "Prefer nearest volume anchor; if none exists and a valid volume is present, return it; else {None}."
+        ),
     )
     exemption_claim: BilingualText | None = Field(
         default=None,

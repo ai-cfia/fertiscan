@@ -13,6 +13,14 @@ from app.db.models import Label, UploadStatus
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services import extraction
 
+_EXTRACTION_PROMPT = (
+    "Extract fertilizer label information from these label images exactly as written. "
+    "For net_weight: MASS in 'value unit' with one unit symbol (mg, g, kg, t, lb, lbs, oz); reject volume units; "
+    "convert full unit words to symbols; metric > imperial; no parentheses; None if absent. "
+    "For volume: VOLUME in 'value unit' with one unit symbol (mL, L, m³, fl oz, pint, quart, gal); reject mass units; "
+    "convert full unit words to symbols (liter/litre→L, milliliter/millilitre→mL); metric > imperial; no parentheses; None if absent."
+)
+
 
 def create_subset_model(
     base_model: type[BaseModel], field_names: list[str]
@@ -55,7 +63,7 @@ async def extract_fertilizer_fields(
     result, _completion = await extraction.extract_fields_from_images(
         images,
         response_model,
-        "Extract fertilizer label information from these label images exactly as written.",
+        _EXTRACTION_PROMPT,
         instructor,
     )
     if field_names:
