@@ -8,12 +8,42 @@
 	"prCreation": "immediate",
 	"rebaseWhen": "behind-base-branch",
 	"dependencyDashboard": true,
-	"labels": ["dependencies"],
-	"docker": { "pinDigests": true },
-	"github-actions": { "pinDigests": true },
+	"labels": [
+		"dependencies"
+	],
+	"github-actions": {
+		"pinDigests": true
+	},
 	"packageRules": [
-		{ "matchPaths": ["frontend/**"], "labels": ["frontend"] },
-		{ "matchPaths": ["backend/**"], "labels": ["backend"] },
-		{ "matchPaths": [".github/**"], "labels": ["ci"] }
+		{
+			"matchCategories": [
+				"docker"
+			],
+			"pinDigests": true
+		},
+		{
+			"matchFileNames": [
+				"frontend/**"
+			],
+			"labels": [
+				"frontend"
+			]
+		},
+		{
+			"matchFileNames": [
+				"backend/**"
+			],
+			"labels": [
+				"backend"
+			]
+		},
+		{
+			"matchFileNames": [
+				".github/**"
+			],
+			"labels": [
+				"ci"
+			]
+		}
 	]
 }
