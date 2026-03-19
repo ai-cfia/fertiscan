@@ -220,12 +220,27 @@ class ExtractFieldsRequest(BaseModel):
 class ExtractFertilizerFieldsOutput(BaseModel):
     brand_name: BilingualText | None = Field(
         default=None,
-        description="Brand name verbatim",
+        description=(
+            "Verbatim brand name as displayed on the label. The brand name refers to the "
+            "commercial identity under which the product is marketed, and is distinct from "
+            "the product name, which describes the type or formulation of the product. "
+            "If the label contains only one prominent name and it cannot be clearly separated "
+            "into brand vs product, leave brand_name {None} and populate product_name instead."
+            "If the NPK appears on the same line as the product name, remove the NPK portion. "
+        ),
         examples=[{"en": "GreenGrow"}],
     )
     product_name: BilingualText | None = Field(
         default=None,
-        description="Product name verbatim",
+        description=(
+            "Verbatim product name as written on the label, excluding NPK analysis or fertilizer "
+            "classification statements. The product name is distinct from the brand name: the brand "
+            "is the commercial identity, while the product name is the generic or descriptive name "
+            "of the formulation. In cases where the label displays only one prominent name that cannot "
+            "be clearly distinguished as either brand or product, populate product_name and leave "
+            "brand_name as {None}."
+            "If the NPK appears on the same line as the product name, remove the NPK portion. "
+        ),
         examples=[{"en": "Premium All-Purpose Fertilizer"}],
     )
     contacts: list[Contact] | None = Field(

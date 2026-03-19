@@ -13,6 +13,12 @@ from app.db.models import Label, UploadStatus
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services import extraction
 
+_EXTRACTION_PROMPT = (
+    "Extract fertilizer label information from these label images exactly as written."
+    "Do not include NPK values (e.g., 15-22-6) in brand_name or product_name."
+    "If a line contains text + NPK (e.g., '15-22-6 vedette'), keep only the text."
+)
+
 
 def create_subset_model(
     base_model: type[BaseModel], field_names: list[str]
@@ -55,7 +61,7 @@ async def extract_fertilizer_fields(
     result, _completion = await extraction.extract_fields_from_images(
         images,
         response_model,
-        "Extract fertilizer label information from these label images exactly as written.",
+        _EXTRACTION_PROMPT,
         instructor,
     )
     if field_names:
