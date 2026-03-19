@@ -244,10 +244,13 @@ class ExtractFertilizerFieldsOutput(BaseModel):
         default=None, description="Lot or batch number", examples=["LOT-2024-001"]
     )
     net_weight: str | None = Field(
-        default=None, description="Net weight with unit", examples=["10 kg"]
+        default=None,
+        description="Verbatim mass only, reject volume",
     )
+
     volume: str | None = Field(
-        default=None, description="Volume with unit", examples=["1 L"]
+        default=None,
+        description="Verbatim volume only, reject mass",
     )
     exemption_claim: BilingualText | None = Field(
         default=None,

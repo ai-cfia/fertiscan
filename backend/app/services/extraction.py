@@ -59,5 +59,6 @@ async def extract_fields_from_images[T: BaseModel](
         messages=[message],
         response_model=model,
         max_completion_tokens=4000,
+        temperature=0,
     )
     return response, completion

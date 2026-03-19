@@ -13,6 +13,10 @@ from app.db.models import Label, UploadStatus
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services import extraction
 
+_EXTRACTION_PROMPT = (
+    "Extract fertilizer label information from these label images verbatim."
+)
+
 
 def create_subset_model(
     base_model: type[BaseModel], field_names: list[str]
@@ -55,7 +59,7 @@ async def extract_fertilizer_fields(
     result, _completion = await extraction.extract_fields_from_images(
         images,
         response_model,
-        "Extract fertilizer label information from these label images exactly as written.",
+        _EXTRACTION_PROMPT,
         instructor,
     )
     if field_names:
