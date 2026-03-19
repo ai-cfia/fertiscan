@@ -127,7 +127,7 @@ class ComplianceResult(BaseModel):
     )
     explanation: BilingualText = Field(
         ...,
-        description="Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.",
+        description="Think step by step internally but output only the final concise evaluation.",
     )
 
 
@@ -144,5 +144,10 @@ class LabelEvaluationContext(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-    label_data: LabelData | None = None
-    fertilizer_label_data: FertilizerLabelData | None = None
+    label_data: LabelData | None = Field(
+        default=None, description="This is the data from the label"
+    )
+    fertilizer_label_data: FertilizerLabelData | None = Field(
+        default=None,
+        description="This is the data from the fertilizer label",
+    )
