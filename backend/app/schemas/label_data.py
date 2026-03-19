@@ -256,13 +256,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
 
     volume: str | None = Field(
         default=None,
-        examples=["0.47 L", "500 mL", "1 pint", "2 gal", "12 fl oz"],
-        description=(
-            "Return volume as 'value unit' with one unit symbol. Allowed: mL, L, m³, fl oz, pint, quart, gal. "
-            "Convert full words (liter/litre, milliliter/millilitre, pint(s), quart(s), gallon(s)) to symbols. Reject mass units. "
-            "No parentheses or punctuation. Metric > imperial; if only imperial appears, keep it. "
-            "Prefer nearest volume anchor; if none exists and a valid volume is present, return it; else {None}."
-        ),
+        description="Verbatim volume as shown on the label. Volume only; reject mass.",
     )
     exemption_claim: BilingualText | None = Field(
         default=None,
