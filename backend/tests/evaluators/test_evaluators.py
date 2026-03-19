@@ -53,7 +53,10 @@ class TestEvaluateRequirement:
         call_kwargs = (
             mock_instructor.chat.completions.create_with_completion.call_args.kwargs
         )
-        assert "# Compliance Verification" in call_kwargs["messages"][0]["content"]
+        user_prompt = next(
+            msg["content"] for msg in call_kwargs["messages"] if msg["role"] == "user"
+        )
+        assert "# Compliance Verification" in user_prompt
 
 
 @pytest.mark.asyncio
