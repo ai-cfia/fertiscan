@@ -245,13 +245,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     net_weight: str | None = Field(
         default=None,
-        examples=["10 kg", "500 g", "0.5 t", "2 lb", "3 oz"],
-        description=(
-            "Return weight as 'value unit' with one unit symbol. Allowed: mg, g, kg, t, lb, lbs, oz. "
-            "Convert full words (pound/pounds, ounce/ounces) to symbols. Reject volume units. "
-            "No parentheses or punctuation. Metric > imperial; if only imperial appears, keep it. "
-            "Prefer nearest weight anchor; if none exists and a valid mass is present, return it; else {None}."
-        ),
+        description="Verbatim net weight as shown on the label. Mass only; reject volume.",
     )
 
     volume: str | None = Field(
