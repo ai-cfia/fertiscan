@@ -13,7 +13,9 @@ from app.db.models import Label, UploadStatus
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.services import extraction
 
-_EXTRACTION_PROMPT = "Extract fertilizer label information from these label images verbatim."
+_EXTRACTION_PROMPT = (
+    "Extract fertilizer label information from these label images verbatim."
+)
 
 
 def create_subset_model(

@@ -245,12 +245,12 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     net_weight: str | None = Field(
         default=None,
-        description="Verbatim net weight as shown on the label. Mass only; reject volume.",
+        description="Verbatim mass only, reject volume",
     )
 
     volume: str | None = Field(
         default=None,
-        description="Verbatim volume as shown on the label. Volume only; reject mass.",
+        description="Verbatim volume only, reject mass",
     )
     exemption_claim: BilingualText | None = Field(
         default=None,
