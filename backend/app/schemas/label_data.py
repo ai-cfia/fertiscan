@@ -29,11 +29,17 @@ class BilingualText(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
     en: str | None = Field(
         default=None,
-        description="The English text verbatim. Leave as null if not present.",
+        description=(
+            "The English text verbatim . Leave as null if not present."
+            " Reject another language's text in this field."
+        ),
     )
     fr: str | None = Field(
         default=None,
-        description="The French text verbatim. Leave as null if not present.",
+        description=(
+            "The French text verbatim. Leave as null if not present."
+            " Reject another language's text in this field."
+        ),
     )
 
 
