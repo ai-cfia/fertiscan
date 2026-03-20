@@ -155,7 +155,20 @@ async def evaluate_requirement(
     response, _ = await instructor_client.chat.completions.create_with_completion(
         model=settings.AZURE_OPENAI_MODEL,
         response_model=ComplianceResult,
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "You are a strict evaluator who are consistent and accurate in each evaluation."
+                    "Always apply the same deterministic rules and never change a decision unless the evidence is different."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
     )
 
     return response
