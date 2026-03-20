@@ -29,7 +29,7 @@ jobs:
           echo "" >> sbom.json
       - name: SBOM security scan
         id: scan
-        uses: anchore/scan-action@382a23a5be86412134bdf4a65e1a18943e5d31ac
+        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2
         with:
           sbom: frontend/sbom.json
           fail-build: false
