@@ -2,7 +2,13 @@
 
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_serializer,
+)
 
 from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
@@ -62,7 +68,11 @@ class Nutrient(BaseModel):
         description="Nutrient name verbatim",
         examples=[{"en": "Total Nitrogen (N)"}],
     )
-    value: Decimal = Field(ge=0, description="Nutrient percentage value")
+    value: Decimal = Field(
+        ge=0,
+        description="Numeric value verbatim from the Guaranteed Analysis box.",
+        examples=["0.6", "1.8", "0.13", "37.0", "0.22", "28", "55"],
+    )
     unit: str = Field(
         description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg"]
     )
@@ -77,7 +87,10 @@ class GuaranteedAnalysis(BaseModel):
         description="True if title contains 'Minimum', false otherwise"
     )
     nutrients: list[Nutrient] = Field(
-        description="List of nutrients with bilingual names, values and units"
+        description=(
+            "Only nutrients printed inside the Guaranteed Analysis box;"
+            " copy each name, value, and unit verbatim."
+        )
     )
 
 
