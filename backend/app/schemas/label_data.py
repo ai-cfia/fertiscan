@@ -236,7 +236,7 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     contacts: list[Contact] | None = Field(
         default=None,
-        description="List of contact information (manufacturer, distributor, etc.)",
+        description="List of contact information (manufacturer, distributor, etc.), verbatim",
     )
     registration_number: RegistrationNumber | None = Field(
         default=None,
