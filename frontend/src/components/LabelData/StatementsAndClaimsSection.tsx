@@ -6,10 +6,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import type { Control } from "react-hook-form"
+import type { Control, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
 import LabelDataBilingualStatementList from "@/components/Common/LabelDataBilingualStatementList"
+import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
 
 const STATEMENT_FIELDS = [
   "precaution_statements",
@@ -23,8 +24,8 @@ const STATEMENT_FIELDS = [
 
 // ============================== Statements and Claims Section ==============================
 interface StatementsAndClaimsSectionProps {
-  control: Control<any>
-  form?: any
+  control: Control<LabelDataFormValues>
+  form?: UseFormReturn<LabelDataFormValues>
   accordionState: boolean
   onAccordionChange: (isExpanded: boolean) => void
   getFieldMeta: (formPath: string) => { needs_review: boolean }

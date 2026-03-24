@@ -4,10 +4,11 @@ import type { Control } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
 import LabelDataField from "@/components/Common/LabelDataField"
+import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
 
 // ============================== NPK Analysis Section ==============================
 interface NPKAnalysisSectionProps {
-  control: Control<any>
+  control: Control<LabelDataFormValues>
   accordionState: boolean
   onAccordionChange: (isExpanded: boolean) => void
   getFieldMeta: (fieldName: string) => {

@@ -4,11 +4,12 @@ import type { Control, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
 import LabelDataIngredients from "@/components/Common/LabelDataIngredients"
+import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
 
 // ============================== Ingredients Section ==============================
 interface IngredientsSectionProps {
-  control: Control<any>
-  form?: UseFormReturn<any>
+  control: Control<LabelDataFormValues>
+  form?: UseFormReturn<LabelDataFormValues>
   accordionState: boolean
   onAccordionChange: (isExpanded: boolean) => void
   getFieldMeta: (fieldName: string) => {

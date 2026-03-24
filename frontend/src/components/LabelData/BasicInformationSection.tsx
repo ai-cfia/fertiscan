@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next"
 import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
 import LabelDataContacts from "@/components/Common/LabelDataContacts"
 import LabelDataField from "@/components/Common/LabelDataField"
+import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
 
 const PRODUCT_CLASSIFICATIONS = [
   "fertilizer",
@@ -27,7 +28,7 @@ const PRODUCT_CLASSIFICATIONS = [
 
 // ============================== Basic Information Section ==============================
 interface BasicInformationSectionProps {
-  control: Control<any>
+  control: Control<LabelDataFormValues>
   accordionState: boolean
   onAccordionChange: (isExpanded: boolean) => void
   getFieldMeta: (formPath: string) => {
