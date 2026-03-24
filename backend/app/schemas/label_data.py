@@ -2,7 +2,13 @@
 
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_serializer,
+)
 
 from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
@@ -59,25 +65,23 @@ class Ingredient(BaseModel):
 class Nutrient(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
     name: BilingualText = Field(
-        description="Nutrient name verbatim",
-        examples=[{"en": "Total Nitrogen (N)"}],
+        description="Verbatim", examples=[{"en": "Total Nitrogen (N)"}]
     )
-    value: Decimal = Field(ge=0, description="Nutrient percentage value")
-    unit: str = Field(
-        description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg"]
-    )
+    value: Decimal | None = Field(default=None, ge=0, description="Verbatim")
+    unit: str | None = Field(default=None, description="Verbatim")
 
 
 class GuaranteedAnalysis(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
     title: BilingualText = Field(
+        description="Verbatim title of the guaranteed analysis section",
         examples=[{"en": "Minimum Guaranteed Analysis"}],
     )
     is_minimum: bool = Field(
-        description="True if title contains 'Minimum', false otherwise"
+        description="True when the title signals minimum guarantees; false otherwise"
     )
     nutrients: list[Nutrient] = Field(
-        description="List of nutrients with bilingual names, values and units"
+        description="Nutrients listed verbatim in this guaranteed analysis block only",
     )
 
 
@@ -352,11 +356,11 @@ class ExtractFertilizerFieldsOutput(BaseModel):
     )
     ingredients: list[Ingredient] | None = Field(
         default=None,
-        description="Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.",
+        description="Verbatim; this is NOT the guaranteed analysis section",
     )
     guaranteed_analysis: GuaranteedAnalysis | None = Field(
         default=None,
-        description="The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.",
+        description="Verbatim; this is NOT the ingredient list",
     )
     precaution_statements: list[BilingualText] | None = Field(
         default=None,

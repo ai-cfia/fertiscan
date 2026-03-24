@@ -181,6 +181,7 @@ export function getDefaultFormValues() {
     product_classification: null as string | null,
   }
 }
+export type LabelDataFormValues = ReturnType<typeof getDefaultFormValues>
 export function mergeForForm(labelData: any, fertilizerData: any) {
   const ld = labelData ?? {}
   const fd = fertilizerData ?? {}
