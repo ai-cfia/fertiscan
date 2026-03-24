@@ -1,11 +1,9 @@
 # Validates repo standards and checks markdown.
-# Called by ci.yml for PRs, runs directly on push to main.
+# Called by ci.yml
 name: Repo Standard
 
 on:
   workflow_call:
-  push:
-    branches: [main]
 
 jobs:
   validate:

@@ -1,4 +1,4 @@
-# CI orchestrator - single entry point for all PR checks.
+# CI orchestrator - single entry point for PR checks and pushes to main.
 # Calls reusable workflows based on changed paths.
 name: CI
 
@@ -7,6 +7,8 @@ on:
     types:
       - opened
       - synchronize
+  push:
+    branches: [main]
 
 permissions:
   contents: read
