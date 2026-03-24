@@ -30,4 +30,5 @@ jobs:
       tag: ${{ github.sha }}
       release-version: ${{ needs.get-version.outputs.app-version }}
       registry: ghcr.io/ai-cfia
+      build-args: VITE_API_URL=${{ vars.VITE_API_URL }}
     secrets: inherit
