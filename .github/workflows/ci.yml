@@ -81,15 +81,16 @@ jobs:
     uses: ./.github/workflows/frontend.yml
     secrets: inherit
 
-  e2e:
-    needs: [backend, frontend]
-    if: |
-      always() &&
-      (needs.backend.result == 'success' || needs.frontend.result == 'success') &&
-      (needs.backend.result == 'success' || needs.backend.result == 'skipped') &&
-      (needs.frontend.result == 'success' || needs.frontend.result == 'skipped')
-    uses: ./.github/workflows/e2e.yml
-    secrets: inherit
+  # E2E disabled: no Playwright specs under frontend/tests/ yet; job was costly (Docker + browsers) with nothing to run. Uncomment when ready.
+  # e2e:
+  #   needs: [backend, frontend]
+  #   if: |
+  #     always() &&
+  #     (needs.backend.result == 'success' || needs.frontend.result == 'success') &&
+  #     (needs.backend.result == 'success' || needs.backend.result == 'skipped') &&
+  #     (needs.frontend.result == 'success' || needs.frontend.result == 'skipped')
+  #   uses: ./.github/workflows/e2e.yml
+  #   secrets: inherit
 
   backend-build:
     name: Backend Build
