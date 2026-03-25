@@ -11,16 +11,7 @@
 	"labels": [
 		"dependencies"
 	],
-	"github-actions": {
-		"pinDigests": true
-	},
 	"packageRules": [
-		{
-			"matchCategories": [
-				"docker"
-			],
-			"pinDigests": true
-		},
 		{
 			"matchFileNames": [
 				"frontend/**"
