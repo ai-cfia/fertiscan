@@ -13,3 +13,7 @@ See individual README files in each directory:
 
 - [Backend README](./backend/README.md)
 - [Frontend README](./frontend/README.md) (coming soon)
+
+## Local Tools
+
+- [grype](https://github.com/anchore/grype)
