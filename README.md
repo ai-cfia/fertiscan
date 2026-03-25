@@ -5,11 +5,11 @@ Monorepo containing FertiScan frontend and backend.
 ## Structure
 
 - `backend/` - FastAPI backend API
-- `frontend/` - Frontend application (coming soon)
+- `frontend/` - TanStack Start frontend
 
 ## Quick Start
 
 See individual README files in each directory:
 
 - [Backend README](./backend/README.md)
-- [Frontend README](./frontend/README.md) (coming soon)
+- [Frontend README](./frontend/README.md)

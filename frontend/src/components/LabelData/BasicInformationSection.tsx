@@ -14,10 +14,10 @@ import {
 import type { Control } from "react-hook-form"
 import { Controller } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
-import LabelDataContacts from "@/components/Common/LabelDataContacts"
-import LabelDataField from "@/components/Common/LabelDataField"
-import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
+import LabelDataAccordionSection from "#/components/Common/LabelDataAccordionSection"
+import LabelDataContacts from "#/components/Common/LabelDataContacts"
+import LabelDataField from "#/components/Common/LabelDataField"
+import type { LabelDataFormValues } from "#/utils/labelDataHelpers"
 
 const PRODUCT_CLASSIFICATIONS = [
   "fertilizer",

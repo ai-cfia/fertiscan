@@ -1,3 +1,5 @@
+// ============================== App layout ==============================
+
 import AddIcon from "@mui/icons-material/Add"
 import MenuIcon from "@mui/icons-material/Menu"
 import {
@@ -14,42 +16,39 @@ import {
   createFileRoute,
   Link,
   Outlet,
-  redirect,
   useLocation,
   useParams,
 } from "@tanstack/react-router"
 import { AxiosError } from "axios"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import BreakpointIndicator from "@/components/Common/BreakpointIndicator"
-import LanguageSwitcher from "@/components/Common/LanguageSwitcher"
-import PageTopBanner from "@/components/Common/PageTopBanner"
-import SidebarItems from "@/components/Common/SidebarItems"
-import UploadCompletionSnackbar from "@/components/Common/UploadCompletionSnackbar"
-import UploadProgressBanner from "@/components/Common/UploadProgressBanner"
-import UserMenu from "@/components/Common/UserMenu"
-import { isLoggedIn } from "@/hooks/useAuth"
-import { useAppBarActionsStore } from "@/stores/useAppBarActions"
-import { useBackendStatus } from "@/stores/useBackendStatus"
-import { useBanner } from "@/stores/useBanner"
-import { useLabelList } from "@/stores/useLabelList"
-import { useLabelNew } from "@/stores/useLabelNew"
+import BreakpointIndicator from "#/components/Common/BreakpointIndicator"
+import LanguageSwitcher from "#/components/Common/LanguageSwitcher"
+import PageTopBanner from "#/components/Common/PageTopBanner"
+import SidebarItems from "#/components/Common/SidebarItems"
+import UploadCompletionSnackbar from "#/components/Common/UploadCompletionSnackbar"
+import UploadProgressBanner from "#/components/Common/UploadProgressBanner"
+import UserMenu from "#/components/Common/UserMenu"
+import { useBackendHealthCheck } from "#/hooks/useBackendHealthCheck"
+import { requireAuthedUserForLayout } from "#/server/layout-guard"
+import { useAppBarActionsStore } from "#/stores/useAppBarActions"
+import { useBackendStatus } from "#/stores/useBackendStatus"
+import { useBanner } from "#/stores/useBanner"
+import { useLabelList } from "#/stores/useLabelList"
+import { useLabelNew } from "#/stores/useLabelNew"
+import { useProductList } from "#/stores/useProductList"
 
 const drawerWidth = 256
 
 export const Route = createFileRoute("/_layout")({
-  component: Layout,
-  beforeLoad: async () => {
-    if (!isLoggedIn()) {
-      throw redirect({
-        to: "/login",
-      })
-    }
+  beforeLoad: async ({ location }) => {
+    return requireAuthedUserForLayout(location.href)
   },
+  component: Layout,
 })
 
 function Layout() {
-  // ============================== Route & Store ==============================
+  useBackendHealthCheck()
   const location = useLocation()
   const params = useParams({ strict: false })
   const { actions: appBarActions, clearActions } = useAppBarActionsStore()
@@ -62,27 +61,31 @@ function Layout() {
   const { fileTypeValidationErrors, clearFileTypeValidationErrors } =
     useLabelNew()
   const { error: labelListError, setError: setLabelListError } = useLabelList()
+  const { error: productListError, setError: setProductListError } =
+    useProductList()
   const { ready: backendReady } = useBackendStatus()
   const { banners, showBanner, dismissBanner } = useBanner()
   const queryClient = useQueryClient()
-  // ============================== State ==============================
   const [mobileOpen, setMobileOpen] = useState(false)
-  // ============================== Helpers ==============================
   const isLabelsPage = location.pathname.includes("/labels")
+  const isProductsListPage = /\/products$/i.test(normalizedPath)
   const getLabelListErrorMessage = useCallback(
     (error: unknown): string => {
       if (error instanceof AxiosError) {
-        const detail = error.response?.data as any
+        const detail = error.response?.data as { detail?: unknown }
         if (detail?.detail) {
           return typeof detail.detail === "string"
             ? detail.detail
             : Array.isArray(detail.detail) && detail.detail.length > 0
-              ? detail.detail[0].msg || t("labels.errorOccurred")
-              : t("labels.errorOccurred")
+              ? String(
+                  (detail.detail[0] as { msg?: string })?.msg ||
+                    t("labels.errorOccurred", { ns: "errors" }),
+                )
+              : t("labels.errorOccurred", { ns: "errors" })
         }
-        return error.message || t("labels.loadFailed")
+        return error.message || t("labels.loadFailed", { ns: "errors" })
       }
-      return t("labels.loadFailedRetry")
+      return t("labels.loadFailedRetry", { ns: "errors" })
     },
     [t],
   )
@@ -92,18 +95,22 @@ function Layout() {
       queryKey: ["labels"],
     })
   }, [setLabelListError, queryClient])
+  const handleProductListRetry = useCallback(() => {
+    setProductListError(null)
+    queryClient.invalidateQueries({
+      queryKey: ["products"],
+    })
+  }, [setProductListError, queryClient])
   const handleBackendRetry = useCallback(() => {
     queryClient.invalidateQueries({
       queryKey: ["backend", "health", "readiness"],
     })
   }, [queryClient])
-  // ============================== Effects ==============================
   useEffect(() => {
     if (!isDataPage) {
       clearActions()
     }
   }, [isDataPage, clearActions])
-  // ============================== Banner Management ==============================
   useEffect(() => {
     if (!backendReady) {
       showBanner({
@@ -158,6 +165,26 @@ function Layout() {
     dismissBanner,
     getLabelListErrorMessage,
     handleLabelListRetry,
+  ])
+  useEffect(() => {
+    if (isProductsListPage && productListError) {
+      showBanner({
+        id: "product-list-error",
+        message: getLabelListErrorMessage(productListError),
+        severity: "error",
+        onRetry: handleProductListRetry,
+        onDismiss: () => dismissBanner("product-list-error"),
+      })
+    } else {
+      dismissBanner("product-list-error")
+    }
+  }, [
+    isProductsListPage,
+    productListError,
+    showBanner,
+    dismissBanner,
+    getLabelListErrorMessage,
+    handleProductListRetry,
   ])
   const [isClosing, setIsClosing] = useState(false)
   const handleDrawerClose = () => {

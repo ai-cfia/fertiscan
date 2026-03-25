@@ -12,12 +12,16 @@ import {
   Typography,
 } from "@mui/material"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
 import { useTranslation } from "react-i18next"
 import { useDebounce } from "use-debounce"
-import { ProductsService } from "@/api"
-import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
-import ProductListItem from "@/components/Common/ProductListItem"
-import { useLanguage } from "@/stores/useLanguage"
+import LabelDataAccordionSection from "#/components/Common/LabelDataAccordionSection"
+import ProductListItem from "#/components/Common/ProductListItem"
+import {
+  readProductByIdEditorFn,
+  searchProductsEditorFn,
+} from "#/server/label-editor"
+import { useLanguage } from "#/stores/useLanguage"
 
 // ============================== Product Association Section ==============================
 interface ProductAssociationSectionProps {
@@ -57,6 +61,8 @@ export default function ProductAssociationSection({
 }: ProductAssociationSectionProps) {
   const { t } = useTranslation("labels")
   const { language } = useLanguage()
+  const readProductById = useServerFn(readProductByIdEditorFn)
+  const searchProducts = useServerFn(searchProductsEditorFn)
 
   // Group search parameters for debouncing
   const searchParams = {
@@ -80,10 +86,9 @@ export default function ProductAssociationSection({
     queryKey: ["product", label?.product_id],
     queryFn: async () => {
       if (!label?.product_id) return null
-      const response = await ProductsService.readProductById({
-        path: { product_id: label.product_id },
+      return await readProductById({
+        data: { productId: label.product_id },
       })
-      return response.data
     },
     enabled: !!label?.product_id,
   })
@@ -105,12 +110,10 @@ export default function ProductAssociationSection({
     queryKey: ["products", "search", debouncedSearchParams],
     queryFn: async () => {
       if (!hasSearchCriteria || isLinked) return { count: 0 }
-      const response = await ProductsService.readProducts({
-        query: debouncedSearchParams as any,
-      })
+      const page = await searchProducts({ data: debouncedSearchParams })
       return {
-        items: response.data?.items ?? [],
-        count: response.data?.total ?? 0,
+        items: page.items ?? [],
+        count: page.total ?? 0,
       }
     },
     enabled: hasSearchCriteria && !isLinked,

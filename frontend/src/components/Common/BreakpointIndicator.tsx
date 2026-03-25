@@ -1,3 +1,5 @@
+// ============================== Dev breakpoint badge ==============================
+
 import { Box, useMediaQuery, useTheme } from "@mui/material"
 
 export default function BreakpointIndicator() {

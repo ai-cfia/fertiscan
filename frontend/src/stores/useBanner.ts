@@ -1,8 +1,9 @@
+// ============================== Stacked page banners ==============================
+
 import type { ReactNode } from "react"
 import { create } from "zustand"
 
-// ============================== Types ==============================
-export interface Banner {
+export type Banner = {
   id: string
   message: string | ReactNode
   items?: (string | ReactNode)[]
@@ -11,7 +12,7 @@ export interface Banner {
   onDismiss?: () => void
 }
 
-interface BannerStore {
+type BannerStore = {
   banners: Banner[]
   showBanner: (banner: Banner) => void
   dismissBanner: (id: string) => void
@@ -19,24 +20,21 @@ interface BannerStore {
   updateBanner: (id: string, updates: Partial<Banner>) => void
 }
 
-// ============================== Store ==============================
-const store = (set: any) => ({
+export const useBanner = create<BannerStore>((set) => ({
   banners: [],
-  showBanner: (banner: Banner) =>
-    set((state: BannerStore) => ({
+  showBanner: (banner) =>
+    set((state) => ({
       banners: [...state.banners.filter((b) => b.id !== banner.id), banner],
     })),
-  dismissBanner: (id: string) =>
-    set((state: BannerStore) => ({
+  dismissBanner: (id) =>
+    set((state) => ({
       banners: state.banners.filter((b) => b.id !== id),
     })),
   clearBanners: () => set({ banners: [] }),
-  updateBanner: (id: string, updates: Partial<Banner>) =>
-    set((state: BannerStore) => ({
+  updateBanner: (id, updates) =>
+    set((state) => ({
       banners: state.banners.map((b) =>
         b.id === id ? { ...b, ...updates } : b,
       ),
     })),
-})
-
-export const useBanner = create<BannerStore>()(store)
+}))

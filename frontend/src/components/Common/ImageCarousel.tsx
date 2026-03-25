@@ -109,7 +109,9 @@ export default function ImageCarousel({
                   <div className="swiper-zoom-container">
                     <img
                       src={src}
-                      alt={t("image.slideAlt", { number: index + 1 })}
+                      alt={t("image.slideAlt", {
+                        number: String(index + 1),
+                      })}
                     />
                   </div>
                 </SwiperSlide>

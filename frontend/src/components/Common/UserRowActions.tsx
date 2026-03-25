@@ -1,3 +1,5 @@
+// ============================== User row actions (admin grid) ==============================
+
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import {
@@ -13,16 +15,17 @@ import {
   Tooltip,
 } from "@mui/material"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useServerFn } from "@tanstack/react-start"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { type UserPublic, UsersService } from "@/api"
-import EditUserDialog from "@/components/Common/EditUserDialog"
-import { useSnackbar } from "@/components/SnackbarProvider"
+import type { UserPublic } from "#/api"
+import EditUserDialog from "#/components/Common/EditUserDialog"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { deleteUserByIdAdminFn } from "#/server/admin-users"
 
 interface UserRowActionsProps {
   user: UserPublic
-  onDelete: () => void
+  onDelete?: () => void
   onEditSuccess?: () => void
   deleteDisabled?: boolean
 }
@@ -36,26 +39,21 @@ export default function UserRowActions({
   const { t } = useTranslation("common")
   const { showErrorToast, showSuccessToast } = useSnackbar()
   const queryClient = useQueryClient()
+  const runDeleteUser = useServerFn(deleteUserByIdAdminFn)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const deleteMutation = useMutation({
-    mutationFn: () => UsersService.deleteUser({ path: { user_id: user.id } }),
+    mutationFn: () => runDeleteUser({ data: { userId: user.id } }),
     onSuccess: () => {
       setDeleteDialogOpen(false)
       showSuccessToast(t("admin.rowActions.deleteSuccess"))
       queryClient.invalidateQueries({ queryKey: ["users"] })
       queryClient.invalidateQueries({ queryKey: ["currentUser"] })
-      onDelete()
+      onDelete?.()
     },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        showErrorToast(
-          (error.response?.data as { detail?: string })?.detail ||
-            t("admin.rowActions.deleteError"),
-        )
-      } else {
-        showErrorToast(t("admin.rowActions.deleteError"))
-      }
+    onError: (error: unknown) => {
+      const detail = error instanceof Error ? error.message : ""
+      showErrorToast(detail || t("admin.rowActions.deleteError"))
     },
   })
   const handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {

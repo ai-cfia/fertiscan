@@ -14,7 +14,6 @@ export default defineConfig({
           const tags = operation.tags || []
           const service = tags[0] || ""
 
-          // Remove service prefix if present (e.g., "health_liveness" -> "_liveness")
           if (service && name.toLowerCase().startsWith(service.toLowerCase()))
             return [name.slice(service.length)] as const
 

@@ -1,3 +1,5 @@
+// ============================== New label ==============================
+
 import AddIcon from "@mui/icons-material/Add"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -13,10 +15,15 @@ import {
   Typography,
 } from "@mui/material"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { useServerFn } from "@tanstack/react-start"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useConfig } from "@/stores/useConfig"
-import { useLabelNew } from "@/stores/useLabelNew"
+import {
+  createLabelForUploadFn,
+  uploadLabelImageFn,
+} from "#/server/label-upload"
+import { useConfig } from "#/stores/useConfig"
+import { useLabelNew } from "#/stores/useLabelNew"
 
 export const Route = createFileRoute("/_layout/$productType/labels/new")({
   component: NewLabel,
@@ -24,13 +31,54 @@ export const Route = createFileRoute("/_layout/$productType/labels/new")({
 
 // ============================== Constants ==============================
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"] as const
+// --- Server upload payload (binary JSON-safe) ---
+async function fileToBase64(file: File): Promise<string> {
+  const buf = await file.arrayBuffer()
+  const bytes = new Uint8Array(buf)
+  let binary = ""
+  const chunk = 0x8000
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk))
+  }
+  return btoa(binary)
+}
 
 function NewLabel() {
   const { t } = useTranslation(["labels", "errors", "common"])
+  const { t: tLabels } = useTranslation("labels")
+  const { maxImagesPerLabel } = useConfig()
   const navigate = useNavigate()
   const params = useParams({ strict: false })
   const productType = (params.productType as string) || "fertilizer"
-  // ============================== Store ==============================
+  const runCreateLabel = useServerFn(createLabelForUploadFn)
+  const runUploadLabelImage = useServerFn(uploadLabelImageFn)
+  const uploadApi = useMemo(
+    () => ({
+      createLabel: async (pt: string) => {
+        const out = await runCreateLabel({ data: { productType: pt } })
+        return { id: out.id }
+      },
+      uploadLabelImage: async (
+        labelId: string,
+        displayFilename: string,
+        contentType: "image/png" | "image/jpeg" | "image/webp",
+        sequenceOrder: number,
+        file: File,
+      ) => {
+        const fileBase64 = await fileToBase64(file)
+        return runUploadLabelImage({
+          data: {
+            labelId,
+            displayFilename,
+            contentType,
+            sequenceOrder,
+            fileBase64,
+          },
+        })
+      },
+    }),
+    [runCreateLabel, runUploadLabelImage],
+  )
   const {
     uploadedFiles,
     addUploadedFiles,
@@ -40,18 +88,13 @@ function NewLabel() {
     addFileTypeValidationErrors,
     process,
   } = useLabelNew()
-  const { maxImagesPerLabel } = useConfig()
-  // ============================== State ==============================
   const [isDragging, setIsDragging] = useState(false)
-  // ============================== Effects ==============================
   useEffect(() => {
-    document.title = t("labels.create.pageTitle")
-    // Clear previous state when entering new label page (unless currently processing)
+    document.title = tLabels("labels.create.pageTitle")
     if (!isProcessing) {
       clearAll()
     }
-  }, [clearAll, isProcessing, t])
-  // ============================== Handlers ==============================
+  }, [clearAll, isProcessing, tLabels])
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return
     const validFiles: File[] = []
@@ -88,7 +131,24 @@ function NewLabel() {
     setIsDragging(false)
     handleFileSelect(e.dataTransfer.files)
   }
-  // ============================== Render ==============================
+  const tCreateWarn = tLabels as (
+    k:
+      | "labels.create.maxFilesWarning_one"
+      | "labels.create.maxFilesWarning_other",
+    o: { count: number; max: number },
+  ) => string
+  const maxFilesOver = uploadedFiles.length - maxImagesPerLabel
+  const maxFilesWarningMessage =
+    maxFilesOver > 0
+      ? tCreateWarn(
+          maxFilesOver === 1
+            ? "labels.create.maxFilesWarning_one"
+            : "labels.create.maxFilesWarning_other",
+          maxFilesOver === 1
+            ? { count: 1, max: maxImagesPerLabel }
+            : { count: maxFilesOver, max: maxImagesPerLabel },
+        )
+      : null
   return (
     <Container maxWidth="xl">
       <Box sx={{ pt: 3, pb: 4 }}>
@@ -96,23 +156,19 @@ function NewLabel() {
           {/* ============================== Header ============================== */}
           <Box component="section">
             <Typography variant="h4" gutterBottom>
-              {t("labels.create.title")}
+              {tLabels("labels.create.title")}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t("labels.create.description")}
+              {tLabels("labels.create.description")}
             </Typography>
           </Box>
-          {/* ============================== Selected Files ============================== */}
+          {/* ============================== Selected files ============================== */}
           <Box component="section">
-            {uploadedFiles.length > maxImagesPerLabel && (
+            {maxFilesWarningMessage !== null && (
               <Alert variant="outlined" severity="warning" sx={{ mb: 2 }}>
-                {t("labels.create.maxFilesWarning", {
-                  max: maxImagesPerLabel,
-                  count: uploadedFiles.length - maxImagesPerLabel,
-                })}
+                {maxFilesWarningMessage}
               </Alert>
             )}
-            {/* ============================== Toolbar ============================== */}
             <Toolbar
               sx={{
                 minHeight: "48px !important",
@@ -123,8 +179,8 @@ function NewLabel() {
               }}
             >
               <Typography variant="h6" sx={{ flexGrow: 0 }}>
-                {t("labels.create.selectedFiles")} ({uploadedFiles.length}{" "}
-                {t("labels.create.of")} {maxImagesPerLabel})
+                {tLabels("labels.create.selectedFiles")} ({uploadedFiles.length}{" "}
+                {tLabels("labels.create.of")} {maxImagesPerLabel})
               </Typography>
               <Box sx={{ display: "flex", gap: 1 }}>
                 {uploadedFiles.length > 0 && (
@@ -141,14 +197,21 @@ function NewLabel() {
                   variant="contained"
                   color="inherit"
                   onClick={() =>
-                    process(productType, (to: string) => {
-                      navigate({ to })
-                    })
+                    void process(
+                      productType,
+                      (labelId) => {
+                        navigate({
+                          to: "/$productType/labels/$labelId/files",
+                          params: { productType, labelId },
+                        })
+                      },
+                      uploadApi,
+                    )
                   }
                   disabled={
                     isProcessing ||
                     uploadedFiles.length === 0 ||
-                    uploadedFiles.length > 5
+                    uploadedFiles.length > maxImagesPerLabel
                   }
                   startIcon={<CloudUploadIcon />}
                 >
@@ -182,7 +245,6 @@ function NewLabel() {
                 p: 2,
               }}
             >
-              {/* ------------------------------ File Grid ------------------------------ */}
               <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
                 {uploadedFiles.map((file, index) => (
                   <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index}>
@@ -230,13 +292,12 @@ function NewLabel() {
                           onClick={() => removeFile(index)}
                           sx={{ mt: "auto" }}
                         >
-                          {t("labels.create.remove")}
+                          {tLabels("labels.create.remove")}
                         </Button>
                       </CardContent>
                     </Card>
                   </Grid>
                 ))}
-                {/* ------------------------------ Add More Card ------------------------------ */}
                 <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Button
                     component="label"
@@ -264,17 +325,23 @@ function NewLabel() {
                     <Box
                       sx={{
                         height: "200px",
+                        width: "100%",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
+                        textAlign: "center",
                       }}
                     >
                       <AddIcon
                         sx={{ fontSize: 48, color: "primary.main", mb: 1 }}
                       />
-                      <Typography variant="body2" color="text.secondary">
-                        {t("labels.create.selectFiles")}
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ textAlign: "center", px: 1 }}
+                      >
+                        {tLabels("labels.create.selectFiles")}
                       </Typography>
                     </Box>
                   </Button>

@@ -1,3 +1,5 @@
+// ============================== Sidebar navigation ==============================
+
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
 import DashboardIcon from "@mui/icons-material/Dashboard"
 import InventoryIcon from "@mui/icons-material/Inventory"
@@ -15,27 +17,30 @@ import {
   ListSubheader,
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
-import { Link, useLocation } from "@tanstack/react-router"
+import { getRouteApi, isRedirect, Link, useLocation } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useTranslation } from "react-i18next"
-import type { UserPublic } from "@/api"
-import useAuth from "@/hooks/useAuth"
+import { logoutFn } from "#/server/auth"
+
+const layoutRouteApi = getRouteApi("/_layout")
 
 interface SidebarItemsProps {
   onClose?: () => void
   productType?: string
 }
 
-const SidebarItems = ({
+export default function SidebarItems({
   onClose,
   productType = "fertilizer",
-}: SidebarItemsProps) => {
+}: SidebarItemsProps) {
   const { t } = useTranslation("common")
-  const { user, logout } = useAuth()
+  const { user } = layoutRouteApi.useRouteContext()
   const location = useLocation()
   const queryClient = useQueryClient()
-  const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
+  const runLogout = useServerFn(logoutFn)
+  const dashboardPath = `/${productType}`
   const navItems = [
-    { text: t("sidebar.dashboard"), icon: DashboardIcon, to: "/" },
+    { text: t("sidebar.dashboard"), icon: DashboardIcon, to: dashboardPath },
     {
       text: t("sidebar.labels"),
       icon: LabelIcon,
@@ -57,8 +62,13 @@ const SidebarItems = ({
         ]
       : []),
   ]
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    try {
+      queryClient.removeQueries({ queryKey: ["currentUser"] })
+      await runLogout()
+    } catch (e) {
+      if (isRedirect(e)) throw e
+    }
     onClose?.()
   }
   return (
@@ -73,6 +83,9 @@ const SidebarItems = ({
         {navItems.map((item) => {
           const isActive =
             location.pathname === item.to ||
+            (item.to === dashboardPath &&
+              (location.pathname === dashboardPath ||
+                location.pathname === `${dashboardPath}/`)) ||
             (item.to.includes("/labels") &&
               location.pathname.startsWith(`/${productType}/labels`)) ||
             (item.to.includes("/products") &&
@@ -125,7 +138,7 @@ const SidebarItems = ({
       <Box sx={{ mt: "auto" }}>
         <Divider />
         <List>
-          {currentUser?.email && (
+          {user?.email && (
             <ListSubheader
               sx={{
                 overflow: "hidden",
@@ -133,11 +146,11 @@ const SidebarItems = ({
                 whiteSpace: "nowrap",
               }}
             >
-              {t("sidebar.loggedInAs", { email: currentUser.email })}
+              {t("sidebar.loggedInAs", { email: user.email })}
             </ListSubheader>
           )}
           <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout}>
+            <ListItemButton onClick={() => void handleLogout()}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
@@ -149,5 +162,3 @@ const SidebarItems = ({
     </Box>
   )
 }
-
-export default SidebarItems

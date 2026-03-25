@@ -71,7 +71,7 @@ help:
 	@echo ""
 	@echo "Frontend commands (delegated to frontend/Makefile):"
 	@echo "  frontend-help            - Show frontend-specific help"
-	@echo "  frontend-dev             - Run frontend development server"
+	@echo "  frontend-dev             - Run TanStack Start dev server (frontend/)"
 	@echo "  frontend-build           - Build frontend for production"
 	@echo "  frontend-lint            - Lint frontend code"
 	@echo "  frontend-preview         - Preview production build"
@@ -163,6 +163,7 @@ docker-compose-build:
 
 docker-up:
 	@echo "Starting all services with Docker Compose..."
+	@echo "Access the app at http://localhost:5173"
 	@echo "Access the API at http://localhost:8000"
 	@echo "Access pgAdmin at http://localhost:5050"
 	@echo "Access MinIO console at http://localhost:9001"
@@ -171,7 +172,8 @@ docker-up:
 docker-up-d:
 	@echo "Starting all services in background..."
 	@docker compose up --build -d
-	@echo "Services started. Use 'make docker-logs' to view logs."
+	@echo "Services started. App: http://localhost:5173  API: http://localhost:8000"
+	@echo "Use 'make docker-logs' to view logs."
 
 docker-watch:
 	@echo "Starting services with file watching..."

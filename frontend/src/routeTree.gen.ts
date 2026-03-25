@@ -19,7 +19,6 @@ import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
 import { Route as LayoutProductTypeRouteImport } from './routes/_layout/$productType'
 import { Route as LayoutProductTypeIndexRouteImport } from './routes/_layout/$productType/index'
-import { Route as LayoutProductTypeVerifyRouteImport } from './routes/_layout/$productType/verify'
 import { Route as LayoutProductTypeProductsIndexRouteImport } from './routes/_layout/$productType/products/index'
 import { Route as LayoutProductTypeLabelsIndexRouteImport } from './routes/_layout/$productType/labels/index'
 import { Route as LayoutProductTypeProductsNewRouteImport } from './routes/_layout/$productType/products/new'
@@ -77,11 +76,6 @@ const LayoutProductTypeRoute = LayoutProductTypeRouteImport.update({
 const LayoutProductTypeIndexRoute = LayoutProductTypeIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutProductTypeRoute,
-} as any)
-const LayoutProductTypeVerifyRoute = LayoutProductTypeVerifyRouteImport.update({
-  id: '/verify',
-  path: '/verify',
   getParentRoute: () => LayoutProductTypeRoute,
 } as any)
 const LayoutProductTypeProductsIndexRoute =
@@ -148,7 +142,6 @@ export interface FileRoutesByFullPath {
   '/$productType': typeof LayoutProductTypeRouteWithChildren
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/$productType/': typeof LayoutProductTypeIndexRoute
   '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
@@ -168,7 +161,6 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
   '/settings': typeof LayoutSettingsRoute
-  '/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/$productType': typeof LayoutProductTypeIndexRoute
   '/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
@@ -191,7 +183,6 @@ export interface FileRoutesById {
   '/_layout/$productType': typeof LayoutProductTypeRouteWithChildren
   '/_layout/admin': typeof LayoutAdminRoute
   '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/$productType/verify': typeof LayoutProductTypeVerifyRoute
   '/_layout/$productType/': typeof LayoutProductTypeIndexRoute
   '/_layout/$productType/labels/$labelId': typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   '/_layout/$productType/labels/new': typeof LayoutProductTypeLabelsNewRoute
@@ -214,7 +205,6 @@ export interface FileRouteTypes {
     | '/$productType'
     | '/admin'
     | '/settings'
-    | '/$productType/verify'
     | '/$productType/'
     | '/$productType/labels/$labelId'
     | '/$productType/labels/new'
@@ -234,7 +224,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin'
     | '/settings'
-    | '/$productType/verify'
     | '/$productType'
     | '/$productType/labels/$labelId'
     | '/$productType/labels/new'
@@ -256,7 +245,6 @@ export interface FileRouteTypes {
     | '/_layout/$productType'
     | '/_layout/admin'
     | '/_layout/settings'
-    | '/_layout/$productType/verify'
     | '/_layout/$productType/'
     | '/_layout/$productType/labels/$labelId'
     | '/_layout/$productType/labels/new'
@@ -350,13 +338,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeIndexRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
-    '/_layout/$productType/verify': {
-      id: '/_layout/$productType/verify'
-      path: '/verify'
-      fullPath: '/$productType/verify'
-      preLoaderRoute: typeof LayoutProductTypeVerifyRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
     '/_layout/$productType/products/': {
       id: '/_layout/$productType/products/'
       path: '/products'
@@ -445,7 +426,6 @@ const LayoutProductTypeLabelsLabelIdRouteWithChildren =
   )
 
 interface LayoutProductTypeRouteChildren {
-  LayoutProductTypeVerifyRoute: typeof LayoutProductTypeVerifyRoute
   LayoutProductTypeIndexRoute: typeof LayoutProductTypeIndexRoute
   LayoutProductTypeLabelsLabelIdRoute: typeof LayoutProductTypeLabelsLabelIdRouteWithChildren
   LayoutProductTypeLabelsNewRoute: typeof LayoutProductTypeLabelsNewRoute
@@ -456,7 +436,6 @@ interface LayoutProductTypeRouteChildren {
 }
 
 const LayoutProductTypeRouteChildren: LayoutProductTypeRouteChildren = {
-  LayoutProductTypeVerifyRoute: LayoutProductTypeVerifyRoute,
   LayoutProductTypeIndexRoute: LayoutProductTypeIndexRoute,
   LayoutProductTypeLabelsLabelIdRoute:
     LayoutProductTypeLabelsLabelIdRouteWithChildren,
@@ -497,3 +476,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,3 +1,5 @@
+// ============================== Add user dialog ==============================
+
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
@@ -15,13 +17,18 @@ import {
   TextField,
 } from "@mui/material"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { type UserCreateWritable, UsersService } from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { confirmPasswordRules, emailPattern, passwordRules } from "@/utils"
+import type { UserCreateWritable } from "#/api"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { createAdminUserFn } from "#/server/admin-users"
+import {
+  confirmPasswordRules,
+  emailPattern,
+  passwordRules,
+} from "#/utils/form-validation"
 
 interface AddUserForm extends UserCreateWritable {
   confirm_password: string
@@ -41,6 +48,7 @@ export default function AddUserDialog({
   const { t } = useTranslation("common")
   const { showSuccessToast } = useSnackbar()
   const queryClient = useQueryClient()
+  const runCreateUser = useServerFn(createAdminUserFn)
   const [mutationError, setMutationError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -81,10 +89,10 @@ export default function AddUserDialog({
     }
   }, [open, reset])
   const createMutation = useMutation({
-    mutationFn: (data: AddUserForm) => {
-      const { confirm_password: _cp, ...body } = data
-      return UsersService.createUser({
-        body: {
+    mutationFn: async (form: AddUserForm) => {
+      const { confirm_password: _cp, ...body } = form
+      await runCreateUser({
+        data: {
           email: body.email,
           password: body.password,
           first_name: body.first_name || null,
@@ -100,19 +108,9 @@ export default function AddUserDialog({
       queryClient.invalidateQueries({ queryKey: ["users"] })
       onSuccess?.()
     },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        const detail = (error.response?.data as { detail?: unknown })?.detail
-        if (Array.isArray(detail) && detail.length > 0 && detail[0]?.msg) {
-          setMutationError(String(detail[0].msg))
-        } else if (typeof detail === "string") {
-          setMutationError(detail)
-        } else {
-          setMutationError(t("admin.addUserDialog.error"))
-        }
-      } else {
-        setMutationError(t("admin.addUserDialog.error"))
-      }
+    onError: (error: unknown) => {
+      const msg = error instanceof Error ? error.message : ""
+      setMutationError(msg || t("admin.addUserDialog.error"))
     },
   })
   const onSubmit: SubmitHandler<AddUserForm> = async (data) => {
@@ -120,7 +118,7 @@ export default function AddUserDialog({
     try {
       await createMutation.mutateAsync(data)
     } catch {
-      // error displayed in form
+      /* onError */
     }
   }
   const handleClose = () => {

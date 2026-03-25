@@ -191,7 +191,9 @@ export default function LabelDataContacts<
                   }}
                 >
                   <Typography variant="subtitle2" color="text.secondary">
-                    {t("data.contacts.contactNumber", { number: index + 1 })}
+                    {t("data.contacts.contactNumber", {
+                      number: String(index + 1),
+                    })}
                   </Typography>
                   {!readOnly && (
                     <IconButton

@@ -1,3 +1,6 @@
+// ============================== Label image card ==============================
+// --- Presigned URL + delete via server fns (session bearer) ---
+
 import DeleteIcon from "@mui/icons-material/Delete"
 import ImageIcon from "@mui/icons-material/Image"
 import {
@@ -16,13 +19,17 @@ import {
   Typography,
 } from "@mui/material"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useServerFn } from "@tanstack/react-start"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { type LabelImageDetail, LabelsService } from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
+import type { LabelImageDetail } from "#/api/types.gen"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import {
+  deleteLabelImageFn,
+  getLabelImagePresignedDownloadUrlFn,
+} from "#/server/label-editor"
 
-interface LabelImageCardProps {
+type LabelImageCardProps = {
   image: LabelImageDetail
   labelId: string
 }
@@ -31,54 +38,35 @@ export default function LabelImageCard({
   image,
   labelId,
 }: LabelImageCardProps) {
-  const { t } = useTranslation("labels")
+  const { t } = useTranslation(["labels", "common"])
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useSnackbar()
-  // ============================== State ==============================
   const [imageLoaded, setImageLoaded] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  // ============================== Fetch Presigned URL ==============================
+  const getPresigned = useServerFn(getLabelImagePresignedDownloadUrlFn)
+  const deleteImage = useServerFn(deleteLabelImageFn)
   const shouldFetchUrl = image.status === "completed"
-  const { data: presignedUrlData, isLoading: isLoadingUrl } = useQuery({
+  const { data: displayUrl = null, isLoading: isLoadingUrl } = useQuery({
     queryKey: ["labels", labelId, "images", image.id, "presigned-download-url"],
-    queryFn: async () => {
-      const response = await LabelsService.getLabelImagePresignedDownloadUrl({
-        path: {
-          label_id: labelId,
-          image_id: image.id,
-        },
-      })
-      return response.data
-    },
+    queryFn: async () => getPresigned({ data: { labelId, imageId: image.id } }),
     enabled: shouldFetchUrl,
   })
-  const displayUrl = presignedUrlData?.presigned_url || null
-  const isImageLoading = displayUrl && !imageLoaded
+  const isImageLoading = Boolean(displayUrl) && !imageLoaded
   const showSpinner = isLoadingUrl || isImageLoading
-  // ============================== Delete Mutation ==============================
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      await LabelsService.deleteLabelImage({
-        path: {
-          label_id: labelId,
-          image_id: image.id,
-        },
-      })
+      await deleteImage({ data: { labelId, imageId: image.id } })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["labels", labelId, "images"] })
       showSuccessToast(t("image.deleteSuccess"))
       setDeleteDialogOpen(false)
     },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        showErrorToast(error.response?.data?.detail || t("image.deleteError"))
-      } else {
-        showErrorToast(t("image.deleteError"))
-      }
+    onError: (err: unknown) => {
+      const msg = err instanceof Error ? err.message : t("image.deleteError")
+      showErrorToast(msg || t("image.deleteError"))
     },
   })
-  // ============================== Delete Handlers ==============================
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true)
   }
@@ -88,7 +76,6 @@ export default function LabelImageCard({
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
   }
-  // ============================== Render ==============================
   return (
     <Card>
       <CardContent>
@@ -176,7 +163,10 @@ export default function LabelImageCard({
         )}
         <Typography variant="body2">{image.display_filename}</Typography>
         <Typography variant="caption" color="text.secondary">
-          {t("image.sequence", { order: image.sequence_order })}
+          {t("image.sequence", {
+            order: String(image.sequence_order),
+            defaultValue: "Sequence: {{order}}",
+          })}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", pt: 0 }}>
@@ -211,7 +201,7 @@ export default function LabelImageCard({
             onClick={handleDeleteCancel}
             disabled={deleteMutation.isPending}
           >
-            {t("common.button.cancel")}
+            {t("button.cancel", { ns: "common" })}
           </Button>
           <Button
             onClick={handleDeleteConfirm}

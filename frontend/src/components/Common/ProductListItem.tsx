@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import type { ProductPublic } from "@/api"
-import { useLanguage } from "@/stores/useLanguage"
+import type { ProductPublic } from "#/api"
+import { useLanguage } from "#/stores/useLanguage"
 
 interface ProductListItemProps {
   product: ProductPublic

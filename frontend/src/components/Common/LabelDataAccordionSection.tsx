@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import type { AccordionSection } from "@/stores/useLabelData"
+import type { AccordionSection } from "#/stores/useLabelData"
 
 interface LabelDataAccordionSectionProps {
   section: AccordionSection
@@ -49,7 +49,7 @@ export default function LabelDataAccordionSection({
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 500 }}>
-            {t(`data.sections.${sectionKey}`, { ns: "labels" })}
+            {(t as (key: string) => string)(`data.sections.${sectionKey}`)}
           </Typography>
           {action && (
             <Box

@@ -1,3 +1,6 @@
+// ============================== Edit label ==============================
+// --- Label data form, images, extraction (API via server fns + session bearer) ---
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import FactCheckIcon from "@mui/icons-material/FactCheck"
@@ -22,30 +25,34 @@ import {
   redirect,
   useBlocker,
 } from "@tanstack/react-router"
-import { AxiosError } from "axios"
+import { useServerFn } from "@tanstack/react-start"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { LabelsService } from "@/api"
-import ImageCarousel from "@/components/Common/ImageCarousel"
-import NotFound from "@/components/Common/NotFound"
-import BasicInformationSection from "@/components/LabelData/BasicInformationSection"
-import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysisSection"
-import IngredientsSection from "@/components/LabelData/IngredientsSection"
-import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
-import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
-import StatementsAndClaimsSection from "@/components/LabelData/StatementsAndClaimsSection"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useLabelDataQueries } from "@/hooks/useLabelDataQueries"
-import { useAppBarActionsStore } from "@/stores/useAppBarActions"
-import { useBanner } from "@/stores/useBanner"
-import { useLabelDataStore } from "@/stores/useLabelData"
-import { useLanguage } from "@/stores/useLanguage"
+import ImageCarousel from "#/components/Common/ImageCarousel"
+import NotFound from "#/components/Common/NotFound"
+import BasicInformationSection from "#/components/LabelData/BasicInformationSection"
+import GuaranteedAnalysisSection from "#/components/LabelData/GuaranteedAnalysisSection"
+import IngredientsSection from "#/components/LabelData/IngredientsSection"
+import NPKAnalysisSection from "#/components/LabelData/NPKAnalysisSection"
+import ProductAssociationSection from "#/components/LabelData/ProductAssociationSection"
+import StatementsAndClaimsSection from "#/components/LabelData/StatementsAndClaimsSection"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { useLabelDataQueries } from "#/hooks/useLabelDataQueries"
+import {
+  getLabelImagePresignedDownloadUrlFn,
+  readLabelForRouteFn,
+  readLabelImagesFn,
+} from "#/server/label-editor"
+import { useAppBarActionsStore } from "#/stores/useAppBarActions"
+import { useBanner } from "#/stores/useBanner"
+import { useLabelDataStore } from "#/stores/useLabelData"
+import { useLanguage } from "#/stores/useLanguage"
 import {
   getErrorMessage,
   isAxiosErrorWithStatus,
-} from "@/utils/labelDataErrors"
+} from "#/utils/labelDataErrors"
 import {
   createLabelDataFormSchema,
   formPathToMetaFieldName,
@@ -54,7 +61,7 @@ import {
   isCommonFieldForReview,
   useHasImages,
   useLabelDataMetaMap,
-} from "@/utils/labelDataHelpers"
+} from "#/utils/labelDataHelpers"
 
 export const Route = createFileRoute(
   "/_layout/$productType/labels/$labelId/edit",
@@ -62,41 +69,22 @@ export const Route = createFileRoute(
   notFoundComponent: NotFound,
   loader: async ({ params }) => {
     const { labelId, productType } = params
-    try {
-      const response = await LabelsService.readLabel({
-        path: { label_id: labelId },
-      })
-      const label = response.data
-      if (!label) {
-        throw notFound()
-      }
-      if (label.product_type.code !== productType) {
-        throw redirect({
-          to: "/$productType/labels/$labelId/edit",
-          params: {
-            productType: label.product_type.code as "fertilizer",
-            labelId: labelId,
-          },
-        })
-      }
-      const isLinked = !!label?.product_id
-      return { label, isLinked }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const status = error.response?.status
-        const errorData = error.response?.data
-        const isUuidParsingError =
-          status === 422 &&
-          Array.isArray(errorData?.detail) &&
-          errorData.detail.some(
-            (err: { type?: string }) => err.type === "uuid_parsing",
-          )
-        if (status === 404 || isUuidParsingError) {
-          throw notFound()
-        }
-      }
-      throw error
+    const r = await readLabelForRouteFn({
+      data: { labelId, productType },
+    })
+    if (r.outcome === "not_found") {
+      throw notFound()
     }
+    if (r.outcome === "redirect") {
+      throw redirect({
+        to: "/$productType/labels/$labelId/edit",
+        params: {
+          productType: r.productType as "fertilizer",
+          labelId: r.labelId,
+        },
+      })
+    }
+    return { label: r.label, isLinked: r.isLinked }
   },
   component: LabelData,
 })
@@ -104,7 +92,12 @@ export const Route = createFileRoute(
 function LabelData() {
   const { t } = useTranslation(["labels", "errors", "common"])
   const labelDataFormSchema = useMemo(
-    () => createLabelDataFormSchema((k) => t(k, { ns: "labels" })),
+    () =>
+      createLabelDataFormSchema((k) =>
+        (t as (key: string, opts?: { ns?: string }) => string)(k, {
+          ns: "labels",
+        }),
+      ),
     [t],
   )
   const { labelId, productType } = Route.useParams()
@@ -132,8 +125,6 @@ function LabelData() {
     isLoading: isLoadingAll,
     isError: hasQueryError,
     error: queryError,
-    createLabelDataMutation,
-    createFertilizerDataMutation,
     updateReviewStatusMutation,
     extractFieldMutation,
     extractAllSectionsMutation,
@@ -143,7 +134,10 @@ function LabelData() {
     handleSave,
     isSaving,
   } = useLabelDataQueries(labelId, isFertilizer, form)
-
+  const readLabelImages = useServerFn(readLabelImagesFn)
+  const getLabelImagePresignedDownloadUrl = useServerFn(
+    getLabelImagePresignedDownloadUrlFn,
+  )
   const { showSuccessToast } = useSnackbar()
   const { language } = useLanguage()
   const productName = form.watch("product_name") ?? labelData?.product_name
@@ -151,7 +145,6 @@ function LabelData() {
     language === "fr"
       ? (productName?.fr ?? productName?.en ?? null)
       : (productName?.en ?? productName?.fr ?? null)
-
   const handleAssociate = useCallback(
     (productId: string) => {
       updateLabelMutation.mutate(
@@ -170,7 +163,6 @@ function LabelData() {
     },
     [updateLabelMutation, t, showSuccessToast],
   )
-
   const handleUnlink = useCallback(() => {
     updateLabelMutation.mutate(
       { product_id: null },
@@ -186,7 +178,6 @@ function LabelData() {
       },
     )
   }, [updateLabelMutation, t, showSuccessToast])
-
   const handleCreateAndAssociate = useCallback(async () => {
     const valid = await form.trigger("registration_number")
     if (!valid) return
@@ -197,7 +188,7 @@ function LabelData() {
         brand_name?: { en?: string; fr?: string }
         product_name?: { en?: string; fr?: string }
       }
-      const productResponse = await createProductMutation.mutateAsync({
+      const product = await createProductMutation.mutateAsync({
         registration_number: v.registration_number,
         product_type: productType,
         brand_name_en: v.brand_name?.en ?? undefined,
@@ -205,10 +196,9 @@ function LabelData() {
         name_en: v.product_name?.en ?? undefined,
         name_fr: v.product_name?.fr ?? undefined,
       })
-
-      if (productResponse.data) {
+      if (product) {
         await updateLabelMutation.mutateAsync(
-          { product_id: productResponse.data.id },
+          { product_id: product.id },
           {
             onSuccess: () => {
               showSuccessToast(
@@ -222,7 +212,7 @@ function LabelData() {
         )
       }
     } catch (_error) {
-      // Errors are already handled by mutation global onError (showErrorToast)
+      // handled by mutation onError
     }
   }, [
     createProductMutation,
@@ -232,14 +222,12 @@ function LabelData() {
     t,
     showSuccessToast,
   ])
-
   const completionDisabledReason = useMemo(() => {
     if (!labelData) return t("data.validation.missingLabelData")
     if (!labelData.registration_number?.trim())
       return t("data.validation.missingRegistrationNumber")
     return null
   }, [labelData, t])
-
   const isReviewCompletable = !completionDisabledReason
   useEffect(() => {
     document.title = t("data.pageTitle")
@@ -284,12 +272,7 @@ function LabelData() {
   const hasImages = useHasImages(label)
   const { data: labelImages = [], isLoading: isLoadingImages } = useQuery({
     queryKey: ["labels", labelId, "images"],
-    queryFn: async () => {
-      const response = await LabelsService.readLabelImages({
-        path: { label_id: labelId },
-      })
-      return response.data
-    },
+    queryFn: async () => readLabelImages({ data: { labelId } }),
   })
   const completedImages = useMemo(
     () =>
@@ -307,18 +290,10 @@ function LabelData() {
         image.id,
         "presigned-download-url",
       ],
-      queryFn: async () => {
-        const response = await LabelsService.getLabelImagePresignedDownloadUrl({
-          path: {
-            label_id: labelId,
-            image_id: image.id,
-          },
-        })
-        if (!response.data) {
-          throw new Error("Failed to get presigned URL")
-        }
-        return response.data.presigned_url
-      },
+      queryFn: async () =>
+        getLabelImagePresignedDownloadUrl({
+          data: { labelId, imageId: image.id },
+        }),
       enabled: image.status === "completed",
     })),
   })
@@ -330,10 +305,7 @@ function LabelData() {
     [imageUrlQueries],
   )
   const isLoadingImageUrls = imageUrlQueries.some((query) => query.isLoading)
-  const isLoading =
-    isLoadingAll ||
-    createLabelDataMutation.isPending ||
-    createFertilizerDataMutation.isPending
+  const isLoading = isLoadingAll
   const isExtracting = getIsExtracting(labelId)
   const accordionState = getAccordionState(labelId)
   const getFieldMetaFn = (formPath: string) =>

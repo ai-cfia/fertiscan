@@ -1,9 +1,11 @@
+// ============================== Labels table empty ==============================
+
 import LabelIcon from "@mui/icons-material/Label"
 import SearchOffIcon from "@mui/icons-material/SearchOff"
 import { useTranslation } from "react-i18next"
-import EmptyState from "./EmptyState"
+import EmptyState from "#/components/Common/EmptyState"
 
-interface LabelListEmptyStateProps {
+type LabelListEmptyStateProps = {
   hasActiveFilters: boolean
   colSpan: number
 }
