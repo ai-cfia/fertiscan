@@ -235,9 +235,15 @@
   "files": {
     "editLabel": "Modifier l'étiquette",
     "pageTitle": "Fichiers d'étiquette - Inspection d'étiquettes",
-    "title_one": "Image d'étiquette : {{count}} (max {{max}})",
     "title_many": "Images d'étiquette : {{count}} (max {{max}})",
-    "title_other": "Images d'étiquette : {{count}} (max {{max}})"
+    "title_one": "Image d'étiquette : {{count}} (max {{max}})",
+    "title_one_many": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_one_one": "Image d'étiquette : {{count}} (max {{max}})",
+    "title_one_other": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_other": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_other_many": "Images d'étiquette : {{count}} (max {{max}})",
+    "title_other_one": "Image d'étiquette : {{count}} (max {{max}})",
+    "title_other_other": "Images d'étiquette : {{count}} (max {{max}})"
   },
   "filter": {
     "completed": "Terminé",
