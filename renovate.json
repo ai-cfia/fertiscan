@@ -11,16 +11,7 @@
 	"labels": [
 		"dependencies"
 	],
-	"github-actions": {
-		"pinDigests": true
-	},
 	"packageRules": [
-		{
-			"matchCategories": [
-				"docker"
-			],
-			"pinDigests": true
-		},
 		{
 			"matchFileNames": [
 				"frontend/**"
@@ -43,6 +34,16 @@
 			],
 			"labels": [
 				"ci"
+			]
+		},
+		{
+			"matchManagers": ["dockerfile", "docker-compose"],
+			"matchDatasources": ["docker"],
+			"matchUpdateTypes": ["pin", "digest"],
+			"pinDigests": true,
+			"labels": [
+				"docker",
+				"dependencies"
 			]
 		}
 	]
