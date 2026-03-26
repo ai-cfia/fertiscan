@@ -39,7 +39,7 @@ jobs:
       - name: SBOM security scan
         if: ${{ inputs.should_scan }}
         id: scan
-        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2
+        uses: anchore/scan-action@ba2e18e34737763b9c92004dfe2afbcbd2d6207d
         with:
           sbom: frontend/sbom.json
           fail-build: false
