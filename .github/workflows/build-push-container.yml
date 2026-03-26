@@ -25,6 +25,10 @@ on:
       dockerfile-folder-path:
         required: false
         type: string
+      build-args:
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build-push-image:
@@ -72,6 +76,7 @@ jobs:
             ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.release-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+          build-args: ${{ inputs.build-args }}
       - name: Build and push (merged)
         id: docker_build_and_tag_merged
         if: github.event.pull_request.merged == true
@@ -86,6 +91,7 @@ jobs:
             ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.release-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+          build-args: ${{ inputs.build-args }}
       - name: Refresh Cache
         run: |
           rm -rf /tmp/.buildx-cache

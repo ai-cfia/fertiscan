@@ -1,8 +1,8 @@
+// ============================== Types ==============================
 import { Alert, Box, Button, Typography } from "@mui/material"
 import type { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 
-// ============================== Types ==============================
 interface PageTopBannerProps {
   message: string | ReactNode
   items?: (string | ReactNode)[]
@@ -10,7 +10,6 @@ interface PageTopBannerProps {
   onRetry?: () => void
   onDismiss?: () => void
 }
-
 // ============================== Component ==============================
 export default function PageTopBanner({
   message,

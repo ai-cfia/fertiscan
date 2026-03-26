@@ -1,3 +1,5 @@
+// ============================== User settings content ==============================
+
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import {
@@ -22,16 +24,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useMutation } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { isRedirect } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
+import type { TFunction } from "i18next"
 import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { UsersService } from "@/api"
-import EditUserDialog from "@/components/Common/EditUserDialog"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import useAuth from "@/hooks/useAuth"
-import { confirmPasswordRules, getUserInitials, passwordRules } from "@/utils"
+import EditUserDialog from "#/components/Common/EditUserDialog"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { useCurrentUser } from "#/hooks/use-current-user"
+import { logoutFn } from "#/server/auth"
+import { deleteUserMeFn, updatePasswordMeFn } from "#/server/user-me"
+import { confirmPasswordRules, passwordRules } from "#/utils/form-validation"
+import { getUserInitials } from "#/utils/user-display"
 
 // ============================== Change Password Form ==============================
 interface ChangePasswordFormData {
@@ -41,11 +47,12 @@ interface ChangePasswordFormData {
 }
 
 interface ChangePasswordFormProps {
-  t: (key: string) => string
+  t: TFunction<"common">
 }
 
 function ChangePasswordForm({ t }: ChangePasswordFormProps) {
   const { showSuccessToast } = useSnackbar()
+  const runUpdatePassword = useServerFn(updatePasswordMeFn)
   const [mutationError, setMutationError] = useState<string | null>(null)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
@@ -67,8 +74,8 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
   })
   const updateMutation = useMutation({
     mutationFn: (data: ChangePasswordFormData) =>
-      UsersService.updatePasswordMe({
-        body: {
+      runUpdatePassword({
+        data: {
           current_password: data.current_password,
           new_password: data.new_password,
         },
@@ -79,19 +86,13 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
       reset()
     },
     onError: (error: unknown) => {
-      if (error instanceof AxiosError) {
-        const detail = (error.response?.data as { detail?: unknown })?.detail
-        if (typeof detail === "string") {
-          if (detail === "Incorrect password") {
-            setMutationError(t("settings.password.incorrectPassword"))
-          } else if (detail === "User has no password") {
-            setMutationError(t("settings.password.userHasNoPassword"))
-          } else {
-            setMutationError(detail)
-          }
-        } else {
-          setMutationError(t("settings.password.error"))
-        }
+      const detail = error instanceof Error ? error.message : ""
+      if (detail === "Incorrect password") {
+        setMutationError(t("settings.password.incorrectPassword"))
+      } else if (detail === "User has no password") {
+        setMutationError(t("settings.password.userHasNoPassword"))
+      } else if (detail) {
+        setMutationError(detail)
       } else {
         setMutationError(t("settings.password.error"))
       }
@@ -102,7 +103,7 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
     try {
       await updateMutation.mutateAsync(data)
     } catch {
-      // error displayed in form
+      /* onError sets mutationError */
     }
   }
   return (
@@ -241,27 +242,30 @@ function ChangePasswordForm({ t }: ChangePasswordFormProps) {
 
 // ============================== Danger Zone ==============================
 interface DangerZoneProps {
-  t: (key: string) => string
+  t: TFunction<"common">
 }
 
 function DangerZone({ t }: DangerZoneProps) {
-  const { logout } = useAuth()
+  const queryClient = useQueryClient()
   const { showErrorToast, showSuccessToast } = useSnackbar()
+  const runDeleteUserMe = useServerFn(deleteUserMeFn)
+  const runLogout = useServerFn(logoutFn)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const deleteMutation = useMutation({
-    mutationFn: () => UsersService.deleteUserMe(),
-    onSuccess: () => {
+    mutationFn: () => runDeleteUserMe(),
+    onSuccess: async () => {
       setDeleteDialogOpen(false)
       showSuccessToast(t("settings.dangerZone.deleteAccountSuccess"))
-      logout()
+      queryClient.removeQueries({ queryKey: ["currentUser"] })
+      try {
+        await runLogout()
+      } catch (e) {
+        if (isRedirect(e)) throw e
+      }
     },
     onError: (error: unknown) => {
-      if (error instanceof AxiosError) {
-        const detail = (error.response?.data as { detail?: string })?.detail
-        showErrorToast(detail || t("admin.rowActions.deleteError"))
-      } else {
-        showErrorToast(t("admin.rowActions.deleteError"))
-      }
+      const detail = error instanceof Error ? error.message : ""
+      showErrorToast(detail || t("admin.rowActions.deleteError"))
     },
   })
   return (
@@ -341,11 +345,18 @@ export default function UserSettingsContent({
   showTitle = true,
 }: UserSettingsContentProps) {
   const { t } = useTranslation("common")
-  const { user: currentUser } = useAuth()
+  const { data: currentUser, isPending } = useCurrentUser()
   const [value, setValue] = useState(0)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
+  }
+  if (isPending && !currentUser) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
   }
   if (!currentUser) {
     return null

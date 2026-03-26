@@ -1,3 +1,4 @@
+// ============================== Sign up ==============================
 import LockIcon from "@mui/icons-material/Lock"
 import PersonIcon from "@mui/icons-material/Person"
 import Visibility from "@mui/icons-material/Visibility"
@@ -15,42 +16,50 @@ import {
 import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
+  isRedirect,
   Link as RouterLink,
   redirect,
 } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import type { PrivateUserCreate } from "@/api"
-import PageTopBanner from "@/components/Common/PageTopBanner"
-import useAuth, { isLoggedIn } from "@/hooks/useAuth"
-import { useBackendStatus } from "@/stores/useBackendStatus"
-import { confirmPasswordRules, emailPattern, passwordRules } from "@/utils"
+import type { PrivateUserCreate } from "#/api"
+import PageTopBanner from "#/components/Common/PageTopBanner"
+import { useBackendHealthCheck } from "#/hooks/useBackendHealthCheck"
+import { getCurrentUserFn, signUpFn } from "#/server/auth"
+import { useBackendStatus } from "#/stores/useBackendStatus"
+import {
+  confirmPasswordRules,
+  emailPattern,
+  passwordRules,
+} from "#/utils/form-validation"
 
+interface UserRegisterForm extends PrivateUserCreate {
+  confirm_password: string
+}
 export const Route = createFileRoute("/signup")({
-  component: SignUp,
   beforeLoad: async () => {
-    if (isLoggedIn()) {
+    const user = await getCurrentUserFn()
+    if (user) {
       throw redirect({
         to: "/$productType",
         params: { productType: "fertilizer" },
       })
     }
   },
+  component: SignUp,
 })
-
-interface UserRegisterForm extends PrivateUserCreate {
-  confirm_password: string
-}
-
 function SignUp() {
+  useBackendHealthCheck()
   const { t } = useTranslation(["auth", "common"])
-  const { signUpMutation } = useAuth()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const signUp = useServerFn(signUpFn)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -77,9 +86,31 @@ function SignUp() {
       confirm_password: "",
     },
   })
-  const onSubmit: SubmitHandler<UserRegisterForm> = (data) => {
-    const { confirm_password: _confirm_password, ...userData } = data
-    signUpMutation.mutate(userData)
+  const onSubmit: SubmitHandler<UserRegisterForm> = async (data) => {
+    if (isSubmitting) return
+    setServerError(null)
+    const { confirm_password: _c, ...userData } = data
+    try {
+      const result = await signUp({ data: userData })
+      if (
+        result &&
+        typeof result === "object" &&
+        "ok" in result &&
+        result.ok === false
+      ) {
+        setServerError(result.error)
+      }
+    } catch (err) {
+      if (isRedirect(err)) {
+        throw err
+      }
+      setServerError(
+        t("labels.errorOccurred", {
+          ns: "errors",
+          defaultValue: "Something went wrong",
+        }),
+      )
+    }
   }
   return (
     <>
@@ -108,10 +139,16 @@ function SignUp() {
             {t("signup.title")}
           </Typography>
         </Box>
+        {serverError ? (
+          <Typography color="error" variant="body2" role="alert">
+            {serverError}
+          </Typography>
+        ) : null}
         <TextField
           {...register("first_name", {
             required: t("signup.firstNameRequired"),
           })}
+          required
           label={t("signup.firstName")}
           type="text"
           fullWidth
@@ -136,6 +173,7 @@ function SignUp() {
           {...register("last_name", {
             required: t("signup.lastNameRequired"),
           })}
+          required
           label={t("signup.lastName")}
           type="text"
           fullWidth
@@ -162,6 +200,7 @@ function SignUp() {
               message: t("signup.emailInvalid"),
             },
           })}
+          required
           label={t("signup.email")}
           type="email"
           fullWidth
@@ -190,6 +229,7 @@ function SignUp() {
               minLength: t("signup.passwordMinLength"),
             }),
           )}
+          required
           label={t("signup.password")}
           type={showPassword ? "text" : "password"}
           fullWidth
@@ -232,6 +272,7 @@ function SignUp() {
               validate: t("signup.passwordsDoNotMatch"),
             }),
           )}
+          required
           label={t("signup.confirmPassword")}
           type={showConfirmPassword ? "text" : "password"}
           fullWidth

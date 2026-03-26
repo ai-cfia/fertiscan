@@ -1,17 +1,19 @@
+// ============================== Compliance label data panel ==============================
+// --- Read-only label sections for compliance review ---
+
 import EditIcon from "@mui/icons-material/Edit"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Link } from "@tanstack/react-router"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import BasicInformationSection from "@/components/LabelData/BasicInformationSection"
-import GuaranteedAnalysisSection from "@/components/LabelData/GuaranteedAnalysisSection"
-import IngredientsSection from "@/components/LabelData/IngredientsSection"
-import NPKAnalysisSection from "@/components/LabelData/NPKAnalysisSection"
-import ProductAssociationSection from "@/components/LabelData/ProductAssociationSection"
-import StatementsAndClaimsSection from "@/components/LabelData/StatementsAndClaimsSection"
-import type { AccordionSection, AccordionState } from "@/stores/useLabelData"
+import BasicInformationSection from "#/components/LabelData/BasicInformationSection"
+import GuaranteedAnalysisSection from "#/components/LabelData/GuaranteedAnalysisSection"
+import IngredientsSection from "#/components/LabelData/IngredientsSection"
+import NPKAnalysisSection from "#/components/LabelData/NPKAnalysisSection"
+import ProductAssociationSection from "#/components/LabelData/ProductAssociationSection"
+import StatementsAndClaimsSection from "#/components/LabelData/StatementsAndClaimsSection"
+import type { AccordionSection, AccordionState } from "#/stores/useLabelData"
 
-// ============================== Types ==============================
 interface ComplianceLabelDataPanelProps {
   label: { product_id?: string | null }
   labelId: string
@@ -23,7 +25,6 @@ interface ComplianceLabelDataPanelProps {
   isFertilizer: boolean
 }
 
-// ============================== Component ==============================
 export default function ComplianceLabelDataPanel({
   label,
   labelId,

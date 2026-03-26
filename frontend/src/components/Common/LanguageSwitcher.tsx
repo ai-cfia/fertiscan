@@ -1,11 +1,12 @@
+// ============================== Language switcher ==============================
+
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import { useLanguage } from "@/stores/useLanguage"
+import { useLanguage } from "#/stores/useLanguage"
 
-const LanguageSwitcher = () => {
+export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage()
   const { t } = useTranslation("common")
-
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,
     newLanguage: string | null,
@@ -14,7 +15,6 @@ const LanguageSwitcher = () => {
       setLanguage(newLanguage as "en" | "fr")
     }
   }
-
   return (
     <ToggleButtonGroup
       value={language}
@@ -32,5 +32,3 @@ const LanguageSwitcher = () => {
     </ToggleButtonGroup>
   )
 }
-
-export default LanguageSwitcher

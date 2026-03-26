@@ -1,7 +1,9 @@
+// ============================== MUI snackbar toasts ==============================
+
 import { Alert, Snackbar } from "@mui/material"
 import { createContext, type ReactNode, useContext, useState } from "react"
 
-interface SnackbarContextType {
+type SnackbarContextType = {
   showSuccessToast: (message: string) => void
   showErrorToast: (message: string) => void
 }
@@ -10,7 +12,7 @@ const SnackbarContext = createContext<SnackbarContextType | undefined>(
   undefined,
 )
 
-export const useSnackbar = () => {
+export function useSnackbar() {
   const context = useContext(SnackbarContext)
   if (!context) {
     throw new Error("useSnackbar must be used within SnackbarProvider")
@@ -18,7 +20,7 @@ export const useSnackbar = () => {
   return context
 }
 
-export const SnackbarProvider = ({ children }: { children: ReactNode }) => {
+export function SnackbarProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState("")
   const [severity, setSeverity] = useState<"success" | "error">("success")

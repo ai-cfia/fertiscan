@@ -1,7 +1,3 @@
-/**
- * Store for backend availability status - single source of truth updated by
- * health check and interceptors
- */
 import { create } from "zustand"
 
 interface BackendStatusStore {
@@ -10,8 +6,7 @@ interface BackendStatusStore {
   setReady: () => void
   setNotReady: () => void
 }
-
-const store = (set: any) => ({
+export const useBackendStatus = create<BackendStatusStore>()((set) => ({
   ready: true,
   lastCheck: null,
   setReady: () =>
@@ -24,6 +19,4 @@ const store = (set: any) => ({
       ready: false,
       lastCheck: new Date(),
     }),
-})
-
-export const useBackendStatus = create<BackendStatusStore>()(store)
+}))

@@ -1,24 +1,25 @@
-import path from "node:path"
 import tailwindcss from "@tailwindcss/vite"
-import { tanstackRouter } from "@tanstack/router-plugin/vite"
-import react from "@vitejs/plugin-react"
+import { devtools } from "@tanstack/devtools-vite"
+import { tanstackStart } from "@tanstack/react-start/plugin/vite"
+import viteReact from "@vitejs/plugin-react"
+import { nitro } from "nitro/vite"
 import { defineConfig } from "vite"
+import tsconfigPaths from "vite-tsconfig-paths"
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
+const config = defineConfig({
   plugins: [
-    tailwindcss(),
-    tanstackRouter({
-      target: "react",
-      autoCodeSplitting: true,
+    devtools({
+      injectSource: { enabled: false },
     }),
-    react(),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
+    tailwindcss(),
+    tanstackStart(),
+    nitro(),
+    viteReact(),
   ],
   server: {
     host: "0.0.0.0",
   },
 })
+
+export default config

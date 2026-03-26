@@ -1,13 +1,13 @@
+// ============================== Labels list error surface ==============================
+
 import { create } from "zustand"
 
-interface LabelListStore {
+type LabelListStore = {
   error: Error | null
   setError: (error: Error | null) => void
 }
 
-const store = (set: any) => ({
+export const useLabelList = create<LabelListStore>((set) => ({
   error: null,
-  setError: (error: Error | null) => set({ error }),
-})
-
-export const useLabelList = create<LabelListStore>()(store)
+  setError: (error) => set({ error }),
+}))

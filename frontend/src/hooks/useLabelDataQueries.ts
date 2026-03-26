@@ -1,202 +1,107 @@
+// ============================== Label data (client) ==============================
+// --- Uses server fns: session bearer is httpOnly, browser cannot call OpenAPI client ---
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { StatusCodes } from "http-status-codes"
+import { useServerFn } from "@tanstack/react-start"
 import pLimit from "p-limit"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import type {
+  FertilizerLabelDataMetaResponse,
+  LabelDataFieldMetaResponse,
+  ReviewStatus,
+} from "#/api/types.gen"
+import { useSnackbar } from "#/components/SnackbarProvider"
 import {
-  type FertilizerLabelDataMetaResponse,
-  type LabelDataFieldMetaResponse,
-  LabelsService,
-  ProductsService,
-  type ReviewStatus,
-} from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useLabelDataStore } from "@/stores/useLabelData"
+  createProductEditorFn,
+  extractFertilizerFieldsFn,
+  type FetchAllLabelDataResult,
+  fetchAllLabelDataFn,
+  toggleLabelFieldReviewFn,
+  updateFertilizerLabelDataPartialFn,
+  updateLabelDataPartialFn,
+  updateLabelReviewStatusFn,
+  updateLabelRootFn,
+} from "#/server/label-editor"
+import { useLabelDataStore } from "#/stores/useLabelData"
 import {
   EXTRACTION_SECTIONS,
   isCommonField,
   isFertilizerField,
-} from "@/utils/labelData"
-import {
-  getErrorMessage,
-  isAxiosErrorWithStatus,
-} from "@/utils/labelDataErrors"
+} from "#/utils/labelData"
+import { getErrorMessage } from "#/utils/labelDataErrors"
 import {
   mergeForForm,
   normalizeFieldValueForForm,
-} from "@/utils/labelDataHelpers"
+} from "#/utils/labelDataHelpers"
 
-// ============================== Label Data Queries & Mutations ==============================
 export function useLabelDataQueries(
   labelId: string,
   isFertilizer: boolean,
   form?: any,
 ) {
-  // --- Hooks & State ---
   const queryClient = useQueryClient()
-  // ---- Create Mutations (needed for query onError) ----
-  // ............................. Create Label Data Mutation .............................
-  const createLabelDataMutation = useMutation({
-    mutationFn: async () => {
-      return await LabelsService.createLabelData({
-        path: { label_id: labelId },
-        body: {},
-      })
-    },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(["labelData", labelId], response.data)
-        queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-      }
-    },
-    onError: async (error) => {
-      if (isAxiosErrorWithStatus(error, StatusCodes.CONFLICT)) {
-        await queryClient.invalidateQueries({
-          queryKey: ["allLabelData", labelId],
-        })
-      } else {
-        throw error
-      }
-    },
-  })
-  // ............................. Create Fertilizer Data Mutation .............................
-  const createFertilizerDataMutation = useMutation({
-    mutationFn: async () => {
-      return await LabelsService.createFertilizerLabelData({
-        path: { label_id: labelId },
-        body: {},
-      })
-    },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(
-          ["fertilizerLabelData", labelId],
-          response.data,
-        )
-        queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-      }
-    },
-    onError: async (error) => {
-      if (isAxiosErrorWithStatus(error, StatusCodes.CONFLICT)) {
-        await queryClient.invalidateQueries({
-          queryKey: ["allLabelData", labelId],
-        })
-      } else {
-        throw error
-      }
-    },
-  })
-  // --- Queries ---
-  // ............................. Combined Label Data Query .............................
+  const fetchAllLabelData = useServerFn(fetchAllLabelDataFn)
+  const updateReviewStatus = useServerFn(updateLabelReviewStatusFn)
+  const extractFields = useServerFn(extractFertilizerFieldsFn)
+  const toggleFieldReview = useServerFn(toggleLabelFieldReviewFn)
+  const updateLabelDataPartial = useServerFn(updateLabelDataPartialFn)
+  const updateFertilizerLabelDataPartial = useServerFn(
+    updateFertilizerLabelDataPartialFn,
+  )
+  const updateLabelRoot = useServerFn(updateLabelRootFn)
+  const createProduct = useServerFn(createProductEditorFn)
   const allLabelDataQuery = useQuery({
     queryKey: ["allLabelData", labelId, isFertilizer],
     queryFn: async () => {
-      const labelPromise = LabelsService.readLabel({
-        path: { label_id: labelId },
-      }).then((r) => r.data)
-      const labelDataMetaPromise = LabelsService.readLabelDataMeta({
-        path: { label_id: labelId },
-      }).then((r) => r.data)
-      const labelDataPromise = LabelsService.readLabelData({
-        path: { label_id: labelId },
-      })
-        .then((r) => r.data)
-        .catch(async (error) => {
-          if (isAxiosErrorWithStatus(error, StatusCodes.NOT_FOUND)) {
-            await createLabelDataMutation.mutateAsync()
-            const retry = await LabelsService.readLabelData({
-              path: { label_id: labelId },
-            })
-            return retry.data
-          }
-          throw error
-        })
-      const promises: Promise<any>[] = [
-        labelPromise,
-        labelDataMetaPromise,
-        labelDataPromise,
-      ]
-      if (isFertilizer) {
-        const fertilizerDataPromise = LabelsService.readFertilizerLabelData({
-          path: { label_id: labelId },
-        })
-          .then((r) => r.data)
-          .catch(async (error) => {
-            if (isAxiosErrorWithStatus(error, StatusCodes.NOT_FOUND)) {
-              await createFertilizerDataMutation.mutateAsync()
-              const retry = await LabelsService.readFertilizerLabelData({
-                path: { label_id: labelId },
-              })
-              return retry.data
-            }
-            throw error
-          })
-        const fertilizerMetaPromise = LabelsService.readFertilizerLabelDataMeta(
-          {
-            path: { label_id: labelId },
-          },
-        ).then((r) => r.data)
-        promises.push(fertilizerDataPromise, fertilizerMetaPromise)
-      }
-      const [label, labelDataMeta, labelData, ...rest] =
-        await Promise.all(promises)
-      const fertilizerData = isFertilizer ? rest[0] : undefined
-      const fertilizerDataMeta = isFertilizer ? rest[1] : undefined
-      const result = {
-        label,
-        labelData: labelData || {},
-        fertilizerData: fertilizerData || {},
-        labelDataMeta: labelDataMeta || [],
-        fertilizerDataMeta: fertilizerDataMeta || [],
+      const result = (await fetchAllLabelData({
+        data: { labelId, isFertilizer },
+      })) as FetchAllLabelDataResult
+      const out = {
+        label: result.label,
+        labelData: result.labelData || {},
+        fertilizerData: result.fertilizerData || {},
+        labelDataMeta: result.labelDataMeta || [],
+        fertilizerDataMeta: result.fertilizerDataMeta || [],
       }
       if (form) {
-        const formValues = mergeForForm(result.labelData, result.fertilizerData)
+        const formValues = mergeForForm(out.labelData, out.fertilizerData)
         form.reset(formValues, { keepDirty: false })
       }
-      return result
+      return out
     },
     retry: false,
     throwOnError: false,
   })
-  // --- Computed Values ---
   const data = allLabelDataQuery.data
   const hasImages = useMemo(() => {
     return (
-      data?.label?.images?.some((img: any) => img.status === "completed") ??
-      false
+      data?.label?.images?.some(
+        (img: { status?: string }) => img.status === "completed",
+      ) ?? false
     )
   }, [data?.label])
-  // --- Mutations ---
-  // ............................. Hooks & State .............................
   const { t } = useTranslation(["labels", "errors"])
   const { showSuccessToast, showErrorToast } = useSnackbar()
   const { setExtracting, setFieldExtracting } = useLabelDataStore()
   const [isSaving, _setIsSaving] = useState(false)
-  // --- Update Mutations ---
-  // ............................. Update Review Status Mutation .............................
   const updateReviewStatusMutation = useMutation({
-    mutationFn: async (status: ReviewStatus) => {
-      return await LabelsService.updateLabelReviewStatus({
-        path: { label_id: labelId },
-        body: { review_status: status },
+    mutationFn: async (review_status: ReviewStatus) => {
+      return await updateReviewStatus({
+        data: { labelId, review_status },
       })
     },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(["label", labelId], response.data)
-        queryClient.setQueryData(
-          ["allLabelData", labelId, isFertilizer],
-          (old: any) => {
-            if (!old) return old
-            return { ...old, label: response.data }
-          },
-        )
-      }
+    onSuccess: (updatedLabel) => {
+      queryClient.setQueryData(["label", labelId], updatedLabel)
+      queryClient.setQueryData(
+        ["allLabelData", labelId, isFertilizer],
+        (old: any) => {
+          if (!old) return old
+          return { ...old, label: updatedLabel }
+        },
+      )
     },
   })
-  // --- Extract Mutation ---
-  const EXTRACTION_CONCURRENCY_LIMIT = 1
-  // ............................. Process Extracted Field Helper .............................
   const processExtractedField = useCallback(
     (fieldName: string, value: any) => {
       if (!form) return
@@ -209,7 +114,6 @@ export function useLabelDataQueries(
     },
     [form],
   )
-  // ............................. Extract Field Mutation .............................
   const extractFieldMutation = useMutation({
     mutationFn: async (fields: string | string[] | null) => {
       if (!isFertilizer) {
@@ -220,9 +124,8 @@ export function useLabelDataQueries(
       }
       const fieldNames =
         fields === null ? null : Array.isArray(fields) ? fields : [fields]
-      return await LabelsService.extractFertilizerFields({
-        path: { label_id: labelId },
-        body: fieldNames ? { field_names: fieldNames as any } : undefined,
+      return await extractFields({
+        data: { labelId, field_names: fieldNames },
       })
     },
     onMutate: (fields) => {
@@ -235,8 +138,7 @@ export function useLabelDataQueries(
         })
       }
     },
-    onSuccess: (response, fields) => {
-      const extractedData = response.data
+    onSuccess: (extractedData, fields) => {
       if (!extractedData) {
         if (fields === null) {
           setExtracting(labelId, false)
@@ -251,13 +153,13 @@ export function useLabelDataQueries(
       }
       const fieldNames =
         fields === null
-          ? Object.keys(extractedData)
+          ? Object.keys(extractedData as object)
           : Array.isArray(fields)
             ? fields
             : [fields]
       let populatedCount = 0
       fieldNames.forEach((fieldName) => {
-        const value = (extractedData as any)?.[fieldName]
+        const value = (extractedData as Record<string, unknown>)?.[fieldName]
         if (value !== undefined && value !== null) {
           populatedCount++
         }
@@ -266,8 +168,8 @@ export function useLabelDataQueries(
       if (fields === null) {
         setExtracting(labelId, false)
       } else {
-        const fieldNames = Array.isArray(fields) ? fields : [fields]
-        fieldNames.forEach((fieldName) => {
+        const fns = Array.isArray(fields) ? fields : [fields]
+        fns.forEach((fieldName) => {
           setFieldExtracting(labelId, fieldName, false)
         })
       }
@@ -305,7 +207,7 @@ export function useLabelDataQueries(
       }
     },
   })
-  // ............................. Extract All Sections Mutation .............................
+  const EXTRACTION_CONCURRENCY_LIMIT = 1
   const extractAllSectionsMutation = useMutation({
     mutationFn: async () => {
       if (!isFertilizer) {
@@ -315,38 +217,31 @@ export function useLabelDataQueries(
         throw new Error("No images available for extraction")
       }
       const limit = pLimit(EXTRACTION_CONCURRENCY_LIMIT)
-      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
-        fieldNames.forEach((fieldName) => {
-          setFieldExtracting(labelId, fieldName, true)
-        })
-      })
-      setExtracting(labelId, true)
       const promises = EXTRACTION_SECTIONS.map(({ fieldNames }) =>
         limit(() =>
-          LabelsService.extractFertilizerFields({
-            path: { label_id: labelId },
-            body: { field_names: [...fieldNames] as any },
-          }),
-        )
-          .then((response) => {
-            fieldNames.forEach((fieldName) => {
-              setFieldExtracting(labelId, fieldName, false)
-            })
-            if (response?.data) {
-              const extractedData = response.data as Record<string, any>
-              fieldNames.forEach((fieldName) => {
-                processExtractedField(fieldName, extractedData[fieldName])
-              })
-              return true
-            }
-            return false
+          extractFields({
+            data: { labelId, field_names: [...fieldNames] },
           })
-          .catch(() => {
-            fieldNames.forEach((fieldName) => {
-              setFieldExtracting(labelId, fieldName, false)
+            .then((extractedData) => {
+              fieldNames.forEach((fieldName) => {
+                setFieldExtracting(labelId, fieldName, false)
+              })
+              if (extractedData) {
+                const ed = extractedData as Record<string, unknown>
+                fieldNames.forEach((fieldName) => {
+                  processExtractedField(fieldName, ed[fieldName])
+                })
+                return true
+              }
+              return false
             })
-            return false
-          }),
+            .catch(() => {
+              fieldNames.forEach((fieldName) => {
+                setFieldExtracting(labelId, fieldName, false)
+              })
+              return false
+            }),
+        ),
       )
       const results = await Promise.all(promises)
       const successSectionCount = results.filter(Boolean).length
@@ -373,6 +268,14 @@ export function useLabelDataQueries(
         )
       }
     },
+    onMutate: () => {
+      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
+        fieldNames.forEach((fieldName) => {
+          setFieldExtracting(labelId, fieldName, true)
+        })
+      })
+      setExtracting(labelId, true)
+    },
     onError: (error) => {
       EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
         fieldNames.forEach((fieldName) => {
@@ -395,39 +298,27 @@ export function useLabelDataQueries(
       }
     },
   })
-  // --- Toggle Review Mutation ---
-  // ............................. Toggle Review Mutation .............................
   const toggleReviewMutation = useMutation({
     mutationFn: async ({
       fieldName,
       newNeedsReview,
-      isCommonField,
+      isCommonField: common,
     }: {
       fieldName: string
       newNeedsReview: boolean
       isCommonField: boolean
     }) => {
-      if (isCommonField) {
-        return await LabelsService.updateLabelDataMeta({
-          path: { label_id: labelId },
-          body: {
-            field_name: fieldName as any,
-            needs_review: newNeedsReview,
-          },
-        })
-      }
-      return await LabelsService.updateFertilizerLabelDataMeta({
-        path: { label_id: labelId },
-        body: {
-          field_name: fieldName as any,
-          needs_review: newNeedsReview,
+      return await toggleFieldReview({
+        data: {
+          labelId,
+          fieldName,
+          newNeedsReview,
+          isCommonField: common,
         },
       })
     },
-    onSuccess: (response, { fieldName, isCommonField }) => {
-      const updatedMeta = response.data
-      if (!updatedMeta) return
-      const queryKey = isCommonField
+    onSuccess: (updatedMeta, { fieldName, isCommonField: common }) => {
+      const queryKey = common
         ? ["labelDataMeta", labelId]
         : ["fertilizerLabelDataMeta", labelId]
       type MetaItem =
@@ -450,7 +341,7 @@ export function useLabelDataQueries(
         ["allLabelData", labelId, isFertilizer],
         (old: any) => {
           if (!old) return old
-          if (isCommonField) {
+          if (common) {
             return { ...old, labelDataMeta: updateMeta(old.labelDataMeta) }
           }
           return {
@@ -461,97 +352,68 @@ export function useLabelDataQueries(
       )
     },
   })
-  // --- Update Data Mutations ---
-  // ............................. Update Common Data Mutation .............................
   const updateCommonDataMutation = useMutation({
-    mutationFn: async (data: Record<string, any>) => {
-      return await LabelsService.updateLabelData({
-        path: { label_id: labelId },
-        body: data,
+    mutationFn: async (patch: Record<string, any>) => {
+      return await updateLabelDataPartial({
+        data: { labelId, patch },
       })
     },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(["labelData", labelId], response.data)
-        queryClient.setQueryData(
-          ["allLabelData", labelId, isFertilizer],
-          (old: any) => {
-            if (!old) return old
-            return { ...old, labelData: response.data }
-          },
-        )
-      }
+    onSuccess: (labelData) => {
+      queryClient.setQueryData(["labelData", labelId], labelData)
+      queryClient.setQueryData(
+        ["allLabelData", labelId, isFertilizer],
+        (old: any) => {
+          if (!old) return old
+          return { ...old, labelData }
+        },
+      )
     },
   })
-  // ............................. Update Fertilizer Data Mutation .............................
   const updateFertilizerDataMutation = useMutation({
-    mutationFn: async (data: Record<string, any>) => {
-      return await LabelsService.updateFertilizerLabelData({
-        path: { label_id: labelId },
-        body: data,
+    mutationFn: async (patch: Record<string, any>) => {
+      return await updateFertilizerLabelDataPartial({
+        data: { labelId, patch },
       })
     },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(
-          ["fertilizerLabelData", labelId],
-          response.data,
-        )
-        queryClient.setQueryData(
-          ["allLabelData", labelId, isFertilizer],
-          (old: any) => {
-            if (!old) return old
-            return { ...old, fertilizerData: response.data }
-          },
-        )
-      }
+    onSuccess: (fertilizerData) => {
+      queryClient.setQueryData(["fertilizerLabelData", labelId], fertilizerData)
+      queryClient.setQueryData(
+        ["allLabelData", labelId, isFertilizer],
+        (old: any) => {
+          if (!old) return old
+          return { ...old, fertilizerData }
+        },
+      )
     },
   })
-  // ............................. Update Label Mutation (Root) .............................
   const updateLabelMutation = useMutation({
     mutationFn: async (body: any) => {
-      return await LabelsService.updateLabel({
-        path: { label_id: labelId },
-        body,
-      })
+      return await updateLabelRoot({ data: { labelId, patch: body } })
     },
-    onSuccess: (response) => {
-      if (response.data) {
-        queryClient.setQueryData(["label", labelId], response.data)
-        queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
-      }
+    onSuccess: (updatedLabel) => {
+      queryClient.setQueryData(["label", labelId], updatedLabel)
+      queryClient.invalidateQueries({ queryKey: ["allLabelData", labelId] })
     },
     onError: (error) => {
       showErrorToast(getErrorMessage(error, t))
     },
   })
-
-  // ............................. Create Product Mutation .............................
   const createProductMutation = useMutation({
     mutationFn: async (body: any) => {
-      return await ProductsService.createProduct({
-        body,
-      })
+      return await createProduct({ data: { body } })
     },
-    onSuccess: (response) => {
-      if (response.data) {
-        // We only show toast if it's a standalone creation,
-        // usually this will be followed by a link action which has its own feedback.
-        showSuccessToast(
-          t("data.sections.association.createSuccess", {
-            ns: "labels",
-            defaultValue: "Product created successfully",
-          }),
-        )
-      }
+    onSuccess: () => {
+      showSuccessToast(
+        t("data.sections.association.createSuccess", {
+          ns: "labels",
+          defaultValue: "Product created successfully",
+        }),
+      )
     },
     onError: (error) => {
       showErrorToast(getErrorMessage(error, t))
     },
   })
-
-  // --- Save Handler ---
-  // ............................. Handle Save .............................
   const handleSave = useCallback(async () => {
     if (!form || !form.formState.isDirty) return
     const valid = await form.trigger()
@@ -608,11 +470,8 @@ export function useLabelDataQueries(
     showSuccessToast,
     showErrorToast,
   ])
-  // --- Return ---
   return {
-    // Combined Query
     allLabelDataQuery,
-    // Data (for convenience)
     label: data?.label,
     labelData: data?.labelData || {},
     fertilizerData: data?.fertilizerData || {},
@@ -621,9 +480,6 @@ export function useLabelDataQueries(
     isLoading: allLabelDataQuery.isLoading,
     isError: allLabelDataQuery.isError,
     error: allLabelDataQuery.error,
-    // Mutations
-    createLabelDataMutation,
-    createFertilizerDataMutation,
     updateReviewStatusMutation,
     extractFieldMutation,
     extractAllSectionsMutation,

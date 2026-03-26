@@ -1,8 +1,10 @@
+// ============================== Review status chip ==============================
+
 import { Box, Chip } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import type { ReviewStatus } from "@/api"
+import type { ReviewStatus } from "#/api/types.gen"
 
-interface ReviewStatusChipProps {
+type ReviewStatusChipProps = {
   status: ReviewStatus | null
 }
 

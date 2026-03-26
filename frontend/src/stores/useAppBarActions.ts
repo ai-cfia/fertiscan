@@ -1,22 +1,16 @@
+// ============================== App bar action slot ==============================
+
 import type { ReactNode } from "react"
 import { create } from "zustand"
 
-// ============================== Types ==============================
-interface AppBarActionsStore {
+type AppBarActionsStore = {
   actions: ReactNode | null
   setActions: (actions: ReactNode | null) => void
   clearActions: () => void
 }
 
-// ============================== Store ==============================
-const store = (set: any): AppBarActionsStore => ({
+export const useAppBarActionsStore = create<AppBarActionsStore>((set) => ({
   actions: null,
-  setActions: (actions: ReactNode | null) => {
-    set({ actions })
-  },
-  clearActions: () => {
-    set({ actions: null })
-  },
-})
-
-export const useAppBarActionsStore = create<AppBarActionsStore>()(store)
+  setActions: (actions) => set({ actions }),
+  clearActions: () => set({ actions: null }),
+}))

@@ -1,3 +1,5 @@
+// ============================== Compliance legislation section ==============================
+
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import SaveIcon from "@mui/icons-material/Save"
 import {
@@ -9,13 +11,12 @@ import {
 } from "@mui/material"
 import type { Control } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-// ============================== Types ==============================
 import type {
   ComplianceStatus,
   LegislationPublic,
   RequirementPublic,
-} from "@/api"
-import ComplianceRequirementAccordion from "./ComplianceRequirementAccordion"
+} from "#/api/types.gen"
+import ComplianceRequirementAccordion from "#/components/Compliance/ComplianceRequirementAccordion"
 
 interface ComplianceFormValues {
   compliance: Record<
@@ -42,7 +43,6 @@ interface ComplianceLegislationSectionProps {
   getEvaluationError: (requirementId: string) => string | null
 }
 
-// ============================== Component ==============================
 export default function ComplianceLegislationSection({
   legislation,
   requirements,

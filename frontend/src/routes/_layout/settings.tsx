@@ -1,8 +1,10 @@
+// ============================== Settings ==============================
+
 import { Container } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import UserSettingsContent from "@/components/Common/UserSettingsContent"
+import UserSettingsContent from "#/components/Common/UserSettingsContent"
 
 export const Route = createFileRoute("/_layout/settings")({
   component: UserSettings,
