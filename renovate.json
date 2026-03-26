@@ -37,28 +37,14 @@
 			]
 		},
 		{
-		"matchManagers": ["dockerfile", "docker-compose"],
-		"matchDatasources": ["docker"],
-		"matchUpdateTypes": ["pin"],
-		"pinDigests": true,
-		"groupName": "pin digests",
-		"branchTopic": "pin-digests",
-		"prConcurrentLimit": 1,
-		"prHourlyLimit": 1,
-		"labels": [
-			"docker",
-			"dependencies:digest"
-		]
-		},
-		{
-		"matchManagers": ["dockerfile", "docker-compose"],
-		"matchDatasources": ["docker"],
-		"matchUpdateTypes": ["digest"],
-		"groupName": "digest updates",
-		"labels": [
-			"docker",
-			"dependencies:digest"
-		]
+			"matchManagers": ["dockerfile", "docker-compose"],
+			"matchDatasources": ["docker"],
+			"matchUpdateTypes": ["pin", "digest"],
+			"pinDigests": true,
+			"labels": [
+				"docker",
+				"dependencies"
+			]
 		}
 	]
 }
