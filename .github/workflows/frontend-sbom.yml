@@ -4,6 +4,12 @@ name: Frontend SBOM
 
 on:
   workflow_call:
+    inputs:
+      should_scan:
+        description: Run the frontend SBOM scan or upload an empty SARIF placeholder.
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   sbom-check:
@@ -19,21 +25,26 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
+        if: ${{ inputs.should_scan }}
         with:
           node-version: "20"
       - run: npm ci
+        if: ${{ inputs.should_scan }}
       - name: Generate SBOM
+        if: ${{ inputs.should_scan }}
         run: |
           npx @cyclonedx/cyclonedx-npm package-lock.json \
             --output-reproducible --package-lock-only -v --sv 1.6 -o sbom.json
           echo "" >> sbom.json
       - name: SBOM security scan
+        if: ${{ inputs.should_scan }}
         id: scan
         uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2
         with:
           sbom: frontend/sbom.json
           fail-build: false
       - name: Fix SARIF locations
+        if: ${{ inputs.should_scan }}
         run: |
           jq '
             .runs[].results[] |= (
@@ -49,10 +60,37 @@ jobs:
             )
           ' "${{ steps.scan.outputs.sarif }}" > sarif-fixed.json
           mv sarif-fixed.json "${{ steps.scan.outputs.sarif }}"
+      - name: Create empty SARIF when scan is skipped
+        if: ${{ !inputs.should_scan }}
+        run: |
+          cat > empty.sarif <<'EOF'
+          {
+            "version": "2.1.0",
+            "runs": [
+              {
+                "tool": {
+                  "driver": {
+                    "name": "grype",
+                    "informationUri": "https://github.com/anchore/grype",
+                    "rules": []
+                  }
+                },
+                "results": []
+              }
+            ]
+          }
+          EOF
       - name: Upload scan results
+        if: ${{ inputs.should_scan }}
         uses: github/codeql-action/upload-sarif@v4
         continue-on-error: true
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-          checkout_path: ${{ github.workspace }}
+          category: frontend-sbom-security-scan
+      - name: Upload empty scan results
+        if: ${{ !inputs.should_scan }}
+        uses: github/codeql-action/upload-sarif@v4
+        continue-on-error: true
+        with:
+          sarif_file: empty.sarif
           category: frontend-sbom-security-scan

@@ -117,19 +117,15 @@ jobs:
   backend-sbom:
     name: Backend SBOM
     needs: [changes]
-    if: |
-      needs.changes.outputs.backend == 'true' ||
-      needs.changes.outputs.backend-workflow == 'true' ||
-      needs.changes.outputs.ci == 'true'
     uses: ./.github/workflows/backend-sbom.yml
+    with:
+      should_scan: ${{ needs.changes.outputs.backend == 'true' || needs.changes.outputs.backend-workflow == 'true' || needs.changes.outputs.ci == 'true' }}
     secrets: inherit
 
   frontend-sbom:
     name: Frontend SBOM
     needs: [changes]
-    if: |
-      needs.changes.outputs.frontend == 'true' ||
-      needs.changes.outputs.frontend-workflow == 'true' ||
-      needs.changes.outputs.ci == 'true'
     uses: ./.github/workflows/frontend-sbom.yml
+    with:
+      should_scan: ${{ needs.changes.outputs.frontend == 'true' || needs.changes.outputs.frontend-workflow == 'true' || needs.changes.outputs.ci == 'true' }}
     secrets: inherit
