@@ -4,93 +4,13 @@ name: Frontend SBOM
 
 on:
   workflow_call:
-    inputs:
-      should_scan:
-        description: Run the frontend SBOM scan or upload an empty SARIF placeholder.
-        required: false
-        type: boolean
-        default: true
 
 jobs:
   sbom-check:
     name: SBOM Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    continue-on-error: true
-    permissions:
-      security-events: write
-    defaults:
-      run:
-        working-directory: frontend
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        if: ${{ inputs.should_scan }}
-        with:
-          node-version: "20"
-      - run: npm ci
-        if: ${{ inputs.should_scan }}
-      - name: Generate SBOM
-        if: ${{ inputs.should_scan }}
-        run: |
-          npx @cyclonedx/cyclonedx-npm package-lock.json \
-            --output-reproducible --package-lock-only -v --sv 1.6 -o sbom.json
-          echo "" >> sbom.json
-      - name: SBOM security scan
-        if: ${{ inputs.should_scan }}
-        id: scan
-        uses: anchore/scan-action@ba2e18e34737763b9c92004dfe2afbcbd2d6207d
-        with:
-          sbom: frontend/sbom.json
-          fail-build: false
-      - name: Fix SARIF locations
-        if: ${{ inputs.should_scan }}
-        run: |
-          jq '
-            .runs[].results[] |= (
-              .locations = [{
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "frontend/sbom.json",
-                    "uriBaseId": "%SRCROOT%"
-                  },
-                  "region": { "startLine": 1, "startColumn": 1, "endLine": 1, "endColumn": 1 }
-                }
-              }]
-            )
-          ' "${{ steps.scan.outputs.sarif }}" > sarif-fixed.json
-          mv sarif-fixed.json "${{ steps.scan.outputs.sarif }}"
-      - name: Create empty SARIF when scan is skipped
-        if: ${{ !inputs.should_scan }}
-        run: |
-          cat > empty.sarif <<'EOF'
-          {
-            "version": "2.1.0",
-            "runs": [
-              {
-                "tool": {
-                  "driver": {
-                    "name": "grype",
-                    "informationUri": "https://github.com/anchore/grype",
-                    "rules": []
-                  }
-                },
-                "results": []
-              }
-            ]
-          }
-          EOF
-      - name: Upload scan results
-        if: ${{ inputs.should_scan }}
-        uses: github/codeql-action/upload-sarif@v4
-        continue-on-error: true
-        with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}
-          category: frontend-sbom-security-scan
-      - name: Upload empty scan results
-        if: ${{ !inputs.should_scan }}
-        uses: github/codeql-action/upload-sarif@v4
-        continue-on-error: true
-        with:
-          sarif_file: empty.sarif
-          category: frontend-sbom-security-scan
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-frontend-sbom.yml@main
+    with:
+      working-directory: ./frontend
+      runs-on: ubuntu-24.04
+      cyclonedx-spec-version: "1.6"
+    secrets: inherit
