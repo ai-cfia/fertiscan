@@ -1,3 +1,6 @@
+// ============================== New product ==============================
+// --- Create product form; duplicate check + POST via server fns ---
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import Alert from "@mui/material/Alert"
 import Box from "@mui/material/Box"
@@ -14,24 +17,21 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import type { ProductPublic } from "@/api"
-import { ProductsService } from "@/api"
-import { client } from "@/api/client.gen"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useConfig } from "@/stores/useConfig"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { createProductEditorFn } from "#/server/label-editor"
+import { readProductsDuplicateCheckFn } from "#/server/products-list"
+import { useConfig } from "#/stores/useConfig"
 
-// ============================== Constants ==============================
 const VALID_PRODUCT_TYPES = ["fertilizer"] as const
-
 const productTypeParamsSchema = z.object({
   productType: z.enum(VALID_PRODUCT_TYPES),
 })
 
-// ============================== Schema ==============================
 const createProductFormSchema = (t: (key: string) => string) =>
   z.object({
     registration_number: z
@@ -71,7 +71,6 @@ const createProductFormSchema = (t: (key: string) => string) =>
 
 type ProductFormData = z.infer<ReturnType<typeof createProductFormSchema>>
 
-// ============================== Route ==============================
 export const Route = createFileRoute("/_layout/$productType/products/new")({
   beforeLoad: async ({ params }) => {
     const result = productTypeParamsSchema.safeParse(params)
@@ -82,18 +81,18 @@ export const Route = createFileRoute("/_layout/$productType/products/new")({
   component: CreateProduct,
 })
 
-// ============================== Component ==============================
 function CreateProduct() {
-  // --- Hooks and State ---
   const { t } = useTranslation("common")
+  const { defaultPerPage } = useConfig()
   const { productType } = Route.useParams()
   const navigate = useNavigate()
   const { showSuccessToast } = useSnackbar()
-  const { defaultPerPage } = useConfig()
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
-  const productFormSchema = createProductFormSchema(t)
-  // --- Form Setup ---
+  const productFormSchema = useMemo(
+    () => createProductFormSchema((k) => t(k as never)),
+    [t],
+  )
   const {
     control,
     handleSubmit,
@@ -111,28 +110,14 @@ function CreateProduct() {
     },
   })
   const registrationNumber = watch("registration_number")
-  // --- Duplicate Check Logic ---
   const [debouncedRegistrationNumber, setDebouncedRegistrationNumber] =
     useState(registrationNumber)
   const shouldCheck =
     !!registrationNumber?.trim() &&
     debouncedRegistrationNumber.length > 0 &&
     debouncedRegistrationNumber === registrationNumber.trim()
-  const checkDuplicate = useCallback(async () => {
-    if (!registrationNumber.trim()) {
-      return false
-    }
-    const trimmed = registrationNumber.trim()
-    const response = await ProductsService.readProducts({
-      query: {
-        product_type: productType,
-        registration_number: trimmed,
-        limit: 1,
-      } as any,
-    })
-    return (response.data?.items?.length ?? 0) > 0
-  }, [productType, registrationNumber])
-  // --- Queries ---
+  const fetchDuplicateCheck = useServerFn(readProductsDuplicateCheckFn)
+  const createProduct = useServerFn(createProductEditorFn)
   const duplicateQuery = useQuery({
     queryKey: [
       "products",
@@ -140,34 +125,30 @@ function CreateProduct() {
       productType,
       debouncedRegistrationNumber,
     ],
-    queryFn: async () => {
-      const response = await ProductsService.readProducts({
-        query: {
-          product_type: productType,
-          registration_number: debouncedRegistrationNumber,
-          limit: 1,
-        } as any,
-      })
-      return response.data
-    },
+    queryFn: async () =>
+      fetchDuplicateCheck({
+        data: {
+          productType,
+          registrationNumber: debouncedRegistrationNumber,
+        },
+      }),
     enabled: shouldCheck,
     retry: false,
   })
   const createMutation = useMutation({
-    mutationFn: async (data: Omit<ProductFormData, "product_type">) => {
-      const response = await client.post<ProductPublic>({
-        url: "/api/v1/products",
-        body: {
-          ...data,
-          product_type: productType,
+    mutationFn: async (data: ProductFormData) => {
+      return createProduct({
+        data: {
+          body: {
+            registration_number: data.registration_number,
+            brand_name_en: data.brand_name_en,
+            brand_name_fr: data.brand_name_fr,
+            name_en: data.name_en,
+            name_fr: data.name_fr,
+            product_type: productType,
+          },
         },
-        responseType: "json",
-        security: [{ scheme: "bearer", type: "http" }],
       })
-      if (response instanceof Error) {
-        throw response
-      }
-      return response.data
     },
     onSuccess: (data) => {
       if (data && typeof data === "object" && "id" in data) {
@@ -183,8 +164,6 @@ function CreateProduct() {
     () => (duplicateQuery.data?.items?.length ?? 0) > 0,
     [duplicateQuery.data],
   )
-  // --- Effects ---
-  // Debounce registration number input to avoid excessive API calls while typing
   useEffect(() => {
     const enabled = !!registrationNumber?.trim()
     if (!enabled || !registrationNumber.trim()) {
@@ -194,13 +173,13 @@ function CreateProduct() {
     const timer = setTimeout(() => {
       setDebouncedRegistrationNumber(registrationNumber.trim())
     }, 400)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [registrationNumber])
-  // Set page title
   useEffect(() => {
     document.title = t("products.create.pageTitle")
   }, [t])
-  // Warn user before leaving page if form has unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -213,7 +192,18 @@ function CreateProduct() {
       window.removeEventListener("beforeunload", handleBeforeUnload)
     }
   }, [isDirty])
-  // --- Event Handlers ---
+  const checkDuplicate = useCallback(async () => {
+    if (!registrationNumber.trim()) {
+      return false
+    }
+    const r = await fetchDuplicateCheck({
+      data: {
+        productType,
+        registrationNumber: registrationNumber.trim(),
+      },
+    })
+    return (r.items?.length ?? 0) > 0
+  }, [fetchDuplicateCheck, productType, registrationNumber])
   const onSubmit: SubmitHandler<ProductFormData> = async (data) => {
     setApiError(null)
     const trimmedData = {
@@ -231,12 +221,10 @@ function CreateProduct() {
     try {
       await createMutation.mutateAsync(trimmedData)
       showSuccessToast(t("products.create.form.success"))
-    } catch (error: any) {
-      const errorMessage =
-        error?.response?.data?.detail ||
-        error?.message ||
-        t("products.create.form.error")
-      setApiError(errorMessage)
+    } catch (error: unknown) {
+      const msg =
+        error instanceof Error ? error.message : t("products.create.form.error")
+      setApiError(msg)
     }
   }
   const handleCancel = () => {
@@ -261,10 +249,8 @@ function CreateProduct() {
   const handleCancelCancel = () => {
     setCancelDialogOpen(false)
   }
-  // --- Computed Values ---
   const isDuplicateError = isDuplicate && registrationNumber?.trim()
   const isFormDisabled = isSubmitting || createMutation.isPending
-  // --- Render ---
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
@@ -280,7 +266,6 @@ function CreateProduct() {
         </Alert>
       )}
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        {/* Registration Number */}
         <Controller
           name="registration_number"
           control={control}
@@ -304,7 +289,6 @@ function CreateProduct() {
             />
           )}
         />
-        {/* Brand Names */}
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
@@ -347,7 +331,6 @@ function CreateProduct() {
             />
           </Grid>
         </Grid>
-        {/* Product Names */}
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
@@ -390,7 +373,6 @@ function CreateProduct() {
             />
           </Grid>
         </Grid>
-        {/* Form Actions */}
         <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
           <Button
             variant="outlined"
@@ -411,7 +393,6 @@ function CreateProduct() {
           </Button>
         </Box>
       </Box>
-      {/* Cancel Confirmation Dialog */}
       <Dialog
         open={cancelDialogOpen}
         onClose={handleCancelCancel}

@@ -1,3 +1,6 @@
+// ============================== Label files ==============================
+// --- Label images grid; list + presigned URLs via server fns ---
+
 import {
   Box,
   Button,
@@ -7,32 +10,55 @@ import {
   Typography,
 } from "@mui/material"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { createFileRoute, Link, useParams } from "@tanstack/react-router"
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+} from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { LabelsService } from "@/api"
-import LabelImageCard from "@/components/Common/LabelImageCard"
-import { useBanner } from "@/stores/useBanner"
-import { useConfig } from "@/stores/useConfig"
-import { getErrorMessage } from "@/utils/labelDataErrors"
+import LabelImageCard from "#/components/Common/LabelImageCard"
+import NotFound from "#/components/Common/NotFound"
+import { readLabelForRouteFn, readLabelImagesFn } from "#/server/label-editor"
+import { useBanner } from "#/stores/useBanner"
+import { useConfig } from "#/stores/useConfig"
+import { getErrorMessage } from "#/utils/labelDataErrors"
 
 export const Route = createFileRoute(
   "/_layout/$productType/labels/$labelId/files",
 )({
+  notFoundComponent: NotFound,
+  loader: async ({ params }) => {
+    const { labelId, productType } = params
+    const r = await readLabelForRouteFn({
+      data: { labelId, productType },
+    })
+    if (r.outcome === "not_found") {
+      throw notFound()
+    }
+    if (r.outcome === "redirect") {
+      throw redirect({
+        to: "/$productType/labels/$labelId/files",
+        params: {
+          productType: r.productType as "fertilizer",
+          labelId: r.labelId,
+        },
+      })
+    }
+    return { label: r.label }
+  },
   component: LabelFiles,
 })
 
 function LabelFiles() {
-  const { t } = useTranslation(["labels", "errors"])
-  const queryClient = useQueryClient()
-  // ============================== Params ==============================
-  const { labelId, productType } = useParams({
-    from: "/_layout/$productType/labels/$labelId/files",
-  })
-  // ============================== Store ==============================
+  const { t } = useTranslation("labels")
   const { maxImagesPerLabel } = useConfig()
+  const queryClient = useQueryClient()
+  const { labelId, productType } = Route.useParams()
   const { showBanner, dismissBanner } = useBanner()
-  // ============================== Data Fetching ==============================
+  const readLabelImages = useServerFn(readLabelImagesFn)
   const {
     data: images = [],
     isLoading,
@@ -40,14 +66,8 @@ function LabelFiles() {
     error,
   } = useQuery({
     queryKey: ["labels", labelId, "images"],
-    queryFn: async () => {
-      const response = await LabelsService.readLabelImages({
-        path: { label_id: labelId },
-      })
-      return response.data
-    },
+    queryFn: async () => readLabelImages({ data: { labelId } }),
   })
-  // ============================== Effects ==============================
   useEffect(() => {
     document.title = t("files.pageTitle")
   }, [t])
@@ -69,12 +89,10 @@ function LabelFiles() {
       dismissBanner(`label-files-load-error-${labelId}`)
     }
   }, [isError, error, labelId, showBanner, dismissBanner, queryClient, t])
-  // ============================== Computed ==============================
   const sortedImages = useMemo(
     () => [...images].sort((a, b) => a.sequence_order - b.sequence_order),
     [images],
   )
-  // ============================== Render ==============================
   if (isLoading) {
     return (
       <Container maxWidth="xl">
@@ -96,10 +114,17 @@ function LabelFiles() {
           }}
         >
           <Typography variant="h4">
-            {t("files.title", {
-              count: sortedImages.length,
-              max: maxImagesPerLabel,
-            })}
+            {sortedImages.length === 1
+              ? t("files.title_one", {
+                  count: sortedImages.length,
+                  max: maxImagesPerLabel,
+                  defaultValue: "Label Image: {{count}} (max {{max}})",
+                })
+              : t("files.title_other", {
+                  count: sortedImages.length,
+                  max: maxImagesPerLabel,
+                  defaultValue: "Label Images: {{count}} (max {{max}})",
+                })}
           </Typography>
           <Button
             variant="contained"
@@ -110,7 +135,6 @@ function LabelFiles() {
             {t("files.editLabel", { defaultValue: "Edit Label" })}
           </Button>
         </Box>
-        {/* ============================== Label Images ============================== */}
         {sortedImages.length > 0 && (
           <Grid container spacing={2}>
             {sortedImages.map((image) => (

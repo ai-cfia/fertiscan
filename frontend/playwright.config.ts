@@ -1,5 +1,5 @@
-import { defineConfig, devices } from "@playwright/test";
-import "dotenv/config";
+import { defineConfig, devices } from "@playwright/test"
+import "dotenv/config"
 
 export default defineConfig({
   testDir: "./tests",
@@ -16,6 +16,7 @@ export default defineConfig({
     { name: "setup", testMatch: /.*\.setup\.ts/ },
     {
       name: "chromium",
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user.json",
@@ -24,6 +25,7 @@ export default defineConfig({
     },
     {
       name: "firefox",
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices["Desktop Firefox"],
         storageState: "playwright/.auth/user.json",
@@ -32,6 +34,7 @@ export default defineConfig({
     },
     {
       name: "webkit",
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices["Desktop Safari"],
         storageState: "playwright/.auth/user.json",
@@ -44,4 +47,4 @@ export default defineConfig({
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
   },
-});
+})

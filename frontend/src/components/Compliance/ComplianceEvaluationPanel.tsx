@@ -1,3 +1,5 @@
+// ============================== Compliance evaluation panel ==============================
+
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import EditIcon from "@mui/icons-material/Edit"
 import SaveIcon from "@mui/icons-material/Save"
@@ -13,12 +15,11 @@ import {
 import { Link } from "@tanstack/react-router"
 import type { Control } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-// ============================== Types ==============================
 import type {
   ComplianceStatus,
   LegislationPublic,
   RequirementPublic,
-} from "@/api"
+} from "#/api/types.gen"
 import ComplianceLegislationSection from "./ComplianceLegislationSection"
 
 interface ComplianceFormValues {
@@ -52,7 +53,6 @@ interface ComplianceEvaluationPanelProps {
   getEvaluationError: (requirementId: string) => string | null
 }
 
-// ============================== Component ==============================
 export default function ComplianceEvaluationPanel({
   productType,
   labelId,

@@ -1,3 +1,4 @@
+// ============================== Recover password ==============================
 import EmailIcon from "@mui/icons-material/Email"
 import {
   Box,
@@ -7,40 +8,43 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, redirect } from "@tanstack/react-router"
-import type { AxiosError } from "axios"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { LoginService } from "@/api"
-import PageTopBanner from "@/components/Common/PageTopBanner"
-import { isLoggedIn } from "@/hooks/useAuth"
-import useCustomToast from "@/hooks/useCustomToast"
-import { useBackendStatus } from "@/stores/useBackendStatus"
-import { emailPattern, handleError } from "@/utils"
+import PageTopBanner from "#/components/Common/PageTopBanner"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { useBackendHealthCheck } from "#/hooks/useBackendHealthCheck"
+import { getCurrentUserFn, recoverPasswordFn } from "#/server/auth"
+import { useBackendStatus } from "#/stores/useBackendStatus"
+import { emailPattern } from "#/utils/form-validation"
 
 interface FormData {
   email: string
 }
-
 export const Route = createFileRoute("/recover-password")({
-  component: RecoverPassword,
   beforeLoad: async () => {
-    if (isLoggedIn()) {
+    const user = await getCurrentUserFn()
+    if (user) {
       throw redirect({
         to: "/$productType",
         params: { productType: "fertilizer" },
       })
     }
   },
+  component: RecoverPassword,
 })
-
 function RecoverPassword() {
+  useBackendHealthCheck()
   const { t } = useTranslation(["auth", "common"])
+  const { showSuccessToast } = useSnackbar()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const recoverPassword = useServerFn(recoverPasswordFn)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -57,24 +61,18 @@ function RecoverPassword() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>()
-  const { showSuccessToast } = useCustomToast()
-  const recoverPassword = async (data: FormData) => {
-    await LoginService.recoverPassword({
-      path: { email: data.email },
-    })
-  }
-  const mutation = useMutation({
-    mutationFn: recoverPassword,
-    onSuccess: () => {
-      showSuccessToast(t("recoverPassword.success"))
-      reset()
-    },
-    onError: (err: AxiosError) => {
-      handleError(err)
-    },
-  })
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    mutation.mutate(data)
+    if (isSubmitting) return
+    setServerError(null)
+    const result = await recoverPassword({ data })
+    if (result && typeof result === "object" && "ok" in result) {
+      if (result.ok) {
+        showSuccessToast(t("recoverPassword.success"))
+        reset()
+        return
+      }
+      setServerError(result.error)
+    }
   }
   return (
     <>
@@ -106,6 +104,11 @@ function RecoverPassword() {
             {t("recoverPassword.description")}
           </Typography>
         </Box>
+        {serverError ? (
+          <Typography color="error" variant="body2" role="alert">
+            {serverError}
+          </Typography>
+        ) : null}
         <TextField
           {...register("email", {
             required: t("recoverPassword.emailRequired"),
@@ -114,6 +117,7 @@ function RecoverPassword() {
               message: t("recoverPassword.emailInvalid"),
             },
           })}
+          required
           label={t("recoverPassword.email")}
           type="email"
           fullWidth

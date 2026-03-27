@@ -1,20 +1,21 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useTranslation } from "react-i18next"
-import {
-  type ComplianceStatus,
-  LabelsService,
-  type NonComplianceDataItemPublic,
-} from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { getErrorMessage } from "@/utils/labelDataErrors"
+// ============================== Save compliance ==============================
 
-// ============================== Types ==============================
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
+import { useTranslation } from "react-i18next"
+import type {
+  ComplianceStatus,
+  NonComplianceDataItemPublic,
+} from "#/api/types.gen"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { saveComplianceItemFn } from "#/server/label-compliance"
+import { getErrorMessage } from "#/utils/labelDataErrors"
+
 export interface SaveCompliancePayload {
   status: ComplianceStatus | ""
   description: string
 }
 
-// ============================== Hook ==============================
 export function useSaveCompliance(
   labelId: string,
   complianceItems: NonComplianceDataItemPublic[],
@@ -23,6 +24,7 @@ export function useSaveCompliance(
   const queryClient = useQueryClient()
   const { t } = useTranslation(["labels", "errors"])
   const { showSuccessToast, showErrorToast } = useSnackbar()
+  const saveFn = useServerFn(saveComplianceItemFn)
   const mutation = useMutation({
     mutationFn: async ({
       requirementId,
@@ -31,39 +33,17 @@ export function useSaveCompliance(
       requirementId: string
       payload: SaveCompliancePayload
     }) => {
-      const existing = complianceItems.find(
-        (i) => i.requirement_id === requirementId,
-      )
-      const { status, description } = payload
-      const statusVal = status || "inconclusive"
-      if (existing) {
-        const body: {
-          status?: ComplianceStatus
-          description_en?: string | null
-          description_fr?: string | null
-        } = { status: statusVal as ComplianceStatus }
-        if (language === "en") {
-          body.description_en = description || null
-          body.description_fr = existing.description_fr ?? null
-        } else {
-          body.description_fr = description || null
-          body.description_en = existing.description_en ?? null
-        }
-        return LabelsService.updateCompliance({
-          path: { label_id: labelId, requirement_id: requirementId },
-          body,
-        })
-      }
-      const body = {
-        requirement_id: requirementId,
-        status: statusVal as ComplianceStatus,
-        ...(language === "en"
-          ? { description_en: description || null }
-          : { description_fr: description || null }),
-      }
-      return LabelsService.createCompliance({
-        path: { label_id: labelId },
-        body,
+      const existing =
+        complianceItems.find((i) => i.requirement_id === requirementId) ?? null
+      await saveFn({
+        data: {
+          labelId,
+          requirementId,
+          language,
+          status: payload.status || "",
+          description: payload.description || "",
+          existing,
+        },
       })
     },
     onSuccess: () => {

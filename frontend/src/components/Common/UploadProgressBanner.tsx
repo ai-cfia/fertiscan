@@ -1,13 +1,14 @@
+// ============================== Global upload progress ==============================
+
 import { Alert, Box, Button, LinearProgress } from "@mui/material"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useLabelNew } from "@/stores/useLabelNew"
+import { useLabelNew } from "#/stores/useLabelNew"
 
 export default function UploadProgressBanner() {
   const { t } = useTranslation(["labels", "common"])
   const { uploadStatesByLabelId, labelId } = useLabelNew()
   const [dismissed, setDismissed] = useState(false)
-  // ============================== Calculate Progress ==============================
   const progress = useMemo(() => {
     if (!labelId) {
       return {
@@ -55,27 +56,25 @@ export default function UploadProgressBanner() {
     const allDone = inProgress === 0 && total > 0
     return { total, completed, inProgress, failed, overallProgress, allDone }
   }, [uploadStatesByLabelId, labelId])
-  // ============================== Effects ==============================
   useEffect(() => {
     if (progress.inProgress > 0) {
       setDismissed(false)
     }
   }, [progress.inProgress])
-  // ============================== Render ==============================
   if (progress.allDone || progress.total === 0 || dismissed) {
     return null
   }
   const message =
     progress.inProgress > 0
       ? t("labels.upload.uploading", {
-          current: progress.completed + progress.inProgress,
-          total: progress.total,
+          current: String(progress.completed + progress.inProgress),
+          total: String(progress.total),
           count: progress.total,
         })
       : progress.completed > 0
         ? t("labels.upload.uploaded", {
-            completed: progress.completed,
-            total: progress.total,
+            completed: String(progress.completed),
+            total: String(progress.total),
             count: progress.total,
           })
         : t("labels.upload.preparing")

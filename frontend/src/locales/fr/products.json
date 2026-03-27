@@ -4,6 +4,14 @@
       "cancel": "Annuler"
     }
   },
+  "detail": {
+    "brandEn": "Marque (anglais)",
+    "brandFr": "Marque (français)",
+    "nameEn": "Nom du produit (anglais)",
+    "nameFr": "Nom du produit (français)",
+    "pageTitle": "Détails du produit - Inspection des étiquettes",
+    "title": "Détails du produit"
+  },
   "empty": {
     "noProducts": "Aucun produit trouvé",
     "noProductsDescription": "Les produits créés à partir des étiquettes apparaîtront ici."

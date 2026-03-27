@@ -1,120 +1,78 @@
-import { useQuery } from "@tanstack/react-query"
-import { StatusCodes } from "http-status-codes"
-import {
-  LabelsService,
-  LegislationsService,
-  type NonComplianceDataItemPublic,
-  type RequirementPublic,
-  RequirementsService,
-} from "@/api"
-import { isAxiosErrorWithStatus } from "@/utils/labelDataErrors"
+// ============================== Compliance data (client) ==============================
+// --- Server fns: session bearer is httpOnly ---
 
-// ============================== Hook ==============================
+import { useQuery } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
+import { StatusCodes } from "http-status-codes"
+import type { RequirementPublic } from "#/api/types.gen"
+import {
+  readAllCompliancesFn,
+  readFertilizerLabelDataComplianceFn,
+  readLabelDataComplianceFn,
+  readLegislationsComplianceFn,
+  readRequirementsForLegislationsFn,
+} from "#/server/label-compliance"
+import { isAxiosErrorWithStatus } from "#/utils/labelDataErrors"
+
 export function useComplianceDataQueries(labelId: string, productType: string) {
   const isFertilizer = productType === "fertilizer"
-  // ------------------------------ Legislations ------------------------------
+  const readLegislations = useServerFn(readLegislationsComplianceFn)
+  const readRequirements = useServerFn(readRequirementsForLegislationsFn)
+  const readCompliances = useServerFn(readAllCompliancesFn)
+  const readLabelData = useServerFn(readLabelDataComplianceFn)
+  const readFertilizerLabelData = useServerFn(
+    readFertilizerLabelDataComplianceFn,
+  )
   const legislationsQuery = useQuery({
     queryKey: ["legislations", productType],
     queryFn: async () => {
-      const response = await LegislationsService.readLegislations({
-        query: { product_type: productType },
-      })
-      return response.data
+      return readLegislations({ data: { productType } })
     },
   })
-  // ------------------------------ Requirements ------------------------------
   const legislationIds = legislationsQuery.data?.map((l) => l.id) ?? []
   const requirementsQuery = useQuery({
     queryKey: ["requirements", productType, legislationIds],
     queryFn: async (): Promise<RequirementPublic[]> => {
-      if (legislationIds.length === 0) return []
-      const limit = 100
-      const all: RequirementPublic[] = []
-      let offset = 0
-      let total = Infinity
-      while (offset < total) {
-        const response = await RequirementsService.readRequirements({
-          query: {
-            legislation_ids: legislationIds,
-            limit,
-            offset,
-          } as any,
-        })
-        const data = response.data
-        if (!data) break
-        all.push(...data.items)
-        total = data.total
-        offset += data.items.length
-        if (data.items.length < limit) break
-      }
-      return all
+      return readRequirements({ data: { legislationIds } })
     },
     enabled: legislationsQuery.isSuccess,
   })
-  // ------------------------------ Compliance items ------------------------------
   const complianceItemsQuery = useQuery({
     queryKey: ["complianceItems", labelId],
-    queryFn: async (): Promise<NonComplianceDataItemPublic[]> => {
-      const limit = 100
-      const all: NonComplianceDataItemPublic[] = []
-      let offset = 0
-      let total = Infinity
-      while (offset < total) {
-        const response = await LabelsService.readsCompliances({
-          path: { label_id: labelId },
-          query: { limit, offset },
-        })
-        const data = response.data
-        if (!data) break
-        all.push(...data.items)
-        total = data.total
-        offset += data.items.length
-        if (data.items.length < limit) break
-      }
-      return all
+    queryFn: async () => {
+      return readCompliances({ data: { labelId } })
     },
   })
-  // ------------------------------ Label data (prerequisite) ------------------------------
   const labelDataQuery = useQuery({
     queryKey: ["labelData", labelId],
     queryFn: async () => {
-      const response = await LabelsService.readLabelData({
-        path: { label_id: labelId },
-      })
-      return response.data
+      return readLabelData({ data: { labelId } })
     },
     retry: false,
     throwOnError: false,
   })
-  // ------------------------------ Fertilizer label data ------------------------------
   const fertilizerLabelDataQuery = useQuery({
     queryKey: ["fertilizerLabelData", labelId],
     queryFn: async () => {
-      const response = await LabelsService.readFertilizerLabelData({
-        path: { label_id: labelId },
-      })
-      return response.data
+      return readFertilizerLabelData({ data: { labelId } })
     },
     enabled: isFertilizer,
     retry: false,
     throwOnError: false,
   })
-  // ------------------------------ Prerequisite check ------------------------------
   const hasLabelData =
-    labelDataQuery.isSuccess && labelDataQuery.data !== undefined
+    labelDataQuery.isSuccess && labelDataQuery.data?.outcome === "ok"
   const hasFertilizerData =
     !isFertilizer ||
     (fertilizerLabelDataQuery.isSuccess &&
-      fertilizerLabelDataQuery.data !== undefined)
+      fertilizerLabelDataQuery.data?.outcome === "ok")
   const meetsPrerequisite = hasLabelData && hasFertilizerData
-  // ------------------------------ Loading aggregate ------------------------------
   const isLoading =
     legislationsQuery.isLoading ||
     requirementsQuery.isLoading ||
     complianceItemsQuery.isLoading ||
     labelDataQuery.isLoading ||
     (isFertilizer && fertilizerLabelDataQuery.isLoading)
-  // ------------------------------ Error handling ------------------------------
   const labelDataIsFatalError =
     labelDataQuery.isError &&
     !isAxiosErrorWithStatus(labelDataQuery.error, StatusCodes.NOT_FOUND)
@@ -138,12 +96,18 @@ export function useComplianceDataQueries(labelId: string, productType: string) {
     (labelDataIsFatalError && labelDataQuery.error) ||
     (fertilizerDataIsFatalError && fertilizerLabelDataQuery.error) ||
     null
+  const labelData =
+    labelDataQuery.data?.outcome === "ok" ? labelDataQuery.data.data : undefined
+  const fertilizerData =
+    fertilizerLabelDataQuery.data?.outcome === "ok"
+      ? fertilizerLabelDataQuery.data.data
+      : undefined
   return {
     legislations: legislationsQuery.data ?? [],
     requirements: requirementsQuery.data ?? [],
     complianceItems: complianceItemsQuery.data ?? [],
-    labelData: labelDataQuery.data,
-    fertilizerData: fertilizerLabelDataQuery.data,
+    labelData,
+    fertilizerData,
     meetsPrerequisite,
     isLoading,
     isError: hasQueryError,

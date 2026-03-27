@@ -1,3 +1,5 @@
+// ============================== Label row actions ==============================
+
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import VisibilityIcon from "@mui/icons-material/Visibility"
@@ -14,10 +16,10 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import type { ReviewStatus } from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
+import type { ReviewStatus } from "#/api/types.gen"
+import { useSnackbar } from "#/components/SnackbarProvider"
 
-interface LabelRowActionsProps {
+type LabelRowActionsProps = {
   reviewStatus: ReviewStatus | null
   onViewDetails: () => void
   onReview: () => void

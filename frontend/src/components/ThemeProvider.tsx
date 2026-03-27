@@ -1,9 +1,6 @@
-import {
-  CssBaseline,
-  GlobalStyles,
-  ThemeProvider as MuiThemeProvider,
-} from "@mui/material"
-import { createTheme, StyledEngineProvider } from "@mui/material/styles"
+// ============================== MUI theme ==============================
+import { CssBaseline, ThemeProvider as MuiThemeProvider } from "@mui/material"
+import { createTheme } from "@mui/material/styles"
 import type { PropsWithChildren } from "react"
 
 declare module "@mui/material/styles" {
@@ -16,7 +13,6 @@ declare module "@mui/material/styles" {
     "2xl": true
   }
 }
-
 const theme = createTheme({
   colorSchemes: {
     dark: true,
@@ -32,15 +28,11 @@ const theme = createTheme({
     },
   },
 })
-
 export function ThemeProvider({ children }: PropsWithChildren) {
   return (
-    <StyledEngineProvider enableCssLayer>
-      <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
-      <MuiThemeProvider theme={theme} noSsr>
-        <CssBaseline />
-        {children}
-      </MuiThemeProvider>
-    </StyledEngineProvider>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </MuiThemeProvider>
   )
 }

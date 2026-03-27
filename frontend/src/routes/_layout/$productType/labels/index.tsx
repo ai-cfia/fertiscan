@@ -1,3 +1,5 @@
+// ============================== Labels list ==============================
+
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import {
   Box,
@@ -21,35 +23,78 @@ import {
 import { visuallyHidden } from "@mui/utils"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { format } from "date-fns"
 import { enCA } from "date-fns/locale"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { z } from "zod"
-import { type LabelListItem, LabelsService, type ReviewStatus } from "@/api"
-import { ReviewStatusSchema } from "@/api/schemas.gen"
-import BulkActionsToolbar from "@/components/Common/BulkActionsToolbar"
-import LabelFilterChips from "@/components/Common/LabelFilterChips"
-import LabelFilterMenu from "@/components/Common/LabelFilterMenu"
-import LabelListEmptyState from "@/components/Common/LabelListEmptyState"
-import LabelRowActions from "@/components/Common/LabelRowActions"
-import ReviewStatusChip from "@/components/Common/ReviewStatusChip"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useConfig } from "@/stores/useConfig"
-import { useLabelList } from "@/stores/useLabelList"
-import { useLanguage } from "@/stores/useLanguage"
-import { truncateUuid } from "@/utils"
+import type { LabelListItem, ReviewStatus } from "#/api/types.gen"
+import BulkActionsToolbar from "#/components/Common/BulkActionsToolbar"
+import LabelFilterChips from "#/components/Common/LabelFilterChips"
+import LabelFilterMenu from "#/components/Common/LabelFilterMenu"
+import LabelListEmptyState from "#/components/Common/LabelListEmptyState"
+import LabelRowActions from "#/components/Common/LabelRowActions"
+import ReviewStatusChip from "#/components/Common/ReviewStatusChip"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { readLabelsPageFn } from "#/server/labels-list"
+import { clientRuntimeConfig } from "#/stores/useConfig"
+import { useLabelList } from "#/stores/useLabelList"
+import { useLanguage } from "#/stores/useLanguage"
+import { truncateUuid } from "#/utils/truncate-uuid"
 
-const labelsSearchSchema = z.object({
-  page: z.number().default(0).catch(0),
-  per_page: z.number().default(10).catch(10), // Default will be overridden by config in component
-  review_status: z
-    .enum(ReviewStatusSchema.enum as unknown as [string, ...string[]])
-    .optional(),
-  unlinked: z.boolean().optional(),
-  order_by: z.string().optional(),
-  order: z.enum(["asc", "desc"]).optional(),
-})
+const REVIEW_STATUSES = [
+  "not_started",
+  "in_progress",
+  "completed",
+] as const satisfies readonly ReviewStatus[]
+
+type LabelsSearch = {
+  page: number
+  per_page: number
+  review_status?: ReviewStatus
+  unlinked?: boolean
+  order_by?: string
+  order?: "asc" | "desc"
+}
+
+function parseIntSearch(v: unknown, fallback: number): number {
+  if (typeof v === "number" && Number.isFinite(v)) {
+    return v
+  }
+  if (typeof v === "string" && v.length > 0) {
+    const n = Number.parseInt(v, 10)
+    return Number.isFinite(n) ? n : fallback
+  }
+  return fallback
+}
+
+function validateLabelsSearch(search: Record<string, unknown>): LabelsSearch {
+  const page = Math.max(0, parseIntSearch(search.page, 0))
+  const per_page = Math.max(
+    1,
+    parseIntSearch(search.per_page, clientRuntimeConfig.defaultPerPage),
+  )
+  const rs = search.review_status
+  const review_status =
+    typeof rs === "string" &&
+    (REVIEW_STATUSES as readonly string[]).includes(rs)
+      ? (rs as ReviewStatus)
+      : undefined
+  const unlinked =
+    search.unlinked === true || search.unlinked === "true" ? true : undefined
+  const ob = search.order_by
+  const order_by = typeof ob === "string" && ob.length > 0 ? ob : undefined
+  const ord = search.order
+  const order = ord === "asc" || ord === "desc" ? ord : undefined
+  return {
+    page,
+    per_page,
+    review_status,
+    unlinked,
+    order_by,
+    order,
+  }
+}
 
 type LabelRow = {
   id: string
@@ -99,35 +144,32 @@ function mapFrontendFieldToBackend(
   return fieldMap[field] ?? "created_at"
 }
 
-interface HeadCell {
+type HeadCell = {
   disablePadding: boolean
   id: keyof LabelRow
   label: string
   numeric: boolean
 }
 
-// headCells will be created dynamically with translations in the component
-
 export const Route = createFileRoute("/_layout/$productType/labels/")({
+  validateSearch: validateLabelsSearch,
   component: Labels,
-  validateSearch: (search) => labelsSearchSchema.parse(search),
 })
 
 function LabelsTable() {
   const { t } = useTranslation("labels")
-  const { defaultPerPage } = useConfig()
   const { language } = useLanguage()
   const { page, per_page, review_status, unlinked, order_by, order } =
     Route.useSearch()
   const { productType } = Route.useParams()
-  const rowsPerPage = per_page || defaultPerPage
+  const rowsPerPage = per_page || clientRuntimeConfig.defaultPerPage
   const [selected, setSelected] = useState<readonly string[]>([])
   const navigate = Route.useNavigate()
   const orderBy = (order_by as keyof LabelRow) || "createdAt"
   const sortOrder = (order as Order) || "desc"
   const { setError } = useLabelList()
   const { showSuccessToast } = useSnackbar()
-
+  const fetchLabelsPage = useServerFn(readLabelsPageFn)
   const headCells: readonly HeadCell[] = [
     {
       id: "id",
@@ -172,20 +214,18 @@ function LabelsTable() {
       order,
       language,
     ],
-    queryFn: async () => {
-      const response = await LabelsService.readLabels({
-        query: {
-          product_type: productType,
-          limit: rowsPerPage,
-          offset: page * rowsPerPage,
-          review_status: review_status as ReviewStatus | undefined,
-          unlinked: unlinked ?? undefined,
+    queryFn: () =>
+      fetchLabelsPage({
+        data: {
+          productType,
+          page,
+          perPage: rowsPerPage,
+          review_status,
+          unlinked,
           order_by: mapFrontendFieldToBackend(orderBy, language),
           order: sortOrder,
         },
-      })
-      return response.data
-    },
+      }),
   })
   useEffect(() => {
     if (isError && error) {
@@ -195,7 +235,9 @@ function LabelsTable() {
     }
   }, [isError, error, setError])
   const labels: LabelRow[] = useMemo(() => {
-    if (!data?.items) return []
+    if (!data?.items) {
+      return []
+    }
     return data.items.map((label) => mapLabelToRow(label, language))
   }, [data, language])
   const setPage = (newPage: number) => {
@@ -209,7 +251,7 @@ function LabelsTable() {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const newRowsPerPage = parseInt(event.target.value, 10)
+    const newRowsPerPage = Number.parseInt(event.target.value, 10)
     navigate({
       search: (prev) => ({
         ...prev,
@@ -329,9 +371,7 @@ function LabelsTable() {
     },
     [showSuccessToast, t],
   )
-  const handleBulkExport = useCallback(() => {
-    // TODO: Implement export functionality
-  }, [])
+  const handleBulkExport = useCallback(() => {}, [])
   const handleBulkDelete = useCallback(() => {
     setSelected([])
   }, [])
@@ -569,9 +609,7 @@ function LabelsTable() {
                             params: { productType, labelId: label.id },
                           })
                         }}
-                        onDelete={() => {
-                          // TODO: Implement delete functionality
-                        }}
+                        onDelete={() => {}}
                       />
                     </TableCell>
                   </TableRow>

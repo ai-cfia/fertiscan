@@ -1,3 +1,5 @@
+// ============================== Compliance requirement accordion ==============================
+
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import BlockIcon from "@mui/icons-material/Block"
 import CheckIcon from "@mui/icons-material/Check"
@@ -22,6 +24,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
+import type { ReactElement } from "react"
 import { useState } from "react"
 import type { Control } from "react-hook-form"
 import { Controller, useWatch } from "react-hook-form"
@@ -30,9 +33,8 @@ import type {
   ComplianceStatus,
   ProvisionSnippet,
   RequirementPublic,
-} from "@/api"
+} from "#/api/types.gen"
 
-// ============================== Types ==============================
 interface ComplianceFormValues {
   compliance: Record<
     string,
@@ -64,14 +66,13 @@ const STATUS_LABEL: Record<ComplianceStatus, string> = {
   not_applicable: "data.complianceStatusNotApplicable",
   inconclusive: "data.complianceStatusInconclusive",
 }
-const STATUS_ICON: Record<ComplianceStatus, React.ReactElement> = {
+const STATUS_ICON: Record<ComplianceStatus, ReactElement> = {
   compliant: <CheckIcon color="success" sx={{ fontSize: 18 }} />,
   non_compliant: <CloseIcon color="error" sx={{ fontSize: 18 }} />,
   not_applicable: <BlockIcon color="info" sx={{ fontSize: 18 }} />,
   inconclusive: <HelpOutlineIcon color="warning" sx={{ fontSize: 18 }} />,
 }
 
-// ============================== Component ==============================
 const STATUS_OPTIONS: ComplianceStatus[] = [
   "compliant",
   "non_compliant",
@@ -97,6 +98,7 @@ export default function ComplianceRequirementAccordion({
   evaluationError,
 }: ComplianceRequirementAccordionProps) {
   const { t } = useTranslation("labels")
+  const { t: tCommon } = useTranslation("common")
   const [isHovered, setIsHovered] = useState(false)
   const status = useWatch({
     control: complianceControl,
@@ -150,7 +152,9 @@ export default function ComplianceRequirementAccordion({
           >
             {displayStatus && (
               <Tooltip
-                title={t(STATUS_LABEL[displayStatus as ComplianceStatus])}
+                title={String(
+                  t(STATUS_LABEL[displayStatus as ComplianceStatus] as never),
+                )}
               >
                 <Box
                   component="span"
@@ -172,7 +176,7 @@ export default function ComplianceRequirementAccordion({
                         "Prerequisite not met: complete label data extraction first",
                     })
                   : isEvaluating && isHovered && onCancelRequirement
-                    ? t("common.button.cancel")
+                    ? tCommon("button.cancel")
                     : t("data.complianceRunRequirement")
               }
             >
@@ -281,7 +285,7 @@ export default function ComplianceRequirementAccordion({
                         }}
                       >
                         {STATUS_ICON[s]}
-                        {t(STATUS_LABEL[s])}
+                        {String(t(STATUS_LABEL[s] as never))}
                       </Box>
                     </MenuItem>
                   ))}

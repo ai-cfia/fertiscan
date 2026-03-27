@@ -1,3 +1,4 @@
+// ============================== Reset password ==============================
 import LockIcon from "@mui/icons-material/Lock"
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
@@ -10,43 +11,56 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
-import type { AxiosError } from "axios"
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  createFileRoute,
+  isRedirect,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { LoginService } from "@/api"
-import PageTopBanner from "@/components/Common/PageTopBanner"
-import { isLoggedIn } from "@/hooks/useAuth"
-import useCustomToast from "@/hooks/useCustomToast"
-import { useBackendStatus } from "@/stores/useBackendStatus"
-import { confirmPasswordRules, handleError, passwordRules } from "@/utils"
+import PageTopBanner from "#/components/Common/PageTopBanner"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { useBackendHealthCheck } from "#/hooks/useBackendHealthCheck"
+import { getCurrentUserFn, resetPasswordFn } from "#/server/auth"
+import { useBackendStatus } from "#/stores/useBackendStatus"
+import { confirmPasswordRules, passwordRules } from "#/utils/form-validation"
 
 interface NewPasswordForm {
   new_password: string
   confirm_password: string
 }
-
 export const Route = createFileRoute("/reset-password")({
-  component: ResetPassword,
+  validateSearch: (search: Record<string, unknown>) => ({
+    token: typeof search.token === "string" ? search.token : undefined,
+  }),
   beforeLoad: async () => {
-    if (isLoggedIn()) {
+    const user = await getCurrentUserFn()
+    if (user) {
       throw redirect({
         to: "/$productType",
         params: { productType: "fertilizer" },
       })
     }
   },
+  component: ResetPassword,
 })
-
 function ResetPassword() {
+  useBackendHealthCheck()
+  const { token } = Route.useSearch()
+  const navigate = useNavigate()
   const { t } = useTranslation(["auth", "common"])
+  const { showSuccessToast } = useSnackbar()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const resetPassword = useServerFn(resetPasswordFn)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -62,36 +76,54 @@ function ResetPassword() {
     handleSubmit,
     getValues,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<NewPasswordForm>({
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
       new_password: "",
-    },
-  })
-  const { showSuccessToast } = useCustomToast()
-  const navigate = useNavigate()
-  const resetPassword = async (data: NewPasswordForm) => {
-    const token = new URLSearchParams(window.location.search).get("token")
-    if (!token) return
-    await LoginService.resetPassword({
-      body: { new_password: data.new_password, token: token },
-    })
-  }
-  const mutation = useMutation({
-    mutationFn: resetPassword,
-    onSuccess: () => {
-      showSuccessToast(t("resetPassword.success"))
-      reset()
-      navigate({ to: "/login" })
-    },
-    onError: (err: AxiosError) => {
-      handleError(err)
+      confirm_password: "",
     },
   })
   const onSubmit: SubmitHandler<NewPasswordForm> = async (data) => {
-    mutation.mutate(data)
+    if (isSubmitting) return
+    setServerError(null)
+    if (!token) {
+      setServerError(
+        t("labels.errorOccurred", {
+          ns: "errors",
+          defaultValue: "Something went wrong",
+        }),
+      )
+      return
+    }
+    try {
+      const result = await resetPassword({
+        data: { token, new_password: data.new_password },
+      })
+      if (
+        result &&
+        typeof result === "object" &&
+        "ok" in result &&
+        result.ok === false
+      ) {
+        setServerError(result.error)
+      } else {
+        showSuccessToast(t("resetPassword.success"))
+        reset()
+        navigate({ to: "/login", search: { redirect: undefined } })
+      }
+    } catch (err) {
+      if (isRedirect(err)) {
+        throw err
+      }
+      setServerError(
+        t("labels.errorOccurred", {
+          ns: "errors",
+          defaultValue: "Something went wrong",
+        }),
+      )
+    }
   }
   return (
     <>
@@ -123,6 +155,19 @@ function ResetPassword() {
             {t("resetPassword.description")}
           </Typography>
         </Box>
+        {!token ? (
+          <Typography color="error" variant="body2" role="alert">
+            {t("labels.errorOccurred", {
+              ns: "errors",
+              defaultValue: "Invalid or missing reset link",
+            })}
+          </Typography>
+        ) : null}
+        {serverError ? (
+          <Typography color="error" variant="body2" role="alert">
+            {serverError}
+          </Typography>
+        ) : null}
         <TextField
           {...register(
             "new_password",
@@ -131,9 +176,11 @@ function ResetPassword() {
               minLength: t("signup.passwordMinLength"),
             }),
           )}
+          required
           label={t("resetPassword.newPassword")}
           type={showNewPassword ? "text" : "password"}
           fullWidth
+          disabled={!token}
           error={!!errors.new_password}
           helperText={
             errors.new_password?.message ||
@@ -173,9 +220,11 @@ function ResetPassword() {
               validate: t("signup.passwordsDoNotMatch"),
             }),
           )}
+          required
           label={t("resetPassword.confirmPassword")}
           type={showConfirmPassword ? "text" : "password"}
           fullWidth
+          disabled={!token}
           error={!!errors.confirm_password}
           helperText={
             errors.confirm_password?.message ||
@@ -207,7 +256,13 @@ function ResetPassword() {
             },
           }}
         />
-        <Button variant="contained" type="submit" fullWidth size="large">
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={isSubmitting || !token}
+          fullWidth
+          size="large"
+        >
           {t("resetPassword.submit")}
         </Button>
       </Container>

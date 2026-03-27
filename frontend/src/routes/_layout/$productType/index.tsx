@@ -1,12 +1,15 @@
+// ============================== Product home (dashboard) ==============================
+
 import { Box, Container, Grid, Typography } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { LabelsService, ProductsService } from "@/api"
-import ActionButton from "@/components/Common/ActionButton"
-import StatCard from "@/components/Common/StatCard"
-import { useConfig } from "@/stores/useConfig"
+import ActionButton from "#/components/Common/ActionButton"
+import StatCard from "#/components/Common/StatCard"
+import { getDashboardStatsFn } from "#/server/dashboard-stats"
+import { useConfig } from "#/stores/useConfig"
 
 export const Route = createFileRoute("/_layout/$productType/")({
   component: Dashboard,
@@ -15,91 +18,15 @@ export const Route = createFileRoute("/_layout/$productType/")({
 function Dashboard() {
   const { t } = useTranslation("labels")
   const { defaultPerPage } = useConfig()
-  // ============================== Route & Navigation ==============================
   const { productType } = Route.useParams()
   const navigate = useNavigate()
-  // ============================== Data Fetching ==============================
-  const { data: totalLabels, isLoading: isLoadingTotalLabels } = useQuery({
-    queryKey: ["labels", "total", productType],
-    queryFn: async () => {
-      const response = await LabelsService.readLabels({
-        query: { product_type: productType, limit: 1 },
-      })
-      return response.data
-    },
+  const fetchStats = useServerFn(getDashboardStatsFn)
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["dashboardStats", productType],
+    queryFn: () => fetchStats({ data: { productType } }),
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   })
-  const { data: labelsNotStarted, isLoading: isLoadingNotStarted } = useQuery({
-    queryKey: ["labels", "not-started", productType],
-    queryFn: async () => {
-      const response = await LabelsService.readLabels({
-        query: {
-          product_type: productType,
-          review_status: "not_started",
-          limit: 1,
-        },
-      })
-      return response.data
-    },
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  })
-  const { data: labelsInProgress, isLoading: isLoadingInProgress } = useQuery({
-    queryKey: ["labels", "in-progress", productType],
-    queryFn: async () => {
-      const response = await LabelsService.readLabels({
-        query: {
-          product_type: productType,
-          review_status: "in_progress",
-          limit: 1,
-        },
-      })
-      return response.data
-    },
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  })
-  const { data: labelsCompleted, isLoading: isLoadingCompleted } = useQuery({
-    queryKey: ["labels", "completed", productType],
-    queryFn: async () => {
-      const response = await LabelsService.readLabels({
-        query: {
-          product_type: productType,
-          review_status: "completed",
-          limit: 1,
-        },
-      })
-      return response.data
-    },
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  })
-  const { data: totalProducts, isLoading: isLoadingTotalProducts } = useQuery({
-    queryKey: ["products", "total", productType],
-    queryFn: async () => {
-      const response = await ProductsService.readProducts({
-        query: { product_type: productType, limit: 1 },
-      })
-      return response.data
-    },
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  })
-  const { data: unlinkedLabels, isLoading: isLoadingUnlinkedLabels } = useQuery(
-    {
-      queryKey: ["labels", "unlinked", productType],
-      queryFn: async () => {
-        const response = await LabelsService.readLabels({
-          query: { product_type: productType, unlinked: true, limit: 1 },
-        })
-        return response.data
-      },
-      refetchInterval: 5000,
-      refetchIntervalInBackground: false,
-    },
-  )
-  // ============================== Effects ==============================
   useEffect(() => {
     document.title = t("dashboard.title")
   }, [t])
@@ -107,18 +34,16 @@ function Dashboard() {
     <Container maxWidth="xl">
       <Box sx={{ pt: 3, pb: 4 }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          {/* ============================== Overview ============================== */}
           <Box component="section">
             <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
               {t("dashboard.overview")}
             </Typography>
-            {/* ------------------------------ Stat Cards ------------------------------ */}
             <Grid container spacing={3} sx={{ alignItems: "stretch" }}>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
                   label={t("dashboard.totalLabels")}
-                  value={totalLabels?.total ?? 0}
-                  isLoading={isLoadingTotalLabels}
+                  value={stats?.totalLabels ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
@@ -131,15 +56,15 @@ function Dashboard() {
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
                   label={t("dashboard.notStarted")}
-                  value={labelsNotStarted?.total ?? 0}
-                  isLoading={isLoadingNotStarted}
+                  value={stats?.notStarted ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
                       search: {
                         page: 0,
-                        per_page: 10,
+                        per_page: defaultPerPage,
                         review_status: "not_started",
                       },
                     })
@@ -149,15 +74,15 @@ function Dashboard() {
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
                   label={t("dashboard.inProgress")}
-                  value={labelsInProgress?.total ?? 0}
-                  isLoading={isLoadingInProgress}
+                  value={stats?.inProgress ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
                       search: {
                         page: 0,
-                        per_page: 10,
+                        per_page: defaultPerPage,
                         review_status: "in_progress",
                       },
                     })
@@ -167,15 +92,15 @@ function Dashboard() {
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
                   label={t("dashboard.completed")}
-                  value={labelsCompleted?.total ?? 0}
-                  isLoading={isLoadingCompleted}
+                  value={stats?.completed ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
                       search: {
                         page: 0,
-                        per_page: 10,
+                        per_page: defaultPerPage,
                         review_status: "completed",
                       },
                     })
@@ -185,8 +110,8 @@ function Dashboard() {
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
                 <StatCard
                   label={t("dashboard.totalProducts")}
-                  value={totalProducts?.total ?? 0}
-                  isLoading={isLoadingTotalProducts}
+                  value={stats?.totalProducts ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/products",
@@ -200,25 +125,27 @@ function Dashboard() {
                 <StatCard
                   label={t("dashboard.unlinkedLabels")}
                   supportingText={t("dashboard.unlinkedLabelsDescription")}
-                  value={unlinkedLabels?.total ?? 0}
-                  isLoading={isLoadingUnlinkedLabels}
+                  value={stats?.unlinkedLabels ?? 0}
+                  isLoading={isLoading}
                   onViewAll={() => {
                     navigate({
                       to: "/$productType/labels",
                       params: { productType },
-                      search: { page: 0, per_page: 10, unlinked: true },
+                      search: {
+                        page: 0,
+                        per_page: defaultPerPage,
+                        unlinked: true,
+                      },
                     })
                   }}
                 />
               </Grid>
             </Grid>
           </Box>
-          {/* ============================== Quick Actions ============================== */}
           <Box component="section">
             <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
               {t("dashboard.quickActions")}
             </Typography>
-            {/* ------------------------------ Action Buttons ------------------------------ */}
             <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
               <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <ActionButton
@@ -239,13 +166,6 @@ function Dashboard() {
                   title={t("dashboard.manageProducts")}
                   description={t("dashboard.manageProductsDescription")}
                   to={`/${productType}/products`}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
-                <ActionButton
-                  title={t("dashboard.verifyLabels")}
-                  description={t("dashboard.verifyLabelsDescription")}
-                  to={`/${productType}/verify`}
                 />
               </Grid>
             </Grid>

@@ -1,3 +1,5 @@
+// ============================== Label list filters (menu) ==============================
+
 import FilterListIcon from "@mui/icons-material/FilterList"
 import {
   Box,
@@ -9,16 +11,14 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import type { ReviewStatus } from "@/api"
+import type { ReviewStatus } from "#/api/types.gen"
 
-interface LabelFilterMenuProps {
+type LabelFilterMenuProps = {
   reviewStatus?: ReviewStatus
   unlinked?: boolean
   onReviewStatusChange: (value?: ReviewStatus) => void
   onUnlinkedChange: (value?: boolean) => void
 }
-
-// These will be created dynamically with translations in the component
 
 const SubmenuArrow = () => (
   <Box
@@ -47,11 +47,7 @@ export default function LabelFilterMenu({
     useState<null | HTMLElement>(null)
   const filterMenuOpen = Boolean(filterAnchorEl)
   const reviewStatusMenuOpen = Boolean(reviewStatusAnchorEl)
-
-  const REVIEW_STATUS_OPTIONS: Array<{
-    value: ReviewStatus
-    label: string
-  }> = [
+  const reviewStatusOptions: Array<{ value: ReviewStatus; label: string }> = [
     { value: "not_started", label: t("filter.notStarted") },
     { value: "in_progress", label: t("filter.inProgress") },
     { value: "completed", label: t("filter.completed") },
@@ -108,7 +104,7 @@ export default function LabelFilterMenu({
             horizontal: "left",
           }}
         >
-          {REVIEW_STATUS_OPTIONS.map((option) => (
+          {reviewStatusOptions.map((option) => (
             <MenuItem
               key={option.value}
               selected={reviewStatus === option.value}

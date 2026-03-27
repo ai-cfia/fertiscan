@@ -1,13 +1,15 @@
+// ============================== Delete compliance ==============================
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
 import { useTranslation } from "react-i18next"
-import type { NonComplianceDataItemPublic } from "@/api"
-import { LabelsService } from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { getErrorMessage } from "@/utils/labelDataErrors"
+import type { NonComplianceDataItemPublic } from "#/api/types.gen"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { deleteComplianceItemFn } from "#/server/label-compliance"
+import { getErrorMessage } from "#/utils/labelDataErrors"
 
 const EVALUATION_QUERY_KEY = "compliance-eval" as const
 
-// ============================== Hook ==============================
 export function useDeleteCompliance(
   labelId: string,
   complianceItems: NonComplianceDataItemPublic[],
@@ -15,11 +17,10 @@ export function useDeleteCompliance(
   const queryClient = useQueryClient()
   const { t } = useTranslation(["labels", "errors"])
   const { showSuccessToast, showErrorToast } = useSnackbar()
+  const deleteFn = useServerFn(deleteComplianceItemFn)
   const mutation = useMutation({
     mutationFn: (requirementId: string) =>
-      LabelsService.deleteCompliance({
-        path: { label_id: labelId, requirement_id: requirementId },
-      }),
+      deleteFn({ data: { labelId, requirementId } }),
     onMutate: async (requirementId) => {
       await queryClient.cancelQueries({
         queryKey: ["complianceItems", labelId],

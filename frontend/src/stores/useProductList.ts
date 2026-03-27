@@ -1,13 +1,13 @@
+// ============================== Products list error surface ==============================
+
 import { create } from "zustand"
 
-interface ProductListStore {
+type ProductListStore = {
   error: Error | null
   setError: (error: Error | null) => void
 }
 
-const store = (set: any) => ({
+export const useProductList = create<ProductListStore>((set) => ({
   error: null,
-  setError: (error: Error | null) => set({ error }),
-})
-
-export const useProductList = create<ProductListStore>()(store)
+  setError: (error) => set({ error }),
+}))

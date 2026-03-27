@@ -1,22 +1,19 @@
+// ============================== Product type layout ==============================
+
 import { createFileRoute, notFound, Outlet } from "@tanstack/react-router"
-import { z } from "zod"
-import NotFound from "@/components/Common/NotFound"
 
 const VALID_PRODUCT_TYPES = ["fertilizer"] as const
 
-const productTypeParamsSchema = z.object({
-  productType: z.enum(VALID_PRODUCT_TYPES),
-})
-
 export const Route = createFileRoute("/_layout/$productType")({
-  beforeLoad: async ({ params }) => {
-    const result = productTypeParamsSchema.safeParse(params)
-    if (!result.success) {
+  beforeLoad: ({ params }) => {
+    if (
+      !VALID_PRODUCT_TYPES.includes(
+        params.productType as (typeof VALID_PRODUCT_TYPES)[number],
+      )
+    ) {
       throw notFound()
     }
   },
-  parseParams: (params) => params,
-  notFoundComponent: NotFound,
   component: ProductTypeLayout,
 })
 

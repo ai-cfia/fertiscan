@@ -1,3 +1,5 @@
+// ============================== Products list ==============================
+
 import AddIcon from "@mui/icons-material/Add"
 import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import InventoryIcon from "@mui/icons-material/Inventory"
@@ -23,27 +25,54 @@ import {
 import { visuallyHidden } from "@mui/utils"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { format } from "date-fns"
 import { enCA } from "date-fns/locale"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { z } from "zod"
-import { type ProductPublic, ProductsService } from "@/api"
-import BulkActionsToolbar from "@/components/Common/BulkActionsToolbar"
-import EmptyState from "@/components/Common/EmptyState"
-import ProductRowActions from "@/components/Common/ProductRowActions"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useConfig } from "@/stores/useConfig"
-import { useLanguage } from "@/stores/useLanguage"
-import { useProductList } from "@/stores/useProductList"
-import { truncateUuid } from "@/utils"
+import type { ProductPublic } from "#/api/types.gen"
+import BulkActionsToolbar from "#/components/Common/BulkActionsToolbar"
+import EmptyState from "#/components/Common/EmptyState"
+import ProductRowActions from "#/components/Common/ProductRowActions"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { readProductsPageFn } from "#/server/products-list"
+import { clientRuntimeConfig } from "#/stores/useConfig"
+import { useLanguage } from "#/stores/useLanguage"
+import { useProductList } from "#/stores/useProductList"
+import { truncateUuid } from "#/utils/truncate-uuid"
 
-const productsSearchSchema = z.object({
-  page: z.number().default(0).catch(0),
-  per_page: z.number().default(10).catch(10),
-  order_by: z.string().optional(),
-  order: z.enum(["asc", "desc"]).optional(),
-})
+type ProductsSearch = {
+  page: number
+  per_page: number
+  order_by?: string
+  order?: "asc" | "desc"
+}
+
+function parseIntSearch(v: unknown, fallback: number): number {
+  if (typeof v === "number" && Number.isFinite(v)) {
+    return v
+  }
+  if (typeof v === "string" && v.length > 0) {
+    const n = Number.parseInt(v, 10)
+    return Number.isFinite(n) ? n : fallback
+  }
+  return fallback
+}
+
+function validateProductsSearch(
+  search: Record<string, unknown>,
+): ProductsSearch {
+  const page = Math.max(0, parseIntSearch(search.page, 0))
+  const per_page = Math.max(
+    1,
+    parseIntSearch(search.per_page, clientRuntimeConfig.defaultPerPage),
+  )
+  const ob = search.order_by
+  const order_by = typeof ob === "string" && ob.length > 0 ? ob : undefined
+  const ord = search.order
+  const order = ord === "asc" || ord === "desc" ? ord : undefined
+  return { page, per_page, order_by, order }
+}
 
 type ProductRow = {
   id: string
@@ -88,7 +117,7 @@ function mapFrontendFieldToBackend(
   return fieldMap[field] ?? "created_at"
 }
 
-interface HeadCell {
+type HeadCell = {
   disablePadding: boolean
   id: keyof ProductRow
   label: string
@@ -96,24 +125,23 @@ interface HeadCell {
 }
 
 export const Route = createFileRoute("/_layout/$productType/products/")({
+  validateSearch: validateProductsSearch,
   component: Products,
-  validateSearch: (search) => productsSearchSchema.parse(search),
 })
 
 function ProductsTable() {
   const { t } = useTranslation(["products", "common"])
-  const { defaultPerPage } = useConfig()
   const { language } = useLanguage()
   const { page, per_page, order_by, order } = Route.useSearch()
   const { productType } = Route.useParams()
-  const rowsPerPage = per_page || defaultPerPage
+  const rowsPerPage = per_page || clientRuntimeConfig.defaultPerPage
   const [selected, setSelected] = useState<readonly string[]>([])
   const navigate = Route.useNavigate()
   const orderBy = (order_by as keyof ProductRow) || "createdAt"
   const sortOrder = (order as Order) || "desc"
   const { setError } = useProductList()
   const { showSuccessToast } = useSnackbar()
-
+  const fetchProductsPage = useServerFn(readProductsPageFn)
   const headCells: readonly HeadCell[] = [
     {
       id: "id",
@@ -146,7 +174,6 @@ function ProductsTable() {
       label: t("products:table.createdAt"),
     },
   ]
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: [
       "products",
@@ -157,43 +184,39 @@ function ProductsTable() {
       order,
       language,
     ],
-    queryFn: async () => {
-      const response = await ProductsService.readProducts({
-        query: {
-          product_type: productType,
-          limit: rowsPerPage,
-          offset: page * rowsPerPage,
+    queryFn: async () =>
+      fetchProductsPage({
+        data: {
+          productType,
+          page,
+          perPage: rowsPerPage,
           order_by: mapFrontendFieldToBackend(orderBy, language),
           order: sortOrder,
         },
-      })
-      return response.data
-    },
+      }),
   })
-
   useEffect(() => {
     if (isError && error) {
-      setError(error as Error)
+      setError(error instanceof Error ? error : new Error(String(error)))
     } else {
       setError(null)
     }
   }, [isError, error, setError])
-
   const products: ProductRow[] = useMemo(() => {
-    if (!data?.items) return []
+    if (!data?.items) {
+      return []
+    }
     return data.items.map((product) => mapProductToRow(product, language))
   }, [data, language])
-
   const handleChangePage = (_event: unknown, newPage: number) => {
     navigate({
       search: (prev) => ({ ...prev, page: newPage }),
     })
   }
-
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const newRowsPerPage = parseInt(event.target.value, 10)
+    const newRowsPerPage = Number.parseInt(event.target.value, 10)
     navigate({
       search: (prev) => ({
         ...prev,
@@ -202,7 +225,6 @@ function ProductsTable() {
       }),
     })
   }
-
   const handleRequestSort = (
     _event: React.MouseEvent<unknown>,
     property: keyof ProductRow,
@@ -218,7 +240,6 @@ function ProductsTable() {
       }),
     })
   }
-
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = products.map((product) => product.id)
@@ -227,7 +248,6 @@ function ProductsTable() {
     }
     setSelected([])
   }
-
   const handleCheckboxClick = (
     event: React.MouseEvent<unknown>,
     id: string,
@@ -249,7 +269,6 @@ function ProductsTable() {
     }
     setSelected(newSelected)
   }
-
   const handleRowClick = (event: React.MouseEvent<unknown>, id: string) => {
     const target = event.target as HTMLElement
     if (target.closest('input[type="checkbox"]') || target.closest("button")) {
@@ -260,18 +279,15 @@ function ProductsTable() {
       params: { productType, productId: id },
     })
   }
-
   const isSelected = (id: string) => selected.indexOf(id) !== -1
-
   const handleCopyId = useCallback(
     (event: React.MouseEvent, id: string) => {
       event.stopPropagation()
-      navigator.clipboard.writeText(id)
+      void navigator.clipboard.writeText(id)
       showSuccessToast(t("products:table.idCopied"))
     },
     [showSuccessToast, t],
   )
-
   const formatCell = (value: string | null | undefined) => {
     if (!value) {
       return (
@@ -285,7 +301,6 @@ function ProductsTable() {
     }
     return value
   }
-
   if (isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
@@ -293,9 +308,7 @@ function ProductsTable() {
       </Box>
     )
   }
-
   const isEmpty = !data?.items || data.items.length === 0
-
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>
       {selected.length > 0 ? (
@@ -419,6 +432,7 @@ function ProductsTable() {
                           }}
                           aria-label={t("products:table.copyId", {
                             id: product.id,
+                            defaultValue: "Copy product ID {{id}}",
                           })}
                         >
                           <ContentCopyIcon fontSize="inherit" />
@@ -470,11 +484,9 @@ function Products() {
   const { t } = useTranslation(["products", "common"])
   const { productType } = Route.useParams()
   const navigate = Route.useNavigate()
-
   useEffect(() => {
     document.title = t("products:pageTitle")
   }, [t])
-
   return (
     <Container maxWidth="xl">
       <Box

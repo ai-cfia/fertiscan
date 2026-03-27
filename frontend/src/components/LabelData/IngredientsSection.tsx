@@ -2,9 +2,9 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import { CircularProgress, IconButton, Tooltip } from "@mui/material"
 import type { Control, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
-import LabelDataIngredients from "@/components/Common/LabelDataIngredients"
-import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
+import LabelDataAccordionSection from "#/components/Common/LabelDataAccordionSection"
+import LabelDataIngredients from "#/components/Common/LabelDataIngredients"
+import type { LabelDataFormValues } from "#/utils/labelDataHelpers"
 
 // ============================== Ingredients Section ==============================
 interface IngredientsSectionProps {

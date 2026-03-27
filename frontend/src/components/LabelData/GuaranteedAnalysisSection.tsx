@@ -2,9 +2,9 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 import { CircularProgress, IconButton, Tooltip } from "@mui/material"
 import type { Control, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
-import LabelDataGuaranteedAnalysis from "@/components/Common/LabelDataGuaranteedAnalysis"
-import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
+import LabelDataAccordionSection from "#/components/Common/LabelDataAccordionSection"
+import LabelDataGuaranteedAnalysis from "#/components/Common/LabelDataGuaranteedAnalysis"
+import type { LabelDataFormValues } from "#/utils/labelDataHelpers"
 
 // ============================== Guaranteed Analysis Section ==============================
 interface GuaranteedAnalysisSectionProps {

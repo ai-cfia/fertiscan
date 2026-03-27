@@ -1,14 +1,15 @@
+// ============================== Upload completion toasts ==============================
+
 import { useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { useLabelNew } from "@/stores/useLabelNew"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { useLabelNew } from "#/stores/useLabelNew"
 
 export default function UploadCompletionSnackbar() {
   const { t } = useTranslation("labels")
   const { uploadStatesByLabelId, labelId } = useLabelNew()
   const { showSuccessToast, showErrorToast } = useSnackbar()
   const previousInProgressRef = useRef(false)
-  // ============================== Effects ==============================
   useEffect(() => {
     if (!labelId) {
       previousInProgressRef.current = false
@@ -42,12 +43,27 @@ export default function UploadCompletionSnackbar() {
     if (wasInProgress && isDone) {
       if (failed === 0) {
         showSuccessToast(
-          t("upload.success", { completed, total, count: total }),
+          t("upload.success", {
+            completed: String(completed),
+            total: String(total),
+            count: total,
+          }),
         )
       } else if (completed === 0) {
-        showErrorToast(t("upload.failed", { failed, total, count: total }))
+        showErrorToast(
+          t("upload.failed", {
+            failed: String(failed),
+            total: String(total),
+            count: total,
+          }),
+        )
       } else {
-        showErrorToast(t("upload.partial", { completed, failed }))
+        showErrorToast(
+          t("upload.partial", {
+            completed: String(completed),
+            failed: String(failed),
+          }),
+        )
       }
     }
     previousInProgressRef.current = inProgress > 0

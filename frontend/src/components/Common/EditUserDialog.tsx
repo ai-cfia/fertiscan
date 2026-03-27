@@ -1,3 +1,5 @@
+// ============================== Edit user dialog ==============================
+
 import {
   Box,
   Button,
@@ -11,12 +13,14 @@ import {
   TextField,
 } from "@mui/material"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { type UserPublic, UsersService } from "@/api"
-import { useSnackbar } from "@/components/SnackbarProvider"
-import { emailPattern } from "@/utils"
+import type { UserPublic } from "#/api"
+import { useSnackbar } from "#/components/SnackbarProvider"
+import { updateUserByIdFn, updateUserMeFn } from "#/server/user-me"
+import { emailPattern } from "#/utils/form-validation"
 
 interface EditUserForm {
   email: string
@@ -44,6 +48,8 @@ export default function EditUserDialog({
   const { t } = useTranslation("common")
   const { showSuccessToast } = useSnackbar()
   const queryClient = useQueryClient()
+  const runUpdateMe = useServerFn(updateUserMeFn)
+  const runUpdateUser = useServerFn(updateUserByIdFn)
   const [mutationError, setMutationError] = useState<string | null>(null)
   const {
     register,
@@ -75,17 +81,19 @@ export default function EditUserDialog({
     }
   }, [open, user, reset])
   const updateMutation = useMutation({
-    mutationFn: (data: EditUserForm) =>
-      isSelfEdit
-        ? UsersService.updateUserMe({
-            body: {
-              email: data.email || null,
-              first_name: data.first_name || null,
-              last_name: data.last_name || null,
-            },
-          })
-        : UsersService.updateUser({
-            path: { user_id: user.id },
+    mutationFn: async (data: EditUserForm) => {
+      if (isSelfEdit) {
+        await runUpdateMe({
+          data: {
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name,
+          },
+        })
+      } else {
+        await runUpdateUser({
+          data: {
+            userId: user.id,
             body: {
               email: data.email || null,
               first_name: data.first_name || null,
@@ -93,7 +101,10 @@ export default function EditUserDialog({
               is_active: data.is_active,
               is_superuser: data.is_superuser,
             },
-          }),
+          },
+        })
+      }
+    },
     onSuccess: () => {
       onClose()
       showSuccessToast(t("admin.rowActions.editDialog.success"))
@@ -103,8 +114,9 @@ export default function EditUserDialog({
       queryClient.invalidateQueries({ queryKey: ["currentUser"] })
       onSuccess?.()
     },
-    onError: () => {
-      setMutationError(t("admin.rowActions.editDialog.error"))
+    onError: (err: unknown) => {
+      const msg = err instanceof Error ? err.message : ""
+      setMutationError(msg || t("admin.rowActions.editDialog.error"))
     },
   })
   const onSubmit: SubmitHandler<EditUserForm> = async (data) => {
@@ -112,7 +124,7 @@ export default function EditUserDialog({
     try {
       await updateMutation.mutateAsync(data)
     } catch {
-      // error displayed in form
+      /* mutation onError sets mutationError */
     }
   }
   const handleClose = () => {
