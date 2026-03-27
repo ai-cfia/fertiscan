@@ -112,7 +112,7 @@ services:
     environment:
       - API_URL=http://backend:5000
     ports:
-      - "5173:80"
+      - "5173:3000"
     depends_on:
       - backend
     develop:
