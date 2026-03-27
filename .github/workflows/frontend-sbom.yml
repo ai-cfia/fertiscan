@@ -14,3 +14,21 @@ jobs:
       runs-on: ubuntu-24.04
       cyclonedx-spec-version: "1.6"
     secrets: inherit
+
+  rename-and-upload:
+    name: Upload Frontend SBOM Scan
+    needs: sbom-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Rename frontend SARIF
+        run: |
+          # Le workflow réutilisable génère frontend/grype.sarif
+          mv frontend/grype.sarif frontend/grype-frontend.sarif
+
+      - name: Upload frontend SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: frontend/grype-frontend.sarif
