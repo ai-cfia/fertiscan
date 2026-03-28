@@ -7,8 +7,8 @@ RUN npm run build
 FROM node:24-slim AS production
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=80
+ENV PORT=3000
 ENV HOST=0.0.0.0
 COPY --from=build /app/.output ./.output
-EXPOSE 80
+EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
