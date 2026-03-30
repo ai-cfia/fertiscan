@@ -13,5 +13,4 @@ jobs:
       working-directory: ./backend
       runs-on: ubuntu-24.04
       cyclonedx-spec-version: "1.6"
-      category: backend-sbom-security-scan
     secrets: inherit
