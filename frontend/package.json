@@ -46,6 +46,8 @@
     "http-status-codes": "^2.3.0",
     "i18next": "^25.10.10",
     "lucide-react": "^1.7.0",
+    "node": "^25.8.2",
+    "npm": "^11.12.1",
     "p-limit": "^7.3.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
