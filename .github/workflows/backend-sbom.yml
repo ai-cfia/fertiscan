@@ -22,12 +22,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Rename backend SARIF
+      - name: Detect backend SARIF
         run: |
-          # Le workflow réutilisable génère backend/grype.sarif
-          mv backend/grype.sarif backend/grype-backend.sarif
+          echo "Searching for backend SARIF..."
+          find . -type f -name "*.sarif"
+
+          SARIF_FILE=$(find . -type f -name "*backend*.sarif" | head -n 1)
+
+          if [ -z "$SARIF_FILE" ]; then
+            echo "❌ No backend SARIF found"
+            exit 1
+          fi
+
+          echo "✅ Backend SARIF found: $SARIF_FILE"
+          echo "BACKEND_SARIF_FILE=$SARIF_FILE" >> $GITHUB_ENV
+
+      - name: Normalize backend SARIF filename
+        run: |
+          mkdir -p backend
+          mv "$BACKEND_SARIF_FILE" backend/backend-sbom-security-scan.sarif
 
       - name: Upload backend SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: backend/grype-backend.sarif
+          sarif_file: backend/backend-sbom-security-scan.sarif
