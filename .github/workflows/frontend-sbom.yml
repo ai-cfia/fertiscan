@@ -13,19 +13,5 @@ jobs:
       working-directory: ./frontend
       runs-on: ubuntu-24.04
       cyclonedx-spec-version: "1.6"
+      category: frontend-sbom-security-scan
     secrets: inherit
-
-
-  upload-frontend-sbom:
-    name: Upload Frontend SBOM Scan results
-    needs: sbom-check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Upload frontend SARIF to GitHub Security
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: frontend/grype-frontend.sarif
-          category: frontend-sbom-security-scan
