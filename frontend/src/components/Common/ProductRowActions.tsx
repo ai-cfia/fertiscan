@@ -1,3 +1,5 @@
+// ============================== Product row actions ==============================
+
 import DeleteIcon from "@mui/icons-material/Delete"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import {
@@ -13,9 +15,9 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useSnackbar } from "@/components/SnackbarProvider"
+import { useSnackbar } from "#/components/SnackbarProvider"
 
-interface ProductRowActionsProps {
+type ProductRowActionsProps = {
   onViewDetails: () => void
   onDelete: () => void
 }
@@ -27,27 +29,22 @@ export default function ProductRowActions({
   const { t } = useTranslation(["products", "common"])
   const { showErrorToast } = useSnackbar()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-
   const handleViewDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
     onViewDetails()
   }
-
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
     setDeleteDialogOpen(true)
   }
-
   const handleDeleteConfirm = () => {
     setDeleteDialogOpen(false)
     showErrorToast(t("products.rowActions.deleteNotImplemented"))
     onDelete()
   }
-
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
   }
-
   return (
     <>
       <Box sx={{ display: "flex", gap: 0.5 }}>
@@ -87,7 +84,7 @@ export default function ProductRowActions({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel}>
-            {t("common.button.cancel")}
+            {t("button.cancel", { ns: "common" })}
           </Button>
           <Button
             onClick={handleDeleteConfirm}

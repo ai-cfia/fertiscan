@@ -1,9 +1,11 @@
+// ============================== Label detail layout ==============================
+
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_layout/$productType/labels/$labelId")({
-  component: LabelDetail,
+  component: LabelDetailLayout,
 })
 
-function LabelDetail() {
+function LabelDetailLayout() {
   return <Outlet />
 }

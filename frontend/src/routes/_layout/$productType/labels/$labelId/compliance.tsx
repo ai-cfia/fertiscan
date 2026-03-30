@@ -1,3 +1,6 @@
+// ============================== Label compliance ==============================
+// --- Legislations, requirements, evaluations (API via server fns + session) ---
+
 import { Box, CircularProgress, Grid, Typography } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import {
@@ -6,28 +9,27 @@ import {
   redirect,
   useBlocker,
 } from "@tanstack/react-router"
-import { AxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { useCallback, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import type { ComplianceStatus } from "@/api"
-import { LabelsService } from "@/api"
-import NotFound from "@/components/Common/NotFound"
-import ComplianceEvaluationPanel from "@/components/Compliance/ComplianceEvaluationPanel"
-import ComplianceLabelDataPanel from "@/components/Compliance/ComplianceLabelDataPanel"
-import { useComplianceDataQueries } from "@/hooks/useComplianceDataQueries"
-import { useDeleteCompliance } from "@/hooks/useDeleteCompliance"
-import { useEvaluateCompliance } from "@/hooks/useEvaluateCompliance"
-import { useSaveCompliance } from "@/hooks/useSaveCompliance"
-import { useBanner } from "@/stores/useBanner"
-import { useLabelDataStore } from "@/stores/useLabelData"
-import { useLanguage } from "@/stores/useLanguage"
+import type { ComplianceStatus } from "#/api/types.gen"
+import NotFound from "#/components/Common/NotFound"
+import ComplianceEvaluationPanel from "#/components/Compliance/ComplianceEvaluationPanel"
+import ComplianceLabelDataPanel from "#/components/Compliance/ComplianceLabelDataPanel"
+import { useComplianceDataQueries } from "#/hooks/useComplianceDataQueries"
+import { useDeleteCompliance } from "#/hooks/useDeleteCompliance"
+import { useEvaluateCompliance } from "#/hooks/useEvaluateCompliance"
+import { useSaveCompliance } from "#/hooks/useSaveCompliance"
+import { readLabelForRouteFn } from "#/server/label-editor"
+import { useBanner } from "#/stores/useBanner"
+import { useLabelDataStore } from "#/stores/useLabelData"
+import { useLanguage } from "#/stores/useLanguage"
 import {
   getErrorMessage,
   isAxiosErrorWithStatus,
-} from "@/utils/labelDataErrors"
-import { getDefaultFormValues, mergeForForm } from "@/utils/labelDataHelpers"
+} from "#/utils/labelDataErrors"
+import { getDefaultFormValues, mergeForForm } from "#/utils/labelDataHelpers"
 
 export const Route = createFileRoute(
   "/_layout/$productType/labels/$labelId/compliance",
@@ -35,45 +37,26 @@ export const Route = createFileRoute(
   notFoundComponent: NotFound,
   loader: async ({ params }) => {
     const { labelId, productType } = params
-    try {
-      const response = await LabelsService.readLabel({
-        path: { label_id: labelId },
-      })
-      const label = response.data
-      if (!label) {
-        throw notFound()
-      }
-      if (label.product_type.code !== productType) {
-        throw redirect({
-          to: "/$productType/labels/$labelId/compliance",
-          params: {
-            productType: label.product_type.code as "fertilizer",
-            labelId: labelId,
-          },
-        })
-      }
-      return { label }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const status = error.response?.status
-        const errorData = error.response?.data
-        const isUuidParsingError =
-          status === 422 &&
-          Array.isArray(errorData?.detail) &&
-          errorData.detail.some(
-            (err: { type?: string }) => err.type === "uuid_parsing",
-          )
-        if (status === 404 || isUuidParsingError) {
-          throw notFound()
-        }
-      }
-      throw error
+    const r = await readLabelForRouteFn({
+      data: { labelId, productType },
+    })
+    if (r.outcome === "not_found") {
+      throw notFound()
     }
+    if (r.outcome === "redirect") {
+      throw redirect({
+        to: "/$productType/labels/$labelId/compliance",
+        params: {
+          productType: r.productType as "fertilizer",
+          labelId: r.labelId,
+        },
+      })
+    }
+    return { label: r.label }
   },
   component: Compliance,
 })
 
-// ============================== Component ==============================
 function Compliance() {
   const { t } = useTranslation(["labels", "errors"])
   const { labelId, productType } = Route.useParams()

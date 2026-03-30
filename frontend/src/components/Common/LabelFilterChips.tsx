@@ -1,11 +1,13 @@
+// ============================== Label list filter chips ==============================
+
 import CancelIcon from "@mui/icons-material/Cancel"
 import CheckIcon from "@mui/icons-material/Check"
 import { Chip } from "@mui/material"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import type { ReviewStatus } from "@/api"
+import type { ReviewStatus } from "#/api/types.gen"
 
-interface LabelFilterChipsProps {
+type LabelFilterChipsProps = {
   reviewStatus?: ReviewStatus
   unlinked?: boolean
   onReviewStatusRemove: () => void

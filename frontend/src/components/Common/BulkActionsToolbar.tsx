@@ -1,3 +1,5 @@
+// ============================== Labels bulk actions toolbar ==============================
+
 import CloseIcon from "@mui/icons-material/Close"
 import DeleteIcon from "@mui/icons-material/Delete"
 import FileDownloadIcon from "@mui/icons-material/FileDownload"
@@ -14,9 +16,9 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useSnackbar } from "@/components/SnackbarProvider"
+import { useSnackbar } from "#/components/SnackbarProvider"
 
-interface BulkActionsToolbarProps {
+type BulkActionsToolbarProps = {
   selectedCount: number
   onDelete: () => void
   onExport: () => void

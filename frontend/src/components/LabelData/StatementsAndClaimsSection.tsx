@@ -8,9 +8,9 @@ import {
 } from "@mui/material"
 import type { Control, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import LabelDataAccordionSection from "@/components/Common/LabelDataAccordionSection"
-import LabelDataBilingualStatementList from "@/components/Common/LabelDataBilingualStatementList"
-import type { LabelDataFormValues } from "@/utils/labelDataHelpers"
+import LabelDataAccordionSection from "#/components/Common/LabelDataAccordionSection"
+import LabelDataBilingualStatementList from "#/components/Common/LabelDataBilingualStatementList"
+import type { LabelDataFormValues } from "#/utils/labelDataHelpers"
 
 const STATEMENT_FIELDS = [
   "precaution_statements",

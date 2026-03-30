@@ -4,6 +4,14 @@
       "cancel": "Cancel"
     }
   },
+  "detail": {
+    "brandEn": "Brand (English)",
+    "brandFr": "Brand (French)",
+    "nameEn": "Product name (English)",
+    "nameFr": "Product name (French)",
+    "pageTitle": "Product details - Label Inspection",
+    "title": "Product details"
+  },
   "empty": {
     "noProducts": "No products found",
     "noProductsDescription": "Products created from labels will appear here."

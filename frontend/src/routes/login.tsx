@@ -1,3 +1,4 @@
+// ============================== Login ==============================
 import EmailIcon from "@mui/icons-material/Email"
 import LockIcon from "@mui/icons-material/Lock"
 import Visibility from "@mui/icons-material/Visibility"
@@ -15,37 +16,46 @@ import {
 import { useQueryClient } from "@tanstack/react-query"
 import {
   createFileRoute,
+  isRedirect,
   Link as RouterLink,
   redirect,
 } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
 import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import type { BodyLoginLoginAccessToken as AccessToken } from "@/api"
-import PageTopBanner from "@/components/Common/PageTopBanner"
-import useAuth, { isLoggedIn } from "@/hooks/useAuth"
-import { useBackendStatus } from "@/stores/useBackendStatus"
-import { emailPattern, passwordRules } from "@/utils"
+import type { BodyLoginLoginAccessToken } from "#/api"
+import PageTopBanner from "#/components/Common/PageTopBanner"
+import { useBackendHealthCheck } from "#/hooks/useBackendHealthCheck"
+import { getCurrentUserFn, loginFn } from "#/server/auth"
+import { useBackendStatus } from "#/stores/useBackendStatus"
+import { emailPattern, passwordRules } from "#/utils/form-validation"
 
+type LoginFormValues = Pick<BodyLoginLoginAccessToken, "username" | "password">
 export const Route = createFileRoute("/login")({
-  component: Login,
+  validateSearch: (search: Record<string, unknown>) => ({
+    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
+  }),
   beforeLoad: async () => {
-    if (isLoggedIn()) {
+    const user = await getCurrentUserFn()
+    if (user) {
       throw redirect({
         to: "/$productType",
         params: { productType: "fertilizer" },
       })
     }
   },
+  component: Login,
 })
-
 function Login() {
+  useBackendHealthCheck()
   const { t } = useTranslation(["auth", "common"])
-  const { loginMutation } = useAuth()
   const { ready: backendReady } = useBackendStatus()
   const queryClient = useQueryClient()
   const [backendErrorDismissed, setBackendErrorDismissed] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const login = useServerFn(loginFn)
   useEffect(() => {
     if (backendReady) {
       setBackendErrorDismissed(false)
@@ -60,7 +70,7 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AccessToken>({
+  } = useForm<LoginFormValues>({
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
@@ -68,12 +78,31 @@ function Login() {
       password: "",
     },
   })
-  const onSubmit: SubmitHandler<AccessToken> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     if (isSubmitting) return
+    setServerError(null)
     try {
-      await loginMutation.mutateAsync(data)
-    } catch {
-      // error is handled by useAuth hook
+      const result = await login({
+        data: { username: data.username, password: data.password },
+      })
+      if (
+        result &&
+        typeof result === "object" &&
+        "ok" in result &&
+        result.ok === false
+      ) {
+        setServerError(result.error)
+      }
+    } catch (err) {
+      if (isRedirect(err)) {
+        throw err
+      }
+      setServerError(
+        t("labels.errorOccurred", {
+          ns: "errors",
+          defaultValue: "Something went wrong",
+        }),
+      )
     }
   }
   return (
@@ -103,6 +132,11 @@ function Login() {
             {t("login.title")}
           </Typography>
         </Box>
+        {serverError ? (
+          <Typography color="error" variant="body2" role="alert">
+            {serverError}
+          </Typography>
+        ) : null}
         <TextField
           {...register("username", {
             required: t("login.usernameRequired"),
@@ -111,6 +145,7 @@ function Login() {
               message: t("login.emailInvalid"),
             },
           })}
+          required
           label={t("login.email")}
           type="email"
           fullWidth
@@ -135,6 +170,7 @@ function Login() {
               minLength: t("signup.passwordMinLength"),
             }),
           )}
+          required
           label={t("login.password")}
           type={showPassword ? "text" : "password"}
           fullWidth

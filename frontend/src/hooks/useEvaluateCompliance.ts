@@ -1,28 +1,28 @@
+// ============================== Evaluate compliance ==============================
+
 import { useQueries, useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
 import pLimit from "p-limit"
 import { useCallback, useMemo } from "react"
-import type { ComplianceResult } from "@/api"
-import { LabelsService } from "@/api"
+import type { ComplianceResult } from "#/api/types.gen"
+import { evaluateNonComplianceFn } from "#/server/label-compliance"
 
 const EVALUATION_QUERY_KEY = "compliance-eval" as const
 const EVALUATION_CONCURRENCY_LIMIT = 1
 
-// ============================== Hook ==============================
 export function useEvaluateCompliance(
   labelId: string,
   requirementIds: string[],
 ) {
   const queryClient = useQueryClient()
+  const evaluateFn = useServerFn(evaluateNonComplianceFn)
   const queries = useQueries({
     queries: requirementIds.map((requirementId) => ({
       queryKey: [EVALUATION_QUERY_KEY, labelId, requirementId] as const,
-      queryFn: async ({ signal }) => {
-        const response = await LabelsService.evaluateNonCompliance({
-          path: { label_id: labelId, requirement_id: requirementId },
-          signal,
+      queryFn: async () => {
+        const result = await evaluateFn({
+          data: { labelId, requirementId },
         })
-        const result = response.data
-        if (!result) throw new Error("No evaluation result returned")
         return result as ComplianceResult
       },
       enabled: false,

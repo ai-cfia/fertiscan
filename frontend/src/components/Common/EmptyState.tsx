@@ -1,8 +1,10 @@
+// ============================== Table empty state ==============================
+
 import { Box, TableCell, TableRow, Typography } from "@mui/material"
 import type { OverridableComponent } from "@mui/material/OverridableComponent"
 import type { SvgIconTypeMap } from "@mui/material/SvgIcon"
 
-interface EmptyStateProps {
+type EmptyStateProps = {
   icon: OverridableComponent<SvgIconTypeMap<object, "svg">>
   title: string
   description?: string
@@ -30,11 +32,11 @@ export default function EmptyState({
           <Typography variant="h6" color="text.secondary">
             {title}
           </Typography>
-          {description && (
+          {description ? (
             <Typography variant="body2" color="text.secondary">
               {description}
             </Typography>
-          )}
+          ) : null}
         </Box>
       </TableCell>
     </TableRow>

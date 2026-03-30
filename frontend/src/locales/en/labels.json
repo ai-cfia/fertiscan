@@ -26,9 +26,6 @@
     "totalProducts": "Total Products",
     "unlinkedLabels": "Unlinked Labels",
     "unlinkedLabelsDescription": "Labels not associated with products",
-    "verifyLabels": "Verify Labels",
-    "verifyLabelsDescription": "Review labels ready for verification",
-    "verifyPageTitle": "Verify Labels - Label Inspection",
     "viewAllLabels": "View All Labels",
     "viewAllLabelsDescription": "Browse and manage all labels"
   },
