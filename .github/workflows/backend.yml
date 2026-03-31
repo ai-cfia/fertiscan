@@ -69,7 +69,7 @@ jobs:
         run: uv sync --all-groups
       - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "24"
       - run: npm install -g mjml
       - name: Build email templates
         working-directory: backend
@@ -77,3 +77,36 @@ jobs:
       - name: Run tests with coverage
         working-directory: backend
         run: bash scripts/test-cov.sh
+  uv-lock-check:
+    name: uv.lock Check
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.11.1"
+
+      - name: Verify lock file is up to date
+        working-directory: backend
+        run: |
+          if uv lock --check; then
+            echo "uv.lock is up to date"
+            exit 0
+          fi
+
+          echo "::warning::backend/uv.lock appears outdated in this Renovate PR."
+          {
+            echo "## ⚠️ Backend lockfile update recommended"
+            echo "Run 'uv lock' and commit backend/uv.lock in this PR."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit 1

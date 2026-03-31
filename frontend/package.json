@@ -83,5 +83,11 @@
       "esbuild",
       "lightningcss"
     ]
+  },
+
+  "engines": {
+    "node": ">=22 <25",
+    "npm": ">=10.8.2 <12"
   }
+
 }
