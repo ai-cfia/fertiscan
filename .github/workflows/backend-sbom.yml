@@ -8,52 +8,9 @@ on:
 jobs:
   sbom-check:
     name: SBOM Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    continue-on-error: true
-    permissions:
-      security-events: write
-    defaults:
-      run:
-        working-directory: backend
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.14"
-      - uses: astral-sh/setup-uv@v7
-      - name: Install dependencies
-        run: uv sync --group dev --group sbom
-      - name: Generate SBOM
-        run: |
-          uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 \
-            --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
-      - name: SBOM security scan
-        id: scan
-        uses: anchore/scan-action@ba2e18e34737763b9c92004dfe2afbcbd2d6207d
-        with:
-          sbom: backend/sbom.json
-          fail-build: false
-      - name: Fix SARIF locations
-        run: |
-          jq '
-            .runs[].results[] |= (
-              .locations = [{
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "backend/sbom.json",
-                    "uriBaseId": "%SRCROOT%"
-                  },
-                  "region": { "startLine": 1, "startColumn": 1, "endLine": 1, "endColumn": 1 }
-                }
-              }]
-            )
-          ' "${{ steps.scan.outputs.sarif }}" > sarif-fixed.json
-          mv sarif-fixed.json "${{ steps.scan.outputs.sarif }}"
-      - name: Upload scan results
-        uses: github/codeql-action/upload-sarif@v4
-        continue-on-error: true
-        with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}
-          checkout_path: ${{ github.workspace }}
-          category: backend-sbom-security-scan
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-generate-backend-sbom.yml@main
+    with:
+      working-directory: ./backend
+      runs-on: ubuntu-24.04
+      cyclonedx-spec-version: "1.6"
+    secrets: inherit
