@@ -41,7 +41,7 @@ import StatementsAndClaimsSection from "#/components/LabelData/StatementsAndClai
 import { useSnackbar } from "#/components/SnackbarProvider"
 import { useLabelDataQueries } from "#/hooks/useLabelDataQueries"
 import {
-  getLabelImagePresignedDownloadUrlFn,
+  getLabelImageDataFn,
   readLabelForRouteFn,
   readLabelImagesFn,
 } from "#/server/label-editor"
@@ -136,7 +136,7 @@ function LabelData() {
   } = useLabelDataQueries(labelId, isFertilizer, form)
   const readLabelImages = useServerFn(readLabelImagesFn)
   const getLabelImagePresignedDownloadUrl = useServerFn(
-    getLabelImagePresignedDownloadUrlFn,
+    getLabelImageDataFn,
   )
   const { showSuccessToast } = useSnackbar()
   const { language } = useLanguage()

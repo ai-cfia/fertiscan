@@ -153,10 +153,12 @@ frontend-generate-sbom:
 	@$(MAKE) -C frontend generate-sbom
 
 pre-commit-install:
+	@command -v uv >/dev/null 2>&1 || { echo "Error: uv is not installed. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh — see https://docs.astral.sh/uv/getting-started/installation/"; exit 1; }
 	@uv run --directory backend pre-commit install
 	@echo "Pre-commit hooks installed from root config."
 
 pre-commit:
+	@command -v uv >/dev/null 2>&1 || { echo "Error: uv is not installed. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh — see https://docs.astral.sh/uv/getting-started/installation/"; exit 1; }
 	@uv run --directory backend pre-commit run --all-files
 
 docker-compose-build:

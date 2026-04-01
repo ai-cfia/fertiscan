@@ -76,15 +76,12 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Verify package-lock.json is up to date
         run: |
-          # Regenerate the lockfile without installing deps
-          npm install --package-lock-only --ignore-scripts --no-audit
-
-          # Compare lockfile
-          if git diff --exit-code package-lock.json; then
+          # Validate lockfile consistency without rewriting it
+          if npm ci --ignore-scripts --no-audit; then
             echo "package-lock.json is up to date"
             exit 0
           fi

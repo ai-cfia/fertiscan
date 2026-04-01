@@ -1,4 +1,10 @@
-.PHONY: help env sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell db-refurbishment db-refurbishment-local
+.PHONY: help env check-uv sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell db-refurbishment db-refurbishment-local
+
+UV := $(shell command -v uv 2>/dev/null)
+check-uv:
+ifndef UV
+	$(error uv is not installed. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh — see https://docs.astral.sh/uv/getting-started/installation/)
+endif
 
 help:
 	@echo "Available targets:"
@@ -58,62 +64,62 @@ env:
 		echo ".env already exists, skipping..."; \
 	fi
 
-secret-key:
+secret-key: check-uv
 	@uv run python -c "import secrets; print(secrets.token_urlsafe(32))"
 
-sync:
+sync: check-uv
 	uv sync
 
-start:
+start: check-uv
 	@echo "Starting application..."
 	$(MAKE) prestart
 	@echo "Launching development server..."
 	uv run fastapi dev app/main.py --port 8000 --host 0.0.0.0
 
-dev:
+dev: check-uv
 	uv run fastapi dev app/main.py --port 8000 --host 0.0.0.0
 
-prestart:
+prestart: check-uv
 	uv run bash scripts/prestart.sh
 
 	@echo "Database reset complete. Run 'make alembic-upgrade' to recreate tables via migrations."
 
-alembic-current:
+alembic-current: check-uv
 	uv run alembic current
 
-alembic-history:
+alembic-history: check-uv
 	uv run alembic history
 
-alembic-upgrade:
+alembic-upgrade: check-uv
 	uv run alembic upgrade head
 
-alembic-upgrade-one:
+alembic-upgrade-one: check-uv
 	uv run alembic upgrade +1
 
-alembic-downgrade:
+alembic-downgrade: check-uv
 	uv run alembic downgrade -1
 
-alembic-revision:
+alembic-revision: check-uv
 	@if [ -z "$(MSG)" ]; then \
 		echo "Error: MSG is required. Usage: make alembic-revision MSG=\"your message\""; \
 		exit 1; \
 	fi
 	uv run alembic revision --autogenerate -m "$(MSG)"
 
-alembic-revision-empty:
+alembic-revision-empty: check-uv
 	@if [ -z "$(MSG)" ]; then \
 		echo "Error: MSG is required. Usage: make alembic-revision-empty MSG=\"your message\""; \
 		exit 1; \
 	fi
 	uv run alembic revision -m "$(MSG)"
 
-alembic-stamp:
+alembic-stamp: check-uv
 	uv run alembic stamp head
 
-alembic-heads:
+alembic-heads: check-uv
 	uv run alembic heads
 
-alembic-check:
+alembic-check: check-uv
 	uv run alembic check
 
 db-start:
@@ -127,7 +133,7 @@ db-stop:
 	@echo "Stopping database service..."
 	@docker compose stop db
 
-db-status:
+db-status: check-uv
 	@echo "Checking database connection..."
 	@uv run python -c "from app.db.session import get_engine; from sqlalchemy import text; engine = get_engine(); conn = engine.connect(); conn.execute(text('SELECT 1')); conn.close(); print('✓ Database connection successful')" || echo "✗ Database connection failed"
 
@@ -143,13 +149,14 @@ db-reset-local:
 	@echo "Resetting local database..."
 	@psql "postgresql://postgres:changethis@localhost:5432/fertiscan" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
-db-seed:
+db-seed: check-uv
 	@echo "Seeding database with initial data..."
 	@uv run python -m app.db.init_db
 
 db-shell:
 	@echo "Opening database shell..."
 	@docker compose exec db psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb}
+
 
 db-refurbishment:
 	@echo "Refurbishing database ..."
@@ -165,29 +172,29 @@ db-refurbishment-local:
 	@$(MAKE) db-seed
 	@echo "Local database refurbishment complete."
 
-test:
+test: check-uv
 	uv run bash scripts/test.sh
 
-test-cov:
+test-cov: check-uv
 	uv run bash scripts/test-cov.sh
 
-format:
+format: check-uv
 	uv run bash scripts/format.sh
 
-format-check:
+format-check: check-uv
 	uv run ruff format app tests scripts --check
 
-lint:
+lint: check-uv
 	uv run bash scripts/lint.sh
 
-mypy:
+mypy: check-uv
 	uv run mypy app
 
-pre-commit-install:
+pre-commit-install: check-uv
 	uv run pre-commit install
 	@echo "Pre-commit hooks installed. They will run automatically on git commit."
 
-pre-commit:
+pre-commit: check-uv
 	uv run pre-commit run --all-files
 
 email-templates:
@@ -218,11 +225,11 @@ docker-test:
 		fertiscan-backend:latest bash scripts/test-cov.sh
 
 
-generate-sbom:
+generate-sbom: check-uv
 	bash scripts/generate-sbom.sh
 	rm -rf .venv && uv sync
 
-generate-sbom-local:
+generate-sbom-local: check-uv
 	uv sync --group dev --group sbom
 	uv run cyclonedx-py environment --output-reproducible -v --sv 1.6 \
             --pyproject pyproject.toml -o sbom.json && echo "" >> sbom.json
