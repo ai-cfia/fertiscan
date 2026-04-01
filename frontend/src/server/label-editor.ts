@@ -2,7 +2,7 @@
 // --- Authenticated label/product API for edit page (browser has no API bearer) ---
 
 import { createServerFn } from "@tanstack/react-start"
-import { isAxiosError } from "axios"
+import axios, { isAxiosError } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { LabelsService, ProductsService } from "#/api"
 import type { Client } from "#/api/client"
@@ -18,7 +18,10 @@ import type {
   ProductPublic,
   ReviewStatus,
 } from "#/api/types.gen"
-import { requireAuthedApiClient } from "#/server/api-client"
+import {
+  SERVER_REQUEST_TIMEOUT_MS,
+  requireAuthedApiClient,
+} from "#/server/api-client"
 import { messageFromAxiosApiError } from "#/server/api-error-message"
 
 function assertLabelId(data: unknown): { labelId: string } {
@@ -567,7 +570,7 @@ function assertImageDownload(data: unknown): {
   return { labelId: o.labelId, imageId: o.imageId }
 }
 
-export const getLabelImagePresignedDownloadUrlFn = createServerFn({
+export const getLabelImageDataFn = createServerFn({
   method: "POST",
 })
   .inputValidator((data: unknown) => assertImageDownload(data))
@@ -585,7 +588,14 @@ export const getLabelImagePresignedDownloadUrlFn = createServerFn({
           : "Failed to get download URL",
       )
     }
-    return res.data.presigned_url
+    const imageRes = await axios.get<ArrayBuffer>(res.data.presigned_url, {
+      responseType: "arraybuffer",
+      timeout: SERVER_REQUEST_TIMEOUT_MS,
+    })
+    const contentType =
+      (imageRes.headers["content-type"] as string) || "image/png"
+    const base64 = Buffer.from(imageRes.data).toString("base64")
+    return `data:${contentType};base64,${base64}`
   })
 
 export const deleteLabelImageFn = createServerFn({ method: "POST" })

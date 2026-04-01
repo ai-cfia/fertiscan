@@ -58,6 +58,7 @@ services:
     environment:
       - POSTGRES_SERVER=db
       - LOG_SQL=true
+      - STORAGE_ENDPOINT=minio:9000
 
   backend:
     image: "fertiscan-backend:dev"
@@ -79,6 +80,7 @@ services:
     environment:
       - POSTGRES_SERVER=db
       - LOG_SQL=true
+      - STORAGE_ENDPOINT=minio:9000
       - FRONTEND_HOST=http://localhost:5173
       - BACKEND_CORS_ORIGINS=http://localhost:5173
     ports:
