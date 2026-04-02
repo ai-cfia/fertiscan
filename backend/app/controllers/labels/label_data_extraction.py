@@ -2,7 +2,7 @@
 
 import asyncio
 import mimetypes
-from typing import cast
+from typing import cast, get_type_hints
 
 import instructor
 from aiobotocore.client import AioBaseClient  # type: ignore[import-untyped]
@@ -22,13 +22,14 @@ def create_subset_model(
     base_model: type[BaseModel], field_names: list[str]
 ) -> type[BaseModel]:
     """Create a new model with only the specified fields from the base model."""
+    annotations = get_type_hints(base_model, include_extras=True)
     field_definitions = {
         field_name: (
-            base_model.model_fields[field_name].annotation,
+            annotations[field_name],
             base_model.model_fields[field_name],
         )
         for field_name in field_names
-        if field_name in base_model.model_fields
+        if field_name in base_model.model_fields and field_name in annotations
     }
     if len(field_definitions) != len(field_names):
         missing = set(field_names) - set(field_definitions.keys())

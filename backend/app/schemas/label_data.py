@@ -13,7 +13,7 @@ from pydantic import (
 from app.db.models.enums import ProductClassification
 from app.db.models.fertilizer_label_data_meta import FertilizerLabelDataFieldName
 from app.db.models.label_data_field_meta import LabelDataFieldName
-from app.schemas.type import RegistrationNumber
+from app.schemas.type import NormalizedDecimal, RegistrationNumber
 
 # ============================== Base/Shared Models ==============================
 
@@ -52,7 +52,7 @@ class BilingualText(BaseModel):
 class Ingredient(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
     name: BilingualText = Field(description="Ingredient name verbatim")
-    value: str = Field(description="Ingredient percentage or amount.")
+    value: NormalizedDecimal = Field(description="Ingredient percentage or amount.")
     unit: str = Field(
         description="Unit of measurement", examples=["%", "ppm", "mg/kg", "g/kg", "mm"]
     )
@@ -67,7 +67,7 @@ class Nutrient(BaseModel):
     name: BilingualText = Field(
         description="Verbatim", examples=[{"en": "Total Nitrogen (N)"}]
     )
-    value: Decimal | None = Field(default=None, ge=0, description="Verbatim")
+    value: NormalizedDecimal | None = Field(default=None, ge=0, description="Verbatim")
     unit: str | None = Field(default=None, description="Verbatim")
 
 
@@ -149,9 +149,9 @@ class LabelDataFieldMetaResponse(BaseModel):
 
 class FertilizerLabelData(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    n: Decimal | None = Field(default=None, ge=0)
-    p: Decimal | None = Field(default=None, ge=0)
-    k: Decimal | None = Field(default=None, ge=0)
+    n: NormalizedDecimal | None = Field(default=None, ge=0)
+    p: NormalizedDecimal | None = Field(default=None, ge=0)
+    k: NormalizedDecimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
     precaution_statements: list[BilingualText] | None = None
@@ -172,9 +172,9 @@ class FertilizerLabelData(BaseModel):
 
 
 class FertilizerLabelDataCreate(BaseModel):
-    n: Decimal | None = Field(default=None, ge=0)
-    p: Decimal | None = Field(default=None, ge=0)
-    k: Decimal | None = Field(default=None, ge=0)
+    n: NormalizedDecimal | None = Field(default=None, ge=0)
+    p: NormalizedDecimal | None = Field(default=None, ge=0)
+    k: NormalizedDecimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
     precaution_statements: list[BilingualText] | None = None
@@ -188,9 +188,9 @@ class FertilizerLabelDataCreate(BaseModel):
 
 
 class FertilizerLabelDataUpdate(BaseModel):
-    n: Decimal | None = Field(default=None, ge=0)
-    p: Decimal | None = Field(default=None, ge=0)
-    k: Decimal | None = Field(default=None, ge=0)
+    n: NormalizedDecimal | None = Field(default=None, ge=0)
+    p: NormalizedDecimal | None = Field(default=None, ge=0)
+    k: NormalizedDecimal | None = Field(default=None, ge=0)
     ingredients: list[Ingredient] | None = None
     guaranteed_analysis: GuaranteedAnalysis | None = None
     precaution_statements: list[BilingualText] | None = None
@@ -336,19 +336,19 @@ class ExtractFertilizerFieldsOutput(BaseModel):
             ]
         ],
     )
-    n: Decimal | None = Field(
+    n: NormalizedDecimal | None = Field(
         default=None,
         ge=0,
         description="Nitrogen percentage (NPK analysis)",
         examples=["10.0"],
     )
-    p: Decimal | None = Field(
+    p: NormalizedDecimal | None = Field(
         default=None,
         ge=0,
         description="Phosphorus percentage (NPK analysis)",
         examples=["5.0"],
     )
-    k: Decimal | None = Field(
+    k: NormalizedDecimal | None = Field(
         default=None,
         ge=0,
         description="Potassium percentage (NPK analysis)",

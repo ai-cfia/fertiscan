@@ -422,11 +422,129 @@ export function useLabelDataQueries(
     const dirtyFields = form.formState.dirtyFields
     const commonFields: Record<string, any> = {}
     const fertilizerFields: Record<string, any> = {}
+    const hasText = (value: unknown): value is string =>
+      typeof value === "string" && value.trim() !== ""
+
+    const sanitizeIngredients = (value: any) => {
+      if (!Array.isArray(value)) return value
+
+      return value
+        .map((ingredient) => {
+          if (!ingredient || typeof ingredient !== "object") return null
+
+          const name =
+            ingredient.name && typeof ingredient.name === "object"
+              ? {
+                  en: ingredient.name.en ?? "",
+                  fr: ingredient.name.fr ?? "",
+                }
+              : { en: "", fr: "" }
+
+          const rawValue =
+            typeof ingredient.value === "string"
+              ? ingredient.value.trim()
+              : ingredient.value != null
+                ? String(ingredient.value).trim()
+                : ""
+          const unit =
+            typeof ingredient.unit === "string"
+              ? ingredient.unit.trim()
+              : ingredient.unit != null
+                ? String(ingredient.unit).trim()
+                : ""
+          const registrationNumber =
+            typeof ingredient.registration_number === "string"
+              ? ingredient.registration_number.trim()
+              : ingredient.registration_number != null
+                ? String(ingredient.registration_number).trim()
+                : ""
+
+          const isEmptyRow =
+            !hasText(name.en) &&
+            !hasText(name.fr) &&
+            !hasText(rawValue) &&
+            !hasText(unit) &&
+            !hasText(registrationNumber)
+
+          if (isEmptyRow) return null
+
+          if (!hasText(rawValue)) {
+            throw new Error(
+              t("data.validation.invalidIngredientValue", {
+                ns: "labels",
+                defaultValue: "Ingredient value is required",
+              }),
+            )
+          }
+
+          return {
+            name,
+            value: rawValue,
+            unit,
+            registration_number: registrationNumber || "",
+          }
+        })
+        .filter(Boolean)
+    }
+
+    const sanitizeGuaranteedAnalysis = (value: any) => {
+      if (!value || typeof value !== "object") return value
+      if (!Array.isArray(value.nutrients)) return value
+
+      const nutrients = value.nutrients
+        .map((nutrient: any) => {
+          if (!nutrient || typeof nutrient !== "object") return null
+
+          const name =
+            nutrient.name && typeof nutrient.name === "object"
+              ? {
+                  en: nutrient.name.en ?? "",
+                  fr: nutrient.name.fr ?? "",
+                }
+              : { en: "", fr: "" }
+
+          const rawValue =
+            typeof nutrient.value === "string"
+              ? nutrient.value.trim()
+              : nutrient.value != null
+                ? String(nutrient.value).trim()
+                : ""
+          const unit =
+            typeof nutrient.unit === "string"
+              ? nutrient.unit.trim()
+              : nutrient.unit != null
+                ? String(nutrient.unit).trim()
+                : ""
+
+          const isEmptyRow =
+            !hasText(name.en) &&
+            !hasText(name.fr) &&
+            !hasText(rawValue) &&
+            !hasText(unit)
+          if (isEmptyRow) return null
+
+          return {
+            name,
+            value: rawValue === "" ? null : rawValue,
+            unit,
+          }
+        })
+        .filter(Boolean)
+
+      return { ...value, nutrients }
+    }
+
     const toPayload = (fieldName: string, value: any): any => {
       if (value === null || value === undefined) return value
       if (["n", "p", "k"].includes(fieldName)) {
         const s = typeof value === "string" ? value.trim() : String(value)
         return s === "" ? null : value
+      }
+      if (fieldName === "ingredients") {
+        return sanitizeIngredients(value)
+      }
+      if (fieldName === "guaranteed_analysis") {
+        return sanitizeGuaranteedAnalysis(value)
       }
       if (typeof value === "string") return value.trim()
       return value

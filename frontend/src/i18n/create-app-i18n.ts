@@ -24,7 +24,7 @@ export function createAppI18n(lng: AppLocale) {
       }
     },
     react: { useSuspense: false },
-    initImmediate: false,
+    initAsync: false,
   })
   return inst
 }
