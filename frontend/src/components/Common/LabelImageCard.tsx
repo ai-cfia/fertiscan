@@ -26,7 +26,7 @@ import type { LabelImageDetail } from "#/api/types.gen"
 import { useSnackbar } from "#/components/SnackbarProvider"
 import {
   deleteLabelImageFn,
-  getLabelImagePresignedDownloadUrlFn,
+  getLabelImageDataFn,
 } from "#/server/label-editor"
 
 type LabelImageCardProps = {
@@ -42,16 +42,17 @@ export default function LabelImageCard({
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useSnackbar()
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const getPresigned = useServerFn(getLabelImagePresignedDownloadUrlFn)
+  const getImageData = useServerFn(getLabelImageDataFn)
   const deleteImage = useServerFn(deleteLabelImageFn)
   const shouldFetchUrl = image.status === "completed"
   const { data: displayUrl = null, isLoading: isLoadingUrl } = useQuery({
     queryKey: ["labels", labelId, "images", image.id, "presigned-download-url"],
-    queryFn: async () => getPresigned({ data: { labelId, imageId: image.id } }),
+    queryFn: async () => getImageData({ data: { labelId, imageId: image.id } }),
     enabled: shouldFetchUrl,
   })
-  const isImageLoading = Boolean(displayUrl) && !imageLoaded
+  const isImageLoading = Boolean(displayUrl) && !imageLoaded && !imageError
   const showSpinner = isLoadingUrl || isImageLoading
   const deleteMutation = useMutation({
     mutationFn: async () => {
@@ -79,7 +80,7 @@ export default function LabelImageCard({
   return (
     <Card>
       <CardContent>
-        {displayUrl ? (
+        {displayUrl && !imageError ? (
           <Box
             sx={{
               width: "100%",
@@ -116,6 +117,12 @@ export default function LabelImageCard({
               src={displayUrl}
               alt={image.display_filename}
               onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                console.error(
+                  `Failed to load image: ${image.display_filename} (${displayUrl})`,
+                )
+                setImageError(true)
+              }}
               sx={{
                 width: "100%",
                 height: "200px",

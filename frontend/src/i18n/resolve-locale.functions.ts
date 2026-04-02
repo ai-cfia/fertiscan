@@ -1,6 +1,7 @@
 // ============================== i18n locale (server) ==============================
 // --- Cookie then Accept-Language ---
 
+import { createServerFn } from "@tanstack/react-start"
 import { getCookie, getRequestHeader } from "@tanstack/react-start/server"
 import type { AppLocale } from "#/i18n/locale"
 
@@ -12,10 +13,12 @@ function parseAcceptLanguage(header: string | undefined): AppLocale {
   return first === "fr" ? "fr" : "en"
 }
 
-export function resolveLocaleFromServerRequest(): AppLocale {
-  const c = getCookie("i18n-locale")
-  if (c === "fr" || c === "en") {
-    return c
-  }
-  return parseAcceptLanguage(getRequestHeader("accept-language"))
-}
+export const resolveLocaleFromServerRequest = createServerFn().handler(
+  async (): Promise<AppLocale> => {
+    const c = getCookie("i18n-locale")
+    if (c === "fr" || c === "en") {
+      return c
+    }
+    return parseAcceptLanguage(getRequestHeader("accept-language"))
+  },
+)

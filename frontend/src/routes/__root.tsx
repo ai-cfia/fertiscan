@@ -12,6 +12,8 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
 import { SnackbarProvider } from "#/components/SnackbarProvider"
 import { ThemeProvider } from "#/components/ThemeProvider"
+import { resolveLocaleFromServerRequest } from "#/i18n/resolve-locale.functions"
+import { readClientLocale } from "#/i18n/locale"
 import { DocumentLang, I18nProvider } from "#/i18n/provider"
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
 import TanStackQueryProvider from "../integrations/tanstack-query/root-provider"
@@ -27,16 +29,9 @@ const rootRouteApi = getRouteApi("__root__")
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async () => {
-    let locale: AppLocale = "en"
-    if (import.meta.env.SSR) {
-      const { resolveLocaleFromServerRequest } = await import(
-        "#/i18n/resolve-locale.server"
-      )
-      locale = resolveLocaleFromServerRequest()
-    } else {
-      const { readClientLocale } = await import("#/i18n/locale")
-      locale = readClientLocale()
-    }
+    const locale = import.meta.env.SSR
+      ? await resolveLocaleFromServerRequest()
+      : readClientLocale()
     return { locale }
   },
   head: () => ({
