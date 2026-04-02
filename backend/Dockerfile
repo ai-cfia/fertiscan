@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
 
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
-COPY --from=ghcr.io/astral-sh/uv:0.11.2@sha256:c4f5de312ee66d46810635ffc5df34a1973ba753e7241ce3a08ef979ddd7bea5 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.3@sha256:90bbb3c16635e9627f49eec6539f956d70746c409209041800a0280b93152823 /uv /uvx /bin/
 
 # Place executables in the environment at the front of the path
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#using-the-environment
