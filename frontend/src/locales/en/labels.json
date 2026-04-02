@@ -216,6 +216,7 @@
     "title": "Edit Label",
     "validation": {
       "missingLabelData": "Label data must be created before marking review as complete",
+      "invalidIngredientValue": "Ingredient value is required",
       "missingRegistrationNumber": "Registration number is required to mark review as complete",
       "registrationNumberInvalidFormat": "Must be 7 digits followed by 1 letter (e.g. 1234567F) or empty"
     }

@@ -217,6 +217,7 @@
     "title": "Modifier l'étiquette",
     "validation": {
       "missingLabelData": "Les données de l'étiquette doivent être créées avant de marquer la révision comme terminée",
+      "invalidIngredientValue": "La valeur de l'ingrédient est requise",
       "missingRegistrationNumber": "Le numéro d'enregistrement est requis pour marquer la révision comme terminée",
       "registrationNumberInvalidFormat": "Doit être 7 chiffres suivis d'une lettre (ex. 1234567F) ou vide"
     }
