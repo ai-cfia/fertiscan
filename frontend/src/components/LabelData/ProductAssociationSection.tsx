@@ -1,4 +1,4 @@
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
+import AddCircleIcon from "@mui/icons-material/AddCircle"
 import LinkIcon from "@mui/icons-material/Link"
 import {
   Alert,
@@ -402,7 +402,7 @@ export default function ProductAssociationSection({
               <Button
                 fullWidth
                 variant="contained"
-                startIcon={<AddCircleOutlineIcon />}
+                startIcon={<AddCircleIcon />}
                 disabled={
                   (!registrationNumber?.trim() &&
                     !brandNameEn?.trim() &&
