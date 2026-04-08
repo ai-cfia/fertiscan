@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
 import DeleteIcon from "@mui/icons-material/Delete"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
+import HelpIcon from "@mui/icons-material/Help"
 import SaveIcon from "@mui/icons-material/Save"
 import StopIcon from "@mui/icons-material/Stop"
 import {
@@ -70,7 +70,7 @@ const STATUS_ICON: Record<ComplianceStatus, ReactElement> = {
   compliant: <CheckIcon color="success" sx={{ fontSize: 18 }} />,
   non_compliant: <CloseIcon color="error" sx={{ fontSize: 18 }} />,
   not_applicable: <BlockIcon color="info" sx={{ fontSize: 18 }} />,
-  inconclusive: <HelpOutlineIcon color="warning" sx={{ fontSize: 18 }} />,
+  inconclusive: <HelpIcon color="warning" sx={{ fontSize: 18 }} />,
 }
 
 const STATUS_OPTIONS: ComplianceStatus[] = [
