@@ -34,7 +34,6 @@ dev = [
     "coverage>=7.4.0",
     "pre-commit>=3.6.0",
     "types-jinja2>=2.11.0",
-    "types-PyJWT>=1.7.1",
     "boto3-stubs[s3]>=1.42.25",
     "aiomoto[s3]>=0.1.0",
 ]
