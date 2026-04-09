@@ -1,4 +1,4 @@
-.PHONY: help env check-uv sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell
+.PHONY: help env check-uv sync start dev prestart test test-cov format format-check lint mypy pre-commit-install pre-commit email-templates docker-build docker-prestart docker-run docker-test clean secret-key generate-sbom generate-sbom-local alembic-current alembic-history alembic-upgrade alembic-upgrade-one alembic-downgrade alembic-revision alembic-revision-empty alembic-stamp alembic-heads alembic-check db-start db-stop db-status db-migrate db-reset db-reset-local db-seed db-shell db-refurbishment db-refurbishment-local
 
 UV := $(shell command -v uv 2>/dev/null)
 check-uv:
@@ -52,6 +52,8 @@ help:
 	@echo "  db-reset-local   - Reset local database (drop schema and recreate)"
 	@echo "  db-seed          - Seed database with initial data"
 	@echo "  db-shell         - Open database shell (psql)"
+	@echo "  db-refurbishment  - Reset, migrate, and seed database (Docker)"
+	@echo "  db-refurbishment-local - Reset, migrate, and seed local database"
 
 env:
 	@if [ ! -f .env ]; then \
@@ -154,6 +156,21 @@ db-seed: check-uv
 db-shell:
 	@echo "Opening database shell..."
 	@docker compose exec db psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-mydb}
+
+
+db-refurbishment:
+	@echo "Refurbishing database ..."
+	@$(MAKE) db-reset
+	@$(MAKE) db-migrate
+	@$(MAKE) db-seed
+	@echo "Database refurbishment complete."
+
+db-refurbishment-local:
+	@echo "Refurbishing local database ..."
+	@$(MAKE) db-reset-local
+	@$(MAKE) db-migrate
+	@$(MAKE) db-seed
+	@echo "Local database refurbishment complete."
 
 test: check-uv
 	uv run bash scripts/test.sh
