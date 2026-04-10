@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.14-slim AS build
 
 # Force Python to write logs immediately instead of buffering
 ENV PYTHONUNBUFFERED=1
@@ -48,6 +48,26 @@ COPY ./tests /app/tests
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --no-dev
+
+FROM python:3.14-slim AS production
+
+# Force Python to write logs immediately instead of buffering
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app/
+
+# Keep curl in runtime image for container healthchecks.
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Use the virtual environment built in the previous stage.
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH=/app
+
+COPY --from=build /app /app
 
 EXPOSE 5000
 
