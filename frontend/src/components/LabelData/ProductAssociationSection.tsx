@@ -233,8 +233,8 @@ export default function ProductAssociationSection({
               </Typography>
               <Typography
                 variant="caption"
-                display="block"
                 sx={{
+                  display: "block",
                   mt: 1,
                   fontFamily: "monospace",
                   bgcolor: "action.hover",
@@ -299,7 +299,12 @@ export default function ProductAssociationSection({
                   "Create New Product Entry",
                 )}
               </Typography>
-              <Typography variant="body2" color="text.secondary" paragraph>
+              <Typography
+                component="p"
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 2 }}
+              >
                 {t(
                   "data.sections.association.creationHelp",
                   "We can create a new product entry using the data extracted from this label.",

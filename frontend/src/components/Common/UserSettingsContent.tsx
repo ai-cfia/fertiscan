@@ -278,7 +278,11 @@ function DangerZone({ t }: DangerZoneProps) {
           p: 2,
         }}
       >
-        <Typography variant="subtitle1" color="error.main" fontWeight={600}>
+        <Typography
+          variant="subtitle1"
+          color="error.main"
+          sx={{ fontWeight: 600 }}
+        >
           {t("settings.dangerZone.deleteAccount")}
         </Typography>
         <Typography
