@@ -84,6 +84,7 @@ jobs:
         id: docker_build_and_tag_merged
         if: github.event.pull_request.merged == true
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7
+        timeout-minutes: 10
         with:
           context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
           push: true
@@ -122,6 +123,7 @@ jobs:
     continue-on-error: true
     needs: build-push-image
     if: needs.build-push-image.result == 'success'
+    timeout-minutes: 10
     steps:
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
