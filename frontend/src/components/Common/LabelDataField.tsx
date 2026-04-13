@@ -146,7 +146,6 @@ export default function LabelDataField<
           value={field.value ?? ""}
           multiline={multiline}
           maxRows={maxRows}
-          InputLabelProps={{ shrink: true }}
           sx={{
             "& .MuiInputBase-input": {
               color: "text.primary",
@@ -163,6 +162,9 @@ export default function LabelDataField<
             }
           }}
           slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
             input: {
               endAdornment:
                 trailingAdornments.length > 0 ? (

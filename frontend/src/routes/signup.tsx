@@ -316,7 +316,7 @@ function SignUp() {
         >
           {isSubmitting ? t("signup.submitting") : t("signup.submit")}
         </Button>
-        <Typography textAlign="center">
+        <Typography sx={{ textAlign: "center" }}>
           {t("signup.hasAccount")}{" "}
           <Link component={RouterLink} to="/login" underline="hover">
             {t("signup.logIn")}
