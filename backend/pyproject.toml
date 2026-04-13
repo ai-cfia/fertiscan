@@ -24,7 +24,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "factory-boy>=3.3.0",
-    "pytest>=7.4.0",
+    "pytest>=9.0.3",
     "pytest-asyncio>=0.21.0",
     "pytest-xdist>=3.5.0",
     "pytest-cov>=5.0.0",
