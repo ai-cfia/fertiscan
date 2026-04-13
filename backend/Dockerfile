@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.14-slim AS build
 
 # Force Python to write logs immediately instead of buffering
 ENV PYTHONUNBUFFERED=1
@@ -6,7 +6,10 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app/
 
 # Install curl for healthchecks
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends curl \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
@@ -46,6 +49,45 @@ COPY ./tests /app/tests
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --no-dev
 
+FROM python:3.14-slim AS dev
+
+# Force Python to write logs immediately instead of buffering
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app/
+
+# Keep curl in local development image for container healthchecks.
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Use the virtual environment built in the previous stage.
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH=/app
+
+COPY --from=build /app /app
+
 EXPOSE 5000
 
 CMD ["fastapi", "run", "--workers", "4", "--port", "5000", "app/main.py"]
+
+FROM gcr.io/distroless/python3-debian12:latest AS production
+
+# Force Python to write logs immediately instead of buffering
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app/
+
+# Use the virtual environment built in the previous stage.
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH=/app
+
+COPY --from=build /app /app
+
+USER nonroot
+
+EXPOSE 5000
+
+CMD ["-m", "fastapi", "run", "--workers", "4", "--port", "5000", "app/main.py"]

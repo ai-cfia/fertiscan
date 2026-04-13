@@ -45,6 +45,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: dev
     depends_on:
       db:
         condition: service_healthy
@@ -66,6 +67,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: dev
     depends_on:
       db:
         condition: service_healthy

@@ -333,8 +333,10 @@ function ProductsTable() {
                     products.length > 0 && selected.length === products.length
                   }
                   onChange={handleSelectAllClick}
-                  inputProps={{
-                    "aria-label": t("products:table.selectAll"),
+                  slotProps={{
+                    input: {
+                      "aria-label": t("products:table.selectAll"),
+                    },
                   }}
                 />
               </TableCell>
