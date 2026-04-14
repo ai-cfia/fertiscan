@@ -1,16 +1,9 @@
-FROM python:3.14-slim
+FROM python:3.14-alpine
 
 # Force Python to write logs immediately instead of buffering
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app/
-
-# Install curl for healthchecks
-RUN apt-get update \
-    && apt-get -y upgrade \
-    && apt-get install -y --no-install-recommends curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
