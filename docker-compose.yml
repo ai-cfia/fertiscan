@@ -45,7 +45,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: dev
     depends_on:
       db:
         condition: service_healthy
@@ -53,7 +52,7 @@ services:
       minio:
         condition: service_healthy
         restart: true
-    command: bash scripts/prestart.sh
+    command: sh scripts/prestart.sh
     env_file:
       - backend/.env
     environment:
@@ -67,7 +66,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: dev
     depends_on:
       db:
         condition: service_healthy
@@ -88,7 +86,7 @@ services:
     ports:
       - "8000:5000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/healthz"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/healthz"]
       interval: 10s
       timeout: 5s
       retries: 5
