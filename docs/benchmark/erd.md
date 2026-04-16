@@ -1,1 +1,0 @@
-# ERD of ground truth

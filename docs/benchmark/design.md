@@ -1,83 +1,30 @@
 # Design for benchmark the system
 
-## Extract design
+## Extraction benchmark
 
-```mermaid
-%%{init: { "sequence": { "mirrorActors": false } }}%%
-sequenceDiagram
+1. We manually extract one or more label images and store the results in a
+   JSON file to define what a correct extraction looks like. This JSON file serves
+   as the ground truth for the extraction task.
+2. We then ask the LLM to extract the information from the label images.
+   Afterward, a script compares the LLM’s output with the ground truth. Each field
+   is evaluated with a percentage score, and a final global score is produced at
+   the end of the benchmark.
 
-actor us as User
-participant fe as Frontend
-participant be as Backend
-participant db as Database
-participant ai as LLM
+## Compliance benchmark
 
-us ->> fe : click launch extract benchmark
-fe ->> be : GET .../extract-label-fertilizer/benchmark
-be ->> db: get example image of label
-db -->> be : return image
-be ->> be : extract all information from the image
-be ->> ai : extract information
-ai -->> be : return result of extraction
-be -->> be : return schema
-be ->> db : get ground truth data label extract
-db -->> be: return ground truth data label extract
-be ->> be : compare similarity
-be -->> be : return pourcent of similarity
-be -->> fe : return result of benchmark
-fe -->> us : display benchmark result
+0. We create a mock of a realistic label for this benchmark. The mock need to
+   contain at least one example of each case (compliant, non-compliant, etc.). So,
+   the label evaluated by a human to choose the best.
+1. The compliance status is already known from step 0, this step
+   only requires parsing the evaluation results into a JSON file, which serves as
+   the ground truth for compliance.
+2. We ask the LLM to evaluate the label and output the results in a JSON file.
+   A script then compares each case in the LLM output with the ground truth,
+   assigning a score of 1 (correct) or 0 (incorrect). Finally, the script
+   generates a benchmark report with the overall score.
 
-```
+## Need
 
-## Compliance design
-
-```mermaid
-%%{init: { "sequence": { "mirrorActors": false } }}%%
-sequenceDiagram
-
-actor us as User
-participant fe as Frontend
-participant be as Backend
-participant db as Database
-participant ai as LLM
-
-us ->> fe : click evaluate compliance benchmark
-fe ->> be : GET .../evaluate-label/benchmark
-be ->> db : get ground truth extract data label
-db -->> be: return ground truth extract label data
-be ->> ai : evaluate the extract label data
-ai -->> be : return result
-be ->> db : get ground truth evaluation schema
-db -->> be : return ground true evalutation schema
-be ->> be : compare similarity
-be -->> be : return pourcent of similarity
-be -->> fe : return result of the benchmark
-fe -->> us : display the result
-
-```
-
-## Ground truth general
-
-### Design of ground truth
-
-```mermaid
-%%{init: { "sequence": { "mirrorActors": false } }}%%
-sequenceDiagram
-
-actor us as Administrator
-participant fe as Frontend
-participant be as Backend
-participant db as Database
-
-us ->> fe : click create a ground truth
-fe ->> be : POST .../ground_truth
-be ->> db : get category
-db -->> be : return category
-be ->> db : create a new ground_truth in this category
-db -->> be : All good
-be ->> fe: the new ground truth is create
-fe ->> us : display the result
-
-
-
-```
+1. In each json he need a schema like for the json of ground truth extraction,
+he use the schema of extraction and for the ground truth of evaluate he use the
+schema of the evaluation to do it.
