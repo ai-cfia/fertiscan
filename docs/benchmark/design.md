@@ -23,8 +23,8 @@
    have every possible case.
       1. It's the original one who are compliant.
       2. It's the first copy which is empty.
-      3. The second copy, []
-      4. The third copy, []
+      3. The second copy, [I don't know for now]
+      4. The third copy, [I don't know for now]
    - Establish the ground truth of each version in a separated JSON file. Each
    ground truth need to be associated with a requirement like the name of the
    requirement number.
@@ -44,12 +44,16 @@
    - The first step is isolate each field of the mock label for the evaluation
    by the LLM and that it be atomic.
    - The second step it's launch the LLM to evaluate each requirement with the
-   the several version of each field like registration number : with a registration
+   the several version of each field for example registration number : with a registration
    number, no registration number, etc.
-   - []
+   - [I don't know for now]
 
 ## Need
 
 1. In each json he need a schema like for the json of ground truth extraction,
 he use the schema of extraction and for the ground truth of evaluate he use the
 schema of the evaluation to do it.
+
+## Tools
+
+1. Maybe the Trulens would be interesting for this...
