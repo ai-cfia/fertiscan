@@ -1,9 +1,16 @@
 import logging
+from pathlib import Path
 
-from app.config import settings
+from sqlalchemy import func
+from sqlmodel import select
+
+from app.db.models.requirement import Requirement
+from app.db.session import get_sessionmaker
 from scripts.benchmark.compliance.prescript import prescript
 
 logger = logging.getLogger(__name__)
+
+RESULTS_DIR = Path(__file__).parent / "results"
 
 
 def main():
@@ -16,13 +23,23 @@ def main():
         exit(1)
     logger.info("All prerequisites for the compliance benchmark are met.")
 
-    calculate_number_of_requirements = len(
-        settings.compliance_seed_data().get("requirements", [])
-    )
-    logger.info(f"Number of requirements loaded: {calculate_number_of_requirements}")
+    with get_sessionmaker()() as session:
+        calculate_number_of_requirements = int(
+            session.exec(select(func.count()).select_from(Requirement)).one()
+        )
 
-    with open("results/compliance_benchmark_results.txt", "w") as f:
-        f.write(f"Number of requirements loaded: {calculate_number_of_requirements}\n")
+    logger.info(
+        "Number of requirements in database: %s",
+        calculate_number_of_requirements,
+    )
+
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    result_file = RESULTS_DIR / "compliance_benchmark_results.md"
+    with result_file.open("w", encoding="utf-8") as f:
+        f.write(
+            "# Compliance Benchmark Results\n\n"
+            f"Number of requirements in database: {calculate_number_of_requirements}\n"
+        )
 
 
 if __name__ == "__main__":

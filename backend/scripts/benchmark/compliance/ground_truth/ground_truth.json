@@ -1,3 +1,193 @@
 {
-
+    "metadata": {
+        "version": "1.1",
+        "created_at": "2026-04-17",
+        "source": "human-reviewed",
+        "notes": "Benchmark set with one mostly compliant label, one mostly non-compliant label, and one realistic mixed label."
+    },
+    "labels": [
+        {
+            "label_file": "label1.json",
+            "profile": "mostly_compliant",
+            "results": [
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(a)",
+                        "title_en": "Manufacturer Name and Address Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Manufacturer and distributor contact details are explicitly present.",
+                        "fr": "Les coordonnees du fabricant et du distributeur sont explicitement presentes."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(b)",
+                        "title_en": "Product Name Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Product name is clearly indicated in English and French.",
+                        "fr": "Le nom du produit est clairement indique en anglais et en francais."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(c)",
+                        "title_en": "Registration Number Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Registration number is present in expected format.",
+                        "fr": "Le numero d'enregistrement est present dans le format attendu."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(f)",
+                        "title_en": "Weight Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Net weight is clearly shown as 20 kg.",
+                        "fr": "Le poids net est clairement indique a 20 kg."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(e)",
+                        "title_en": "Directions for Use Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Directions for use are present and operational.",
+                        "fr": "Les modes d'emploi sont presents et operationnels."
+                    }
+                }
+            ]
+        },
+        {
+            "label_file": "label2.json",
+            "profile": "mostly_non_compliant",
+            "results": [
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(a)",
+                        "title_en": "Manufacturer Name and Address Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Manufacturer name and address are present.",
+                        "fr": "Le nom et l'adresse du fabricant sont presents."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(b)",
+                        "title_en": "Product Name Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Product name is present.",
+                        "fr": "Le nom du produit est present."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(c)",
+                        "title_en": "Registration Number Presence"
+                    },
+                    "expected_status": "non_compliant",
+                    "expected_explanation": {
+                        "en": "Label claims exemption while also presenting a registration number; status should be treated as inconsistent and non-compliant for benchmark stress testing.",
+                        "fr": "L'etiquette revendique une exemption tout en affichant un numero d'enregistrement; ce cas est marque non conforme pour un test de robustesse."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(f)",
+                        "title_en": "Weight Presence"
+                    },
+                    "expected_status": "non_compliant",
+                    "expected_explanation": {
+                        "en": "Weight and volume are both used in a potentially ambiguous way for this case and are considered non-compliant in this benchmark profile.",
+                        "fr": "Le poids et le volume sont utilises de facon potentiellement ambigue dans ce cas et sont consideres non conformes dans ce profil."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(e)",
+                        "title_en": "Directions for Use Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Directions for use are present.",
+                        "fr": "Les modes d'emploi sont presents."
+                    }
+                }
+            ]
+        },
+        {
+            "label_file": "label3.json",
+            "profile": "realistic_mixed",
+            "results": [
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(a)",
+                        "title_en": "Manufacturer Name and Address Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Manufacturer information is present and complete.",
+                        "fr": "Les informations du fabricant sont presentes et completes."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(b)",
+                        "title_en": "Product Name Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Product name is present in both languages.",
+                        "fr": "Le nom du produit est present dans les deux langues."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(c)",
+                        "title_en": "Registration Number Presence"
+                    },
+                    "expected_status": "not_applicable",
+                    "expected_explanation": {
+                        "en": "Product is classified as a growing medium with an exemption claim, so this check is not applicable.",
+                        "fr": "Le produit est classe comme milieu de culture avec une revendication d'exemption; cette verification est non applicable."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(e)",
+                        "title_en": "Directions for Use Presence"
+                    },
+                    "expected_status": "compliant",
+                    "expected_explanation": {
+                        "en": "Actionable directions for use are present.",
+                        "fr": "Des modes d'emploi exploitables sont presents."
+                    }
+                },
+                {
+                    "requirement_ref": {
+                        "citation": "16(1)(g)",
+                        "title_en": "Precaution Statements Presence"
+                    },
+                    "expected_status": "inconclusive",
+                    "expected_explanation": {
+                        "en": "A precaution statement exists, but its sufficiency relative to regulatory threshold may require reviewer confirmation.",
+                        "fr": "Un enonce de precaution existe, mais sa suffisance vis-a-vis du seuil reglementaire peut necessiter une confirmation humaine."
+                    }
+                }
+            ]
+        }
+    ]
 }

@@ -11,6 +11,7 @@ from app.schemas.label_data import ExtractFertilizerFieldsOutput
 logger = logging.getLogger(__name__)
 
 DATA_DIR = Path(__file__).parent / "data"
+GROUND_TRUTH_DIR = Path(__file__).parent / "ground_truth"
 
 
 def prescript() -> bool:
@@ -35,10 +36,13 @@ def check_data_availability() -> bool:
     Returns:
         bool: True if data is available, False otherwise.
     """
-    label_1 = DATA_DIR / "label1.json"
-    label_2 = DATA_DIR / "label2.json"
+    label_paths = sorted(DATA_DIR.glob("label*.json"))
 
-    for label_path in (label_1, label_2):
+    if not label_paths:
+        logger.error("No label JSON files found in %s", DATA_DIR)
+        return False
+
+    for label_path in label_paths:
         if not _validate_label_json(label_path):
             return False
 
@@ -91,5 +95,5 @@ def check_ground_truth_availability() -> bool:
     Returns:
         bool: True if ground truth data is available, False otherwise.
     """
-    ground_truth = DATA_DIR / "ground_truth.json"
+    ground_truth = GROUND_TRUTH_DIR / "ground_truth.json"
     return ground_truth.exists()
