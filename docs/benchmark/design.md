@@ -1,59 +1,75 @@
-# Design for benchmark the system
+# Benchmark Design
 
-## Extraction benchmark
+This document describes the benchmark approach used to evaluate extraction and
+compliance quality in FertiScan.
 
-1. We manually extract one or more label images and store the results in a
-   JSON file to define what a correct extraction looks like. This JSON file serves
-   as the ground truth for the extraction task.
-2. We then ask the LLM to extract the information from the label images.
-   Afterward, a script compares the LLM’s output with the ground truth. Each field
-   is evaluated with a percentage score, and a final global score is produced at
-   the end of the benchmark.
+## Goals
 
-## Compliance benchmark
+1. Measure model quality with reproducible fixture data.
+2. Compare LLM output against curated ground truth.
+3. Produce a report that is easy to interpret and share.
 
-0. We create two mock of a realistic label for this benchmark. The mock need to
-   contain at least one example of each case (compliant, non-compliant, etc.). So,
-   the label evaluated by a human to choose the best.
-1. The compliance status is already known from step 0, this step
-   only requires parsing the evaluation results into a JSON file, which serves as
-   the ground truth for compliance.
+## Extraction Benchmark
 
-   - The pre script will create 3 others same fields with some difference to
-   have every possible case.
-      1. It's the original one who are compliant.
-      2. It's the first copy which is empty.
-      3. The second copy, [I don't know for now]
-      4. The third copy, [I don't know for now]
-   - Establish the ground truth of each version in a separated JSON file. Each
-   ground truth need to be associated with a requirement like the name of the
-   requirement number.
+### Workflow
 
-2. We ask the LLM to evaluate the label and output the results in a JSON file.
-   A script then compares each case in the LLM output with the ground truth,
-   assigning a score of 1 (correct) or 0 (incorrect). Finally, the script
-   generates a benchmark report with the overall score.
+1. Build fixture inputs (label images).
+2. Create a JSON ground truth file with expected extracted values.
+3. Run extraction with the LLM.
+4. Compare predicted values against the ground truth.
+5. Report per-field score and overall score.
 
-   - Before executing the main part of the script, he will verify if we have the
-   two ground truth in the underlying folder and all field is complete. If the
-   two ground truth is here continue the script.
-   - It must also check if the mock is present and all variant of each field are
-   present for the LLM evaluation.
-   - The script search all requirement and write on the result file the number of
-   requirement. In addition, the script use the requirement file in the data folder.
-   - The first step is isolate each field of the mock label for the evaluation
-   by the LLM and that it be atomic.
-   - The second step it's launch the LLM to evaluate each requirement with the
-   the several version of each field for example registration number : with a registration
-   number, no registration number, etc.
-   - [I don't know for now]
+### Expected output
 
-## Need
+1. Per-field comparison.
+2. Aggregated extraction accuracy.
 
-1. In each json he need a schema like for the json of ground truth extraction,
-he use the schema of extraction and for the ground truth of evaluate he use the
-schema of the evaluation to do it.
+## Compliance Benchmark
 
-## Tools
+### Inputs
 
-1. Maybe the Trulens would be interesting for this...
+1. Label fixtures in backend/app/benchmark/compliance/data.
+2. One matching ground truth file per label fixture in
+   backend/app/benchmark/compliance/ground_truth.
+3. Requirement catalog loaded from the database.
+
+### Prescript validation
+
+Before running the benchmark, prescript validates:
+
+1. Label fixture files exist and contain valid JSON.
+2. Label fixtures match the ExtractFertilizerFieldsOutput schema.
+3. Ground truth files exist for each label fixture.
+4. Ground truth entries include:
+   - label_file matching the filename.
+   - requirement_ref with citation and title_en.
+   - expected_status with a valid compliance status.
+5. Status aliases are normalized to canonical values.
+
+### Evaluation workflow
+
+1. Build transient Label objects from fixture files.
+2. Load all benchmark requirements from the database.
+3. Evaluate each requirement independently for each label.
+4. Persist each atomic result to a JSONL file.
+5. Compare predicted status with expected status when available.
+
+### Reporting
+
+The benchmark report includes:
+
+1. Run metadata (run id, file paths, counts).
+2. Global metrics:
+   - total evaluations,
+   - comparable evaluations,
+   - successful matches,
+   - failures,
+   - global accuracy.
+3. Accuracy tables by label and by requirement.
+4. Status coverage for expected and predicted statuses.
+
+## Known Limitations
+
+1. Results depend on fixture quality and coverage.
+2. Requirement interpretation can still vary for ambiguous cases.
+3. Benchmark quality improves as fixture and ground truth diversity increases.
