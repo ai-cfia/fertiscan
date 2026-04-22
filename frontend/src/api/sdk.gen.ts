@@ -31,7 +31,7 @@ export class HealthService {
             ...options
         });
     }
-
+    
     /**
      * Readiness
      *
@@ -64,7 +64,7 @@ export class LoginService {
             }
         });
     }
-
+    
     /**
      * Test Token
      *
@@ -78,7 +78,7 @@ export class LoginService {
             ...options
         });
     }
-
+    
     /**
      * Recover Password
      *
@@ -91,7 +91,7 @@ export class LoginService {
             ...options
         });
     }
-
+    
     /**
      * Reset Password
      *
@@ -108,7 +108,7 @@ export class LoginService {
             }
         });
     }
-
+    
     /**
      * Recover Password Html Content
      *
@@ -138,7 +138,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Create User
      *
@@ -156,7 +156,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Delete User Me
      *
@@ -170,7 +170,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Read User Me
      *
@@ -184,7 +184,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Update User Me
      *
@@ -202,7 +202,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Update Password Me
      *
@@ -220,7 +220,7 @@ export class UsersService {
             }
         });
     }
-
+    
     /**
      * Delete User
      *
@@ -234,7 +234,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Read User
      *
@@ -248,7 +248,7 @@ export class UsersService {
             ...options
         });
     }
-
+    
     /**
      * Update User
      *
@@ -282,7 +282,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Label
      *
@@ -300,7 +300,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Label
      *
@@ -313,7 +313,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label
      *
@@ -327,7 +327,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label
      *
@@ -345,7 +345,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Update Label Review Status
      *
@@ -363,7 +363,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Evaluate Non Compliance
      *
@@ -377,7 +377,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Reads Compliances
      *
@@ -391,7 +391,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Compliance
      *
@@ -409,7 +409,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Compliance
      *
@@ -423,7 +423,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Compliance By Rule
      *
@@ -437,7 +437,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Compliance
      *
@@ -455,7 +455,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Label Images
      *
@@ -469,7 +469,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Create Label Image
      *
@@ -487,7 +487,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Delete Label Image
      *
@@ -500,7 +500,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label Image
      *
@@ -514,7 +514,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Complete Label Image Upload
      *
@@ -532,7 +532,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Get Label Image Presigned Upload Url
      *
@@ -546,7 +546,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Get Label Image Presigned Download Url
      *
@@ -560,7 +560,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Read Label Data
      *
@@ -574,7 +574,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label Data
      *
@@ -592,7 +592,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Create Label Data
      *
@@ -610,7 +610,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Label Data Meta
      *
@@ -624,7 +624,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Label Data Meta
      *
@@ -642,7 +642,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Fertilizer Label Data
      *
@@ -656,7 +656,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Fertilizer Label Data
      *
@@ -674,7 +674,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Create Fertilizer Label Data
      *
@@ -692,7 +692,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Read Fertilizer Label Data Meta
      *
@@ -706,7 +706,7 @@ export class LabelsService {
             ...options
         });
     }
-
+    
     /**
      * Update Fertilizer Label Data Meta
      *
@@ -724,7 +724,7 @@ export class LabelsService {
             }
         });
     }
-
+    
     /**
      * Extract Fertilizer Fields
      *
@@ -774,7 +774,7 @@ export class ProductsService {
             ...options
         });
     }
-
+    
     /**
      * Create Product
      *
@@ -792,7 +792,7 @@ export class ProductsService {
             }
         });
     }
-
+    
     /**
      * Delete Product
      *
@@ -806,7 +806,7 @@ export class ProductsService {
             ...options
         });
     }
-
+    
     /**
      * Read Product By Id
      *
@@ -836,7 +836,7 @@ export class RequirementsService {
             ...options
         });
     }
-
+    
     /**
      * Read Requirement By Id
      *

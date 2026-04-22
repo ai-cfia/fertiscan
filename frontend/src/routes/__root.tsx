@@ -1,6 +1,5 @@
 // ============================== Root route ==============================
 
-import { TanStackDevtools } from "@tanstack/react-devtools"
 import type { QueryClient } from "@tanstack/react-query"
 import {
   createRootRouteWithContext,
@@ -8,14 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
 import { SnackbarProvider } from "#/components/SnackbarProvider"
 import { ThemeProvider } from "#/components/ThemeProvider"
 import { resolveLocaleFromServerRequest } from "#/i18n/resolve-locale.functions"
 import { readClientLocale } from "#/i18n/locale"
 import { DocumentLang, I18nProvider } from "#/i18n/provider"
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
 import TanStackQueryProvider from "../integrations/tanstack-query/root-provider"
 import appCss from "../styles.css?url"
 
@@ -73,21 +70,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <DocumentLang />
           <ThemeProvider>
             <SnackbarProvider>
-              <TanStackQueryProvider>
-                {children}
-                <TanStackDevtools
-                  config={{
-                    position: "bottom-right",
-                  }}
-                  plugins={[
-                    {
-                      name: "Tanstack Router",
-                      render: <TanStackRouterDevtoolsPanel />,
-                    },
-                    TanStackQueryDevtools,
-                  ]}
-                />
-              </TanStackQueryProvider>
+              <TanStackQueryProvider>{children}</TanStackQueryProvider>
             </SnackbarProvider>
           </ThemeProvider>
         </I18nProvider>
