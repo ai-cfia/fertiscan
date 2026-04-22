@@ -12,7 +12,7 @@ export const BilingualTextSchema = {
                 }
             ],
             title: 'En',
-            description: 'The English text verbatim. Leave as null if not present.'
+            description: 'The English text verbatim . Leave as null if not present. Reject another language\'s text in this field.'
         },
         fr: {
             anyOf: [
@@ -24,7 +24,7 @@ export const BilingualTextSchema = {
                 }
             ],
             title: 'Fr',
-            description: 'The French text verbatim. Leave as null if not present.'
+            description: 'The French text verbatim. Leave as null if not present. Reject another language\'s text in this field.'
         }
     },
     type: 'object',
@@ -99,7 +99,7 @@ export const ComplianceResultSchema = {
         },
         explanation: {
             $ref: '#/components/schemas/BilingualText',
-            description: 'Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation\'s requirements.'
+            description: 'Think step by step internally but output only the final concise evaluation.'
         }
     },
     type: 'object',
@@ -243,7 +243,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                 }
             ],
             title: 'Contacts',
-            description: 'List of contact information (manufacturer, distributor, etc.)'
+            description: 'List of contact information (manufacturer, distributor, etc.), verbatim'
         },
         registration_number: {
             anyOf: [
@@ -294,10 +294,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                 }
             ],
             title: 'Net Weight',
-            description: 'Net weight with unit',
-            examples: [
-                '10 kg'
-            ]
+            description: 'Verbatim mass only, reject volume'
         },
         volume: {
             anyOf: [
@@ -309,10 +306,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                 }
             ],
             title: 'Volume',
-            description: 'Volume with unit',
-            examples: [
-                '1 L'
-            ]
+            description: 'Verbatim volume only, reject mass'
         },
         exemption_claim: {
             anyOf: [
@@ -533,7 +527,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                 }
             ],
             title: 'Ingredients',
-            description: 'Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.'
+            description: 'Verbatim; this is NOT the guaranteed analysis section'
         },
         guaranteed_analysis: {
             anyOf: [
@@ -544,7 +538,7 @@ export const ExtractFertilizerFieldsOutputSchema = {
                     type: 'null'
                 }
             ],
-            description: 'The guaranteed nutrient declaration section, usually under a header like \'Guaranteed Analysis\' or \'Analyse Garantie\'. This is NOT the ingredient list.'
+            description: 'Verbatim; this is NOT the ingredient list'
         },
         precaution_statements: {
             anyOf: [
@@ -1277,6 +1271,7 @@ export const GuaranteedAnalysis_InputSchema = {
     properties: {
         title: {
             $ref: '#/components/schemas/BilingualText',
+            description: 'Verbatim title of the guaranteed analysis section',
             examples: [
                 {
                     en: 'Minimum Guaranteed Analysis'
@@ -1286,7 +1281,7 @@ export const GuaranteedAnalysis_InputSchema = {
         is_minimum: {
             type: 'boolean',
             title: 'Is Minimum',
-            description: 'True if title contains \'Minimum\', false otherwise'
+            description: 'True when the title signals minimum guarantees; false otherwise'
         },
         nutrients: {
             items: {
@@ -1294,7 +1289,7 @@ export const GuaranteedAnalysis_InputSchema = {
             },
             type: 'array',
             title: 'Nutrients',
-            description: 'List of nutrients with bilingual names, values and units'
+            description: 'Nutrients listed verbatim in this guaranteed analysis block only'
         }
     },
     type: 'object',
@@ -1310,6 +1305,7 @@ export const GuaranteedAnalysis_OutputSchema = {
     properties: {
         title: {
             $ref: '#/components/schemas/BilingualText',
+            description: 'Verbatim title of the guaranteed analysis section',
             examples: [
                 {
                     en: 'Minimum Guaranteed Analysis'
@@ -1319,7 +1315,7 @@ export const GuaranteedAnalysis_OutputSchema = {
         is_minimum: {
             type: 'boolean',
             title: 'Is Minimum',
-            description: 'True if title contains \'Minimum\', false otherwise'
+            description: 'True when the title signals minimum guarantees; false otherwise'
         },
         nutrients: {
             items: {
@@ -1327,7 +1323,7 @@ export const GuaranteedAnalysis_OutputSchema = {
             },
             type: 'array',
             title: 'Nutrients',
-            description: 'List of nutrients with bilingual names, values and units'
+            description: 'Nutrients listed verbatim in this guaranteed analysis block only'
         }
     },
     type: 'object',
@@ -2663,7 +2659,7 @@ export const Nutrient_InputSchema = {
     properties: {
         name: {
             $ref: '#/components/schemas/BilingualText',
-            description: 'Nutrient name verbatim',
+            description: 'Verbatim',
             examples: [
                 {
                     en: 'Total Nitrogen (N)'
@@ -2679,28 +2675,30 @@ export const Nutrient_InputSchema = {
                 {
                     type: 'string',
                     pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
                 }
             ],
             title: 'Value',
-            description: 'Nutrient percentage value'
+            description: 'Verbatim'
         },
         unit: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Unit',
-            description: 'Unit of measurement',
-            examples: [
-                '%',
-                'ppm',
-                'mg/kg',
-                'g/kg'
-            ]
+            description: 'Verbatim'
         }
     },
     type: 'object',
     required: [
-        'name',
-        'value',
-        'unit'
+        'name'
     ],
     title: 'Nutrient'
 } as const;
@@ -2709,7 +2707,7 @@ export const Nutrient_OutputSchema = {
     properties: {
         name: {
             $ref: '#/components/schemas/BilingualText',
-            description: 'Nutrient name verbatim',
+            description: 'Verbatim',
             examples: [
                 {
                     en: 'Total Nitrogen (N)'
@@ -2717,28 +2715,34 @@ export const Nutrient_OutputSchema = {
             ]
         },
         value: {
-            type: 'string',
-            pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$',
+            anyOf: [
+                {
+                    type: 'string',
+                    pattern: '^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Value',
-            description: 'Nutrient percentage value'
+            description: 'Verbatim'
         },
         unit: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Unit',
-            description: 'Unit of measurement',
-            examples: [
-                '%',
-                'ppm',
-                'mg/kg',
-                'g/kg'
-            ]
+            description: 'Verbatim'
         }
     },
     type: 'object',
     required: [
-        'name',
-        'value',
-        'unit'
+        'name'
     ],
     title: 'Nutrient'
 } as const;

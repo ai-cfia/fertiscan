@@ -4,17 +4,14 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import FlagIcon from "@mui/icons-material/Flag"
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined"
 import {
+  Autocomplete,
   Box,
   Button,
   Card,
   CardContent,
   CircularProgress,
-  FormControl,
   FormHelperText,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Tooltip,
   Typography,
@@ -74,11 +71,12 @@ export default function LabelDataContacts<
   })
   const displayHelperText = error ? errorMessage : helperText
   const contactTypes = [
-    { value: "", label: t("data.contacts.types.notSpecified") },
     { value: "manufacturer", label: t("data.contacts.types.manufacturer") },
     { value: "distributor", label: t("data.contacts.types.distributor") },
     { value: "importer", label: t("data.contacts.types.importer") },
   ]
+  const labelForType = (value: string) =>
+    contactTypes.find((o) => o.value === value)?.label ?? value
   const handleAddContact = () => {
     append({
       type: "",
@@ -219,29 +217,43 @@ export default function LabelDataContacts<
                         name={`${fieldName}.${index}.type` as any}
                         control={control}
                         render={({ field: typeField }) => (
-                          <FormControl fullWidth size="small">
-                            <InputLabel>{t("data.contacts.type")}</InputLabel>
-                            <Select
-                              {...typeField}
-                              value={typeField.value || ""}
-                              onChange={(e) => {
-                                const value =
-                                  e.target.value === "" ? null : e.target.value
-                                typeField.onChange(value)
-                              }}
-                              label={t("data.contacts.type")}
-                              disabled={disabled}
-                            >
-                              {contactTypes.map((option) => (
-                                <MenuItem
-                                  key={option.value || "empty"}
-                                  value={option.value}
-                                >
-                                  {option.label}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
+                          <Autocomplete
+                            freeSolo
+                            fullWidth
+                            size="small"
+                            options={contactTypes.map((o) => o.value)}
+                            getOptionLabel={labelForType}
+                            value={typeField.value ?? ""}
+                            onChange={(_, newValue) => {
+                              const next =
+                                typeof newValue === "string"
+                                  ? newValue.trim()
+                                  : ""
+                              typeField.onChange(next === "" ? null : next)
+                            }}
+                            onInputChange={(_, newInputValue, reason) => {
+                              if (reason !== "input") return
+                              typeField.onChange(
+                                newInputValue === "" ? null : newInputValue,
+                              )
+                            }}
+                            onBlur={() => {
+                              typeField.onBlur()
+                              if (typeof typeField.value === "string") {
+                                const trimmed = typeField.value.trim()
+                                typeField.onChange(
+                                  trimmed === "" ? null : trimmed,
+                                )
+                              }
+                            }}
+                            disabled={disabled}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={t("data.contacts.type")}
+                              />
+                            )}
+                          />
                         )}
                       />
                     </Box>
