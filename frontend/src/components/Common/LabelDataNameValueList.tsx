@@ -302,16 +302,22 @@ export default function LabelDataNameValueList<
                           fullWidth
                           size="small"
                           disabled={disabled}
-                          value={field.value || ""}
+                          value={field.value ?? ""}
                           onChange={(e) => {
-                            const val =
-                              e.target.value === "" ? "" : e.target.value
-                            field.onChange(val)
+                            const v = e.target.value
+                            if (valueType === "number") {
+                              field.onChange(v === "" ? null : v)
+                            } else {
+                              field.onChange(v)
+                            }
                           }}
                           onBlur={() => {
                             field.onBlur()
                             if (typeof field.value === "string") {
-                              field.onChange(field.value.trim())
+                              const t = field.value.trim()
+                              field.onChange(
+                                valueType === "number" && t === "" ? null : t,
+                              )
                             }
                           }}
                         />

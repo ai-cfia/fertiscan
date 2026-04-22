@@ -107,7 +107,7 @@ function ensureGuaranteedAnalysis(val: any): {
   is_minimum: boolean
   nutrients: Array<{
     name: { en: string; fr: string }
-    value: string
+    value: string | null
     unit: string
   }>
 } {
@@ -123,7 +123,7 @@ function ensureGuaranteedAnalysis(val: any): {
     is_minimum: val.is_minimum ?? false,
     nutrients: (val.nutrients ?? []).map((n: any) => ({
       name: ensureBilingual(n?.name),
-      value: n?.value != null ? String(n.value) : "",
+      value: n?.value != null ? String(n.value) : null,
       unit: n?.unit ?? "",
     })),
   }
@@ -166,9 +166,9 @@ export function getDefaultFormValues() {
     volume: "",
     exemption_claim: emptyBilingual(),
     country_of_origin: "",
-    n: "",
-    p: "",
-    k: "",
+    n: null as string | null,
+    p: null as string | null,
+    k: null as string | null,
     ingredients: [] as any[],
     guaranteed_analysis: ensureGuaranteedAnalysis(null),
     precaution_statements: [] as Array<{ en: string; fr: string }>,
@@ -196,9 +196,9 @@ export function mergeForForm(labelData: any, fertilizerData: any) {
     volume: ld.volume ?? "",
     exemption_claim: ensureBilingual(ld.exemption_claim),
     country_of_origin: ld.country_of_origin ?? "",
-    n: fd.n != null ? String(fd.n) : "",
-    p: fd.p != null ? String(fd.p) : "",
-    k: fd.k != null ? String(fd.k) : "",
+    n: fd.n != null ? String(fd.n) : null,
+    p: fd.p != null ? String(fd.p) : null,
+    k: fd.k != null ? String(fd.k) : null,
     ingredients: (fd.ingredients ?? []).map(ensureIngredient),
     guaranteed_analysis: ensureGuaranteedAnalysis(fd.guaranteed_analysis),
     precaution_statements: ensureStatementList(fd.precaution_statements),
@@ -233,7 +233,7 @@ export function normalizeFieldValueForForm(fieldName: string, value: any): any {
       "export_statements",
     ]
     if (statementLists.includes(fieldName)) return []
-    if (["n", "p", "k"].includes(fieldName)) return ""
+    if (["n", "p", "k"].includes(fieldName)) return null
     if (fieldName === "product_classification") return null
     if (
       [

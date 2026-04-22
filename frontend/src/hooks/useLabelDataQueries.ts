@@ -422,12 +422,7 @@ export function useLabelDataQueries(
     const dirtyFields = form.formState.dirtyFields
     const commonFields: Record<string, any> = {}
     const fertilizerFields: Record<string, any> = {}
-    const toPayload = (fieldName: string, value: any): any => {
-      if (value === null || value === undefined) return value
-      if (["n", "p", "k"].includes(fieldName)) {
-        const s = typeof value === "string" ? value.trim() : String(value)
-        return s === "" ? null : value
-      }
+    const toPayload = (_fieldName: string, value: any): any => {
       if (typeof value === "string") return value.trim()
       return value
     }
