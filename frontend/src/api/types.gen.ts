@@ -11,13 +11,13 @@ export type BilingualText = {
     /**
      * En
      *
-     * The English text verbatim. Leave as null if not present.
+     * The English text verbatim . Leave as null if not present. Reject another language's text in this field.
      */
     en?: string | null;
     /**
      * Fr
      *
-     * The French text verbatim. Leave as null if not present.
+     * The French text verbatim. Leave as null if not present. Reject another language's text in this field.
      */
     fr?: string | null;
 };
@@ -61,7 +61,7 @@ export type ComplianceResult = {
      */
     status: ComplianceStatus;
     /**
-     * Concise step-by-step reasoning citing specific evidence from the Label Data that supports or contradicts the regulation's requirements.
+     * Think step by step internally but output only the final concise evaluation.
      */
     explanation: BilingualText;
 };
@@ -128,7 +128,7 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Contacts
      *
-     * List of contact information (manufacturer, distributor, etc.)
+     * List of contact information (manufacturer, distributor, etc.), verbatim
      */
     contacts?: Array<Contact> | null;
     /**
@@ -150,13 +150,13 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Net Weight
      *
-     * Net weight with unit
+     * Verbatim mass only, reject volume
      */
     net_weight?: string | null;
     /**
      * Volume
      *
-     * Volume with unit
+     * Verbatim volume only, reject mass
      */
     volume?: string | null;
     /**
@@ -224,11 +224,11 @@ export type ExtractFertilizerFieldsOutput = {
     /**
      * Ingredients
      *
-     * Source materials or compounds the product is made from. This is NOT the guaranteed analysis section.
+     * Verbatim; this is NOT the guaranteed analysis section
      */
     ingredients?: Array<Ingredient> | null;
     /**
-     * The guaranteed nutrient declaration section, usually under a header like 'Guaranteed Analysis' or 'Analyse Garantie'. This is NOT the ingredient list.
+     * Verbatim; this is NOT the ingredient list
      */
     guaranteed_analysis?: GuaranteedAnalysisOutput | null;
     /**
@@ -465,17 +465,20 @@ export type FertilizerLabelDataUpdate = {
  * GuaranteedAnalysis
  */
 export type GuaranteedAnalysisInput = {
+    /**
+     * Verbatim title of the guaranteed analysis section
+     */
     title: BilingualText;
     /**
      * Is Minimum
      *
-     * True if title contains 'Minimum', false otherwise
+     * True when the title signals minimum guarantees; false otherwise
      */
     is_minimum: boolean;
     /**
      * Nutrients
      *
-     * List of nutrients with bilingual names, values and units
+     * Nutrients listed verbatim in this guaranteed analysis block only
      */
     nutrients: Array<NutrientInput>;
 };
@@ -484,17 +487,20 @@ export type GuaranteedAnalysisInput = {
  * GuaranteedAnalysis
  */
 export type GuaranteedAnalysisOutput = {
+    /**
+     * Verbatim title of the guaranteed analysis section
+     */
     title: BilingualText;
     /**
      * Is Minimum
      *
-     * True if title contains 'Minimum', false otherwise
+     * True when the title signals minimum guarantees; false otherwise
      */
     is_minimum: boolean;
     /**
      * Nutrients
      *
-     * List of nutrients with bilingual names, values and units
+     * Nutrients listed verbatim in this guaranteed analysis block only
      */
     nutrients: Array<NutrientOutput>;
 };
@@ -1118,21 +1124,21 @@ export type NonComplianceDataItemPublic = {
  */
 export type NutrientInput = {
     /**
-     * Nutrient name verbatim
+     * Verbatim
      */
     name: BilingualText;
     /**
      * Value
      *
-     * Nutrient percentage value
+     * Verbatim
      */
-    value: number | string;
+    value?: number | string | null;
     /**
      * Unit
      *
-     * Unit of measurement
+     * Verbatim
      */
-    unit: string;
+    unit?: string | null;
 };
 
 /**
@@ -1140,21 +1146,21 @@ export type NutrientInput = {
  */
 export type NutrientOutput = {
     /**
-     * Nutrient name verbatim
+     * Verbatim
      */
     name: BilingualText;
     /**
      * Value
      *
-     * Nutrient percentage value
+     * Verbatim
      */
-    value: string;
+    value?: string | null;
     /**
      * Unit
      *
-     * Unit of measurement
+     * Verbatim
      */
-    unit: string;
+    unit?: string | null;
 };
 
 /**

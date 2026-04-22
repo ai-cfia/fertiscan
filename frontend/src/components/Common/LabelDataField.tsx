@@ -155,10 +155,19 @@ export default function LabelDataField<
               color: "text.primary",
             },
           }}
+          onChange={(e) => {
+            const v = e.target.value
+            if (type === "number") {
+              field.onChange(v === "" ? null : v)
+            } else {
+              field.onChange(v)
+            }
+          }}
           onBlur={(_e) => {
             field.onBlur()
             if (typeof field.value === "string") {
-              field.onChange(field.value.trim())
+              const t = field.value.trim()
+              field.onChange(type === "number" && t === "" ? null : t)
             }
           }}
           slotProps={{
