@@ -11,18 +11,48 @@ compliance quality in FertiScan.
 
 ## Extraction Benchmark
 
-### Workflow
+### Inputs
 
-1. Build fixture inputs (label images).
-2. Create a JSON ground truth file with expected extracted values.
-3. Run extraction with the LLM.
-4. Compare predicted values against the ground truth.
-5. Report per-field score and overall score.
+1. Label images in backend/app/benchmark/extraction/data.
+2. One matching ground truth file per label images in
+   backend/app/benchmark/extraction/ground_truth.
 
-### Expected output
+### Prescript validation
 
-1. Per-field comparison.
-2. Aggregated extraction accuracy.
+Before running the benchmark, prescript validates:
+
+1. Label image files and contain a valid extension for image.
+2. Ground truth files exist for each label image.
+3. Ground truth entries include:
+   - label_file matching the filename.
+   - Each field in a label extract is populated based on the label image.
+   - It's a JSON file.
+
+### Extraction workflow
+
+1. Launch LLM to extract each information independently of each label image.
+2. Persist each atomic result to a JSONL file.
+3. Convert the informmation to the labels objects to the comparison.
+4. Normalize the labels object fields.
+5. Build transient Label objects from the ground truth files.
+6. Compare predicted label information with expected label information when available.
+   - Each field of the label need to be compare with a similitude per cent.
+   - Each word is compared with the corresponding field in them ground truth file.
+   - The percentage must be 90% or higher to pass.
+
+## Reporting
+
+The benchmark report includes:
+
+1. Run metadata (run id, file paths, counts).
+2. Global metrics:
+   - total extractions,
+   - comparable extractions (),
+   - successful matches,
+   - failures,
+   - global accuracy.
+3. Accuracy tables by label
+4. Field coverage for expected and predicted statuses.
 
 ## Compliance Benchmark
 
