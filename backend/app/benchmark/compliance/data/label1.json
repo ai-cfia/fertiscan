@@ -1,0 +1,133 @@
+{
+    "brand_name": {
+        "en": "AgriBloom",
+        "fr": "AgriBloom"
+    },
+    "product_name": {
+        "en": "Premium Lawn Starter Fertilizer",
+        "fr": "Engrais de démarrage premium pour pelouse"
+    },
+    "contacts": [
+        {
+            "type": "manufacturer",
+            "name": "AgriBloom Nutrients Ltd.",
+            "address": "1250 Industrial Park Drive, Guelph, ON, Canada",
+            "phone": "+1 519 555 0148",
+            "email": "support@agribloom.example",
+            "website": "https://agribloom.example"
+        },
+        {
+            "type": "distributor",
+            "name": "Northern Crop Supply Co.",
+            "address": "2200 King Street East, Toronto, ON, Canada",
+            "phone": "+1 416 555 0199",
+            "email": "orders@northerncrop.example",
+            "website": "https://northerncrop.example"
+        }
+    ],
+    "registration_number": "1234567A",
+    "registration_claim": {
+        "en": "Registered fertilizer",
+        "fr": "Engrais enregistré"
+    },
+    "lot_number": "AB-2026-SPR-042",
+    "net_weight": "20 kg",
+    "volume": "20 L",
+    "exemption_claim": null,
+    "country_of_origin": "Canada",
+    "product_classification": "fertilizer",
+    "customer_formula_statements":[{
+        "en": "Contains a balanced blend of essential nutrients for healthy lawn growth",
+        "fr": "Contient un mélange équilibré de nutriments essentiels pour une croissance saine de la pelouse"
+    }],
+    "intended_use_statements": [
+        {
+            "en": "For lawns, turf, and newly seeded areas",
+            "fr": "Pour les pelouses, le gazon et les surfaces nouvellement ensemencées"
+        }
+    ],
+    "processing_instruction_statements": null,
+    "experimental_statements": null,
+    "export_statements": null,
+    "n": 12,
+    "p": 5,
+    "k": 8,
+    "ingredients": [
+        {
+            "name": {
+                "en": "Nitrogen",
+                "fr": "Azote"
+            },
+            "value": "12",
+            "unit": "%",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "Phosphate",
+                "fr": "Phosphate"
+            },
+            "value": "5",
+            "unit": "%",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "Potash",
+                "fr": "Potasse"
+            },
+            "value": "8",
+            "unit": "%",
+            "registration_number": null
+        }
+    ],
+    "guaranteed_analysis": {
+        "title": {
+            "en": "Guaranteed Analysis",
+            "fr": "Analyse garantie"
+        },
+        "is_minimum": true,
+        "nutrients": [
+            {
+                "name": {
+                    "en": "Total Nitrogen (N)",
+                    "fr": "Azote total (N)"
+                },
+                "value": 12,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Available Phosphate (P2O5)",
+                    "fr": "Phosphate assimilable (P2O5)"
+                },
+                "value": 5,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Soluble Potash (K2O)",
+                    "fr": "Potasse soluble (K2O)"
+                },
+                "value": 8,
+                "unit": "%"
+            }
+        ]
+    },
+    "precaution_statements": [
+        {
+            "en": "Keep out of reach of children.",
+            "fr": "Garder hors de la portée des enfants."
+        },
+        {
+            "en": "Avoid contact with eyes and skin.",
+            "fr": "Éviter le contact avec les yeux et la peau."
+        }
+    ],
+    "directions_for_use_statements": [
+        {
+            "en": "Apply evenly at the recommended rate and water thoroughly after application.",
+            "fr": "Appliquer uniformément au taux recommandé et arroser abondamment après l’application."
+        }
+    ]
+}

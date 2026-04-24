@@ -1,0 +1,126 @@
+{
+    "brand_name": {
+        "en": "Novago",
+        "fr": "Novago"
+    },
+    "product_name": {
+        "en": "15-22-6 vedette",
+        "fr": "15-22-6 vedette"
+    },
+    "contacts": [
+        {
+            "type": "manufacturer",
+            "name": "Novago",
+            "address": "839, rue Papineau, Joliette, QC, J6E 2L6",
+            "phone": null,
+            "email": null,
+            "website": null
+        }
+    ],
+    "registration_number": null,
+    "registration_claim": null,
+    "lot_number": "18538",
+    "net_weight": "1000 kg",
+    "volume": null,
+    "exemption_claim": null,
+    "country_of_origin": null,
+    "product_classification": null,
+    "customer_formula_statements": null,
+    "intended_use_statements": null,
+    "processing_instruction_statements": null,
+    "experimental_statements": null,
+    "export_statements": null,
+    "n": 15.0,
+    "p": 22.0,
+    "k": 6.0,
+    "ingredients": null,
+    "guaranteed_analysis": {
+        "title": {
+            "en": null,
+            "fr": "Analyse minimale garantie"
+        },
+        "is_minimum": true,
+        "nutrients": [
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Azote total (N)"
+                },
+                "value": 15.0,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Acide phosphorique assimilable (P2O5)"
+                },
+                "value": 22.0,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Potasse soluble (K2O)"
+                },
+                "value": 6.0,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Magnésium"
+                },
+                "value": 1.21,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Bore"
+                },
+                "value": 0.12,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Soufre"
+                },
+                "value": 6.36,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Calcium"
+                },
+                "value": 1.24,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "Zinc"
+                },
+                "value": 0.55,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": null,
+                    "fr": "% de matièr"
+                },
+                "value": 0.5,
+                "unit": "%"
+            }
+        ]
+    },
+    "precaution_statements": [
+        {
+            "en": null,
+            "fr": "Cet engrais renferme du B, ZN et ne doit être employé que de la manière recommandée. Il peut être nocif s'il est employé mal à propos."
+        }
+    ],
+    "directions_for_use_statements": null,
+    "label_file": "label_003"
+}
