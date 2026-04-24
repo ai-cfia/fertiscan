@@ -10,6 +10,7 @@ from app.benchmark.compliance.tools.status import (
     compliance_status_values,
     normalize_compliance_status,
 )
+from app.benchmark.core import BenchmarkPrescript
 from app.schemas.label_data import ExtractFertilizerFieldsOutput
 from app.schemas.prescript_result import PrescriptResult
 
@@ -24,32 +25,52 @@ __all__ = ["DATA_DIR", "GROUND_TRUTH_DIR", "PrescriptResult", "prescript"]
 
 def prescript() -> PrescriptResult:
     """Return a structured readiness report for benchmark prerequisites."""
-    result = PrescriptResult()
-    check_data_availability(result)
-    check_ground_truth_availability(result)
-    result.ok = not (
-        result.errors
-        or result.missing_data_files
-        or result.invalid_data_files
-        or result.missing_ground_truth_files
-    )
-    return result
+    return CompliancePrescript().prescript()
 
 
-def check_data_availability(result: PrescriptResult) -> None:
-    """Validate benchmark label fixtures in the data directory."""
-    result.checked_paths.append(str(DATA_DIR))
-    label_paths = sorted(DATA_DIR.glob("label*.json"))
+class CompliancePrescript(BenchmarkPrescript):
+    """Compliance-specific implementation of shared prescript workflow."""
 
-    if not label_paths:
-        message = f"No label JSON files found in {DATA_DIR}"
-        _record_error(result, message)
-        result.missing_data_files.append("label*.json")
-        return
+    def check_data_availability(self, result: PrescriptResult) -> None:
+        """Validate benchmark label fixtures in the data directory."""
+        result.checked_paths.append(str(DATA_DIR))
+        label_paths = sorted(DATA_DIR.glob("label*.json"))
 
-    for label_path in label_paths:
-        result.checked_paths.append(str(label_path))
-        _validate_label_json(label_path, result)
+        if not label_paths:
+            message = f"No label JSON files found in {DATA_DIR}"
+            _record_error(result, message)
+            result.missing_data_files.append("label*.json")
+            return
+
+        for label_path in label_paths:
+            result.checked_paths.append(str(label_path))
+            _validate_label_json(label_path, result)
+
+    def check_ground_truth_availability(self, result: PrescriptResult) -> None:
+        """Validate benchmark ground truth files aligned with the label fixtures."""
+        result.checked_paths.append(str(GROUND_TRUTH_DIR))
+        label_paths = sorted(DATA_DIR.glob("label*.json"))
+
+        if not label_paths:
+            message = f"No label JSON files found in {DATA_DIR}"
+            _record_error(result, message)
+            result.missing_ground_truth_files.append(str(GROUND_TRUTH_DIR))
+            return
+
+        statuses_seen: set[str] = set()
+
+        for label_path in label_paths:
+            ground_truth_path = GROUND_TRUTH_DIR / label_path.name
+            result.checked_paths.append(str(ground_truth_path))
+            _validate_ground_truth_json(ground_truth_path, result, statuses_seen)
+
+        allowed_statuses = compliance_status_values()
+        missing_statuses = sorted(allowed_statuses - statuses_seen)
+        if missing_statuses:
+            result.warnings.append(
+                "Ground truth status coverage is incomplete. "
+                f"Missing statuses: {', '.join(missing_statuses)}"
+            )
 
 
 def _validate_label_json(label_path: Path, result: PrescriptResult) -> bool:
@@ -100,33 +121,6 @@ def _validate_label_json(label_path: Path, result: PrescriptResult) -> bool:
         return False
 
     return True
-
-
-def check_ground_truth_availability(result: PrescriptResult) -> None:
-    """Validate benchmark ground truth files aligned with the label fixtures."""
-    result.checked_paths.append(str(GROUND_TRUTH_DIR))
-    label_paths = sorted(DATA_DIR.glob("label*.json"))
-
-    if not label_paths:
-        message = f"No label JSON files found in {DATA_DIR}"
-        _record_error(result, message)
-        result.missing_ground_truth_files.append(str(GROUND_TRUTH_DIR))
-        return
-
-    statuses_seen: set[str] = set()
-
-    for label_path in label_paths:
-        ground_truth_path = GROUND_TRUTH_DIR / label_path.name
-        result.checked_paths.append(str(ground_truth_path))
-        _validate_ground_truth_json(ground_truth_path, result, statuses_seen)
-
-    allowed_statuses = compliance_status_values()
-    missing_statuses = sorted(allowed_statuses - statuses_seen)
-    if missing_statuses:
-        result.warnings.append(
-            "Ground truth status coverage is incomplete. "
-            f"Missing statuses: {', '.join(missing_statuses)}"
-        )
 
 
 def _validate_ground_truth_json(
