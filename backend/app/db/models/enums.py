@@ -1,30 +1,30 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ReviewStatus(str, Enum):
+class ReviewStatus(StrEnum):
     not_started = "not_started"
     in_progress = "in_progress"
     completed = "completed"
 
 
-class UploadStatus(str, Enum):
+class UploadStatus(StrEnum):
     pending = "pending"
     completed = "completed"
 
 
-class ModifierType(str, Enum):
+class ModifierType(StrEnum):
     EXEMPTION = "EXEMPTION"
     APPLICABILITY_CONDITION = "APPLICABILITY_CONDITION"
 
 
-class ComplianceStatus(str, Enum):
+class ComplianceStatus(StrEnum):
     COMPLIANT = "compliant"
     NON_COMPLIANT = "non_compliant"
     NOT_APPLICABLE = "not_applicable"
     INCONCLUSIVE = "inconclusive"
 
 
-class ProductClassification(str, Enum):
+class ProductClassification(StrEnum):
     FERTILIZER = "fertilizer"
     SUPPLEMENT = "supplement"
     GROWING_MEDIUM = "growing_medium"
