@@ -27,6 +27,9 @@ def get_engine() -> Engine:
     return create_engine(
         str(settings.SQLALCHEMY_DATABASE_URI),
         echo=settings.LOG_SQL,
+        pool_size=settings.POSTGRES_POOL_SIZE,
+        max_overflow=settings.POSTGRES_MAX_OVERFLOW,
+        pool_timeout=settings.POSTGRES_POOL_TIMEOUT,
         pool_pre_ping=True,
         pool_recycle=3600,
         json_serializer=decimal_json_serializer,

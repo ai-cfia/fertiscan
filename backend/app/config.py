@@ -59,6 +59,9 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: SecretStr = SecretStr("")
     POSTGRES_DB: str = ""
+    POSTGRES_POOL_SIZE: int = 2
+    POSTGRES_MAX_OVERFLOW: int = 0
+    POSTGRES_POOL_TIMEOUT: int = 5
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: SecretStr
     LOG_SQL: bool = False
