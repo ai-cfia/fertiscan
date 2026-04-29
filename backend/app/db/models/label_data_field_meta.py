@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from app.db.models.label_data import LabelData
 
 
-class LabelDataFieldName(str, Enum):
+class LabelDataFieldName(StrEnum):
     """Valid field names for LabelDataFieldMeta."""
 
     brand_name = "brand_name"
