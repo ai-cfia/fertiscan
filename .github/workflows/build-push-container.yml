@@ -62,9 +62,8 @@ jobs:
           CLEAN_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/[\/\\]/-/g')
           echo "clean_branch_name=$CLEAN_BRANCH_NAME" >> $GITHUB_ENV
           echo "clean_branch_name=$CLEAN_BRANCH_NAME" >> $GITHUB_OUTPUT
-      - name: Build and push (unmerged)
-        id: docker_build_and_tag_unmerged
-        if: github.event.pull_request.merged == false
+      - name: Build and push
+        id: docker_build_and_tag
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7
         timeout-minutes: 10
         with:
@@ -80,34 +79,12 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
           build-args: ${{ inputs.build-args }}
-      - name: Build and push (merged)
-        id: docker_build_and_tag_merged
-        if: github.event.pull_request.merged == true
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7
-        timeout-minutes: 10
-        with:
-          context: ${{ inputs.dockerfile-folder-path || inputs.working-directory }}
-          push: true
-          pull: true
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.tag }}
-            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ github.event.pull_request.base.ref }}
-            ${{ inputs.registry }}/${{ inputs.container-name }}:${{ inputs.release-version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
-          build-args: ${{ inputs.build-args }}
       - name: Refresh Cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - name: Image digest
-        run: |
-          if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-            echo "${{ steps.docker_build_and_tag_merged.outputs.digest }}"
-          else
-            echo "${{ steps.docker_build_and_tag_unmerged.outputs.digest }}"
-          fi
+        run: echo "${{ steps.docker_build_and_tag.outputs.digest }}"
       - name: Generate build summary
         run: |
           echo "🐳 Docker image built and pushed successfully" >> $GITHUB_STEP_SUMMARY
@@ -141,8 +118,7 @@ jobs:
           USER_SITE=$(python -m site --user-site)
           echo "Path to site-packages is $USER_SITE"
           echo "USER_SITE=$USER_SITE" >> $GITHUB_ENV
-      - name: Delete the previous image (unmerged)
-        if: github.event.pull_request.merged == false
+      - name: Delete the previous image
         continue-on-error: true
         run: python $USER_SITE/remove-previous-image/remove_previous_image.py
         env:
@@ -150,16 +126,5 @@ jobs:
           REGISTRY: ${{ inputs.registry }}
           CONTAINER_NAME: ${{ inputs.container-name }}
           UNIQUE_TAG: ${{ github.event.number }}
-          USER: ${{ github.actor }}
-          CURRENT_COMMIT: ${{ inputs.tag }}
-      - name: Delete the previous image (merged)
-        if: github.event.pull_request.merged == true
-        continue-on-error: true
-        run: python $USER_SITE/remove-previous-image/remove_previous_image.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REGISTRY: ${{ inputs.registry }}
-          CONTAINER_NAME: ${{ inputs.container-name }}
-          UNIQUE_TAG: ${{ github.event.pull_request.base.ref }}
           USER: ${{ github.actor }}
           CURRENT_COMMIT: ${{ inputs.tag }}
