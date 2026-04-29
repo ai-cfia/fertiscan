@@ -4,6 +4,7 @@ name: Backend Build
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   version-bump:
