@@ -63,6 +63,7 @@ jobs:
     secrets: inherit
 
   auto-label:
+    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/auto-label-pr.yml
 
   backend:

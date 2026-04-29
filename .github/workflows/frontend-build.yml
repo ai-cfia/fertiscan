@@ -4,6 +4,7 @@ name: Frontend Build
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   get-version:
