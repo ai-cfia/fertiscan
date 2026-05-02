@@ -84,3 +84,30 @@ export const readLabelsPageFn = createServerFn({ method: "POST" })
     }
     return res.data
   })
+
+// ============================== Delete label (server) ==============================
+
+function assertLabelIdInput(data: unknown): { labelId: string } {
+  if (!data || typeof data !== "object") {
+    throw new Error("Invalid body")
+  }
+  const o = data as Record<string, unknown>
+  if (typeof o.labelId !== "string" || o.labelId.length === 0) {
+    throw new Error("Invalid labelId")
+  }
+  return { labelId: o.labelId }
+}
+
+export const deleteLabelFn = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => assertLabelIdInput(data))
+  .handler(async ({ data }): Promise<void> => {
+    const client = await requireAuthedApiClient()
+    const res = await LabelsService.deleteLabel({
+      client,
+      path: { label_id: data.labelId },
+      throwOnError: false,
+    })
+    if (isAxiosError(res)) {
+      throw new Error(messageFromAxiosApiError(res, "Failed to delete label"))
+    }
+  })

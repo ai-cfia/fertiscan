@@ -17,13 +17,13 @@ import {
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import type { ReviewStatus } from "#/api/types.gen"
-import { useSnackbar } from "#/components/SnackbarProvider"
 
 type LabelRowActionsProps = {
   reviewStatus: ReviewStatus | null
   onViewDetails: () => void
   onReview: () => void
-  onDelete: () => void
+  onDelete: () => void | Promise<void>
+  isDeleting?: boolean
 }
 
 export default function LabelRowActions({
@@ -31,9 +31,9 @@ export default function LabelRowActions({
   onViewDetails,
   onReview,
   onDelete,
+  isDeleting = false,
 }: LabelRowActionsProps) {
   const { t } = useTranslation(["labels", "common"])
-  const { showErrorToast } = useSnackbar()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const handleViewDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
@@ -47,10 +47,9 @@ export default function LabelRowActions({
     event.stopPropagation()
     setDeleteDialogOpen(true)
   }
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false)
-    showErrorToast(t("labels.rowActions.deleteNotImplemented"))
-    onDelete()
+    await onDelete()
   }
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
@@ -81,14 +80,17 @@ export default function LabelRowActions({
           </IconButton>
         </Tooltip>
         <Tooltip title={t("labels.rowActions.delete")}>
-          <IconButton
-            onClick={handleDeleteClick}
-            size="small"
-            aria-label={t("labels.rowActions.delete")}
-            color="error"
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+          <span>
+            <IconButton
+              onClick={handleDeleteClick}
+              size="small"
+              aria-label={t("labels.rowActions.delete")}
+              color="error"
+              disabled={isDeleting}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
       <Dialog
@@ -106,13 +108,14 @@ export default function LabelRowActions({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>
+          <Button onClick={handleDeleteCancel} disabled={isDeleting}>
             {t("common.button.cancel")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
+            disabled={isDeleting}
           >
             {t("labels.rowActions.delete")}
           </Button>

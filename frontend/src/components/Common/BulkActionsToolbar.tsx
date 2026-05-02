@@ -1,4 +1,4 @@
-// ============================== Labels bulk actions toolbar ==============================
+// ============================== Bulk actions toolbar ==============================
 
 import CloseIcon from "@mui/icons-material/Close"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -20,16 +20,28 @@ import { useSnackbar } from "#/components/SnackbarProvider"
 
 type BulkActionsToolbarProps = {
   selectedCount: number
-  onDelete: () => void
+  selectedText: string
+  deleteButtonText: string
+  exportButtonText: string
+  deleteDialogTitle: string
+  deleteDialogDescription: string
+  onDelete: () => void | Promise<void>
   onExport: () => void
   onClearSelection: () => void
+  isDeleting?: boolean
 }
 
 export default function BulkActionsToolbar({
   selectedCount,
+  selectedText,
+  deleteButtonText,
+  exportButtonText,
+  deleteDialogTitle,
+  deleteDialogDescription,
   onDelete,
   onExport,
   onClearSelection,
+  isDeleting = false,
 }: BulkActionsToolbarProps) {
   const { t } = useTranslation(["labels", "common"])
   const { showErrorToast } = useSnackbar()
@@ -37,10 +49,9 @@ export default function BulkActionsToolbar({
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true)
   }
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false)
-    showErrorToast(t("labels.bulkActions.deleteNotImplemented"))
-    onDelete()
+    await onDelete()
   }
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
@@ -68,22 +79,23 @@ export default function BulkActionsToolbar({
           component="div"
           id="bulk-actions-title"
         >
-          {t("labels.bulkActions.selected", { count: selectedCount })}
+          {selectedText}
         </Typography>
         <Button
           startIcon={<FileDownloadIcon />}
           onClick={handleExportClick}
           variant="outlined"
         >
-          {t("labels.bulkActions.export")}
+          {exportButtonText}
         </Button>
         <Button
           startIcon={<DeleteIcon />}
           onClick={handleDeleteClick}
           color="error"
           variant="outlined"
+          disabled={isDeleting || selectedCount === 0}
         >
-          {t("labels.bulkActions.delete")}
+          {deleteButtonText}
         </Button>
         <IconButton
           onClick={onClearSelection}
@@ -99,25 +111,24 @@ export default function BulkActionsToolbar({
         aria-describedby="bulk-delete-dialog-description"
       >
         <DialogTitle id="bulk-delete-dialog-title">
-          {t("labels.bulkActions.deleteDialog.title", { count: selectedCount })}
+          {deleteDialogTitle}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="bulk-delete-dialog-description">
-            {t("labels.bulkActions.deleteDialog.description", {
-              count: selectedCount,
-            })}
+            {deleteDialogDescription}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>
+          <Button onClick={handleDeleteCancel} disabled={isDeleting}>
             {t("common.button.cancel")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
+            disabled={isDeleting}
           >
-            {t("labels.bulkActions.delete")}
+            {deleteButtonText}
           </Button>
         </DialogActions>
       </Dialog>

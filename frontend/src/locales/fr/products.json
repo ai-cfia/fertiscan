@@ -18,13 +18,33 @@
   },
   "pageTitle": "Produits - Inspection des étiquettes",
   "products": {
+    "bulkActions": {
+      "delete": "Supprimer",
+      "deleteDialog": {
+        "description_one": "Êtes-vous sûr de vouloir supprimer {{count}} produit sélectionné ? Cette action ne peut pas être annulée et supprimera définitivement le produit.",
+        "description_many": "Êtes-vous sûr de vouloir supprimer {{count}} produits sélectionnés ? Cette action ne peut pas être annulée et supprimera définitivement les produits.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer {{count}} produits sélectionnés ? Cette action ne peut pas être annulée et supprimera définitivement les produits.",
+        "title_one": "Supprimer {{count}} produit ?",
+        "title_many": "Supprimer {{count}} produits ?",
+        "title_other": "Supprimer {{count}} produits ?"
+      },
+      "deleteFailed": "Échec de la suppression des produits",
+      "deletePartial": "{{ok}} supprimé(s) ; {{failed}} en échec",
+      "deleteSuccess_one": "{{count}} produit supprimé",
+      "deleteSuccess_many": "{{count}} produits supprimés",
+      "deleteSuccess_other": "{{count}} produits supprimés",
+      "export": "Exporter",
+      "selected_one": "{{count}} sélectionné",
+      "selected_many": "{{count}} sélectionnés",
+      "selected_other": "{{count}} sélectionnés"
+    },
     "rowActions": {
       "delete": "Supprimer",
       "deleteDialog": {
         "description": "Êtes-vous sûr de vouloir supprimer ce produit ? Cette action ne peut pas être annulée et supprimera définitivement le produit.",
         "title": "Supprimer le produit"
       },
-      "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
+      "deleteSuccess": "Produit supprimé",
       "viewDetails": "Voir les détails"
     }
   },

@@ -121,3 +121,30 @@ export const readProductsDuplicateCheckFn = createServerFn({ method: "POST" })
     }
     return res.data
   })
+
+// ============================== Delete product (server) ==============================
+
+function assertProductIdInput(data: unknown): { productId: string } {
+  if (!data || typeof data !== "object") {
+    throw new Error("Invalid body")
+  }
+  const o = data as Record<string, unknown>
+  if (typeof o.productId !== "string" || o.productId.length === 0) {
+    throw new Error("Invalid productId")
+  }
+  return { productId: o.productId }
+}
+
+export const deleteProductFn = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => assertProductIdInput(data))
+  .handler(async ({ data }): Promise<void> => {
+    const client = await requireAuthedApiClient()
+    const res = await ProductsService.deleteProduct({
+      client,
+      path: { product_id: data.productId },
+      throwOnError: false,
+    })
+    if (isAxiosError(res)) {
+      throw new Error(messageFromAxiosApiError(res, "Failed to delete product"))
+    }
+  })

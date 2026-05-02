@@ -36,6 +36,7 @@ import LabelListEmptyState from "#/components/Common/LabelListEmptyState"
 import LabelRowActions from "#/components/Common/LabelRowActions"
 import ReviewStatusChip from "#/components/Common/ReviewStatusChip"
 import { useSnackbar } from "#/components/SnackbarProvider"
+import { useDeleteLabels } from "#/hooks/useDeleteLabels"
 import { readLabelsPageFn } from "#/server/labels-list"
 import { clientRuntimeConfig } from "#/stores/useConfig"
 import { useLabelList } from "#/stores/useLabelList"
@@ -170,6 +171,8 @@ function LabelsTable() {
   const { setError } = useLabelList()
   const { showSuccessToast } = useSnackbar()
   const fetchLabelsPage = useServerFn(readLabelsPageFn)
+  const { deleteOne, deleteMany, isDeletingId, isBulkDeleting } =
+    useDeleteLabels()
   const headCells: readonly HeadCell[] = [
     {
       id: "id",
@@ -372,9 +375,12 @@ function LabelsTable() {
     [showSuccessToast, t],
   )
   const handleBulkExport = useCallback(() => {}, [])
-  const handleBulkDelete = useCallback(() => {
-    setSelected([])
-  }, [])
+  const handleBulkDelete = useCallback(async () => {
+    const res = await deleteMany(selected)
+    if (res.failed === 0) {
+      setSelected([])
+    }
+  }, [deleteMany, selected])
   const handleClearSelection = useCallback(() => {
     setSelected([])
   }, [])
@@ -393,9 +399,22 @@ function LabelsTable() {
       {selected.length > 0 ? (
         <BulkActionsToolbar
           selectedCount={selected.length}
+          selectedText={t("labels.bulkActions.selected", {
+            count: selected.length,
+          })}
+          deleteButtonText={t("labels.bulkActions.delete")}
+          exportButtonText={t("labels.bulkActions.export")}
+          deleteDialogTitle={t("labels.bulkActions.deleteDialog.title", {
+            count: selected.length,
+          })}
+          deleteDialogDescription={t(
+            "labels.bulkActions.deleteDialog.description",
+            { count: selected.length },
+          )}
           onDelete={handleBulkDelete}
           onExport={handleBulkExport}
           onClearSelection={handleClearSelection}
+          isDeleting={isBulkDeleting}
         />
       ) : (
         <Toolbar
@@ -609,7 +628,8 @@ function LabelsTable() {
                             params: { productType, labelId: label.id },
                           })
                         }}
-                        onDelete={() => {}}
+                        onDelete={() => deleteOne(label.id)}
+                        isDeleting={isDeletingId === label.id}
                       />
                     </TableCell>
                   </TableRow>

@@ -276,7 +276,11 @@
         "title_many": "Supprimer {{count}} étiquettes ?",
         "title_other": "Supprimer {{count}} étiquettes ?"
       },
-      "deleteNotImplemented": "Fonctionnalité de suppression groupée pas encore implémentée",
+      "deleteFailed": "Échec de la suppression des étiquettes",
+      "deletePartial": "{{ok}} supprimée(s) ; {{failed}} en échec",
+      "deleteSuccess_one": "{{count}} étiquette supprimée",
+      "deleteSuccess_many": "{{count}} étiquettes supprimées",
+      "deleteSuccess_other": "{{count}} étiquettes supprimées",
       "export": "Exporter",
       "exportNotImplemented": "Fonctionnalité d'exportation pas encore implémentée",
       "selected_one": "{{count}} sélectionné",
@@ -302,7 +306,7 @@
         "description": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Cette action ne peut pas être annulée et supprimera définitivement l'étiquette et tous les fichiers associés.",
         "title": "Supprimer l'étiquette"
       },
-      "deleteNotImplemented": "Fonctionnalité de suppression pas encore implémentée",
+      "deleteSuccess": "Étiquette supprimée",
       "editLabel": "Modifier l'étiquette",
       "viewDetails": "Voir les détails"
     },

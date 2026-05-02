@@ -35,6 +35,7 @@ import BulkActionsToolbar from "#/components/Common/BulkActionsToolbar"
 import EmptyState from "#/components/Common/EmptyState"
 import ProductRowActions from "#/components/Common/ProductRowActions"
 import { useSnackbar } from "#/components/SnackbarProvider"
+import { useDeleteProducts } from "#/hooks/useDeleteProducts"
 import { readProductsPageFn } from "#/server/products-list"
 import { clientRuntimeConfig } from "#/stores/useConfig"
 import { useLanguage } from "#/stores/useLanguage"
@@ -142,6 +143,8 @@ function ProductsTable() {
   const { setError } = useProductList()
   const { showSuccessToast } = useSnackbar()
   const fetchProductsPage = useServerFn(readProductsPageFn)
+  const { deleteOne, deleteMany, isDeletingId, isBulkDeleting } =
+    useDeleteProducts()
   const headCells: readonly HeadCell[] = [
     {
       id: "id",
@@ -288,6 +291,15 @@ function ProductsTable() {
     },
     [showSuccessToast, t],
   )
+  const handleBulkDelete = useCallback(async () => {
+    const res = await deleteMany(selected)
+    if (res.failed === 0) {
+      setSelected([])
+    }
+  }, [deleteMany, selected])
+  const handleClearSelection = useCallback(() => {
+    setSelected([])
+  }, [])
   const formatCell = (value: string | null | undefined) => {
     if (!value) {
       return (
@@ -314,9 +326,22 @@ function ProductsTable() {
       {selected.length > 0 ? (
         <BulkActionsToolbar
           selectedCount={selected.length}
-          onDelete={() => setSelected([])}
+          selectedText={t("products.bulkActions.selected", {
+            count: selected.length,
+          })}
+          deleteButtonText={t("products.bulkActions.delete")}
+          exportButtonText={t("products.bulkActions.export")}
+          deleteDialogTitle={t("products.bulkActions.deleteDialog.title", {
+            count: selected.length,
+          })}
+          deleteDialogDescription={t(
+            "products.bulkActions.deleteDialog.description",
+            { count: selected.length },
+          )}
+          onDelete={handleBulkDelete}
           onExport={() => {}}
-          onClearSelection={() => setSelected([])}
+          onClearSelection={handleClearSelection}
+          isDeleting={isBulkDeleting}
         />
       ) : null}
       <TableContainer>
@@ -459,7 +484,8 @@ function ProductsTable() {
                             params: { productType, productId: product.id },
                           })
                         }}
-                        onDelete={() => {}}
+                        onDelete={() => deleteOne(product.id)}
+                        isDeleting={isDeletingId === product.id}
                       />
                     </TableCell>
                   </TableRow>
