@@ -20,9 +20,10 @@ import { useSnackbar } from "#/components/SnackbarProvider"
 
 type BulkActionsToolbarProps = {
   selectedCount: number
-  onDelete: () => void
+  onDelete: () => void | Promise<void>
   onExport: () => void
   onClearSelection: () => void
+  isDeleting?: boolean
 }
 
 export default function BulkActionsToolbar({
@@ -30,6 +31,7 @@ export default function BulkActionsToolbar({
   onDelete,
   onExport,
   onClearSelection,
+  isDeleting = false,
 }: BulkActionsToolbarProps) {
   const { t } = useTranslation(["labels", "common"])
   const { showErrorToast } = useSnackbar()
@@ -37,10 +39,9 @@ export default function BulkActionsToolbar({
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true)
   }
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false)
-    showErrorToast(t("labels.bulkActions.deleteNotImplemented"))
-    onDelete()
+    await onDelete()
   }
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
@@ -82,6 +83,7 @@ export default function BulkActionsToolbar({
           onClick={handleDeleteClick}
           color="error"
           variant="outlined"
+          disabled={isDeleting}
         >
           {t("labels.bulkActions.delete")}
         </Button>
@@ -109,13 +111,14 @@ export default function BulkActionsToolbar({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>
+          <Button onClick={handleDeleteCancel} disabled={isDeleting}>
             {t("common.button.cancel")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
+            disabled={isDeleting}
           >
             {t("labels.bulkActions.delete")}
           </Button>

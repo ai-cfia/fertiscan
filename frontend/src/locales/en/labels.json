@@ -266,7 +266,10 @@
         "title_one": "Delete {{count}} label?",
         "title_other": "Delete {{count}} labels?"
       },
-      "deleteNotImplemented": "Bulk delete functionality not yet implemented",
+      "deleteFailed": "Failed to delete labels",
+      "deletePartial": "Deleted {{ok}}; {{failed}} failed",
+      "deleteSuccess_one": "{{count}} label deleted",
+      "deleteSuccess_other": "{{count}} labels deleted",
       "export": "Export",
       "exportNotImplemented": "Export functionality not yet implemented",
       "selected_one": "{{count}} selected",
@@ -290,7 +293,7 @@
         "description": "Are you sure you want to delete this label? This action cannot be undone and will permanently delete the label and all associated files.",
         "title": "Delete label"
       },
-      "deleteNotImplemented": "Delete functionality not yet implemented",
+      "deleteSuccess": "Label deleted",
       "editLabel": "Edit label",
       "viewDetails": "View Details"
     },
