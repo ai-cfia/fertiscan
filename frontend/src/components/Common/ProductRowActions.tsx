@@ -15,19 +15,19 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useSnackbar } from "#/components/SnackbarProvider"
 
 type ProductRowActionsProps = {
   onViewDetails: () => void
-  onDelete: () => void
+  onDelete: () => void | Promise<void>
+  isDeleting?: boolean
 }
 
 export default function ProductRowActions({
   onViewDetails,
   onDelete,
+  isDeleting = false,
 }: ProductRowActionsProps) {
   const { t } = useTranslation(["products", "common"])
-  const { showErrorToast } = useSnackbar()
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const handleViewDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
@@ -37,10 +37,9 @@ export default function ProductRowActions({
     event.stopPropagation()
     setDeleteDialogOpen(true)
   }
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false)
-    showErrorToast(t("products.rowActions.deleteNotImplemented"))
-    onDelete()
+    await onDelete()
   }
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
@@ -58,14 +57,17 @@ export default function ProductRowActions({
           </IconButton>
         </Tooltip>
         <Tooltip title={t("products.rowActions.delete")}>
-          <IconButton
-            onClick={handleDeleteClick}
-            size="small"
-            aria-label={t("products.rowActions.delete")}
-            color="error"
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+          <span>
+            <IconButton
+              onClick={handleDeleteClick}
+              size="small"
+              aria-label={t("products.rowActions.delete")}
+              color="error"
+              disabled={isDeleting}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
       <Dialog
@@ -83,13 +85,14 @@ export default function ProductRowActions({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>
+          <Button onClick={handleDeleteCancel} disabled={isDeleting}>
             {t("button.cancel", { ns: "common" })}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
+            disabled={isDeleting}
           >
             {t("products.rowActions.delete")}
           </Button>

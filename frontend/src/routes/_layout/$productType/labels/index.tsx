@@ -399,6 +399,18 @@ function LabelsTable() {
       {selected.length > 0 ? (
         <BulkActionsToolbar
           selectedCount={selected.length}
+          selectedText={t("labels.bulkActions.selected", {
+            count: selected.length,
+          })}
+          deleteButtonText={t("labels.bulkActions.delete")}
+          exportButtonText={t("labels.bulkActions.export")}
+          deleteDialogTitle={t("labels.bulkActions.deleteDialog.title", {
+            count: selected.length,
+          })}
+          deleteDialogDescription={t(
+            "labels.bulkActions.deleteDialog.description",
+            { count: selected.length },
+          )}
           onDelete={handleBulkDelete}
           onExport={handleBulkExport}
           onClearSelection={handleClearSelection}

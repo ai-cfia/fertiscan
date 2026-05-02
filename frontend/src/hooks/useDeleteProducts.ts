@@ -1,4 +1,4 @@
-// ============================== Delete labels ==============================
+// ============================== Delete products ==============================
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
@@ -6,21 +6,21 @@ import pLimit from "p-limit"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useSnackbar } from "#/components/SnackbarProvider"
-import { deleteLabelFn } from "#/server/labels-list"
+import { deleteProductFn } from "#/server/products-list"
 
 const DELETE_CONCURRENCY_LIMIT = 2
 
-export function useDeleteLabels() {
+export function useDeleteProducts() {
   const queryClient = useQueryClient()
-  const { t } = useTranslation("labels")
+  const { t } = useTranslation("products")
   const { showSuccessToast, showErrorToast } = useSnackbar()
-  const deleteFn = useServerFn(deleteLabelFn)
+  const deleteFn = useServerFn(deleteProductFn)
   const [isBulkDeleting, setIsBulkDeleting] = useState(false)
   const mutation = useMutation({
-    mutationFn: (labelId: string) => deleteFn({ data: { labelId } }),
+    mutationFn: (productId: string) => deleteFn({ data: { productId } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["labels"] })
-      showSuccessToast(t("labels.rowActions.deleteSuccess"))
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+      showSuccessToast(t("products.rowActions.deleteSuccess"))
     },
     onError: (error: Error) => {
       showErrorToast(error.message)
@@ -43,18 +43,20 @@ export function useDeleteLabels() {
     try {
       const limit = pLimit(DELETE_CONCURRENCY_LIMIT)
       const results = await Promise.allSettled(
-        ids.map((id) => limit(() => deleteFn({ data: { labelId: id } }))),
+        ids.map((id) => limit(() => deleteFn({ data: { productId: id } }))),
       )
       const ok = results.filter((r) => r.status === "fulfilled").length
       const failed = results.length - ok
-      queryClient.invalidateQueries({ queryKey: ["labels"] })
+      queryClient.invalidateQueries({ queryKey: ["products"] })
       if (failed === 0) {
-        showSuccessToast(t("labels.bulkActions.deleteSuccess", { count: ok }))
+        showSuccessToast(
+          t("products.bulkActions.deleteSuccess", { count: ok }),
+        )
       } else if (ok === 0) {
-        showErrorToast(t("labels.bulkActions.deleteFailed"))
+        showErrorToast(t("products.bulkActions.deleteFailed"))
       } else {
         showErrorToast(
-          t("labels.bulkActions.deletePartial", {
+          t("products.bulkActions.deletePartial", {
             ok: String(ok),
             failed: String(failed),
           }),

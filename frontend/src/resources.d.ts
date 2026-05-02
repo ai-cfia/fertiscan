@@ -643,13 +643,29 @@ export default interface Resources {
     },
     "pageTitle": "Products - Label Inspection",
     "products": {
+      "bulkActions": {
+        "delete": "Delete",
+        "deleteDialog": {
+          "description_one": "Are you sure you want to delete {{count}} selected product? This action cannot be undone and will permanently delete the product.",
+          "description_other": "Are you sure you want to delete {{count}} selected products? This action cannot be undone and will permanently delete the products.",
+          "title_one": "Delete {{count}} product?",
+          "title_other": "Delete {{count}} products?"
+        },
+        "deleteFailed": "Failed to delete products",
+        "deletePartial": "Deleted {{ok}}; {{failed}} failed",
+        "deleteSuccess_one": "{{count}} product deleted",
+        "deleteSuccess_other": "{{count}} products deleted",
+        "export": "Export",
+        "selected_one": "{{count}} selected",
+        "selected_other": "{{count}} selected"
+      },
       "rowActions": {
         "delete": "Delete",
         "deleteDialog": {
           "description": "Are you sure you want to delete this product? This action cannot be undone and will permanently delete the product.",
           "title": "Delete product"
         },
-        "deleteNotImplemented": "Delete functionality not yet implemented",
+        "deleteSuccess": "Product deleted",
         "viewDetails": "View Details"
       }
     },
