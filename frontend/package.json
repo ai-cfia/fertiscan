@@ -58,7 +58,7 @@
     "@hey-api/openapi-ts": "^0.97.0",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@tanstack/router-plugin": "1.167.28",
+    "@tanstack/router-plugin": "1.167.35",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^25.6.0",
