@@ -86,7 +86,6 @@
     "extractionNoImages": "Aucune image disponible pour l'extraction",
     "extractionNoValue": "Aucune valeur n'a été extraite pour ce champ",
     "extractionOnlyFertilizer": "L'extraction n'est disponible que pour les étiquettes d'engrais",
-    "extractionPartialSuccess": "{{success}} sections extraites sur {{total}}",
     "extractionSuccess": "Champ extrait avec succès",
     "fields": {
       "brandNameEn": "Nom de marque (anglais)",

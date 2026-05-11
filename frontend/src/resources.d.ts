@@ -381,7 +381,6 @@ export default interface Resources {
       "extractionNoImages": "No images available for extraction",
       "extractionNoValue": "No value was extracted for this field",
       "extractionOnlyFertilizer": "Extraction is only available for fertilizer labels",
-      "extractionPartialSuccess": "Extracted {{success}} of {{total}} sections",
       "extractionSuccess": "Field extracted successfully",
       "fields": {
         "brandNameEn": "Brand Name (English)",

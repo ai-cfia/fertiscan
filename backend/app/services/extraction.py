@@ -58,10 +58,6 @@ async def extract_fields_from_images[T: BaseModel](
         model=settings.AZURE_OPENAI_MODEL,
         messages=[message],
         response_model=model,
-        max_completion_tokens=4000,
-        temperature=0,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
+        reasoning_effort="high",
     )
     return response, completion

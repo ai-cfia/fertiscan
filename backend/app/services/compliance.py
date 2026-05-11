@@ -165,10 +165,7 @@ async def evaluate_requirement(
             },
             {"role": "user", "content": prompt},
         ],
-        temperature=0,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
+        reasoning_effort="high",
     )
 
     return response
