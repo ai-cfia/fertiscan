@@ -1,0 +1,127 @@
+{
+    "label_file": "label7.json",
+    "profile": "exempt_without_list_of_materials",
+    "results": [
+        {
+            "requirement_ref": {
+                "citation": "16(1)(a)",
+                "title_en": "Manufacturer Name and Address Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Manufacturer contact information is present.",
+                "fr": "Les informations de contact du fabricant sont presentes."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(b)",
+                "title_en": "Product Name Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Product name is present in both languages.",
+                "fr": "Le nom du produit est present dans les deux langues."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(c)",
+                "title_en": "Registration Number Presence"
+            },
+            "expected_status": "not_applicable",
+            "expected_explanation": {
+                "en": "The label uses an exemption claim and no registration number.",
+                "fr": "L'etiquette utilise une revendication d'exemption et aucun numero d'enregistrement."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(d)",
+                "title_en": "Exempt Mixture Components Registration Numbers"
+            },
+            "expected_status": "non_compliant",
+            "expected_explanation": {
+                "en": "Exempt mixture component registration numbers are not listed.",
+                "fr": "Les numeros d'enregistrement des composantes de melange exempte ne sont pas listes."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(e)",
+                "title_en": "Directions for Use Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Directions for use are present.",
+                "fr": "Les modes d'emploi sont presents."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(f)",
+                "title_en": "Weight Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Net weight is present.",
+                "fr": "Le poids net est present."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(g)",
+                "title_en": "Guaranteed Analysis Presence"
+            },
+            "expected_status": "non_compliant",
+            "expected_explanation": {
+                "en": "Guaranteed analysis block is missing.",
+                "fr": "Le bloc d'analyse garantie est manquant."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(h)",
+                "title_en": "Precaution Statement Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "A precaution statement is present.",
+                "fr": "Un enonce de precaution est present."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(i)",
+                "title_en": "Prohibited Material Statements"
+            },
+            "expected_status": "inconclusive",
+            "expected_explanation": {
+                "en": "The available label data is insufficient to conclusively determine whether prohibited material statements are required.",
+                "fr": "Les donnees d'etiquette disponibles sont insuffisantes pour determiner de facon concluante si des declarations de matiere interdite sont requises."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(j)",
+                "title_en": "Lot Number Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Lot number is present.",
+                "fr": "Le numero de lot est present."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(k)",
+                "title_en": "List of Materials Term for Exempt Products"
+            },
+            "expected_status": "non_compliant",
+            "expected_explanation": {
+                "en": "The label is exempt but does not include a list-of-materials term.",
+                "fr": "L'etiquette est exempte mais n'inclut pas de mention de liste des materiaux."
+            }
+        }
+    ]
+}

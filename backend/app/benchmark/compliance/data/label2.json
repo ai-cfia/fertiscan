@@ -1,0 +1,84 @@
+{
+	"brand_name": {
+		"en": "RootForge",
+		"fr": "RootForge"
+	},
+	"product_name": {
+		"en": "Organic Soil Supplement",
+		"fr": "Supplément organique pour le sol"
+	},
+	"contacts": [
+		{
+			"type": "manufacturer",
+			"name": "RootForge Biologics Inc.",
+			"address": "88 Harvest Way, Saskatoon, SK, Canada",
+			"phone": "+1 306 555 0188",
+			"email": "hello@rootforge.example",
+			"website": "https://rootforge.example"
+		},
+		{
+			"type": "distributor",
+			"name": "Prairie Agro Supply Ltd.",
+			"address": "410 Farm Road, Regina, SK, Canada",
+			"phone": "+1 306 555 0214",
+			"email": "sales@prairieagro.example",
+			"website": "https://prairieagro.example"
+		}
+	],
+	"registration_number": null,
+	"registration_claim": null,
+	"lot_number": null,
+	"net_weight": null,
+	"volume": "2 L",
+	"exemption_claim": {
+        "en": "Exempt from fertilizer registration",
+        "fr": "Exempté de l'enregistrement en tant qu'engrais"
+    },
+	"country_of_origin": "Canada",
+	"product_classification": "fertilizer",
+	"customer_formula_statements": null,
+	"intended_use_statements": [
+		{
+			"en": "For use in vegetable gardens, flower beds, and container plants",
+			"fr": "Pour usage dans les potagers, plates-bandes et plantes en contenants"
+		}
+	],
+	"processing_instruction_statements": null,
+	"experimental_statements": null,
+	"export_statements": null,
+	"n": 3.5,
+	"p": 1.5,
+	"k": 2,
+	"ingredients": [
+		{
+			"name": {
+				"en": "Composted poultry manure",
+				"fr": "Fumier de volaille composté"
+			},
+			"value": "60",
+			"unit": "%",
+			"registration_number": null
+		},
+		{
+			"name": {
+				"en": "Bone meal",
+				"fr": "Farine d’os"
+			},
+			"value": "15",
+			"unit": "%",
+			"registration_number": null
+		},
+		{
+			"name": {
+				"en": "Kelp meal",
+				"fr": "Farine de varech"
+			},
+			"value": "5",
+			"unit": "%",
+			"registration_number": null
+		}
+	],
+	"guaranteed_analysis": null,
+	"precaution_statements": null,
+	"directions_for_use_statements": null
+}
