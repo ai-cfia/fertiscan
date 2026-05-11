@@ -156,16 +156,16 @@ wheels = [
 
 [[package]]
 name = "aiomoto"
-version = "0.3.0"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiobotocore" },
     { name = "moto" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0d/d0/a87eaae91d15ac130d0f85d776c1697a0274e2ae5af0b817954fabf60b78/aiomoto-0.3.0.tar.gz", hash = "sha256:92b206faffdf5203d0a8617e8a99c552f32e0914eef2fb1e57d7a7b3d60469f4", size = 20124, upload-time = "2026-01-08T12:46:56.544Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/76/3af07d9514a2338524e2699a8f5c8fe90d80d775210bd7d94c58d923434a/aiomoto-0.4.0.tar.gz", hash = "sha256:7b318fddc2d2afe8e95b86e854200a4e4de737dede5b6ccb83b7d6e70fb158a4", size = 20853, upload-time = "2026-05-10T12:26:00.647Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/23/9611dbfecc3d8f089169b13fb4e4e260d824cb626ea501df4d590bd1d124/aiomoto-0.3.0-py3-none-any.whl", hash = "sha256:be0bd7b9e82f0e717a55c57a9fc9e2ed097e48f603acf878c437277619717de2", size = 21177, upload-time = "2026-01-08T12:46:58.33Z" },
+    { url = "https://files.pythonhosted.org/packages/08/07/452be809a2cfa63f1137dd1410de5ef27acdfbe0fd7c545a4c44cefb9f5a/aiomoto-0.4.0-py3-none-any.whl", hash = "sha256:c2c3364b58f616b597b2d11e895cc932648f8f99792a3730cc48dc4df857bcd8", size = 21749, upload-time = "2026-05-10T12:26:04.73Z" },
 ]
 
 [package.optional-dependencies]
