@@ -37,37 +37,8 @@ export function isFertilizerField(
 ): fieldName is FertilizerFieldName {
   return FERTILIZER_FIELDS.includes(fieldName as FertilizerFieldName)
 }
-// ============================== Extraction Sections ==============================
-export const EXTRACTION_SECTIONS = [
-  {
-    section: "basic",
-    fieldNames: [
-      "product_name",
-      "brand_name",
-      "contacts",
-      "registration_number",
-      "registration_claim",
-      "lot_number",
-      "net_weight",
-      "volume",
-      "exemption_claim",
-      "country_of_origin",
-      "product_classification",
-    ],
-  },
-  { section: "npk", fieldNames: ["n", "p", "k"] },
-  { section: "ingredients", fieldNames: ["ingredients"] },
-  { section: "guaranteed", fieldNames: ["guaranteed_analysis"] },
-  {
-    section: "statements",
-    fieldNames: [
-      "precaution_statements",
-      "directions_for_use_statements",
-      "customer_formula_statements",
-      "intended_use_statements",
-      "processing_instruction_statements",
-      "experimental_statements",
-      "export_statements",
-    ],
-  },
+// ============================== Extraction Fields ==============================
+export const EXTRACTABLE_FIELDS = [
+  ...COMMON_FIELDS,
+  ...FERTILIZER_FIELDS,
 ] as const

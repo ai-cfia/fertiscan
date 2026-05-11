@@ -3,7 +3,6 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
-import pLimit from "p-limit"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import type {
@@ -25,7 +24,7 @@ import {
 } from "#/server/label-editor"
 import { useLabelDataStore } from "#/stores/useLabelData"
 import {
-  EXTRACTION_SECTIONS,
+  EXTRACTABLE_FIELDS,
   isCommonField,
   isFertilizerField,
 } from "#/utils/labelData"
@@ -207,7 +206,12 @@ export function useLabelDataQueries(
       }
     },
   })
-  const EXTRACTION_CONCURRENCY_LIMIT = 1
+  const clearAllExtractingState = useCallback(() => {
+    EXTRACTABLE_FIELDS.forEach((fieldName) => {
+      setFieldExtracting(labelId, fieldName, false)
+    })
+    setExtracting(labelId, false)
+  }, [labelId, setExtracting, setFieldExtracting])
   const extractAllSectionsMutation = useMutation({
     mutationFn: async () => {
       if (!isFertilizer) {
@@ -216,73 +220,42 @@ export function useLabelDataQueries(
       if (!hasImages) {
         throw new Error("No images available for extraction")
       }
-      const limit = pLimit(EXTRACTION_CONCURRENCY_LIMIT)
-      const promises = EXTRACTION_SECTIONS.map(({ fieldNames }) =>
-        limit(() =>
-          extractFields({
-            data: { labelId, field_names: [...fieldNames] },
-          })
-            .then((extractedData) => {
-              fieldNames.forEach((fieldName) => {
-                setFieldExtracting(labelId, fieldName, false)
-              })
-              if (extractedData) {
-                const ed = extractedData as Record<string, unknown>
-                fieldNames.forEach((fieldName) => {
-                  processExtractedField(fieldName, ed[fieldName])
-                })
-                return true
-              }
-              return false
-            })
-            .catch(() => {
-              fieldNames.forEach((fieldName) => {
-                setFieldExtracting(labelId, fieldName, false)
-              })
-              return false
-            }),
-        ),
-      )
-      const results = await Promise.all(promises)
-      const successSectionCount = results.filter(Boolean).length
-      setExtracting(labelId, false)
-      const totalSections = EXTRACTION_SECTIONS.length
-      const failCount = totalSections - successSectionCount
-      if (failCount === totalSections) {
+      return await extractFields({
+        data: { labelId, field_names: null },
+      })
+    },
+    onMutate: () => {
+      EXTRACTABLE_FIELDS.forEach((fieldName) => {
+        setFieldExtracting(labelId, fieldName, true)
+      })
+      setExtracting(labelId, true)
+    },
+    onSuccess: (extractedData) => {
+      clearAllExtractingState()
+      if (!extractedData) {
         showErrorToast(t("data.extractionFailed", { ns: "labels" }))
-      } else if (failCount > 0) {
-        showSuccessToast(
-          t("data.extractionPartialSuccess", {
-            ns: "labels",
-            defaultValue: "Extracted {{success}} of {{total}} sections",
-            success: successSectionCount,
-            total: totalSections,
-          }),
-        )
-      } else {
+        return
+      }
+      const ed = extractedData as Record<string, unknown>
+      let populatedCount = 0
+      EXTRACTABLE_FIELDS.forEach((fieldName) => {
+        const value = ed[fieldName]
+        if (value !== undefined && value !== null) populatedCount++
+        processExtractedField(fieldName, value)
+      })
+      if (populatedCount > 0) {
         showSuccessToast(
           t("data.extractionComplete", {
             ns: "labels",
             defaultValue: "Extraction complete",
           }),
         )
+      } else {
+        showErrorToast(t("data.extractionNoValue", { ns: "labels" }))
       }
     },
-    onMutate: () => {
-      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
-        fieldNames.forEach((fieldName) => {
-          setFieldExtracting(labelId, fieldName, true)
-        })
-      })
-      setExtracting(labelId, true)
-    },
     onError: (error) => {
-      EXTRACTION_SECTIONS.forEach(({ fieldNames }) => {
-        fieldNames.forEach((fieldName) => {
-          setFieldExtracting(labelId, fieldName, false)
-        })
-      })
-      setExtracting(labelId, false)
+      clearAllExtractingState()
       if (error instanceof Error) {
         if (
           error.message === "Extraction is only available for fertilizer labels"
