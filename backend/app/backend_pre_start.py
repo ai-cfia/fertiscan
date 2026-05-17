@@ -1,4 +1,8 @@
+import json
 import logging
+from urllib.error import HTTPError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 import boto3
 from sqlalchemy import text
@@ -53,10 +57,62 @@ def check_storage() -> None:
     s3_client.list_buckets()
 
 
+def check_llm() -> None:
+    """Check Azure OpenAI reachability without making a completion request."""
+    endpoint = (settings.AZURE_OPENAI_ENDPOINT or "").rstrip("/")
+    api_key = settings.AZURE_OPENAI_API_KEY
+    api_version = settings.AZURE_OPENAI_API_VERSION
+    deployment_name = settings.AZURE_OPENAI_MODEL
+
+    if not endpoint or api_key is None or not deployment_name:
+        raise RuntimeError(
+            "Azure OpenAI is not configured: AZURE_OPENAI_ENDPOINT, "
+            "AZURE_OPENAI_API_KEY, and AZURE_OPENAI_MODEL are required"
+        )
+
+    query = urlencode({"api-version": api_version})
+    request = Request(
+        f"{endpoint}/openai/deployments?{query}",
+        headers={"api-key": api_key.get_secret_value()},
+        method="GET",
+    )
+    try:
+        with urlopen(request, timeout=10) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace").strip()
+        detail = f": {body}" if body else ""
+        raise RuntimeError(
+            f"Azure OpenAI reachability check failed: HTTP {exc.code} {exc.reason}{detail}"
+        ) from exc
+    except OSError as exc:
+        raise RuntimeError(f"Azure OpenAI reachability check failed: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            "Azure OpenAI reachability check failed: deployments response was not valid JSON"
+        ) from exc
+
+    deployments = payload.get("data")
+    if not isinstance(deployments, list):
+        raise RuntimeError(
+            "Azure OpenAI reachability check failed: deployments response did not contain a data list"
+        )
+
+    if not any(
+        isinstance(deployment, dict)
+        and deployment_name in (deployment.get("id"), deployment.get("model"))
+        for deployment in deployments
+    ):
+        raise RuntimeError(
+            f"Azure OpenAI reachability check failed: deployment '{deployment_name}' was not found"
+        )
+
+
 def main() -> None:
     logger.info("Checking service connectivity")
     check_db()
     check_storage()
+    check_llm()
     logger.info("Service connectivity checks complete")
 
 
