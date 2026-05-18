@@ -1,9 +1,11 @@
 from datetime import date
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
+
 from sqlalchemy import Column, Computed, String
 from sqlalchemy.orm import relationship
 from sqlmodel import Field, Relationship
+
 from app.db.base import Base, DescriptiveMixin, GuidanceMixin, TimestampMixin
 
 if TYPE_CHECKING:
@@ -77,17 +79,17 @@ class Provision(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=Tru
 # Self-referential relationships must be defined outside the class in SQLModel
 Provision.parent = relationship(
     "Provision",
-    foreign_keys=[Provision.parent_id],
-    remote_side=[Provision.id],
+    foreign_keys="[Provision.parent_id]",
+    remote_side="[Provision.id]",
     back_populates="children",
 )
 Provision.children = relationship(
     "Provision",
-    foreign_keys=[Provision.parent_id],
+    foreign_keys="[Provision.parent_id]",
     back_populates="parent",
 )
 Provision.superseded_by = relationship(
     "Provision",
-    foreign_keys=[Provision.superseded_by_id],
-    remote_side=[Provision.id],
+    foreign_keys="[Provision.superseded_by_id]",
+    remote_side="[Provision.id]",
 )

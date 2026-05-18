@@ -50,7 +50,7 @@ def get_general_exemptions(requirement: Requirement) -> str:
 
     # Sort for deterministic output
     sorted_provisions = sorted(
-        requirement.legislation.general_exemptions, key=lambda p: p.citation
+        requirement.legislation.general_exemptions, key=lambda p: p.citation or ""
     )
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
     return "\n".join(lines)
@@ -66,7 +66,7 @@ def get_exemptions(requirement: Requirement) -> str:
     ]
     if not exemptions:
         return ""
-    sorted_provisions = sorted(exemptions, key=lambda p: p.citation)
+    sorted_provisions = sorted(exemptions, key=lambda p: p.citation or "")
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
     return "\n".join(lines)
 
@@ -83,7 +83,7 @@ def get_applicability_conditions(requirement: Requirement) -> str:
     ]
     if not conditions:
         return ""
-    sorted_provisions = sorted(conditions, key=lambda p: p.citation)
+    sorted_provisions = sorted(conditions, key=lambda p: p.citation or "")
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
     return "\n".join(lines)
 
@@ -95,7 +95,7 @@ def get_requirement_provisions(requirement: Requirement) -> str:
     """
     if not requirement.provisions:
         return ""
-    sorted_provisions = sorted(requirement.provisions, key=lambda p: p.citation)
+    sorted_provisions = sorted(requirement.provisions, key=lambda p: p.citation or "")
     lines = [f"- {p.citation}: {p.text_en}" for p in sorted_provisions]
     if requirement.guidance_en:
         lines.append(f"\nGuidance: {requirement.guidance_en}")

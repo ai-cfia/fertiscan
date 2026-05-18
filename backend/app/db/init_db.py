@@ -175,7 +175,7 @@ def _get_or_create_provision(
     subsection: str | None,
     paragraph: str | None,
     akn_base: str | None,
-    extra: dict | None = None,
+    extra: dict[str, Any] | None = None,
 ) -> Provision:
     prov = session.exec(
         select(Provision).where(
