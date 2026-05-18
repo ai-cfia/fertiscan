@@ -201,7 +201,7 @@ function NewLabel() {
                       productType,
                       (labelId) => {
                         navigate({
-                          to: "/$productType/labels/$labelId/files",
+                          to: "/$productType/labels/$labelId/edit",
                           params: { productType, labelId },
                         })
                       },
