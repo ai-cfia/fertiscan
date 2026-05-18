@@ -1,7 +1,9 @@
 """Database initialization utilities."""
 
 import logging
+import re
 from typing import Any
+from uuid import UUID
 
 from sqlmodel import Session, select
 
@@ -157,50 +159,164 @@ def _seed_definitions(
             session.flush()
 
 
+CITATION_RE = re.compile(r"^([\d.]+)(?:\(([\d.]+)\))?(?:\(([^)]+)\))?$")
+
+# Canonical AKN URI bases — extend as new legislation is added
+AKN_URI_MAP = {
+    "C.R.C., c. 666": "/akn/ca/reg/fertilizers-regulations",
+    "C.R.C., c. 296": "/akn/ca/reg/feeds-regulations",
+    "R.S.C., 1985, c. F-10": "/akn/ca/act/fertilizers-act",
+}
+
+def _get_or_create_provision(
+    session: Session,
+    legislation_id: UUID,
+    section: str,
+    subsection: str | None,
+    paragraph: str | None,
+    akn_base: str | None,
+    extra: dict | None = None,
+) -> Provision:
+    prov = session.exec(
+        select(Provision).where(
+            Provision.legislation_id == legislation_id,
+            Provision.section == section,
+            Provision.subsection == subsection,
+            Provision.paragraph == paragraph,
+        )
+    ).first()
+
+    if not prov:
+        akn_uri = _build_akn_uri(akn_base, section, subsection, paragraph) if akn_base else None
+        data = {
+            "legislation_id": legislation_id,
+            "section": section,
+            "subsection": subsection,
+            "paragraph": paragraph,
+            "akn_uri": akn_uri,
+            "is_current": True,
+            **(extra or {}),
+        }
+        prov = Provision(**data)
+        session.add(prov)
+        session.flush()
+        logger.info(f"Provision created: {prov.citation} (phantom={extra is None})")
+    elif extra:
+        for k, v in extra.items():
+            if k == "akn_uri" and prov.akn_uri is not None:
+                continue
+            setattr(prov, k, v)
+        session.add(prov)
+        session.flush()
+
+    return prov
+
+def _parse_citation(citation: str) -> tuple[str, str | None, str | None]:
+    m = CITATION_RE.match(citation)
+    if not m:
+        raise ValueError(f"Unrecognized citation format: {citation!r}")
+    section, subsection, paragraph = m.groups()
+    return section, subsection, paragraph
+
+
+def _build_akn_uri(akn_base: str, section: str, subsection: str | None, paragraph: str | None) -> str:
+    uri = f"{akn_base}/section/{section}"
+    if subsection:
+        uri += f"/subsection/{subsection}"
+    if paragraph:
+        uri += f"/paragraph/{paragraph}"
+    return uri
+
 def _seed_provisions(
     session: Session,
     seed_data: dict[str, Any],
     leg_map: dict[str, Legislation],
 ) -> None:
-    for prov_data in seed_data.get(SEED_PROVISIONS, []):
+    provisions_data = seed_data.get(SEED_PROVISIONS, [])
+
+    # Sort by depth so parents are always created before children
+    def _depth(citation: str) -> int:
+        m = CITATION_RE.match(citation)
+        if not m:
+            return 1
+        _, sub, par = m.groups()
+        if par:
+            return 3
+        if sub:
+            return 2
+        return 1
+
+    sorted_provisions = sorted(
+        provisions_data,
+        key=lambda p: _depth(p.get(KEY_CITATION, ""))
+    )
+
+    for prov_data in sorted_provisions:
         leg_ref = prov_data.get(KEY_LEGISLATION_CITATION)
+        raw_citation = prov_data.get(KEY_CITATION, "")
+        logger.info(f"Processing provision: {raw_citation}")
+
         leg = leg_map.get(leg_ref)
         if not leg:
-            logger.error(
-                f"Legislation {leg_ref} not found for provision {prov_data.get(KEY_CITATION, '')}"
-            )
+            logger.error(f"Legislation {leg_ref} not found for provision {raw_citation}")
             continue
+
+        try:
+            section, subsection, paragraph = _parse_citation(raw_citation)
+        except ValueError as e:
+            logger.error(str(e))
+            continue
+
+        akn_base = AKN_URI_MAP.get(leg_ref)
         def_infos = prov_data.get(KEY_DEFINITIONS, [])
-        model_data = {
+        extra = {
             k: v
             for k, v in prov_data.items()
-            if k not in (KEY_LEGISLATION_CITATION, KEY_DEFINITIONS)
+            if k not in (KEY_LEGISLATION_CITATION, KEY_DEFINITIONS, KEY_CITATION)
         }
-        prov = session.exec(
-            select(Provision).where(
-                Provision.legislation_id == leg.id,
-                Provision.citation == prov_data[KEY_CITATION],
+        extra |= {"section": section, "subsection": subsection, "paragraph": paragraph}
+
+        # Synthesize phantom parents if they don't exist yet
+        section_row: Provision | None = None
+        subsection_row: Provision | None = None
+
+        # Always ensure section row exists
+        section_row = _get_or_create_provision(
+            session, leg.id, section, None, None, akn_base
+        )
+
+        # Ensure subsection row exists if this provision has a subsection
+        if subsection:
+            subsection_row = _get_or_create_provision(
+                session, leg.id, section, subsection, None, akn_base
             )
-        ).first()
-        if not prov:
-            prov = Provision(legislation_id=leg.id, **model_data)
-            session.add(prov)
+            subsection_row.parent_id = section_row.id
+            session.add(subsection_row)
             session.flush()
-            logger.info(f"Provision created: {prov.citation}")
+
+        # Resolve parent_id for the actual provision
+        if paragraph:
+            parent_id = subsection_row.id if subsection_row else None
+        elif subsection:
+            parent_id = section_row.id
         else:
-            for k, v in model_data.items():
-                setattr(prov, k, v)
-            session.add(prov)
-            session.flush()
+            parent_id = None
+
+        # Create or update the actual provision
+        extra["parent_id"] = parent_id
+        prov = _get_or_create_provision(
+            session, leg.id, section, subsection, paragraph, akn_base, extra
+        )
+
+        # Link definitions
         for def_info in def_infos:
             def_leg_ref = def_info[KEY_LEGISLATION]
             term = def_info[KEY_TERM]
             target_leg = leg_map.get(def_leg_ref)
             if not target_leg:
-                logger.error(
-                    f"Legislation {def_leg_ref} not found for definition {term}"
-                )
+                logger.error(f"Legislation {def_leg_ref} not found for definition {term}")
                 continue
+
             definition = session.exec(
                 select(Definition).where(
                     Definition.legislation_id == target_leg.id,
@@ -209,6 +325,7 @@ def _seed_provisions(
             ).first()
             if not definition:
                 continue
+
             exists = session.exec(
                 select(ProvisionDefinition).where(
                     ProvisionDefinition.provision_id == prov.id,
@@ -216,12 +333,7 @@ def _seed_provisions(
                 )
             ).first()
             if not exists:
-                session.add(
-                    ProvisionDefinition(
-                        provision_id=prov.id, definition_id=definition.id
-                    )
-                )
-
+                session.add(ProvisionDefinition(provision_id=prov.id, definition_id=definition.id))
 
 def _seed_requirements(
     session: Session,
