@@ -53,7 +53,9 @@ class Provision(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=Tru
     )
 
     # Stable AKN URI — set once at insert, never updated
-    akn_uri: str | None = Field(default=None, nullable=True, max_length=500, unique=True, index=True)
+    akn_uri: str | None = Field(
+        default=None, nullable=True, max_length=500, unique=True, index=True
+    )
 
     # Amendment tracking
     superseded_by_id: UUID | None = Field(

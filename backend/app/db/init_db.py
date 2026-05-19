@@ -168,6 +168,7 @@ AKN_URI_MAP = {
     "R.S.C., 1985, c. F-10": "/akn/ca/act/fertilizers-act",
 }
 
+
 def _get_or_create_provision(
     session: Session,
     legislation_id: UUID,
@@ -187,7 +188,11 @@ def _get_or_create_provision(
     ).first()
 
     if not prov:
-        akn_uri = _build_akn_uri(akn_base, section, subsection, paragraph) if akn_base else None
+        akn_uri = (
+            _build_akn_uri(akn_base, section, subsection, paragraph)
+            if akn_base
+            else None
+        )
         data = {
             "legislation_id": legislation_id,
             "section": section,
@@ -211,6 +216,7 @@ def _get_or_create_provision(
 
     return prov
 
+
 def _parse_citation(citation: str) -> tuple[str, str | None, str | None]:
     m = CITATION_RE.match(citation)
     if not m:
@@ -219,13 +225,16 @@ def _parse_citation(citation: str) -> tuple[str, str | None, str | None]:
     return section, subsection, paragraph
 
 
-def _build_akn_uri(akn_base: str, section: str, subsection: str | None, paragraph: str | None) -> str:
+def _build_akn_uri(
+    akn_base: str, section: str, subsection: str | None, paragraph: str | None
+) -> str:
     uri = f"{akn_base}/section/{section}"
     if subsection:
         uri += f"/subsection/{subsection}"
     if paragraph:
         uri += f"/paragraph/{paragraph}"
     return uri
+
 
 def _seed_provisions(
     session: Session,
@@ -247,8 +256,7 @@ def _seed_provisions(
         return 1
 
     sorted_provisions = sorted(
-        provisions_data,
-        key=lambda p: _depth(p.get(KEY_CITATION, ""))
+        provisions_data, key=lambda p: _depth(p.get(KEY_CITATION, ""))
     )
 
     for prov_data in sorted_provisions:
@@ -258,7 +266,9 @@ def _seed_provisions(
 
         leg = leg_map.get(leg_ref)
         if not leg:
-            logger.error(f"Legislation {leg_ref} not found for provision {raw_citation}")
+            logger.error(
+                f"Legislation {leg_ref} not found for provision {raw_citation}"
+            )
             continue
 
         try:
@@ -314,7 +324,9 @@ def _seed_provisions(
             term = def_info[KEY_TERM]
             target_leg = leg_map.get(def_leg_ref)
             if not target_leg:
-                logger.error(f"Legislation {def_leg_ref} not found for definition {term}")
+                logger.error(
+                    f"Legislation {def_leg_ref} not found for definition {term}"
+                )
                 continue
 
             definition = session.exec(
@@ -333,7 +345,12 @@ def _seed_provisions(
                 )
             ).first()
             if not exists:
-                session.add(ProvisionDefinition(provision_id=prov.id, definition_id=definition.id))
+                session.add(
+                    ProvisionDefinition(
+                        provision_id=prov.id, definition_id=definition.id
+                    )
+                )
+
 
 def _seed_requirements(
     session: Session,
