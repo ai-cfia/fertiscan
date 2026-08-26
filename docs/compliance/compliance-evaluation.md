@@ -1,5 +1,9 @@
 # Compliance Evaluation
 
+Evaluation is per requirement: the frontend loops over the selected
+requirements, calling the backend once per requirement. Confirmed results are
+saved as `NonComplianceDataItem` rows (one per label/requirement pair).
+
 ```mermaid
 %%{init: { "sequence": { "mirrorActors": false } }}%%
 sequenceDiagram
@@ -10,26 +14,23 @@ sequenceDiagram
     participant llm as LLM
 
     usr ->> fe : click "verify"
-    fe ->> be : GET /evaluate-compliance (label_id, requirement_ids)
 
-    be ->> db : get label data
-    db -->> be : label data
-
-    be ->> db : get specified requirements, provisions, definitions
-    db -->> be : requirement contexts
-
-    loop for each requirement
-        be ->> be : assemble prompt with context sections
+    loop for each selected requirement
+        fe ->> be : GET /labels/{label_id}/evaluate-non-compliance/{requirement_id}
+        be ->> db : get label data
+        db -->> be : label data
+        be ->> db : get requirement, provisions, definitions, modifiers
+        db -->> be : requirement context
+        be ->> be : render prompt (compliance_verification.md)
         be ->> llm : evaluate requirement
         llm -->> be : ComplianceResult (status, explanation)
+        be -->> fe : 200 OK (result)
     end
-
-    be -->> fe : 200 OK (compliance results)
 
     fe -->> usr : display compliance results
 
     usr ->> fe : review and confirm results
-    fe ->> be : POST /save-compliance-results
-    be ->> db : save compliance results
+    fe ->> be : POST /labels/{label_id}/non_compliance_data_items
+    be ->> db : save verdicts
     be -->> fe : 201 Created
 ```
