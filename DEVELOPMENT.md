@@ -1,7 +1,5 @@
 # Development Guide
 
-Guide for setting up your development environment and working with FertiScan.
-
 ## Prerequisites
 
 - Python 3.12+
@@ -14,9 +12,10 @@ Guide for setting up your development environment and working with FertiScan.
 ## Project Structure
 
 ```text
-fertiscan-backend/
+fertiscan/
 ├── backend/          # FastAPI backend API
 ├── frontend/         # Frontend application
+├── docs/             # Architecture and design docs
 ├── scripts/          # Shared CI/CD automation scripts
 └── docker-compose.yml # Local development services
 ```
@@ -26,8 +25,8 @@ fertiscan-backend/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/ai-cfia/fertiscan-backend.git
-cd fertiscan-backend
+git clone https://github.com/ai-cfia/fertiscan.git
+cd fertiscan
 ```
 
 ### 2. Install Dependencies

@@ -4,8 +4,9 @@ FertiScan analyzes fertilizer labels: users upload label images, an LLM extracts
 the label's fields into a structured form, users review and correct the form,
 and an LLM-based evaluator checks the label against regulatory requirements.
 
-This document describes how the whole system fits together so a new contributor
-can start without prior context.
+FertiScan is a prototype under active development (see
+[Project status and directions](../README.md#project-status-and-directions)
+in the README); expect the architecture to evolve.
 
 ## Components
 
