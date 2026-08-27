@@ -1,9 +1,7 @@
 # LLM Interpretation Logic
 
-This section defines the mandatory interpretation logic the LLM must follow to
-reconcile legal provisions with label data. It ensures that every evaluation
-follows a predictable flow and prioritizes safety by flagging ambiguity for
-human review.
+Mandatory interpretation logic the LLM follows to reconcile legal provisions
+with label data. Ambiguity is always flagged `INCONCLUSIVE` for human review.
 
 ## Global Interpretation Logic
 

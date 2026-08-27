@@ -14,6 +14,18 @@ erDiagram
     FertilizerLabelData ||--o{ FertilizerLabelDataMeta : "has"
     User ||--o{ Label : "creates"
     User ||--o{ Product : "creates"
+    ProductType ||--o{ Legislation : "has"
+    Legislation ||--o{ Provision : "has"
+    Legislation ||--o{ Definition : "has"
+    Legislation ||--o{ Requirement : "has"
+    Provision ||--o{ ProvisionDefinition : "has"
+    Definition ||--o{ ProvisionDefinition : "has"
+    Requirement ||--o{ RequirementProvision : "has"
+    Provision ||--o{ RequirementProvision : "has"
+    Requirement ||--o{ RequirementModifier : "has"
+    Provision ||--o{ RequirementModifier : "modifies via"
+    Requirement ||--o{ NonComplianceDataItem : "evaluated as"
+    Label ||--o{ NonComplianceDataItem : "has"
 
     ProductType {
         uuid id PK
@@ -127,6 +139,106 @@ erDiagram
         boolean is_superuser "default false"
         string hashed_password "nullable"
         string external_id UK "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Legislation {
+        uuid id PK
+        string citation_reference UK
+        string legislation_type "nullable"
+        uuid product_type_id FK
+        string source_url_en "nullable"
+        string source_url_fr "nullable"
+        date last_amended_date "nullable"
+        string title_en "nullable"
+        string title_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Provision {
+        uuid id PK
+        uuid legislation_id FK
+        string citation UK
+        string text_en
+        string text_fr
+        boolean is_general_exemption "default false"
+        string title_en "nullable"
+        string title_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Definition {
+        uuid id PK
+        uuid legislation_id FK
+        string title_en
+        string title_fr
+        string text_en
+        string text_fr
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ProvisionDefinition {
+        uuid id PK
+        uuid provision_id FK
+        uuid definition_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Requirement {
+        uuid id PK
+        uuid legislation_id FK
+        string title_en "nullable"
+        string title_fr "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string guidance_en "nullable"
+        string guidance_fr "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RequirementProvision {
+        uuid id PK
+        uuid requirement_id FK
+        uuid provision_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RequirementModifier {
+        uuid id PK
+        uuid requirement_id FK
+        uuid provision_id FK
+        string type "EXEMPTION | APPLICABILITY_CONDITION"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    NonComplianceDataItem {
+        uuid id PK
+        uuid requirement_id FK
+        uuid label_id FK
+        string note "nullable"
+        string description_en "nullable"
+        string description_fr "nullable"
+        string status "compliant | non_compliant | not_applicable | inconclusive"
         timestamp created_at
         timestamp updated_at
     }
@@ -390,6 +502,31 @@ Object containing analysis title and nutrients array:
   regulatory compliance)
 - **`Label.created_by_id`**: Tracks who created each label (audit trail)
 - Both fields are non-nullable to ensure complete audit trail
+
+### Compliance Knowledge Base
+
+- **Scoping**: `Legislation` belongs to a `ProductType`; `Provision`,
+  `Definition`, and `Requirement` all belong to a `Legislation`
+  (cascade-deleted with it).
+- **Many-to-many links**: `RequirementProvision` connects requirements to the
+  provisions they are grounded in; `ProvisionDefinition` connects provisions
+  to the legal definitions their terms rely on.
+- **Modifiers**: `RequirementModifier` attaches a provision to a requirement
+  as either an `EXEMPTION` or an `APPLICABILITY_CONDITION`, short-circuiting
+  evaluation when applicable.
+- **General exemptions**: `Provision.is_general_exemption` flags provisions
+  that exempt across the legislation; exposed on `Legislation` as a filtered
+  relationship.
+- **Verdicts**: `NonComplianceDataItem` stores one evaluation result per
+  `(label, requirement)` (unique constraint) with a four-state `status`
+  (despite the table's name).
+- **Shared mixins**: `Legislation`, `Provision`, `Definition`, and
+  `Requirement` carry bilingual `title/description` (DescriptiveMixin) and
+  `guidance` (GuidanceMixin) columns.
+- **Seeding**: populated from JSON files in `COMPLIANCE_SEED_DATA_DIR` by
+  `app/db/init_db.py` (idempotent upserts).
+- See [compliance/](compliance/) for evaluation flow, prompt design, and
+  interpretation logic.
 
 ### User Authentication
 
