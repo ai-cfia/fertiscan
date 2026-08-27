@@ -9,39 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
-import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LayoutProductTypeRouteImport } from './routes/_layout/$productType'
+import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutProductTypeIndexRouteImport } from './routes/_layout/$productType/index'
-import { Route as LayoutProductTypeProductsIndexRouteImport } from './routes/_layout/$productType/products/index'
 import { Route as LayoutProductTypeLabelsIndexRouteImport } from './routes/_layout/$productType/labels/index'
-import { Route as LayoutProductTypeProductsNewRouteImport } from './routes/_layout/$productType/products/new'
-import { Route as LayoutProductTypeProductsProductIdRouteImport } from './routes/_layout/$productType/products/$productId'
-import { Route as LayoutProductTypeLabelsNewRouteImport } from './routes/_layout/$productType/labels/new'
 import { Route as LayoutProductTypeLabelsLabelIdRouteImport } from './routes/_layout/$productType/labels/$labelId'
-import { Route as LayoutProductTypeLabelsLabelIdFilesRouteImport } from './routes/_layout/$productType/labels/$labelId/files'
-import { Route as LayoutProductTypeLabelsLabelIdEditRouteImport } from './routes/_layout/$productType/labels/$labelId/edit'
+import { Route as LayoutProductTypeLabelsNewRouteImport } from './routes/_layout/$productType/labels/new'
+import { Route as LayoutProductTypeProductsIndexRouteImport } from './routes/_layout/$productType/products/index'
+import { Route as LayoutProductTypeProductsProductIdRouteImport } from './routes/_layout/$productType/products/$productId'
+import { Route as LayoutProductTypeProductsNewRouteImport } from './routes/_layout/$productType/products/new'
 import { Route as LayoutProductTypeLabelsLabelIdComplianceRouteImport } from './routes/_layout/$productType/labels/$labelId/compliance'
+import { Route as LayoutProductTypeLabelsLabelIdEditRouteImport } from './routes/_layout/$productType/labels/$labelId/edit'
+import { Route as LayoutProductTypeLabelsLabelIdFilesRouteImport } from './routes/_layout/$productType/labels/$labelId/files'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecoverPasswordRoute = RecoverPasswordRouteImport.update({
-  id: '/recover-password',
-  path: '/recover-password',
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -49,18 +43,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutRoute = LayoutRouteImport.update({
-  id: '/_layout',
+const RecoverPasswordRoute = RecoverPasswordRouteImport.update({
+  id: '/recover-password',
+  path: '/recover-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutProductTypeRoute = LayoutProductTypeRouteImport.update({
+  id: '/$productType',
+  path: '/$productType',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutAdminRoute = LayoutAdminRouteImport.update({
@@ -68,9 +68,9 @@ const LayoutAdminRoute = LayoutAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutProductTypeRoute = LayoutProductTypeRouteImport.update({
-  id: '/$productType',
-  path: '/$productType',
+const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutProductTypeIndexRoute = LayoutProductTypeIndexRouteImport.update({
@@ -78,34 +78,10 @@ const LayoutProductTypeIndexRoute = LayoutProductTypeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LayoutProductTypeRoute,
 } as any)
-const LayoutProductTypeProductsIndexRoute =
-  LayoutProductTypeProductsIndexRouteImport.update({
-    id: '/products/',
-    path: '/products/',
-    getParentRoute: () => LayoutProductTypeRoute,
-  } as any)
 const LayoutProductTypeLabelsIndexRoute =
   LayoutProductTypeLabelsIndexRouteImport.update({
     id: '/labels/',
     path: '/labels/',
-    getParentRoute: () => LayoutProductTypeRoute,
-  } as any)
-const LayoutProductTypeProductsNewRoute =
-  LayoutProductTypeProductsNewRouteImport.update({
-    id: '/products/new',
-    path: '/products/new',
-    getParentRoute: () => LayoutProductTypeRoute,
-  } as any)
-const LayoutProductTypeProductsProductIdRoute =
-  LayoutProductTypeProductsProductIdRouteImport.update({
-    id: '/products/$productId',
-    path: '/products/$productId',
-    getParentRoute: () => LayoutProductTypeRoute,
-  } as any)
-const LayoutProductTypeLabelsNewRoute =
-  LayoutProductTypeLabelsNewRouteImport.update({
-    id: '/labels/new',
-    path: '/labels/new',
     getParentRoute: () => LayoutProductTypeRoute,
   } as any)
 const LayoutProductTypeLabelsLabelIdRoute =
@@ -114,10 +90,34 @@ const LayoutProductTypeLabelsLabelIdRoute =
     path: '/labels/$labelId',
     getParentRoute: () => LayoutProductTypeRoute,
   } as any)
-const LayoutProductTypeLabelsLabelIdFilesRoute =
-  LayoutProductTypeLabelsLabelIdFilesRouteImport.update({
-    id: '/files',
-    path: '/files',
+const LayoutProductTypeLabelsNewRoute =
+  LayoutProductTypeLabelsNewRouteImport.update({
+    id: '/labels/new',
+    path: '/labels/new',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeProductsIndexRoute =
+  LayoutProductTypeProductsIndexRouteImport.update({
+    id: '/products/',
+    path: '/products/',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeProductsProductIdRoute =
+  LayoutProductTypeProductsProductIdRouteImport.update({
+    id: '/products/$productId',
+    path: '/products/$productId',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeProductsNewRoute =
+  LayoutProductTypeProductsNewRouteImport.update({
+    id: '/products/new',
+    path: '/products/new',
+    getParentRoute: () => LayoutProductTypeRoute,
+  } as any)
+const LayoutProductTypeLabelsLabelIdComplianceRoute =
+  LayoutProductTypeLabelsLabelIdComplianceRouteImport.update({
+    id: '/compliance',
+    path: '/compliance',
     getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
   } as any)
 const LayoutProductTypeLabelsLabelIdEditRoute =
@@ -126,10 +126,10 @@ const LayoutProductTypeLabelsLabelIdEditRoute =
     path: '/edit',
     getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
   } as any)
-const LayoutProductTypeLabelsLabelIdComplianceRoute =
-  LayoutProductTypeLabelsLabelIdComplianceRouteImport.update({
-    id: '/compliance',
-    path: '/compliance',
+const LayoutProductTypeLabelsLabelIdFilesRoute =
+  LayoutProductTypeLabelsLabelIdFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
     getParentRoute: () => LayoutProductTypeLabelsLabelIdRoute,
   } as any)
 
@@ -268,32 +268,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recover-password': {
-      id: '/recover-password'
-      path: '/recover-password'
-      fullPath: '/recover-password'
-      preLoaderRoute: typeof RecoverPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_layout': {
@@ -303,18 +282,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/settings': {
-      id: '/_layout/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof LayoutSettingsRouteImport
+    '/recover-password': {
+      id: '/recover-password'
+      path: '/recover-password'
+      fullPath: '/recover-password'
+      preLoaderRoute: typeof RecoverPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/$productType': {
+      id: '/_layout/$productType'
+      path: '/$productType'
+      fullPath: '/$productType'
+      preLoaderRoute: typeof LayoutProductTypeRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/admin': {
@@ -324,11 +324,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/$productType': {
-      id: '/_layout/$productType'
-      path: '/$productType'
-      fullPath: '/$productType'
-      preLoaderRoute: typeof LayoutProductTypeRouteImport
+    '/_layout/settings': {
+      id: '/_layout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof LayoutSettingsRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/$productType/': {
@@ -338,39 +338,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeIndexRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
-    '/_layout/$productType/products/': {
-      id: '/_layout/$productType/products/'
-      path: '/products'
-      fullPath: '/$productType/products/'
-      preLoaderRoute: typeof LayoutProductTypeProductsIndexRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
     '/_layout/$productType/labels/': {
       id: '/_layout/$productType/labels/'
       path: '/labels'
       fullPath: '/$productType/labels/'
       preLoaderRoute: typeof LayoutProductTypeLabelsIndexRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
-    '/_layout/$productType/products/new': {
-      id: '/_layout/$productType/products/new'
-      path: '/products/new'
-      fullPath: '/$productType/products/new'
-      preLoaderRoute: typeof LayoutProductTypeProductsNewRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
-    '/_layout/$productType/products/$productId': {
-      id: '/_layout/$productType/products/$productId'
-      path: '/products/$productId'
-      fullPath: '/$productType/products/$productId'
-      preLoaderRoute: typeof LayoutProductTypeProductsProductIdRouteImport
-      parentRoute: typeof LayoutProductTypeRoute
-    }
-    '/_layout/$productType/labels/new': {
-      id: '/_layout/$productType/labels/new'
-      path: '/labels/new'
-      fullPath: '/$productType/labels/new'
-      preLoaderRoute: typeof LayoutProductTypeLabelsNewRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
     '/_layout/$productType/labels/$labelId': {
@@ -380,11 +352,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdRouteImport
       parentRoute: typeof LayoutProductTypeRoute
     }
-    '/_layout/$productType/labels/$labelId/files': {
-      id: '/_layout/$productType/labels/$labelId/files'
-      path: '/files'
-      fullPath: '/$productType/labels/$labelId/files'
-      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdFilesRouteImport
+    '/_layout/$productType/labels/new': {
+      id: '/_layout/$productType/labels/new'
+      path: '/labels/new'
+      fullPath: '/$productType/labels/new'
+      preLoaderRoute: typeof LayoutProductTypeLabelsNewRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/products/': {
+      id: '/_layout/$productType/products/'
+      path: '/products'
+      fullPath: '/$productType/products/'
+      preLoaderRoute: typeof LayoutProductTypeProductsIndexRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/products/$productId': {
+      id: '/_layout/$productType/products/$productId'
+      path: '/products/$productId'
+      fullPath: '/$productType/products/$productId'
+      preLoaderRoute: typeof LayoutProductTypeProductsProductIdRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/products/new': {
+      id: '/_layout/$productType/products/new'
+      path: '/products/new'
+      fullPath: '/$productType/products/new'
+      preLoaderRoute: typeof LayoutProductTypeProductsNewRouteImport
+      parentRoute: typeof LayoutProductTypeRoute
+    }
+    '/_layout/$productType/labels/$labelId/compliance': {
+      id: '/_layout/$productType/labels/$labelId/compliance'
+      path: '/compliance'
+      fullPath: '/$productType/labels/$labelId/compliance'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdComplianceRouteImport
       parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
     }
     '/_layout/$productType/labels/$labelId/edit': {
@@ -394,11 +394,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdEditRouteImport
       parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
     }
-    '/_layout/$productType/labels/$labelId/compliance': {
-      id: '/_layout/$productType/labels/$labelId/compliance'
-      path: '/compliance'
-      fullPath: '/$productType/labels/$labelId/compliance'
-      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdComplianceRouteImport
+    '/_layout/$productType/labels/$labelId/files': {
+      id: '/_layout/$productType/labels/$labelId/files'
+      path: '/files'
+      fullPath: '/$productType/labels/$labelId/files'
+      preLoaderRoute: typeof LayoutProductTypeLabelsLabelIdFilesRouteImport
       parentRoute: typeof LayoutProductTypeLabelsLabelIdRoute
     }
   }
