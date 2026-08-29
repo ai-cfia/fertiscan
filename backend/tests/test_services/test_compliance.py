@@ -156,7 +156,7 @@ class TestGetGeneralExemptions:
             legislation=requirement.legislation,
             text_en="Exemption A",
             is_general_exemption=True,
-            citation="Global-1",
+            section="Global-1",
         )
         db.flush()
         db.refresh(requirement.legislation)
@@ -169,13 +169,13 @@ class TestGetGeneralExemptions:
         requirement = RequirementFactory.create()
         ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="B",
+            section="B",
             text_en="Exemption B",
             is_general_exemption=True,
         )
         ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="A",
+            section="A",
             text_en="Exemption A",
             is_general_exemption=True,
         )
@@ -191,13 +191,13 @@ class TestGetGeneralExemptions:
         requirement = RequirementFactory.create()
         ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Global-A",
+            section="Global-A",
             text_en="Exemption A",
             is_general_exemption=True,
         )
         ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Regular-A",
+            section="Regular-A",
             text_en="Standard Rule",
             is_general_exemption=False,
         )
@@ -229,11 +229,11 @@ class TestRequirementModifiers:
         """Test fetching correctly by type using the explicit relationships."""
         requirement = RequirementFactory.create()
         exemption_prov = ProvisionFactory.create(
-            legislation=requirement.legislation, citation="Ex-1", text_en="Exemption A"
+            legislation=requirement.legislation, section="Ex-1", text_en="Exemption A"
         )
         condition_prov = ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Cond-1",
+            section="Cond-1",
             text_en="Condition A",
         )
 
@@ -260,10 +260,10 @@ class TestRequirementModifiers:
         """Test that multiple modifiers of the same type are sorted by citation."""
         requirement = RequirementFactory.create()
         ex_b = ProvisionFactory.create(
-            legislation=requirement.legislation, citation="B", text_en="Exemption B"
+            legislation=requirement.legislation, section="B", text_en="Exemption B"
         )
         ex_a = ProvisionFactory.create(
-            legislation=requirement.legislation, citation="A", text_en="Exemption A"
+            legislation=requirement.legislation, section="A", text_en="Exemption A"
         )
 
         RequirementModifierFactory.create(
@@ -296,12 +296,12 @@ class TestGetRequirementProvisions:
         requirement = RequirementFactory.create(guidance_en="")
         p_b = ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Provision-B",
+            section="Provision-B",
             text_en="Text B",
         )
         p_a = ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Provision-A",
+            section="Provision-A",
             text_en="Text A",
         )
         requirement.provisions.append(p_b)
@@ -365,13 +365,13 @@ class TestBuildContext:
         # Add one of each to ensure non-empty strings
         ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Global-1",
+            section="Global-1",
             is_general_exemption=True,
             text_en="Global Rule",
         )
         p_req = ProvisionFactory.create(
             legislation=requirement.legislation,
-            citation="Req-1",
+            section="Req-1",
             text_en="Core Requirement",
         )
         requirement.provisions.append(p_req)
