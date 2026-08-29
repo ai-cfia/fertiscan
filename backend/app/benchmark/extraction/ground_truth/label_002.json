@@ -1,0 +1,167 @@
+{
+    "brand_name": {
+        "en": "bionik",
+        "fr": "bionik"
+    },
+    "product_name": {
+        "en": "100% Natural Compost / Marine & Forest Compost",
+        "fr": "Compost naturel à 100 % / Compost marin et forestier"
+    },
+    "contacts": [
+        {
+            "type": "manufacturer",
+            "name": "Gloco",
+            "address": null,
+            "phone": null,
+            "email": null,
+            "website": "bionik.ca"
+        }
+    ],
+    "registration_number": null,
+    "registration_claim": {
+        "en": "Registered fertilizer",
+        "fr": "Engrais enregistré"
+    },
+    "lot_number": "2",
+    "net_weight": "14 kg (30.8 lb)",
+    "volume": "22 L",
+    "exemption_claim": null,
+    "country_of_origin": "Canada",
+    "product_classification": "fertilizer",
+    "customer_formula_statements": null,
+    "intended_use_statements": null,
+    "processing_instruction_statements": null,
+    "experimental_statements": null,
+    "export_statements": null,
+    "n": 0.6,
+    "p": 1.8,
+    "k": 0.13,
+    "ingredients": [
+        {
+            "name": {
+                "en": "Bark",
+                "fr": "Écorce"
+            },
+            "value": "",
+            "unit": "",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "snow crab",
+                "fr": "crabes des neiges"
+            },
+            "value": "",
+            "unit": "",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "whelks",
+                "fr": "bourgots"
+            },
+            "value": "",
+            "unit": "",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "red wigglers",
+                "fr": "vers rouges"
+            },
+            "value": "",
+            "unit": "",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "fish",
+                "fr": "poissons"
+            },
+            "value": "",
+            "unit": "",
+            "registration_number": null
+        }
+    ],
+    "guaranteed_analysis": {
+        "title": {
+            "en": "Guaranteed Minimum Analysis",
+            "fr": "Analyse minimale garantie"
+        },
+        "is_minimum": true,
+        "nutrients": [
+            {
+                "name": {
+                    "en": "Total Nitrogen (N)",
+                    "fr": "Azote total (N)"
+                },
+                "value": 0.6,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Available Phosphate (P2O5)",
+                    "fr": "Phosphate assimilable (P2O5)"
+                },
+                "value": 1.8,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Soluble Potash (K2O)",
+                    "fr": "Potasse soluble (K2O)"
+                },
+                "value": 0.1,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Calcium (Ca)",
+                    "fr": "Calcium (Ca)"
+                },
+                "value": 14.0,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Magnesium (Mg)",
+                    "fr": "Magnésium (Mg)"
+                },
+                "value": 0.2,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Organic Matter",
+                    "fr": "Matière organique"
+                },
+                "value": 28.0,
+                "unit": "%"
+            },
+            {
+                "name": {
+                    "en": "Moisture",
+                    "fr": "Humidité"
+                },
+                "value": 55.0,
+                "unit": "%"
+            }
+        ]
+    },
+    "precaution_statements": null,
+    "directions_for_use_statements": [
+        {
+            "en": "Vegetable gardens and flower beds: Spread a 0.6 mm (¼ in) layer of compost on the soil surface and quickly work into the soil.",
+            "fr": "Potager et plates-bandes : Épandre 0,6 mm (¼ po) de compost à la surface du sol et mélanger au sol rapidement."
+        },
+        {
+            "en": "Demanding plants: Add one to three handfuls into the planting hole and work into the soil.",
+            "fr": "Plantes exigeantes : Ajouter une à trois poignées dans le trou de plantation et mélanger au sol."
+        },
+        {
+            "en": "Trees, shrubs, evergreens and hedges: Spread a 0.6 mm (¼ in) layer of compost on the soil surface covered by the plants. Water as needed.",
+            "fr": "Arbres, arbustes, conifères et haies : Épandre 0,6 mm (¼ po) de compost à la surface du sol recouvert par les plants. Arroser au besoin."
+        }
+    ],
+    "label_file": "label_002"
+}

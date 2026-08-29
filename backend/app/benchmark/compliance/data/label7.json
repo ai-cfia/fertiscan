@@ -1,0 +1,86 @@
+{
+    "brand_name": {
+        "en": "UrbanRoot",
+        "fr": "UrbanRoot"
+    },
+    "product_name": {
+        "en": "Indoor Potting Mix Basic",
+        "fr": "Terreau d'interieur de base"
+    },
+    "contacts": [
+        {
+            "type": "manufacturer",
+            "name": "UrbanRoot Growing Systems Inc.",
+            "address": "540 Greenhouse Lane, Montreal, QC, Canada",
+            "phone": "+1 514 555 0166",
+            "email": "care@urbanroot.example",
+            "website": "https://urbanroot.example"
+        }
+    ],
+    "registration_number": null,
+    "registration_claim": null,
+    "lot_number": "UR-26-0418-PM",
+    "net_weight": "8 kg",
+    "volume": "18 L",
+    "exemption_claim": {
+        "en": "Growing medium product exempt under applicable provisions.",
+        "fr": "Produit de milieu de culture exempte selon les dispositions applicables."
+    },
+    "country_of_origin": "Canada",
+    "product_classification": "fertilizer",
+    "customer_formula_statements": null,
+    "intended_use_statements": [
+        {
+            "en": "For indoor and balcony container plants.",
+            "fr": "Pour les plantes en contenants a l'interieur et sur balcon."
+        }
+    ],
+    "processing_instruction_statements": null,
+    "experimental_statements": null,
+    "export_statements": null,
+    "n": null,
+    "p": null,
+    "k": null,
+    "ingredients": [
+        {
+            "name": {
+                "en": "Sphagnum peat moss",
+                "fr": "Tourbe de sphaigne"
+            },
+            "value": "55",
+            "unit": "%",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "Composted forest products",
+                "fr": "Produits forestiers composes"
+            },
+            "value": "30",
+            "unit": "%",
+            "registration_number": null
+        },
+        {
+            "name": {
+                "en": "Perlite",
+                "fr": "Perlite"
+            },
+            "value": "15",
+            "unit": "%",
+            "registration_number": null
+        }
+    ],
+    "guaranteed_analysis": null,
+    "precaution_statements": [
+        {
+            "en": "Use in a well-ventilated area and avoid inhaling dust.",
+            "fr": "Utiliser dans un endroit bien ventile et eviter d'inhaler la poussiere."
+        }
+    ],
+    "directions_for_use_statements": [
+        {
+            "en": "Loosen mix before use and water plants after potting.",
+            "fr": "Aerer le terreau avant usage et arroser les plantes apres l'empotage."
+        }
+    ]
+}
