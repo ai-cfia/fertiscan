@@ -92,7 +92,8 @@ Some notes on the edge cases:
   Face](https://huggingface.co/blog/lightonai/lightonocr-3); [press
   release](https://www.webdisclosure.com/press-release/lighton-releases-lightonocr-3-a-world-leading-model-family-for-document-intelligence-daiIusgdpjY)
 - **Benchmark results:** olmOCR-Bench 86.3 (4B), 85.5 (0.8B), 84.5 (1B);
-  ParseBench 75.1 (4B); French fr-bench-pdf2md 71.4 (4B, LlamaIndex's run; LightOn self-reports: 74.1)
+  ParseBench 75.1 (4B); French fr-bench-pdf2md 71.4 (4B, LlamaIndex's run;
+  LightOn self-reports: 74.1)
 - **LinkedIn post:** none found as a direct post; LightOn links its LinkedIn
   page from the model card
 - **Company/group:** LightOn (Paris)
@@ -409,7 +410,7 @@ Some notes on the edge cases:
 ### 18. Qwen3-VL-235B (open general VLM)
 
 - **Released:** Sep 2025
-- **GitHub source:** https://github.com/QwenLM/Qwen3-VL
+- **GitHub source:** [QwenLM/Qwen3-VL](https://github.com/QwenLM/Qwen3-VL)
 - **Hugging Face source:**
   [Qwen/Qwen3-VL-235B-A22B-Instruct](https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct)
 - **Release publication:** [Qwen3-VL Technical
@@ -513,7 +514,7 @@ scoring, so scores across them cannot be compared.
   past few weeks have mostly vendor-run numbers so far.
 - **Benchmark versions are not comparable**; a v1.5 score and a v1.6 score are
   different exams.
-- **French coverage is thin.** Only LightOnOCR-3 and OCRia-1 publish French 
+- **French coverage is thin.** Only LightOnOCR-3 and OCRia-1 publish French
   scores for themselves; a few others were scored on French documents by LlamaIndex.
 - **Licenses change often.** Check each repository's LICENSE file before
   committing.
