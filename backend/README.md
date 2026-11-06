@@ -91,7 +91,10 @@ uv run fastapi dev app/main.py --port 8000
 ```
 
 This runs pre-start checks (database health, table creation, initial data) and
-starts the development server at <http://localhost:8000>.
+starts the development server.
+<!-- markdown-link-check-disable -->
+The local server is available at <http://localhost:8000>.
+<!-- markdown-link-check-enable-->
 
 ## Development
 
@@ -115,10 +118,12 @@ Run `make help` to see all available commands.
 
 Once the server is running:
 
+<!-- markdown-link-check-disable -->
 - **Interactive API docs**: <http://localhost:8000/docs>
 - **ReDoc**: <http://localhost:8000/redoc>
 - **Health check**: <http://localhost:8000/healthz>
 - **Readiness check**: <http://localhost:8000/readyz>
+<!-- markdown-link-check-enable-->
 
 ## Project Structure
 
