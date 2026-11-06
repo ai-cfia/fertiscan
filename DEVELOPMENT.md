@@ -123,11 +123,13 @@ cd backend
 make dev
 ```
 
+<!-- markdown-link-check-disable -->
 Backend API available at:
 
 - API: <http://localhost:5000>
 - Interactive docs: <http://localhost:5000/docs>
 - ReDoc: <http://localhost:5000/redoc>
+<!-- markdown-link-check-enable-->
 
 ### Running Frontend
 
@@ -146,7 +148,9 @@ npm run dev
 make frontend-dev
 ```
 
+<!-- markdown-link-check-disable -->
 Frontend available at: <http://localhost:5173>
+<!-- markdown-link-check-enable-->
 
 ## Testing
 

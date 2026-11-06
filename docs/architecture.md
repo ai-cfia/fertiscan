@@ -180,9 +180,13 @@ make docker-watch
 ```
 
 This starts PostgreSQL (5432), MinIO (9000, console 9001), a one-shot
-`prestart` container (migrations + seed + bucket), the backend
-(http://localhost:8000, docs at `/docs`), the frontend
-(http://localhost:5173), and pgAdmin (5050). Env files: `backend/.env` and
+`prestart` container (migrations + seed + bucket), and pgAdmin (5050). The
+backend and frontend are available at:
+<!-- markdown-link-check-disable -->
+- Backend: <http://localhost:8000> (docs at `/docs`)
+- Frontend: <http://localhost:5173>
+<!-- markdown-link-check-enable-->
+Env files: `backend/.env` and
 `frontend/.env` (copy from the respective `.env.example`).
 
 Running pieces natively:

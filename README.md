@@ -16,9 +16,11 @@ running and `backend/.env` / `frontend/.env` in place (copy from the
 make docker-watch
 ```
 
+<!-- markdown-link-check-disable -->
 This starts everything: frontend at <http://localhost:5173>, backend at
 <http://localhost:8000> (API docs at `/docs`), plus PostgreSQL, MinIO, and
 pgAdmin.
+<!-- markdown-link-check-enable-->
 
 ## Structure
 
