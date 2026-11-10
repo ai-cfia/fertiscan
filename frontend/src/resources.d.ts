@@ -12,7 +12,7 @@ export default interface Resources {
       "signUp": "Sign Up",
       "submit": "Log In",
       "submitting": "Logging in...",
-      "title": "Login",
+      "title": "Log in",
       "usernameRequired": "Username is required"
     },
     "recoverPassword": {
@@ -529,7 +529,11 @@ export default interface Resources {
       "editLabel": "Edit Label",
       "pageTitle": "Label Files - Label Inspection",
       "title_one": "Label Image: {{count}} (max {{max}})",
-      "title_other": "Label Images: {{count}} (max {{max}})"
+      "title_one_one": "Label Image: {{count}} (max {{max}})",
+      "title_one_other": "Label Images: {{count}} (max {{max}})",
+      "title_other": "Label Images: {{count}} (max {{max}})",
+      "title_other_one": "Label Image: {{count}} (max {{max}})",
+      "title_other_other": "Label Images: {{count}} (max {{max}})"
     },
     "filter": {
       "completed": "Completed",

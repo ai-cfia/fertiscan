@@ -1,6 +1,6 @@
 [project]
 name = "fertiscan-backend"
-version = "0.1.0"
+version = "0.2.0"
 description = "FertiScan Backend API with FastAPI and SQLAlchemy"
 requires-python = ">=3.12"
 dependencies = [
@@ -10,9 +10,9 @@ dependencies = [
     "sqlmodel",
     "alembic",
     "bcrypt",
-    "pyjwt",
+    "pyjwt>=2.15.0",
     "jinja2",
-    "aiosmtplib",
+    "aiosmtplib>=5.1.2",
     "tenacity",
     "psycopg[binary]",
     "fastapi-pagination>=0.15.16",
