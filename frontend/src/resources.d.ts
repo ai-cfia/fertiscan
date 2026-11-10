@@ -12,7 +12,7 @@ export default interface Resources {
       "signUp": "Sign Up",
       "submit": "Log In",
       "submitting": "Logging in...",
-      "title": "Login",
+      "title": "Log in",
       "usernameRequired": "Username is required"
     },
     "recoverPassword": {
