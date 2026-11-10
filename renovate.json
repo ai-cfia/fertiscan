@@ -145,6 +145,55 @@
 			]
 		},
 		{
+			"matchManagers": [
+				"github-actions"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"groupName": "workflow non-major dependencies",
+			"groupSlug": "workflow-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				".github/workflows/**"
+			]
+		},
+		{
+			"matchManagers": [
+				"github-actions"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "workflow major dependencies",
+			"groupSlug": "workflow-major",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				".github/workflows/**"
+			]
+		},
+		{
+			"matchManagers": [
+				"github-actions"
+			],
+			"matchUpdateTypes": [
+				"digest"
+			],
+			"groupName": "workflow digest updates",
+			"groupSlug": "workflow-digests",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				".github/workflows/**"
+			]
+		},
+		{
 			"matchFileNames": [
 				"frontend/**"
 			],
