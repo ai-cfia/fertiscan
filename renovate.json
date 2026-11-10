@@ -13,6 +13,138 @@
 	],
 	"packageRules": [
 		{
+			"matchDepTypes": [
+				"*"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"groupName": "backend non-major dependencies",
+			"groupSlug": "backend-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"backend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"*"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "backend major dependencies",
+			"groupSlug": "backend-major",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"backend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"dependency-groups.dev"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"groupName": "backend non-major dev dependencies",
+			"groupSlug": "backend-dev-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"backend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"dependency-groups.dev"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "backend major dev dependencies",
+			"groupSlug": "backend-dev-major",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"backend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"*"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"groupName": "frontend non-major dependencies",
+			"groupSlug": "frontend-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"frontend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"*"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "frontend major dependencies",
+			"groupSlug": "frontend-major",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"frontend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"devDependencies"
+			],
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"groupName": "frontend non-major dev dependencies",
+			"groupSlug": "frontend-dev-minor-patch",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"frontend/**"
+			]
+		},
+		{
+			"matchDepTypes": [
+				"devDependencies"
+			],
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "frontend major dev dependencies",
+			"groupSlug": "frontend-dev-major",
+			"matchPackageNames": [
+				"*"
+			],
+			"matchFileNames": [
+				"frontend/**"
+			]
+		},
+		{
 			"matchFileNames": [
 				"frontend/**"
 			],
@@ -46,5 +178,9 @@
 				"dependencies"
 			]
 		}
-	]
+	],
+	"vulnerabilityAlerts": {
+		"groupName": "security updates",
+		"groupSlug": "security"
+	}
 }
