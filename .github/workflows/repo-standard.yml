@@ -20,4 +20,12 @@ jobs:
       - uses: DavidAnson/markdownlint-cli2-action@ded1f9488f68a970bc66ea5619e13e9b52e601cd # v23
         with:
           globs: "**/*.md"
-      - uses: tcort/github-action-markdown-link-check@v1
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Check Markdown links
+        run: |
+          mapfile -d '' -t markdown_files < <(git ls-files -z -- '*.md')
+          npx --yes markdown-link-check@3.15.0 \
+            --ignore backend/app/data/law/markdown \
+            "${markdown_files[@]}"
