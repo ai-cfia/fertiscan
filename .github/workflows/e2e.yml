@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Create backend .env
         run: |
@@ -41,9 +41,9 @@ jobs:
           curl -f http://localhost:8000/healthz || exit 1
           curl -f http://localhost:5173 || exit 1
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: "24"
+          node-version: "26"
 
       - name: Install dependencies
         working-directory: frontend
