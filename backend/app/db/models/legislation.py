@@ -21,6 +21,9 @@ class Legislation(Base, TimestampMixin, DescriptiveMixin, GuidanceMixin, table=T
     source_url_en: str | None = Field(default=None, max_length=500)
     source_url_fr: str | None = Field(default=None, max_length=500)
     last_amended_date: date | None = Field(default=None)
+    akn_uri_base: str | None = Field(default=None, nullable=True, max_length=500)
+    short_title_en: str | None = Field(default=None, nullable=True, max_length=255)
+    short_title_fr: str | None = Field(default=None, nullable=True, max_length=255)
 
     provisions: list["Provision"] = Relationship(
         back_populates="legislation", cascade_delete=True

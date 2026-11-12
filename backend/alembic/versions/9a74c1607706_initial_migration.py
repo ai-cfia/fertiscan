@@ -1,8 +1,8 @@
-"""initial migration
+"""initial_migration
 
-Revision ID: d9856ad106c5
+Revision ID: 9a74c1607706
 Revises: 
-Create Date: 2026-03-19 16:25:51.080895
+Create Date: 2026-05-18 17:09:37.172712
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd9856ad106c5'
+revision: str = '9a74c1607706'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -65,6 +65,9 @@ def upgrade() -> None:
     sa.Column('source_url_en', sqlmodel.sql.sqltypes.AutoString(length=500), nullable=True),
     sa.Column('source_url_fr', sqlmodel.sql.sqltypes.AutoString(length=500), nullable=True),
     sa.Column('last_amended_date', sa.Date(), nullable=True),
+    sa.Column('akn_uri_base', sqlmodel.sql.sqltypes.AutoString(length=500), nullable=True),
+    sa.Column('short_title_en', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
+    sa.Column('short_title_fr', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
     sa.ForeignKeyConstraint(['product_type_id'], ['producttype.id'], name=op.f('fk_legislation_product_type_id_producttype')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_legislation'))
     )
@@ -133,15 +136,27 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('legislation_id', sa.Uuid(), nullable=False),
-    sa.Column('citation', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
-    sa.Column('text_en', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('text_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('parent_id', sa.Uuid(), nullable=True),
+    sa.Column('section', sqlmodel.sql.sqltypes.AutoString(length=50), nullable=False),
+    sa.Column('subsection', sqlmodel.sql.sqltypes.AutoString(length=50), nullable=True),
+    sa.Column('paragraph', sqlmodel.sql.sqltypes.AutoString(length=10), nullable=True),
+    sa.Column('citation', sa.String(length=50), sa.Computed("section || CASE WHEN subsection IS NOT NULL THEN '(' || subsection || ')' ELSE '' END || CASE WHEN paragraph  IS NOT NULL THEN '(' || paragraph  || ')' ELSE '' END", persisted=True), nullable=True),
+    sa.Column('akn_uri', sqlmodel.sql.sqltypes.AutoString(length=500), nullable=True),
+    sa.Column('superseded_by_id', sa.Uuid(), nullable=True),
+    sa.Column('effective_date', sa.Date(), nullable=True),
+    sa.Column('is_current', sa.Boolean(), nullable=False),
+    sa.Column('text_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('text_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('is_general_exemption', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['legislation_id'], ['legislation.id'], name=op.f('fk_provision_legislation_id_legislation')),
+    sa.ForeignKeyConstraint(['parent_id'], ['provision.id'], name=op.f('fk_provision_parent_id_provision')),
+    sa.ForeignKeyConstraint(['superseded_by_id'], ['provision.id'], name=op.f('fk_provision_superseded_by_id_provision')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_provision'))
     )
+    op.create_index(op.f('ix_provision_akn_uri'), 'provision', ['akn_uri'], unique=True)
     op.create_index(op.f('ix_provision_citation'), 'provision', ['citation'], unique=True)
     op.create_index(op.f('ix_provision_legislation_id'), 'provision', ['legislation_id'], unique=False)
+    op.create_index(op.f('ix_provision_parent_id'), 'provision', ['parent_id'], unique=False)
     op.create_table('requirement',
     sa.Column('guidance_en', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('guidance_fr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
@@ -331,8 +346,10 @@ def downgrade() -> None:
     op.drop_table('fertilizerlabeldata')
     op.drop_index(op.f('ix_requirement_legislation_id'), table_name='requirement')
     op.drop_table('requirement')
+    op.drop_index(op.f('ix_provision_parent_id'), table_name='provision')
     op.drop_index(op.f('ix_provision_legislation_id'), table_name='provision')
     op.drop_index(op.f('ix_provision_citation'), table_name='provision')
+    op.drop_index(op.f('ix_provision_akn_uri'), table_name='provision')
     op.drop_table('provision')
     op.drop_index(op.f('ix_label_review_status'), table_name='label')
     op.drop_index(op.f('ix_label_product_type_id'), table_name='label')
