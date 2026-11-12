@@ -81,8 +81,8 @@
     ]
   },
   "overrides": {
-    "js-yaml": "^4.3.2",
-    "postcss-selector-parser": "^6.1.5"
+    "js-yaml": "^5.0.0",
+    "postcss-selector-parser": "^7.0.0"
   },
   "engines": {
     "node": ">=22 <27",
