@@ -1,0 +1,127 @@
+{
+    "label_file": "label1.json",
+    "profile": "mostly_compliant",
+    "results": [
+        {
+            "requirement_ref": {
+                "citation": "16(1)(a)",
+                "title_en": "Manufacturer Name and Address Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Manufacturer and distributor contact details are explicitly present.",
+                "fr": "Les coordonnees du fabricant et du distributeur sont explicitement presentes."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(b)",
+                "title_en": "Product Name Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Product name is clearly indicated in English and French.",
+                "fr": "Le nom du produit est clairement indique en anglais et en francais."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(c)",
+                "title_en": "Registration Number Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Registration number is present in expected format.",
+                "fr": "Le numero d'enregistrement est present dans le format attendu."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(d)",
+                "title_en": "Exempt Mixture Components Registration Numbers"
+            },
+            "expected_status": "not_applicable",
+            "expected_explanation": {
+                "en": "This registered fertilizer does not use the exempt mixture pathway.",
+                "fr": "Cet engrais enregistre n'utilise pas le parcours de melange exempte."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(e)",
+                "title_en": "Directions for Use Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Directions for use are present and operational.",
+                "fr": "Les modes d'emploi sont presents et operationnels."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(f)",
+                "title_en": "Weight Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Net weight is clearly shown as 20 kg.",
+                "fr": "Le poids net est clairement indique a 20 kg."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(g)",
+                "title_en": "Guaranteed Analysis Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Guaranteed analysis information is present.",
+                "fr": "L'information d'analyse garantie est presente."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(h)",
+                "title_en": "Precaution Statement Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Precaution statements are present.",
+                "fr": "Des enonces de precaution sont presents."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(i)",
+                "title_en": "Prohibited Material Statements"
+            },
+            "expected_status": "not_applicable",
+            "expected_explanation": {
+                "en": "No prohibited material statement condition is triggered.",
+                "fr": "Aucune condition de declaration de matiere interdite n'est declenchee."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(j)",
+                "title_en": "Lot Number Presence"
+            },
+            "expected_status": "compliant",
+            "expected_explanation": {
+                "en": "Lot number is present.",
+                "fr": "Le numero de lot est present."
+            }
+        },
+        {
+            "requirement_ref": {
+                "citation": "16(1)(k)",
+                "title_en": "List of Materials Term for Exempt Products"
+            },
+            "expected_status": "not_applicable",
+            "expected_explanation": {
+                "en": "This is not an exempt product requiring a list-of-materials term.",
+                "fr": "Ce n'est pas un produit exempte necessitant une mention de liste des materiaux."
+            }
+        }
+    ]
+}
